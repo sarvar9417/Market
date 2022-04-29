@@ -1,0 +1,32 @@
+[
+  {
+    "type": "Director",
+    "label": "Director",
+    "value": "Direktor"
+  },
+  {
+    "type": "Reseption",
+    "label": "Qabul",
+    "value": "Qabul"
+  },
+  {
+    "type": "Cashier",
+    "label": "Kassa",
+    "value": "Kassa"
+  },
+  {
+    "type": "Doctor",
+    "label": "Shifokor",
+    "value": "Shifokor"
+  },
+  {
+    "type": "CounterDoctor",
+    "label": "Yo'naltiruvchi shifokor",
+    "value": "Yo'naltiruvchi shifokor"
+  },
+  {
+    "type": "CounterAgent",
+    "label": "Kontragent",
+    "value": "Kontragent"
+  }
+]

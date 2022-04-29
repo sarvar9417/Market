@@ -1,0 +1,6 @@
+{
+    "PORT":9900,
+    "mongoUri": "mongodb://localhost/alo24",
+    "jwtSecret": "alo24",
+    "baseUrl":"http://localhost:9900"
+}
