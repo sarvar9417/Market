@@ -36,9 +36,9 @@ router.get('/branch/getall', auth, (req, res) => {
 
 //========================================================
 //Director
-router.post('/director/register', (req, res) => {
-  require('./director.route').register(req, res)
-})
+// router.post('/director/register', (req, res) => {
+//   require('./director.route').register(req, res)
+// })
 
 router.post('/director/login', (req, res) => {
   require('./director.route').login(req, res)
@@ -60,6 +60,10 @@ router.put('/director/updatepassword', (req, res) => {
 //User
 router.post('/user/register', auth, (req, res) => {
   require('./user.route').register(req, res)
+})
+
+router.post('/director/register', (req, res) => {
+  require('./user.route').registerDirector(req, res)
 })
 
 router.post('/user/login', (req, res) => {

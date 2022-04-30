@@ -47,7 +47,8 @@ export const DirectorRegistor = () => {
   const market = JSON.parse(localStorage.getItem('marketData'))
 
   const [director, setDirector] = useState({
-    market: market._id,
+    type: 'Director',
+    market: market.market._id,
     image: null,
   })
   //====================================================================
@@ -71,7 +72,7 @@ export const DirectorRegistor = () => {
   }, [request, notify])
   //====================================================================
   //====================================================================
-  console.log(market)
+  console.log(director)
   //====================================================================
   //====================================================================
   const styled = {
@@ -141,7 +142,7 @@ export const DirectorRegistor = () => {
       return notify(checkDirectorData(director))
     }
     try {
-      const data = await request('/api/user/register', 'POST', {
+      const data = await request('/api/director/register', 'POST', {
         ...director,
       })
       localStorage.setItem(

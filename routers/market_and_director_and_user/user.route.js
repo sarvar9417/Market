@@ -96,6 +96,80 @@ module.exports.register = async (req, res) => {
   }
 }
 
+module.exports.registerDirector = async (req, res) => {
+  try {
+    const { error } = validateUser(req.body)
+    if (error) {
+      return res.status(400).json({
+        error: error.message,
+      })
+    }
+
+    const {
+      login,
+      firstname,
+      lastname,
+      fathername,
+      image,
+      phone,
+      password,
+      market,
+      type,
+    } = req.body
+
+    const marke = await Market.findById(market)
+
+    if (!marke) {
+      return res.status(400).json({
+        message:
+          "Diqqat! Foydalanuvchi ro'yxatga olinayotgan do'kon dasturda ro'yxatga olinmagan.",
+      })
+    }
+
+    const olduser = await User.findOne({
+      login,
+    })
+
+    if (olduser) {
+      return res.status(400).json({
+        message: "Diqqat! Ushbu foydalanuvchi avval ro'yxatdan o'tkazilgan.",
+      })
+    }
+
+    const hash = await bcrypt.hash(password, 8)
+    const newUser = new User({
+      firstname,
+      lastname,
+      fathername,
+      image,
+      phone,
+      password: hash,
+      market,
+      type,
+      login,
+    })
+    await newUser.save()
+
+    const token = jwt.sign(
+      {
+        userId: newUser._id,
+      },
+      config.get('jwtSecret'),
+      { expiresIn: '12h' },
+    )
+
+    res.status(201).send({
+      token,
+      userId: newUser._id,
+      user: newUser,
+      market: newUser.market,
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
+  }
+}
+
 // User LOGIN
 module.exports.login = async (req, res) => {
   try {
