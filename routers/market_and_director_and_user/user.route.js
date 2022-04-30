@@ -15,6 +15,8 @@ module.exports.register = async (req, res) => {
       })
     }
 
+    console.log(req.body)
+
     const {
       _id,
       login,
@@ -89,6 +91,7 @@ module.exports.register = async (req, res) => {
       .status(201)
       .send({ message: 'Foydalanuvchi muvaffaqqiyatli yaratildi!' })
   } catch (error) {
+    console.log(error)
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
   }
 }
