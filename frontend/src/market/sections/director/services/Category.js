@@ -123,7 +123,7 @@ export const Category = () => {
         }
       );
       notify({
-        title: `${data.name} bo'limi yangilandi!`,
+        title: `${data.name} bo'limi yangilandiii!`,
         description: "",
         status: "success",
       });
