@@ -47,7 +47,7 @@ export const Category = () => {
   //====================================================================
   const { request, loading } = useHttp()
   const auth = useContext(AuthContext)
-
+  console.log(auth)
   const [category, setCategory] = useState({
     market: auth.market && auth.market._id,
   })

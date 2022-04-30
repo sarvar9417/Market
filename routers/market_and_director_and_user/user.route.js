@@ -184,7 +184,7 @@ module.exports.login = async (req, res) => {
 
     const user = await User.findOne({
       login,
-    })
+    }).populate('market')
 
     if (!user) {
       return res

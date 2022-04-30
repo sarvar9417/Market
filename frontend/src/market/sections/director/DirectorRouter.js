@@ -3,7 +3,7 @@ import { Redirect, Route, Switch } from 'react-router-dom'
 import { Advers } from './adver/Advers'
 import { EditDirector } from './editDirector/EditDirector'
 import { EditDirectorPassword } from './editDirector/EditDirectorPassword'
-import { Categorys } from './services/Categorys'
+import { Category } from './services/Categorys'
 import { ProductConnectors } from './services/ProductConnector'
 import { Products } from './services/Products'
 import { Rooms } from './services/Rooms'
@@ -27,7 +27,7 @@ export const DirectorRouter = () => {
           <EditDirectorPassword />
         </Route>
         <Route path="/alo24/departments">
-          <Categorys />
+          <Category />
         </Route>
         <Route path="/alo24/servicetypes">
           <ServiceType />

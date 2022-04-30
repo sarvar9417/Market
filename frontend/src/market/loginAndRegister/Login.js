@@ -82,7 +82,7 @@ export const Login = () => {
     }
     try {
       const data = await request(`/api/user/login`, 'POST', { ...user })
-      auth.login(data.token, data.userId, data.user, data.clinica)
+      auth.login(data.token, data.userId, data.user, data.market)
       notify({
         title: `Xush kelibsiz!`,
         description: 'Kirish muvaffaqqiyatli amalga oshirildi',
