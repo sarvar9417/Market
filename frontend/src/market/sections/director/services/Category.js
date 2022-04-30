@@ -3,7 +3,7 @@ import { Loader } from "../../../loader/Loader";
 import { useToast } from "@chakra-ui/react";
 import { useHttp } from "../../../hooks/http.hook";
 import { AuthContext } from "../../../context/AuthContext";
-import { checkCategory } from "./checkData";
+import { checkDepartment } from "./checkData";
 import { Modal } from "./modal/Modal";
 import { Sort } from "./serviceComponents/Sort";
 
@@ -48,27 +48,27 @@ export const Category = () => {
   const { request, loading } = useHttp();
   const auth = useContext(AuthContext);
 
-  const [category, setCategory] = useState({
-    market: auth.market && auth.market._id,
+  const [department, setCategory] = useState({
+    clinica: auth.clinica && auth.clinica._id,
   });
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
-  const [categories, setCategories] = useState();
+  const [category, setCategorys] = useState();
 
   const getCategory = useCallback(async () => {
     try {
       const data = await request(
         `/api/products/category/getall`,
         "POST",
-        { market: auth.market._id },
+        { clinica: auth.clinica._id },
         {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      setCategories(data);
+      setCategorys(data);
     } catch (error) {
       notify({
         title: error,
@@ -88,7 +88,7 @@ export const Category = () => {
       const data = await request(
         `/api/products/category/register`,
         "POST",
-        { ...category },
+        { ...department },
         {
           Authorization: `Bearer ${auth.token}`,
         }
@@ -100,7 +100,7 @@ export const Category = () => {
       });
       getCategory();
       setCategory({
-        market: auth.market && auth.market._id,
+        clinica: auth.clinica && auth.clinica._id,
       });
       clearInputs();
     } catch (error) {
@@ -110,14 +110,14 @@ export const Category = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify, getCategory, category, clearInputs]);
+  }, [request, auth, notify, getCategory, department, clearInputs]);
 
   const updateHandler = useCallback(async () => {
     try {
       const data = await request(
         `/api/products/category`,
         "PUT",
-        { ...category },
+        { ...department },
         {
           Authorization: `Bearer ${auth.token}`,
         }
@@ -129,7 +129,7 @@ export const Category = () => {
       });
       getCategory();
       setCategory({
-        market: auth.market && auth.market._id,
+        clinica: auth.clinica && auth.clinica._id,
       });
       clearInputs();
     } catch (error) {
@@ -139,13 +139,13 @@ export const Category = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify, getCategory, category, clearInputs]);
+  }, [request, auth, notify, getCategory, department, clearInputs]);
 
   const saveHandler = () => {
-    if (checkCategory(category)) {
-      return notify(checkCategory(category));
+    if (checkDepartment(department)) {
+      return notify(checkDepartment(department));
     }
-    if (category._id) {
+    if (department._id) {
       return updateHandler();
     } else {
       return createHandler();
@@ -161,7 +161,7 @@ export const Category = () => {
   const deleteHandler = useCallback(async () => {
     try {
       const data = await request(
-        `/api/products/category/delete`,
+        `/api/products/category`,
         "DELETE",
         { ...remove },
         {
@@ -176,7 +176,7 @@ export const Category = () => {
       getCategory();
       setModal(false);
       setCategory({
-        market: auth.market && auth.market._id,
+        clinica: auth.clinica && auth.clinica._id,
       });
       clearInputs();
     } catch (error) {
@@ -189,7 +189,7 @@ export const Category = () => {
   }, [auth, request, remove, notify, getCategory, clearInputs]);
 
   const deleteAll = useCallback(async () => {
-    if (categories && categories.length === 0) {
+    if (category && category.length === 0) {
       return notify({
         title: `Bo'limlar mavjud emas`,
         description: "",
@@ -200,7 +200,7 @@ export const Category = () => {
       const data = await request(
         `/api/products/category/deleteall`,
         "DELETE",
-        { ...categories },
+        { ...department },
         {
           Authorization: `Bearer ${auth.token}`,
         }
@@ -214,7 +214,7 @@ export const Category = () => {
       getCategory();
       setModal1(false);
       setCategory({
-        market: auth.market && auth.market._id,
+        clinica: auth.clinica && auth.clinica._id,
       });
       clearInputs();
     } catch (error) {
@@ -224,7 +224,7 @@ export const Category = () => {
         status: "error",
       });
     }
-  }, [auth, request, notify, getCategory, clearInputs, category]);
+  }, [auth, request, notify, getCategory, clearInputs, department, category]);
   //====================================================================
   //====================================================================
 
@@ -232,11 +232,11 @@ export const Category = () => {
   //====================================================================
 
   // const checkHandler = (e) => {
-  //   setCategory({ ...category, probirka: e.target.checked })
+  //   setCategory({ ...department, probirka: e.target.checked })
   // }
 
   const inputHandler = (e) => {
-    setCategory({ ...category, name: e.target.value });
+    setCategory({ ...department, name: e.target.value });
   };
 
   //====================================================================
@@ -276,7 +276,7 @@ export const Category = () => {
                       <td>
                         <input
                           style={{ minWidth: "70px" }}
-                          value={category.name}
+                          value={department.name}
                           onKeyUp={keyPressed}
                           onChange={inputHandler}
                           type="text"
@@ -330,7 +330,7 @@ export const Category = () => {
                         Nomi{"  "}
                         <Sort
                           data={category}
-                          setData={setCategory}
+                          setData={setCategorys}
                           property={"name"}
                         />
                       </th>
@@ -339,8 +339,8 @@ export const Category = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {categories &&
-                      categories.map((d, key) => {
+                    {category &&
+                      category.map((d, key) => {
                         return (
                           <tr key={key}>
                             <td className="font-weight-bold">{key + 1}</td>
