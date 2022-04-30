@@ -1,14 +1,14 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { DirectorRouter } from "./DirectorRouter";
-import { BrowserRouter as Router } from "react-router-dom";
-import { Navbar } from "./navbar_and_footer/Navbar";
-import { useToast } from "@chakra-ui/react";
-import { useHttp } from "../../hooks/http.hook";
+import React, { useCallback, useEffect, useState } from 'react'
+import { DirectorRouter } from './DirectorRouter'
+import { BrowserRouter as Router } from 'react-router-dom'
+import { Navbar } from './navbar_and_footer/Navbar'
+import { useToast } from '@chakra-ui/react'
+import { useHttp } from '../../hooks/http.hook'
 
 export const Director = () => {
   //====================================================================
   //====================================================================
-  const toast = useToast();
+  const toast = useToast()
 
   const notify = useCallback(
     (data) => {
@@ -18,46 +18,46 @@ export const Director = () => {
         status: data.status && data.status,
         duration: 5000,
         isClosable: true,
-        position: "top-right",
-      });
+        position: 'top-right',
+      })
     },
-    [toast]
-  );
+    [toast],
+  )
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
 
-  const { request } = useHttp();
+  const { request } = useHttp()
 
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
-  const [baseUrl, setBaseUrl] = useState();
+  const [baseUrl, setBaseUrl] = useState()
 
   const getBaseUrl = useCallback(async () => {
     try {
-      const data = await request("/api/baseurl", "GET", null);
-      setBaseUrl(data.baseUrl);
+      const data = await request('/api/baseurl', 'GET', null)
+      setBaseUrl(data.baseUrl)
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
-      });
+        description: '',
+        status: 'error',
+      })
     }
-  }, [request, notify]);
+  }, [request, notify])
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
   useEffect(() => {
-    getBaseUrl();
-  }, [getBaseUrl]);
+    getBaseUrl()
+  }, [getBaseUrl])
   //====================================================================
   //====================================================================
   return (
@@ -67,5 +67,5 @@ export const Director = () => {
         <DirectorRouter />
       </Router>
     </div>
-  );
-};
+  )
+}
