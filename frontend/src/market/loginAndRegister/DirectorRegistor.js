@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Input,
   FormControl,
@@ -6,21 +6,33 @@ import {
   InputGroup,
   InputLeftAddon,
   Button,
-} from '@chakra-ui/react'
-import PasswordInput from './PasswordInput'
-import { FileUpload } from './fileUpLoad/FileUpload'
-import { useHttp } from '../hooks/http.hook'
-import { useToast } from '@chakra-ui/react'
-import { checkDirectorData } from './checkData'
-import { useHistory } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser } from '@fortawesome/free-solid-svg-icons'
-import { Loader } from '../loader/Loader'
+} from "@chakra-ui/react";
+import PasswordInput from "./PasswordInput";
+import { FileUpload } from "./fileUpLoad/FileUpload";
+import { useHttp } from "../hooks/http.hook";
+import { useToast } from "@chakra-ui/react";
+import { checkDirectorData } from "./checkData";
+import { useHistory } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { Loader } from "../loader/Loader";
+
+const styleDefault = {
+  border: "1.5px solid #eee",
+  boxShadow: "none",
+  height: "32px",
+};
+
+const styleGreen = {
+  border: "1.5px solid #38B2AC",
+  boxShadow: "none",
+  height: "32px",
+};
 
 export const DirectorRegistor = () => {
   //====================================================================
   //====================================================================
-  const toast = useToast()
+  const toast = useToast();
 
   const notify = useCallback(
     (data) => {
@@ -30,55 +42,52 @@ export const DirectorRegistor = () => {
         status: data.status && data.status,
         duration: 5000,
         isClosable: true,
-        position: 'top-right',
-      })
+        position: "top-right",
+      });
     },
-    [toast],
-  )
+    [toast]
+  );
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
-  const [load, setLoad] = useState(false)
+  const [load, setLoad] = useState(false);
 
-  const { request, loading } = useHttp()
+  const { request, loading } = useHttp();
 
-  const market = JSON.parse(localStorage.getItem('marketData'))
+  const market = JSON.parse(localStorage.getItem("marketData"));
 
   const [director, setDirector] = useState({
-    type: 'Director',
+    type: "Director",
     market: market.market._id,
     image: null,
-  })
+  });
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
-  const [baseUrl, setBaseUrl] = useState()
+  const [baseUrl, setBaseUrl] = useState();
 
   const getBaseUrl = useCallback(async () => {
     try {
-      const data = await request('/api/baseurl', 'GET', null)
-      setBaseUrl(data.baseUrl)
+      const data = await request("/api/baseurl", "GET", null);
+      setBaseUrl(data.baseUrl);
     } catch (error) {
       notify({
         title: error,
-        description: '',
-        status: 'error',
-      })
+        description: "",
+        status: "error",
+      });
     }
-  }, [request, notify])
+  }, [request, notify]);
   //====================================================================
   //====================================================================
-  console.log(director)
+
   //====================================================================
   //====================================================================
-  const styled = {
-    borderColor: '#eee',
-    boxShadow: 'none',
-  }
+
   //====================================================================
   //====================================================================
 
@@ -87,124 +96,124 @@ export const DirectorRegistor = () => {
   const handleImage = async (e) => {
     if (director.image) {
       return notify({
-        title: 'Diqqat! Surat avval yuklangan',
+        title: "Diqqat! Surat avval yuklangan",
         description:
           "Suratni qayta yulash uchun suratni ustiga bir marotaba bosib uni o'chiring!",
-        status: 'error',
-      })
+        status: "error",
+      });
     }
-    const files = e.target.files[0]
-    const data = new FormData()
-    data.append('file', files)
-    setLoad(true)
-    const res = await fetch('/api/upload', { method: 'POST', body: data })
-    const file = await res.json()
-    setDirector({ ...director, image: file.filename })
-    setLoad(false)
+    const files = e.target.files[0];
+    const data = new FormData();
+    data.append("file", files);
+    setLoad(true);
+    const res = await fetch("/api/upload", { method: "POST", body: data });
+    const file = await res.json();
+    setDirector({ ...director, image: file.filename });
+    setLoad(false);
     notify({
-      status: 'success',
-      description: '',
-      title: 'Surat muvaffaqqiyatli yuklandi',
-    })
-  }
+      status: "success",
+      description: "",
+      title: "Surat muvaffaqqiyatli yuklandi",
+    });
+  };
 
   const removeImage = async (filename) => {
     try {
-      const data = await request(`/api/upload/del`, 'POST', { filename })
-      setDirector({ ...director, image: null })
-      document.getElementById('default-btn').value = null
+      const data = await request(`/api/upload/del`, "POST", { filename });
+      setDirector({ ...director, image: null });
+      document.getElementById("default-btn").value = null;
       notify({
-        status: 'success',
-        description: '',
+        status: "success",
+        description: "",
         title: data.accept,
-      })
+      });
     } catch (error) {
       notify({
-        status: 'error',
-        description: '',
+        status: "error",
+        description: "",
         title: error,
-      })
+      });
     }
-  }
+  };
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
   const changeHandler = (e) => {
-    setDirector({ ...director, [e.target.name]: e.target.value })
-  }
+    setDirector({ ...director, [e.target.name]: e.target.value });
+  };
 
-  const history = useHistory()
+  const history = useHistory();
 
   const createHandler = async () => {
     if (checkDirectorData(director)) {
-      return notify(checkDirectorData(director))
+      return notify(checkDirectorData(director));
     }
     try {
-      const data = await request('/api/director/register', 'POST', {
+      const data = await request("/api/director/register", "POST", {
         ...director,
-      })
+      });
       localStorage.setItem(
-        'director',
+        "director",
         JSON.stringify({
           director: data,
-        }),
-      )
+        })
+      );
       notify({
         title: `Tabriklaymiz ${
-          director.firstname + ' ' + director.lastname
+          director.firstname + " " + director.lastname
         }! Siz uchun direktor bo'limi ham muvaffaqqiyatli yaratildi.`,
-        description: '',
-        status: 'success',
-      })
-      history.push('/alo24')
+        description: "",
+        status: "success",
+      });
+      history.push("/alo24");
     } catch (error) {
       notify({
         title: error,
-        description: '',
-        status: 'error',
-      })
+        description: "",
+        status: "error",
+      });
     }
-  }
+  };
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
   const keyPressed = (e) => {
-    if (e.key === 'Enter') {
-      return createHandler()
+    if (e.key === "Enter") {
+      return createHandler();
     }
-  }
+  };
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
   useEffect(() => {
-    getBaseUrl()
-  }, [getBaseUrl])
+    getBaseUrl();
+  }, [getBaseUrl]);
   //====================================================================
   //====================================================================
 
   if (loading) {
-    return <Loader />
+    return <Loader />;
   }
   return (
     <div className="page-content container-fluid">
       <div className="row mt-5">
         <div className="col-xl-7 mx-auto">
-          <div className="card " style={{ borderTop: '4px solid #38B2AC ' }}>
+          <div className="card " style={{ borderTop: "4px solid #38B2AC " }}>
             <div className="card-body p-5">
               <div
                 className="card-title d-flex align-items-center"
-                style={{ fontSize: '20pt', color: '#38B2AC' }}
+                style={{ fontSize: "20pt", color: "#38B2AC" }}
               >
                 <div>
                   <FontAwesomeIcon icon={faUser} />
                 </div>
-                <h5 className="mb-0 fs-5 ml-2" style={{ fontWeight: '600' }}>
+                <h5 className="mb-0 fs-5 ml-2" style={{ fontWeight: "600" }}>
                   Direktor
                 </h5>
               </div>
@@ -214,7 +223,7 @@ export const DirectorRegistor = () => {
                   <div className="col-md-12">
                     <FormControl isRequired>
                       <FormLabel
-                        style={{ color: '#38B2AC', marginTop: '1rem' }}
+                        style={{ color: "#38B2AC", marginTop: "1rem" }}
                       >
                         Ism
                       </FormLabel>
@@ -223,7 +232,11 @@ export const DirectorRegistor = () => {
                         className="is-valid"
                         placeholder="Ismni kiriting"
                         size="sm"
-                        style={styled}
+                        style={
+                          director.firstname && director.firstname.length > 0
+                            ? styleGreen
+                            : styleDefault
+                        }
                         onChange={changeHandler}
                         name="firstname"
                       />
@@ -232,7 +245,7 @@ export const DirectorRegistor = () => {
                   <div className="col-md-12">
                     <FormControl isRequired>
                       <FormLabel
-                        style={{ color: '#38B2AC', marginTop: '1rem' }}
+                        style={{ color: "#38B2AC", marginTop: "1rem" }}
                       >
                         Familiya
                       </FormLabel>
@@ -240,7 +253,11 @@ export const DirectorRegistor = () => {
                         onKeyUp={keyPressed}
                         placeholder="Familiya kiriting"
                         size="sm"
-                        style={{ borderColor: '#eee', boxShadow: 'none' }}
+                        style={
+                          director.lastname && director.lastname.length > 0
+                            ? styleGreen
+                            : styleDefault
+                        }
                         name="lastname"
                         onChange={changeHandler}
                       />
@@ -249,7 +266,7 @@ export const DirectorRegistor = () => {
                   <div className="col-md-12">
                     <FormControl>
                       <FormLabel
-                        style={{ color: '#38B2AC', marginTop: '1rem' }}
+                        style={{ color: "#38B2AC", marginTop: "1rem" }}
                       >
                         Otasining ismi
                       </FormLabel>
@@ -257,7 +274,11 @@ export const DirectorRegistor = () => {
                         onKeyUp={keyPressed}
                         placeholder="Otasini ismini kiriting"
                         size="sm"
-                        style={{ borderColor: '#eee', boxShadow: 'none' }}
+                        style={
+                          director.fathername && director.fathername.length > 0
+                            ? styleGreen
+                            : styleDefault
+                        }
                         name="fathername"
                         onChange={changeHandler}
                       />
@@ -266,21 +287,25 @@ export const DirectorRegistor = () => {
                   <div className="col-md-12">
                     <FormControl isRequired>
                       <FormLabel
-                        style={{ color: '#38B2AC', marginTop: '1rem' }}
+                        style={{ color: "#38B2AC", marginTop: "1rem" }}
                       >
                         Telefon
                       </FormLabel>
                       <InputGroup>
                         <InputLeftAddon
                           children="+998"
-                          style={{ height: '32px' }}
+                          style={{ height: "32px" }}
                         />
                         <Input
                           onKeyUp={keyPressed}
                           placeholder="Telefon nomerni kiriting"
                           size="sm"
                           type="number"
-                          style={{ borderColor: '#eee', boxShadow: 'none' }}
+                          style={
+                            director.phone && director.phone.length > 0
+                              ? styleGreen
+                              : styleDefault
+                          }
                           name="phone"
                           onChange={changeHandler}
                         />
@@ -291,7 +316,7 @@ export const DirectorRegistor = () => {
                     <FormControl isRequired>
                       <FormLabel
                         htmlFor="first-name"
-                        style={{ color: '#38B2AC', marginTop: '1rem' }}
+                        style={{ color: "#38B2AC", marginTop: "1rem" }}
                       >
                         Login
                       </FormLabel>
@@ -299,7 +324,11 @@ export const DirectorRegistor = () => {
                         placeholder="Login kiriting"
                         size="sm"
                         type="text"
-                        style={{ borderColor: '#eee', boxShadow: 'none' }}
+                        style={
+                          director.login && director.login.length > 0
+                            ? styleGreen
+                            : styleDefault
+                        }
                         name="login"
                         onChange={changeHandler}
                       />
@@ -309,14 +338,19 @@ export const DirectorRegistor = () => {
                     <FormControl isRequired>
                       <FormLabel
                         htmlFor="first-name"
-                        style={{ color: '#38B2AC', marginTop: '1rem' }}
+                        style={{ color: "#38B2AC", marginTop: "1rem" }}
                       >
                         Parol
                       </FormLabel>
                       <PasswordInput
                         keyPressed={keyPressed}
-                        name={'password'}
+                        name={"password"}
                         changeHandler={changeHandler}
+                        style={
+                          director.password && director.password.length > 0
+                            ? styleGreen
+                            : styleDefault
+                        }
                       />
                     </FormControl>
                   </div>
@@ -324,14 +358,20 @@ export const DirectorRegistor = () => {
                     <FormControl isRequired>
                       <FormLabel
                         htmlFor="first-name"
-                        style={{ color: '#38B2AC', marginTop: '1rem' }}
+                        style={{ color: "#38B2AC", marginTop: "1rem" }}
                       >
                         Parol
                       </FormLabel>
                       <PasswordInput
                         keyPressed={keyPressed}
-                        name={'confirmPassword'}
+                        name={"confirmPassword"}
                         changeHandler={changeHandler}
+                        style={
+                          director.confirmPassword &&
+                          director.confirmPassword.length > 0
+                            ? styleGreen
+                            : styleDefault
+                        }
                       />
                     </FormControl>
                   </div>
@@ -375,5 +415,5 @@ export const DirectorRegistor = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
