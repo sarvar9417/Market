@@ -9,10 +9,7 @@ module.exports.routers = (app) => {
   app.use('/api/upload', require('./uploadFiles/upload'))
   //   app.use('/api/sections', require('./sectionAndBaseUrl/getSections'))
   app.use('/api/baseurl', require('./sectionAndBaseUrl/getBaseUrl'))
-  app.use(
-    '/api/services',
-    require('./services/departments_services_rooms_warehouse'),
-  )
+  app.use('/api/products', require('./products/category_products'))
   app.use('/api/offlineclient', require('./offlineclient/offlineclient.route'))
   app.use(
     '/api/statsionarclient',
