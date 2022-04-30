@@ -1,12 +1,12 @@
-import { Clinica } from "./clinica/Clinica";
+import { Market } from "./market/Market";
 import { ChakraProvider } from "@chakra-ui/react";
 
 function App() {
   return (
     <ChakraProvider>
-      <Clinica/>
+      <Market />
     </ChakraProvider>
-  )
+  );
 }
 
 export default App;

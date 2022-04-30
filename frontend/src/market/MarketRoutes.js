@@ -1,11 +1,11 @@
 import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { Counter } from "./Counter";
-import { ClinicaRegister } from "./loginAndRegister/ClinicaRegister";
+import { MarketRegister } from "./loginAndRegister/MarketRegister";
 import { DirectorRegistor } from "./loginAndRegister/DirectorRegistor";
 import { Login } from "./loginAndRegister/Login";
 
-export const ClinicaRoutes = (isAuthenticated, user) => {
+export const MarketRoutes = (isAuthenticated, user) => {
   return (
     <Switch>
       <Route path="/" exact>
@@ -22,8 +22,8 @@ export const ClinicaRoutes = (isAuthenticated, user) => {
           <Login />
         )}
       </Route>
-      <Route path="/clinica">
-        <ClinicaRegister />
+      <Route path="/market">
+        <MarketRegister />
       </Route>
       <Route path="/newdirector">
         <DirectorRegistor />
