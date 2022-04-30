@@ -5,12 +5,12 @@ export const useAuth = () => {
   const [token, setToken] = useState(null)
   const [userId, setUserId] = useState(null)
   const [user, setUser] = useState(null)
-  const [market, setMarket] = useState(null)
-  const login = useCallback((jwtToken, id, user, market) => {
+  const [clinica, setClinica] = useState(null)
+  const login = useCallback((jwtToken, id, user, clinica) => {
     setToken(jwtToken)
     setUserId(id)
     setUser(user)
-    setMarket(market)
+    setClinica(clinica)
 
     localStorage.setItem(
       storageName,
@@ -18,7 +18,7 @@ export const useAuth = () => {
         userId: id,
         token: jwtToken,
         user: user,
-        market: market,
+        clinica: clinica,
       }),
     )
   }, [])
@@ -27,16 +27,16 @@ export const useAuth = () => {
     setToken(null)
     setUserId(null)
     setUser(null)
-    setMarket(null)
+    setClinica(null)
     localStorage.removeItem(storageName)
   }, [])
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem(storageName))
     if (data && data.token) {
-      login(data.token, data.userId, data.user, data.market)
+      login(data.token, data.userId, data.user, data.clinica)
     }
   }, [login])
 
-  return { login, logout, token, userId, user, market, setUser }
+  return { login, logout, token, userId, user, clinica, setUser }
 }
