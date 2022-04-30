@@ -140,8 +140,8 @@ module.exports.getAll = async (req, res) => {
     const categorys = await Category.find({
       market,
     })
-      .populate('producttypes', 'name')
-      .populate('products')
+    // .populate('producttypes', 'name')
+    // .populate('products')
 
     res.send(categorys)
   } catch (error) {

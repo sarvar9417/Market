@@ -46,7 +46,7 @@ router.post('/product/register', auth, (req, res) => {
 })
 
 router.post('/product/getallcategory', auth, (req, res) => {
-  require('./product').getAllDepartment(req, res)
+  require('./product').getAllcategory(req, res)
 })
 
 router.post('/product/getall', auth, (req, res) => {
@@ -66,7 +66,7 @@ router.delete('/product/deleteall', auth, (req, res) => {
 })
 
 router.delete('/product/deleteallcategory', auth, (req, res) => {
-  require('./product').deleteAllDepartment(req, res)
+  require('./product').deleteAllcategory(req, res)
 })
 
 //========================================================
@@ -80,7 +80,7 @@ router.post('/producttype/register', auth, (req, res) => {
 })
 
 router.post('/producttype/getallcategory', auth, (req, res) => {
-  require('./producttype').getAllDepartment(req, res)
+  require('./producttype').getAllcategory(req, res)
 })
 
 router.post('/producttype/getall', auth, (req, res) => {
@@ -100,7 +100,7 @@ router.delete('/producttype/deleteall', auth, (req, res) => {
 })
 
 router.delete('/producttype/deleteallcategory', auth, (req, res) => {
-  require('./producttype').deleteAllDepartment(req, res)
+  require('./producttype').deleteAllcategory(req, res)
 })
 
 //========================================================
