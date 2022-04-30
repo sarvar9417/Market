@@ -1,8 +1,8 @@
 export const checkUserData = (user) => {
-  if (!user.type)
+  if (!user.login)
     return {
-      title: "Diqqat! Bo'lim tanlanmagan.",
-      description: "Iltimos bo'limni tanlang.",
+      title: "Diqqat! Login kiritilmagan.",
+      description: "Iltimos loginni kiriting.",
       status: "error",
     };
   if (!user.password)
@@ -54,10 +54,10 @@ export const checkDirectorData = (director) => {
     };
   }
 
-  if (!director.password) {
+  if (!director.login) {
     return {
-      title: "Diqqat! Direktor paroli kiritilmagan.",
-      description: "Iltimos direktor parolini kiriting.",
+      title: "Diqqat! Direktor logini kiritilmagan.",
+      description: "Iltimos direktor logini kiriting.",
       status: "error",
     };
   }
@@ -138,8 +138,8 @@ export const checkDirectorUpdateData = (director) => {
   return false;
 };
 
-export const checkClinicaData = (clinica) => {
-  if (!clinica.name) {
+export const checkMarketData = (market) => {
+  if (!market.name) {
     return {
       title: "Diqqat! Shifoxona nomi kiritilmagan.",
       description: "Iltimos shifoxona nomini kiriting.",
@@ -147,7 +147,7 @@ export const checkClinicaData = (clinica) => {
     };
   }
 
-  if (!clinica.phone1) {
+  if (!market.phone1) {
     return {
       title: "Diqqat! Shifoxona telefon raqami kiritilmagan.",
       description: "Iltimos telefon raqamini kiriting.",
@@ -155,7 +155,7 @@ export const checkClinicaData = (clinica) => {
     };
   }
 
-  if (!clinica.image) {
+  if (!market.image) {
     return {
       title: "Diqqat! Shifoxona logotipi yoki surati yuklanmagan.",
       description: "Iltimos shifoxona logotipi yoki surati yuklang.",

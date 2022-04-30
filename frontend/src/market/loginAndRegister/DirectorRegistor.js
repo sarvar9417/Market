@@ -42,12 +42,12 @@ export const DirectorRegistor = () => {
   //====================================================================
   const [load, setLoad] = useState(false);
 
-  const { request,  loading } = useHttp();
+  const { request, loading } = useHttp();
 
-  const clinica = JSON.parse(localStorage.getItem("clinicaData"));
+  // const clinica = JSON.parse(localStorage.getItem("clinicaData"));
 
   const [director, setDirector] = useState({
-    clinica: clinica.clinica._id,
+    // clinica: clinica.clinica._id,
     image: null,
   });
   //====================================================================
@@ -183,7 +183,7 @@ export const DirectorRegistor = () => {
   //====================================================================
   useEffect(() => {
     getBaseUrl();
-  }, [ getBaseUrl]);
+  }, [getBaseUrl]);
   //====================================================================
   //====================================================================
 
@@ -267,7 +267,7 @@ export const DirectorRegistor = () => {
                       <FormLabel
                         style={{ color: "#38B2AC", marginTop: "1rem" }}
                       >
-                        Phone
+                        Telefon
                       </FormLabel>
                       <InputGroup>
                         <InputLeftAddon
@@ -284,6 +284,24 @@ export const DirectorRegistor = () => {
                           onChange={changeHandler}
                         />
                       </InputGroup>
+                    </FormControl>
+                  </div>
+                  <div className="col-md-12">
+                    <FormControl isRequired>
+                      <FormLabel
+                        htmlFor="first-name"
+                        style={{ color: "#38B2AC", marginTop: "1rem" }}
+                      >
+                        Login
+                      </FormLabel>
+                      <Input
+                        placeholder="Login kiriting"
+                        size="sm"
+                        type="text"
+                        style={{ borderColor: "#eee", boxShadow: "none" }}
+                        name="login"
+                        onChange={changeHandler}
+                      />
                     </FormControl>
                   </div>
                   <div className="col-md-12">

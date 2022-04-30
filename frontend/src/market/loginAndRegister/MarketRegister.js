@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { useHttp } from '../hooks/http.hook'
+import React, { useCallback, useEffect, useState } from "react";
+import { useHttp } from "../hooks/http.hook";
 import {
   Input,
   FormControl,
@@ -7,32 +7,32 @@ import {
   InputGroup,
   InputLeftAddon,
   Button,
-} from '@chakra-ui/react'
-import { FileUpload } from './fileUpLoad/FileUpload'
-import { useToast } from '@chakra-ui/react'
-import { checkClinicaData } from './checkData'
-import { useHistory } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHouseMedical } from '@fortawesome/free-solid-svg-icons'
-import { Loader } from '../loader/Loader'
-const storageName = 'clinicaData'
+} from "@chakra-ui/react";
+import { FileUpload } from "./fileUpLoad/FileUpload";
+import { useToast } from "@chakra-ui/react";
+import { checkMarketData } from "./checkData";
+import { useHistory } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHouseMedical } from "@fortawesome/free-solid-svg-icons";
+import { Loader } from "../loader/Loader";
+const storageName = "marketData";
 
 const styleDefault = {
-  border: '1.5px solid #eee',
-  boxShadow: 'none',
-  height: '32px',
-}
+  border: "1.5px solid #eee",
+  boxShadow: "none",
+  height: "32px",
+};
 
 const styleGreen = {
-  border: '1.5px solid #38B2AC',
-  boxShadow: 'none',
-  height: '32px',
-}
+  border: "1.5px solid #38B2AC",
+  boxShadow: "none",
+  height: "32px",
+};
 
 export const MarketRegister = () => {
   //====================================================================
   //====================================================================
-  const toast = useToast()
+  const toast = useToast();
 
   const notify = useCallback(
     (data) => {
@@ -42,154 +42,154 @@ export const MarketRegister = () => {
         status: data.status && data.status,
         duration: 5000,
         isClosable: true,
-        position: 'top-right',
-      })
+        position: "top-right",
+      });
     },
-    [toast],
-  )
+    [toast]
+  );
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
-  const [load, setLoad] = useState(false)
+  const [load, setLoad] = useState(false);
 
-  const { request, loading } = useHttp()
+  const { request, loading } = useHttp();
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
-  const [baseUrl, setBaseUrl] = useState()
+  const [baseUrl, setBaseUrl] = useState();
 
   const getBaseUrl = useCallback(async () => {
     try {
-      const data = await request('/api/baseurl', 'GET', null)
-      setBaseUrl(data.baseUrl)
+      const data = await request("/api/baseurl", "GET", null);
+      setBaseUrl(data.baseUrl);
     } catch (error) {
       notify({
         title: error,
-        description: '',
-        status: 'error',
-      })
+        description: "",
+        status: "error",
+      });
     }
-  }, [request, notify])
+  }, [request, notify]);
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
-  const [clinica, setClinica] = useState({
+  const [market, setMarket] = useState({
     image: null,
-  })
+  });
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
   const handleImage = async (e) => {
-    if (clinica.image) {
+    if (market.image) {
       return notify({
-        title: 'Diqqat! Surat avval yuklangan',
+        title: "Diqqat! Surat avval yuklangan",
         description:
           "Suratni qayta yulash uchun suratni ustiga bir marotaba bosib uni o'chiring!",
-        status: 'error',
-      })
+        status: "error",
+      });
     }
-    const files = e.target.files[0]
-    const data = new FormData()
-    data.append('file', files)
-    setLoad(true)
-    const res = await fetch('/api/upload', { method: 'POST', body: data })
-    const file = await res.json()
-    setClinica({ ...clinica, image: file.filename })
-    setLoad(false)
+    const files = e.target.files[0];
+    const data = new FormData();
+    data.append("file", files);
+    setLoad(true);
+    const res = await fetch("/api/upload", { method: "POST", body: data });
+    const file = await res.json();
+    setMarket({ ...market, image: file.filename });
+    setLoad(false);
     notify({
-      status: 'success',
-      description: '',
-      title: 'Surat muvaffaqqiyatli yuklandi',
-    })
-  }
+      status: "success",
+      description: "",
+      title: "Surat muvaffaqqiyatli yuklandi",
+    });
+  };
 
   const removeImage = async (filename) => {
     try {
-      const data = await request(`/api/upload/del`, 'POST', { filename })
-      setClinica({ ...clinica, image: null })
-      document.getElementById('default-btn').value = null
+      const data = await request(`/api/upload/del`, "POST", { filename });
+      setMarket({ ...market, image: null });
+      document.getElementById("default-btn").value = null;
       notify({
-        status: 'success',
-        description: '',
+        status: "success",
+        description: "",
         title: data.accept,
-      })
+      });
     } catch (error) {
       notify({
-        status: 'error',
-        description: '',
+        status: "error",
+        description: "",
         title: error,
-      })
+      });
     }
-  }
+  };
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
   const changeHandler = (e) => {
-    setClinica({ ...clinica, [e.target.name]: e.target.value })
-  }
-  const history = useHistory()
+    setMarket({ ...market, [e.target.name]: e.target.value });
+  };
+  const history = useHistory();
   const createHandler = async () => {
-    if (checkClinicaData(clinica)) {
-      return notify(checkClinicaData(clinica))
+    if (checkMarketData(market)) {
+      return notify(checkMarketData(market));
     }
     try {
-      const data = await request('/api/clinica/register', 'POST', {
-        ...clinica,
-      })
+      const data = await request("/api/market/register", "POST", {
+        ...market,
+      });
       localStorage.setItem(
         storageName,
         JSON.stringify({
-          clinica: data,
-        }),
-      )
+          market: data,
+        })
+      );
       notify({
         title:
           "Tabriklaymiz! Klinikangiz 'Alo24' dasturida muvaffaqqiyatli ro'yxatga olindi ",
-        description: '',
-        status: 'success',
-      })
-      history.push('/newdirector')
+        description: "",
+        status: "success",
+      });
+      history.push("/newdirector");
     } catch (error) {
       notify({
         title: error,
-        description: '',
-        status: 'error',
-      })
+        description: "",
+        status: "error",
+      });
     }
-  }
+  };
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
   const keyPressed = (e) => {
-    if (e.key === 'Enter') {
-      return createHandler()
+    if (e.key === "Enter") {
+      return createHandler();
     }
-  }
+  };
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
   useEffect(() => {
-    getBaseUrl()
-  }, [getBaseUrl])
+    getBaseUrl();
+  }, [getBaseUrl]);
   //====================================================================
   //====================================================================
 
   if (loading) {
-    return <Loader />
+    return <Loader />;
   }
 
   return (
@@ -197,17 +197,17 @@ export const MarketRegister = () => {
       <div className="page-content container-fluid">
         <div className="row mt-5">
           <div className="col-xl-7 mx-auto">
-            <div className="card " style={{ borderTop: '4px solid #38B2AC ' }}>
+            <div className="card " style={{ borderTop: "4px solid #38B2AC " }}>
               <div className="card-body p-5">
                 <div
                   className="card-title d-flex align-items-center"
-                  style={{ fontSize: '20pt', color: '#38B2AC' }}
+                  style={{ fontSize: "20pt", color: "#38B2AC" }}
                 >
                   <div>
                     <FontAwesomeIcon icon={faHouseMedical} />
                   </div>
-                  <h5 className="mb-0 fs-5 ml-2" style={{ fontWeight: '600' }}>
-                    Shifoxona
+                  <h5 className="mb-0 fs-5 ml-2" style={{ fontWeight: "600" }}>
+                    Do'kon
                   </h5>
                 </div>
                 <hr />
@@ -216,17 +216,17 @@ export const MarketRegister = () => {
                     <div className="col-md-12">
                       <FormControl isRequired>
                         <FormLabel
-                          style={{ color: '#38B2AC', marginTop: '1rem' }}
+                          style={{ color: "#38B2AC", marginTop: "1rem" }}
                         >
-                          Shifoxona nomi
+                          Do'kon nomi
                         </FormLabel>
                         <Input
                           onKeyUp={keyPressed}
                           className="is-valid"
-                          placeholder="Shifoxona nomini kiriting"
+                          placeholder="Do'kon nomini kiriting"
                           size="sm"
                           style={
-                            clinica.name && clinica.name.length > 0
+                            market.name && market.name.length > 0
                               ? styleGreen
                               : styleDefault
                           }
@@ -238,7 +238,7 @@ export const MarketRegister = () => {
                     <div className="col-md-12">
                       <FormControl>
                         <FormLabel
-                          style={{ color: '#38B2AC', marginTop: '1rem' }}
+                          style={{ color: "#38B2AC", marginTop: "1rem" }}
                         >
                           Tashkilot nomi
                         </FormLabel>
@@ -247,8 +247,8 @@ export const MarketRegister = () => {
                           placeholder="Tashkilot nomini kiriting"
                           size="sm"
                           style={
-                            clinica.organitionName &&
-                            clinica.organitionName.length > 0
+                            market.organitionName &&
+                            market.organitionName.length > 0
                               ? styleGreen
                               : styleDefault
                           }
@@ -260,7 +260,7 @@ export const MarketRegister = () => {
                     <div className="col-md-12">
                       <FormControl>
                         <FormLabel
-                          style={{ color: '#38B2AC', marginTop: '1rem' }}
+                          style={{ color: "#38B2AC", marginTop: "1rem" }}
                         >
                           Manzil
                         </FormLabel>
@@ -269,7 +269,7 @@ export const MarketRegister = () => {
                           placeholder="Manzilni kiriting"
                           size="sm"
                           style={
-                            clinica.address && clinica.address.length > 0
+                            market.address && market.address.length > 0
                               ? styleGreen
                               : styleDefault
                           }
@@ -281,7 +281,7 @@ export const MarketRegister = () => {
                     <div className="col-md-12">
                       <FormControl>
                         <FormLabel
-                          style={{ color: '#38B2AC', marginTop: '1rem' }}
+                          style={{ color: "#38B2AC", marginTop: "1rem" }}
                         >
                           Mo'ljal
                         </FormLabel>
@@ -290,8 +290,7 @@ export const MarketRegister = () => {
                           placeholder="Mo'ljalni kiriting"
                           size="sm"
                           style={
-                            clinica.orientation &&
-                            clinica.orientation.length > 0
+                            market.orientation && market.orientation.length > 0
                               ? styleGreen
                               : styleDefault
                           }
@@ -303,7 +302,7 @@ export const MarketRegister = () => {
                     <div className="col-md-12">
                       <FormControl isRequired>
                         <FormLabel
-                          style={{ color: '#38B2AC', marginTop: '1rem' }}
+                          style={{ color: "#38B2AC", marginTop: "1rem" }}
                         >
                           Telefon raqam1
                         </FormLabel>
@@ -311,7 +310,7 @@ export const MarketRegister = () => {
                           <InputLeftAddon
                             children="+998"
                             style={
-                              clinica.phone1 && clinica.phone1.length > 0
+                              market.phone1 && market.phone1.length > 0
                                 ? styleGreen
                                 : styleDefault
                             }
@@ -322,7 +321,7 @@ export const MarketRegister = () => {
                             placeholder="Telefon raqamni kiriting"
                             size="sm"
                             style={
-                              clinica.phone1 && clinica.phone1.length > 0
+                              market.phone1 && market.phone1.length > 0
                                 ? styleGreen
                                 : styleDefault
                             }
@@ -335,7 +334,7 @@ export const MarketRegister = () => {
                     <div className="col-md-12">
                       <FormControl>
                         <FormLabel
-                          style={{ color: '#38B2AC', marginTop: '1rem' }}
+                          style={{ color: "#38B2AC", marginTop: "1rem" }}
                         >
                           Telefon raqam2
                         </FormLabel>
@@ -343,7 +342,7 @@ export const MarketRegister = () => {
                           <InputLeftAddon
                             children="+998"
                             style={
-                              clinica.phone2 && clinica.phone2.length > 0
+                              market.phone2 && market.phone2.length > 0
                                 ? styleGreen
                                 : styleDefault
                             }
@@ -354,7 +353,7 @@ export const MarketRegister = () => {
                             placeholder="Telefon raqamni kiriting"
                             size="sm"
                             style={
-                              clinica.phone2 && clinica.phone2.length > 0
+                              market.phone2 && market.phone2.length > 0
                                 ? styleGreen
                                 : styleDefault
                             }
@@ -367,7 +366,7 @@ export const MarketRegister = () => {
                     <div className="col-md-12">
                       <FormControl>
                         <FormLabel
-                          style={{ color: '#38B2AC', marginTop: '1rem' }}
+                          style={{ color: "#38B2AC", marginTop: "1rem" }}
                         >
                           Telefon raqam3
                         </FormLabel>
@@ -375,7 +374,7 @@ export const MarketRegister = () => {
                           <InputLeftAddon
                             children="+998"
                             style={
-                              clinica.phone3 && clinica.phone3.length > 0
+                              market.phone3 && market.phone3.length > 0
                                 ? styleGreen
                                 : styleDefault
                             }
@@ -386,7 +385,7 @@ export const MarketRegister = () => {
                             placeholder="Telefon raqamni kiriting"
                             size="sm"
                             style={
-                              clinica.phone3 && clinica.phone3.length > 0
+                              market.phone3 && market.phone3.length > 0
                                 ? styleGreen
                                 : styleDefault
                             }
@@ -401,7 +400,7 @@ export const MarketRegister = () => {
                     <div className="col-md-12">
                       <FormControl>
                         <FormLabel
-                          style={{ color: '#38B2AC', marginTop: '1rem' }}
+                          style={{ color: "#38B2AC", marginTop: "1rem" }}
                         >
                           Bank nomi
                         </FormLabel>
@@ -410,7 +409,7 @@ export const MarketRegister = () => {
                           placeholder="Bank nomini kiriting"
                           size="sm"
                           style={
-                            clinica.bank && clinica.bank.length > 0
+                            market.bank && market.bank.length > 0
                               ? styleGreen
                               : styleDefault
                           }
@@ -422,7 +421,7 @@ export const MarketRegister = () => {
                     <div className="col-md-12">
                       <FormControl>
                         <FormLabel
-                          style={{ color: '#38B2AC', marginTop: '1rem' }}
+                          style={{ color: "#38B2AC", marginTop: "1rem" }}
                         >
                           INN
                         </FormLabel>
@@ -432,7 +431,7 @@ export const MarketRegister = () => {
                           placeholder="INN ni kiriting"
                           size="sm"
                           style={
-                            clinica.inn && clinica.inn.length > 0
+                            market.inn && market.inn.length > 0
                               ? styleGreen
                               : styleDefault
                           }
@@ -444,7 +443,7 @@ export const MarketRegister = () => {
                     <div className="col-md-12">
                       <FormControl>
                         <FormLabel
-                          style={{ color: '#38B2AC', marginTop: '1rem' }}
+                          style={{ color: "#38B2AC", marginTop: "1rem" }}
                         >
                           Hisob raqam
                         </FormLabel>
@@ -454,7 +453,7 @@ export const MarketRegister = () => {
                           placeholder="Hisob raqamni kiriting"
                           size="sm"
                           style={
-                            clinica.bankNumber && clinica.bankNumber.length > 0
+                            market.bankNumber && market.bankNumber.length > 0
                               ? styleGreen
                               : styleDefault
                           }
@@ -468,11 +467,11 @@ export const MarketRegister = () => {
                         removeImage={removeImage}
                         handleImage={handleImage}
                         load={load}
-                        img={clinica.image}
+                        img={market.image}
                         imgUrl={
                           baseUrl &&
-                          clinica.image &&
-                          `${baseUrl}/api/upload/file/${clinica.image}`
+                          market.image &&
+                          `${baseUrl}/api/upload/file/${market.image}`
                         }
                       />
                     </FormControl>
@@ -502,5 +501,5 @@ export const MarketRegister = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};

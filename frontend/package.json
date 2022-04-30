@@ -50,7 +50,7 @@
       "react-hooks"
     ]
   },
-  "proxy": "http://localhost:9900",
+  "proxy": "http://localhost:8800",
   "browserslist": {
     "production": [
       ">0.2%",
