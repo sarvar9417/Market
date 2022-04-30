@@ -14,7 +14,7 @@ const {
     OfflineDiscount,
     validateDiscount,
 } = require("../../models/Cashier/OfflineDiscount");
-const {Clinica} = require("../../models/DirectorAndMarket/Market");
+const {Clinica} = require("../../models/MarketAndBranch/Market");
 
 //Payment
 module.exports.payment = async (req, res) => {

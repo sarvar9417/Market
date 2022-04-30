@@ -8,8 +8,30 @@ router.post('/market/register', (req, res) => {
   require('./market.route').register(req, res)
 })
 
+router.put('/market/edit', (req, res) => {
+  require('./market.route').edit(req, res)
+})
+
 router.get('/market', (req, res) => {
   require('./market.route').getMarket(req, res)
+})
+
+//========================================================
+// Branch
+router.post('/branch/register', auth, (req, res) => {
+  require('./branch.route').register(req, res)
+})
+
+router.put('/branch/edit', auth, (req, res) => {
+  require('./branch.route').edit(req, res)
+})
+
+router.get('/branch', auth, (req, res) => {
+  require('./branch.route').getMarket(req, res)
+})
+
+router.get('/branch/getall', auth, (req, res) => {
+  require('./branch.route').getAll(req, res)
 })
 
 //========================================================
@@ -44,7 +66,7 @@ router.post('/user/login', (req, res) => {
   require('./user.route').login(req, res)
 })
 
-router.post('/user/gettype', auth,(req, res) => {
+router.post('/user/gettype', auth, (req, res) => {
   require('./user.route').getUserType(req, res)
 })
 

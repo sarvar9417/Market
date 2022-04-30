@@ -1,6 +1,6 @@
 const {Product, validateProduct} = require("../../models/Warehouse/Product");
 const {Warehouse,} = require("../../models/Warehouse/Warehouse");
-const {Clinica} = require("../../models/DirectorAndMarket/Market");
+const {Clinica} = require("../../models/MarketAndBranch/Market");
 const {ProductConnector} = require("../../models/Warehouse/ProductConnector");
 
 //Product registerall

@@ -7,7 +7,7 @@ const {Product} = require("../../models/Warehouse/Product");
 const {StatsionarConnector} = require("../../models/StatsionarClient/StatsionarConnector");
 const {StatsionarDiscount, validateDiscount} = require("../../models/Cashier/StatsionarDiscount");
 const {StatsionarRoom} = require("../../models/StatsionarClient/StatsionarRoom");
-const {Clinica} = require("../../models/DirectorAndMarket/Market");
+const {Clinica} = require("../../models/MarketAndBranch/Market");
 const {OfflinePayment} = require("../../models/Cashier/OfflinePayment");
 //Payment
 module.exports.payment = async (req, res) => {

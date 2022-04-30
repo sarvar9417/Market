@@ -2,7 +2,7 @@ const {
   ServiceType,
   validateServiceType,
 } = require("../../models/Services/ServiceType");
-const { Clinica } = require("../../models/DirectorAndMarket/Market");
+const { Clinica } = require("../../models/MarketAndBranch/Market");
 const { Department } = require("../../models/Services/Department");
 const { Service } = require("../../models/Services/Service");
 const ObjectId = require("mongodb").ObjectId;

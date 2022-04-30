@@ -1,6 +1,6 @@
 const { User, validateUser, validateUserLogin } = require('../../models/Users')
 const bcrypt = require('bcryptjs')
-const { Market } = require('../../models/DirectorAndMarket/Market')
+const { Market } = require('../../models/MarketAndBranch/Market')
 const { Department } = require('../../models/Services/Department')
 const config = require('config')
 const jwt = require('jsonwebtoken')

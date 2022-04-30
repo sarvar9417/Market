@@ -1,7 +1,7 @@
 const {
   Market,
   validateMarket,
-} = require('../../models/DirectorAndMarket/Market')
+} = require('../../models/MarketAndBranch/Market')
 
 module.exports.register = async (req, res) => {
   try {
@@ -56,6 +56,17 @@ module.exports.register = async (req, res) => {
     await newMarket.save()
 
     res.status(201).send(newMarket)
+  } catch (error) {
+    res.status(501).json({ message: error })
+  }
+}
+
+module.exports.edit = async (req, res) => {
+  try {
+    const { market } = req.body
+
+    const update = await Market.findByIdAndUpdate(market._id, { ...market })
+    res.status(201).send(update)
   } catch (error) {
     res.status(501).json({ message: error })
   }

@@ -1,5 +1,5 @@
 const { Room, validateRoom } = require('../../models/Rooms/Room')
-const { Clinica } = require('../../models/DirectorAndMarket/Market')
+const { Clinica } = require('../../models/MarketAndBranch/Market')
 const { Department } = require('../../models/Services/Department')
 
 //Room registerall

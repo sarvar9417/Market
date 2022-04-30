@@ -1,7 +1,7 @@
 const {Service} = require("../../models/Services/Service");
 const {OfflineClient} = require("../../models/OfflineClient/OfflineClient");
 const {OfflineConnector} = require("../../models/OfflineClient/OfflineConnector");
-const {Clinica} = require("../../models/DirectorAndMarket/Market");
+const {Clinica} = require("../../models/MarketAndBranch/Market");
 const {OfflineService} = require("../../models/OfflineClient/OfflineService");
 const {Template} = require("../../models/Templates/Template");
 

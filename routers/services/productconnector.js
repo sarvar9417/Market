@@ -4,7 +4,7 @@ const {
 } = require("../../models/Warehouse/ProductConnector");
 const { Product } = require("../../models/Warehouse/Product");
 const { Service } = require("../../models/Services/Service");
-const { Clinica } = require("../../models/DirectorAndMarket/Market");
+const { Clinica } = require("../../models/MarketAndBranch/Market");
 
 //ProductConnector register
 module.exports.register = async (req, res) => {

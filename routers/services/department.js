@@ -2,7 +2,7 @@ const {
     Department,
     validateDepartment,
 } = require('../../models/Services/Department')
-const {Clinica} = require('../../models/DirectorAndMarket/Market')
+const {Clinica} = require('../../models/MarketAndBranch/Market')
 const {Service} = require('../../models/Services/Service')
 const {ServiceType} = require('../../models/Services/ServiceType')
 

@@ -1,4 +1,4 @@
-const {Clinica} = require("../../models/DirectorAndMarket/Market");
+const {Clinica} = require("../../models/MarketAndBranch/Market");
 const {OfflineClient} = require("../../models/OfflineClient/OfflineClient");
 const {StatsionarClient} = require("../../models/StatsionarClient/StatsionarClient");
 const {StatsionarDiscount} = require("../../models/Cashier/StatsionarDiscount");

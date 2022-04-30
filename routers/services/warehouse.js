@@ -2,7 +2,7 @@ const {
   Warehouse,
   validateWarehouse,
 } = require("../../models/Warehouse/Warehouse");
-const { Clinica } = require("../../models/DirectorAndMarket/Market");
+const { Clinica } = require("../../models/MarketAndBranch/Market");
 const { Product } = require("../../models/Warehouse/Product");
 
 //Warehouse registerall
