@@ -82,4 +82,8 @@ router.post('/user/remove', auth, (req, res) => {
   require('./user.route').removeUser(req, res)
 })
 
+router.post('/user', auth, (req, res) => {
+  require('./user.route').getUser(req, res)
+})
+
 module.exports = router

@@ -42,10 +42,10 @@ export const Navbar = ({ baseUrl }) => {
   const getDirector = useCallback(async () => {
     try {
       const data = await request(
-        '/api/director',
+        '/api/user',
         'POST',
         {
-          directorId: auth.userId,
+          userId: auth.userId,
         },
         {
           Authorization: `Bearer ${auth.token}`,
