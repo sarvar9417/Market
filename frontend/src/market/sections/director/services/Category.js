@@ -224,7 +224,7 @@ export const Category = () => {
         status: "error",
       });
     }
-  }, [auth, request, notify, getCategory, clearInputs, category]);
+  }, [auth, request, notify, getCategory, clearInputs, categories]);
   //====================================================================
   //====================================================================
 
