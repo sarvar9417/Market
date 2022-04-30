@@ -44,10 +44,10 @@ export const DirectorRegistor = () => {
 
   const { request, loading } = useHttp();
 
-  // const clinica = JSON.parse(localStorage.getItem("clinicaData"));
+  const market = JSON.parse(localStorage.getItem("marketData"));
 
   const [director, setDirector] = useState({
-    // clinica: clinica.clinica._id,
+    market: market._id,
     image: null,
   });
   //====================================================================
@@ -71,7 +71,7 @@ export const DirectorRegistor = () => {
   }, [request, notify]);
   //====================================================================
   //====================================================================
-
+  console.log(market);
   //====================================================================
   //====================================================================
   const styled = {
@@ -141,7 +141,7 @@ export const DirectorRegistor = () => {
       return notify(checkDirectorData(director));
     }
     try {
-      const data = await request("/api/director/register", "POST", {
+      const data = await request("/api/user/register", "POST", {
         ...director,
       });
       localStorage.setItem(
