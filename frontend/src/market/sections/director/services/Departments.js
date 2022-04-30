@@ -229,15 +229,7 @@ export const Departments = () => {
         status: 'error',
       })
     }
-  }, [
-    auth,
-    request,
-    notify,
-    getDepartments,
-    clearInputs,
-    department,
-    departments,
-  ])
+  }, [auth, request, notify, getCategory, clearInputs, categories]);
   //====================================================================
   //====================================================================
 
