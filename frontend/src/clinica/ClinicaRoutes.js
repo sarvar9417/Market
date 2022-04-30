@@ -22,7 +22,7 @@ export const ClinicaRoutes = (isAuthenticated, user) => {
           <Login />
         )}
       </Route>
-      <Route path="/clinica">
+      <Route path="/market">
         <ClinicaRegister />
       </Route>
       <Route path="/newdirector">

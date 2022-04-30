@@ -4,7 +4,7 @@ module.exports.routers = (app) => {
     app.use(express.urlencoded({extended: true}));
     app.use(
         "/api",
-        require("./clinica_and_director_and_user/clinica_and_director_and_user")
+        require("./market_and_director_and_user/market_and_director_and_user")
     );
     app.use("/api/upload", require("./uploadFiles/upload"));
     app.use("/api/sections", require("./sectionAndBaseUrl/getSections"));

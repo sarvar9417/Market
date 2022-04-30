@@ -1,5 +1,5 @@
 const { Adver, validateAdver } = require('../../models/Adver/Adver')
-const { Clinica } = require('../../models/DirectorAndClinica/Clinica')
+const { Clinica } = require('../../models/DirectorAndMarket/Market')
 
 //Adver register
 module.exports.registerAll = async (req, res) => {

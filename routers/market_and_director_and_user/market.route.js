@@ -1,11 +1,11 @@
 const {
-  Clinica,
-  validateClinica,
-} = require('../../models/DirectorAndClinica/Clinica')
+  Market,
+  validateMarket,
+} = require('../../models/DirectorAndMarket/Market')
 
 module.exports.register = async (req, res) => {
   try {
-    const { error } = validateClinica(req.body)
+    const { error } = validateMarket(req.body)
 
     if (error) {
       return res.status(400).json({
@@ -28,16 +28,16 @@ module.exports.register = async (req, res) => {
       mfo,
     } = req.body
 
-    const clinica = await Clinica.find({ name })
+    const market = await Market.find({ name })
 
-    if (clinica.length > 0) {
+    if (market.length > 0) {
       return res.status(400).json({
         message:
           "Diqqat! Klinika nomida biroz o'zgartirish qilib keyin kiriting.",
       })
     }
 
-    const newClinica = new Clinica({
+    const newMarket = new Market({
       name,
       organitionName,
       image,
@@ -53,32 +53,32 @@ module.exports.register = async (req, res) => {
       mfo,
     })
 
-    await newClinica.save()
+    await newMarket.save()
 
-    res.status(201).send(newClinica)
+    res.status(201).send(newMarket)
   } catch (error) {
     res.status(501).json({ message: error })
   }
 }
 
-module.exports.getClinica = async (req, res) => {
+module.exports.getMarket = async (req, res) => {
   try {
-    const { clinicaId } = req.body
-    if (!clinicaId) {
+    const { marketId } = req.body
+    if (!marketId) {
       return res.status(400).json({
-        message: "Diqqat! Clinica ID si ko'rsatilmagan.",
+        message: "Diqqat! Market ID si ko'rsatilmagan.",
       })
     }
 
-    const clinica = await Clinica.findById(clinicaId)
+    const market = await Market.findById(marketId)
 
-    if (!clinica) {
+    if (!market) {
       return res.status(400).json({
         message: "Diqqat! Ko'rsatilgan klinika ro'yxatdan o'tkazilmagan.",
       })
     }
 
-    res.status(200).send(clinica)
+    res.status(200).send(market)
   } catch (error) {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
   }

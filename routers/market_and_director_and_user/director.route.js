@@ -2,9 +2,9 @@ const {
   Director,
   validateDirector,
   validateDirectorLogin,
-} = require("../../models/DirectorAndClinica/Director");
+} = require("../../models/DirectorAndMarket/Director");
 const bcrypt = require("bcryptjs");
-const { Clinica } = require("../../models/DirectorAndClinica/Clinica");
+const { Market } = require("../../models/DirectorAndMarket/Market");
 const config = require("config");
 const jwt = require("jsonwebtoken");
 
@@ -18,37 +18,38 @@ module.exports.register = async (req, res) => {
       });
     }
 
-    const { firstname, lastname, fathername, image, phone, password, clinica } =
+    const { firstname, lastname, fathername, image, phone, password, market, login } =
       req.body;
 
-    const clinic = await Clinica.findById(clinica);
+    const marke = await Market.findById(market);
 
-    if (!clinic) {
+    if (!marke) {
       return res.status(400).json({
-        message: "Diqqat! Ushbu klinika mavjud emas.",
+        message: "Diqqat! Ushbu do'kon mavjud emas.",
       });
     }
 
     const director = await Director.findOne({
-      clinica,
+      market,
     });
 
     if (director) {
       return res.status(400).json({
         message:
-          "Diqqat! Ushbu klinika direktori allaqachon ro'yxatdan o'tgan.",
+          "Diqqat! Ushbu do'kon direktori allaqachon ro'yxatdan o'tgan.",
       });
     }
 
     const hash = await bcrypt.hash(password, 8);
     const newDirector = new Director({
+      login,
       firstname,
       lastname,
       fathername,
       image,
       phone,
       password: hash,
-      clinica,
+      market,
       type: "Director",
     });
     await newDirector.save();
@@ -65,7 +66,7 @@ module.exports.register = async (req, res) => {
       token,
       userId: newDirector._id,
       user: newDirector,
-      clinica: clinic,
+      market: marke,
     });
   } catch (error) {
     res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
@@ -82,25 +83,20 @@ module.exports.login = async (req, res) => {
         message: error.message,
       });
     }
-    const { type, password } = req.body;
+    const { password, login } = req.body;
 
-    const directors = await Director.find({
-      type,
-    }).populate("clinica");
-
-    let director = null;
-
-    for (const d of directors) {
-      const isMatch = await bcrypt.compare(password, d.password);
-      if (isMatch) {
-        director = d;
-      }
-    }
+    const director = await Director.findOne({
+      login,
+    }).populate("market");
 
     if (!director) {
-      return res.status(400).json({ message: `Parol noto'g'ri kiritilgan` });
+      return res.status(400).json({ message: `Login yoki parol noto'g'ri kiritilgan` });
     }
-
+    console.log(director)
+    const isMatch = await bcrypt.compare(password, director.password);
+    if (!isMatch) {
+        return res.status(400).json({ message: `Login yoki parol noto'g'ri kiritilgan` });
+      }
     const token = jwt.sign(
       {
         userId: director._id,
@@ -113,9 +109,10 @@ module.exports.login = async (req, res) => {
       token,
       userId: director._id,
       user: director,
-      clinica: director.clinica,
+      market: director.market,
     });
   } catch (e) {
+    console.log(e)
     res.status(500).json({ message: "Serverda xatolik yuz berdi" });
   }
 };
@@ -123,10 +120,10 @@ module.exports.login = async (req, res) => {
 // Director UPADATE
 module.exports.update = async (req, res) => {
   try {
-    const { type, clinica } = req.body;
+    const { type, market } = req.body;
 
     const found = await Director.find({
-      clinica,
+      market,
       type,
     }).select("-password");
 
@@ -189,7 +186,7 @@ module.exports.getDirector = async (req, res) => {
     }
 
     const director = await Director.findById(directorId)
-      .populate("clinica")
+      .populate("market")
       .select("-password");
 
     if (!director) {

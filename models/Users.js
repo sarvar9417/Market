@@ -3,13 +3,14 @@ const Joi = require('joi')
 
 const user = new Schema(
   {
+    login: { type: String, required: true },
     firstname: { type: String, required: true },
     lastname: { type: String, required: true },
     fathername: { type: String },
     image: { type: String },
     phone: { type: String },
     password: { type: String, min: 6 },
-    clinica: { type: Schema.Types.ObjectId, ref: 'Clinica' },
+    market: { type: Schema.Types.ObjectId, ref: 'Market' },
     type: { type: String, required: true },
     specialty: { type: Schema.Types.ObjectId, ref: 'Department' }, // Doctorlarga ixtisosligi ID si yoziladi
     users: [{ type: Schema.Types.ObjectId, ref: 'User' }],
@@ -23,13 +24,14 @@ const user = new Schema(
 
 function validateUser(user) {
   const schema = Joi.object({
+    login: Joi.string().required(),
     firstname: Joi.string().required(),
     lastname: Joi.string().required(),
     fathername: Joi.string(),
     image: Joi.string(),
     phone: Joi.string(),
     password: Joi.string(),
-    clinica: Joi.string(),
+    market: Joi.string(),
     type: Joi.string(),
     confirmPassword: Joi.string(),
     specialty: Joi.string(),
@@ -44,7 +46,7 @@ function validateUser(user) {
 function validateUserLogin(user) {
   const schema = Joi.object({
     password: Joi.string().required(),
-    type: Joi.string(),
+    login: Joi.string().required(),
   })
 
   return schema.validate(user)

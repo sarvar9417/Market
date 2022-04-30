@@ -3,13 +3,13 @@ const router = Router()
 const auth = require('../../middleware/auth.middleware')
 
 //========================================================
-// Clinica
-router.post('/clinica/register', (req, res) => {
-  require('./clinica.route').register(req, res)
+// Market
+router.post('/market/register', (req, res) => {
+  require('./market.route').register(req, res)
 })
 
-router.get('/clinica', (req, res) => {
-  require('./clinica.route').getClinica(req, res)
+router.get('/market', (req, res) => {
+  require('./market.route').getMarket(req, res)
 })
 
 //========================================================

@@ -3,13 +3,14 @@ const Joi = require("joi");
 
 const director = new Schema(
   {
+      login: {type: String, required: true},
     firstname: { type: String, required: true },
     lastname: { type: String, required: true },
     fathername: { type: String },
     image: { type: String },
     phone: { type: String },
     password: { type: String, min: 6, required: true },
-    clinica: { type: Schema.Types.ObjectId, ref: "Clinica" },
+    market: { type: Schema.Types.ObjectId, ref: "Market" },
     type: { type: String, required: true },
     isArchive: { type: Boolean, default: false },
   },
@@ -20,13 +21,14 @@ const director = new Schema(
 
 function validateDirector(director) {
   const schema = Joi.object({
+      login:Joi.string().required(),
     firstname: Joi.string().required(),
     lastname: Joi.string().required(),
     fathername: Joi.string(),
     image: Joi.string(),
     phone: Joi.string(),
     password: Joi.string().required(),
-    clinica: Joi.string(),
+    market: Joi.string(),
     type: Joi.string(),
     confirmPassword: Joi.string(),
   });
@@ -36,8 +38,8 @@ function validateDirector(director) {
 
 function validateDirectorLogin(director) {
   const schema = Joi.object({
-    password: Joi.string().required(),
-    type: Joi.string(),
+      login: Joi.string().required(),
+    password: Joi.string().required()
   });
 
   return schema.validate(director);

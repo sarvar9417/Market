@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 const config = require("config")
 
-const PORT = config.get("PORT") || 9900
+const PORT = config.get("PORT") || 8800
 
 module.exports.start = async (app) => {
     try {

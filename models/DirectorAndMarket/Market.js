@@ -1,7 +1,7 @@
 const { Schema, model, Types } = require('mongoose')
 const Joi = require('joi')
 
-const clinica = new Schema(
+const market = new Schema(
   {
     name: { type: String, required: true },
     organitionName: { type: String },
@@ -22,7 +22,7 @@ const clinica = new Schema(
   },
 )
 
-function validateClinica(clinica) {
+function validateMarket(market) {
   const schema = Joi.object({
     name: Joi.string().required(),
     organitionName: Joi.string(),
@@ -38,8 +38,8 @@ function validateClinica(clinica) {
     orientation: Joi.string(),
   })
 
-  return schema.validate(clinica)
+  return schema.validate(market)
 }
 
-module.exports.validateClinica = validateClinica
-module.exports.Clinica = model('Clinica', clinica)
+module.exports.validateMarket = validateMarket
+module.exports.Market = model('Market', market)

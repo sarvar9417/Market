@@ -1,6 +1,6 @@
 const { User, validateUser, validateUserLogin } = require('../../models/Users')
 const bcrypt = require('bcryptjs')
-const { Clinica } = require('../../models/DirectorAndClinica/Clinica')
+const { Market } = require('../../models/DirectorAndMarket/Market')
 const { Department } = require('../../models/Services/Department')
 const config = require('config')
 const jwt = require('jsonwebtoken')
@@ -17,16 +17,17 @@ module.exports.register = async (req, res) => {
 
     const {
       _id,
+      login,
       firstname,
       lastname,
       fathername,
       image,
       phone,
       password,
-      clinica,
+      market,
       specialty,
-      type,
       user,
+      type,
     } = req.body
 
     if (_id) {
@@ -41,44 +42,23 @@ module.exports.register = async (req, res) => {
       })
     }
 
-    const clinic = await Clinica.findById(clinica)
+    const marke = await Market.findById(market)
 
-    if (!clinic) {
+    if (!marke) {
       return res.status(400).json({
         message:
-          "Diqqat! Foydalanuvchi ro'yxatga olinayotgan klinika dasturda ro'yxatga olinmagan.",
+          "Diqqat! Foydalanuvchi ro'yxatga olinayotgan do'kon dasturda ro'yxatga olinmagan.",
       })
     }
 
-    const olduser = await User.find({
-      clinica,
-      type,
-      firstname,
-      lastname,
-      specialty,
-      isArchive: false,
+    const olduser = await User.findOne({
+      login,
     })
 
-    if (olduser.length > 0) {
+    if (olduser) {
       return res.status(400).json({
         message: "Diqqat! Ushbu foydalanuvchi avval ro'yxatdan o'tkazilgan.",
       })
-    }
-
-    const users = await User.find({
-      clinica,
-      type,
-      isArchive: false,
-    })
-
-    for (const d of users) {
-      const isMatch = await bcrypt.compare(password, d.password)
-      if (isMatch) {
-        return res.status(400).json({
-          message:
-            "Diqqat! Prol tizimda xavfsiz bo'lmagan deb topildi. Iltimos boshqa parol yarating.",
-        })
-      }
     }
 
     const hash = await bcrypt.hash(password, 8)
@@ -89,8 +69,9 @@ module.exports.register = async (req, res) => {
       image,
       phone,
       password: hash,
-      clinica,
+      market,
       type,
+      login,
       specialty,
       user,
     })
@@ -122,23 +103,23 @@ module.exports.login = async (req, res) => {
         message: error.message,
       })
     }
-    const { type, password } = req.body
+    const { login, password } = req.body
 
-    const users = await User.find({
-      type,
-      isArchive: false,
-    }).populate('clinica')
-    let user = null
-
-    for (const d of users) {
-      const isMatch = await bcrypt.compare(password, d.password)
-      if (isMatch) {
-        user = d
-      }
-    }
+    const user = await User.findOne({
+      login,
+    })
 
     if (!user) {
-      return res.status(400).json({ message: `Parol noto'g'ri kiritilgan` })
+      return res
+        .status(400)
+        .json({ message: `Login yoki parol noto'g'ri kiritilgan` })
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password)
+    if (!isMatch) {
+      return res
+        .status(400)
+        .json({ message: `Login yoki parol noto'g'ri kiritilgan` })
     }
 
     const token = jwt.sign(
@@ -153,7 +134,7 @@ module.exports.login = async (req, res) => {
       token,
       userId: user._id,
       user: user,
-      clinica: user.clinica,
+      market: user.market,
     })
   } catch (e) {
     res.status(500).json({ message: 'Serverda xatolik yuz berdi' })
@@ -170,7 +151,7 @@ module.exports.getUser = async (req, res) => {
       })
     }
 
-    const user = await User.findById(userId).populate('clinica')
+    const user = await User.findById(userId).populate('market')
 
     if (!user) {
       return res.status(400).json({
@@ -187,16 +168,16 @@ module.exports.getUser = async (req, res) => {
 
 module.exports.getUserType = async (req, res) => {
   try {
-    const { clinica, type } = req.body
+    const { market, type } = req.body
 
-    if (!clinica) {
+    if (!market) {
       return res.status(400).json({
-        error: "Diqqat! Clinica ma'lumotlari topilmadi.",
+        error: "Diqqat! Market ma'lumotlari topilmadi.",
       })
     }
 
     const users = await User.find({
-      clinica,
+      market,
       type,
     })
 
@@ -208,10 +189,10 @@ module.exports.getUserType = async (req, res) => {
 
 module.exports.getUsers = async (req, res) => {
   try {
-    const { clinica } = req.body
+    const { market } = req.body
 
     const users = await User.find({
-      clinica,
+      market,
       isArchive: false,
     })
       .populate('specialty', 'name')
@@ -234,7 +215,7 @@ module.exports.removeUser = async (req, res) => {
       })
     }
 
-    const user = await User.findById(userId).populate('clinica')
+    const user = await User.findById(userId).populate('market')
 
     if (!user) {
       return res.status(400).json({

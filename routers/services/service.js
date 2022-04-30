@@ -1,5 +1,5 @@
 const { Service, validateService } = require("../../models/Services/Service");
-const { Clinica } = require("../../models/DirectorAndClinica/Clinica");
+const { Clinica } = require("../../models/DirectorAndMarket/Market");
 const { Department } = require("../../models/Services/Department");
 const { ServiceType } = require("../../models/Services/ServiceType");
 const { ProductConnector } = require("../../models/Warehouse/ProductConnector");

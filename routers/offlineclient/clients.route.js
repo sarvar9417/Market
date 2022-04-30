@@ -1,5 +1,5 @@
 const {Product} = require('../../models/Warehouse/Product')
-const {Clinica} = require('../../models/DirectorAndClinica/Clinica')
+const {Clinica} = require('../../models/DirectorAndMarket/Market')
 const {Service} = require('../../models/Services/Service')
 const {ProductConnector} = require('../../models/Warehouse/ProductConnector')
 const {
