@@ -100,19 +100,19 @@ module.exports.update = async (req, res) => {
   try {
     const { name, market } = req.body
 
-    const category = await Category.findById(req.body._id)
-
-    if (!category) {
-      return res.status(400).json({
-        message: "Diqqat! Ushbu bo'lim topilmadi.",
-      })
-    }
-
     const marke = await Market.findById(market)
 
     if (!marke) {
       return res.status(400).json({
         message: "Diqqat! Do'kon ma'lumotlari topilmadi.",
+      })
+    }
+
+    const category = await Category.findById(req.body._id)
+
+    if (!category) {
+      return res.status(400).json({
+        message: "Diqqat! Ushbu bo'lim topilmadi.",
       })
     }
 
@@ -140,10 +140,32 @@ module.exports.getAll = async (req, res) => {
     const categorys = await Category.find({
       market,
     })
-    // .populate('producttypes', 'name')
-    // .populate('products')
 
     res.send(categorys)
+  } catch (error) {
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
+  }
+}
+
+//Category update
+module.exports.delete = async (req, res) => {
+  try {
+    const { _id } = req.body
+
+    const marke = await Market.findById(_id)
+
+    const category = await Category.findById(_id)
+
+    if (category.products.length > 0) {
+      return res.status(400).json({
+        message:
+          "Diqqat! Ushbu bo'limda mahsulotlar mavjud bo'lganligi sababli bo'limni o'chirish mumkin emas.",
+      })
+    }
+
+    await Category.findByIdAndDelete(_id)
+
+    res.send(category)
   } catch (error) {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
   }

@@ -31,6 +31,10 @@ router.delete('/category', auth, (req, res) => {
   require('./category').delete(req, res)
 })
 
+router.delete('/category/delete', auth, (req, res) => {
+  require('./category').delete(req, res)
+})
+
 router.delete('/category/deleteall', auth, (req, res) => {
   require('./category').deleteAll(req, res)
 })
