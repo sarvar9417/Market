@@ -5,28 +5,18 @@
     "value": "Direktor"
   },
   {
-    "type": "Reseption",
-    "label": "Qabul",
-    "value": "Qabul"
+    "type": "Worker",
+    "label": "Ishchi",
+    "value": "Ishchi"
   },
   {
-    "type": "Cashier",
-    "label": "Kassa",
-    "value": "Kassa"
+    "type": "DirectorFilial",
+    "label": "Filial rahbari",
+    "value": "Filial rahbari"
   },
   {
-    "type": "Doctor",
-    "label": "Shifokor",
-    "value": "Shifokor"
-  },
-  {
-    "type": "CounterDoctor",
-    "label": "Yo'naltiruvchi shifokor",
-    "value": "Yo'naltiruvchi shifokor"
-  },
-  {
-    "type": "CounterAgent",
-    "label": "Kontragent",
-    "value": "Kontragent"
+    "type": "WorkerFilial",
+    "label": "Filial xodimi",
+    "value": "Filail xodimi"
   }
 ]

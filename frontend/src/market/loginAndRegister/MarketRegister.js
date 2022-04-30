@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { useHttp } from "../hooks/http.hook";
+import React, { useCallback, useEffect, useState } from 'react'
+import { useHttp } from '../hooks/http.hook'
 import {
   Input,
   FormControl,
@@ -7,32 +7,32 @@ import {
   InputGroup,
   InputLeftAddon,
   Button,
-} from "@chakra-ui/react";
-import { FileUpload } from "./fileUpLoad/FileUpload";
-import { useToast } from "@chakra-ui/react";
-import { checkClinicaData } from "./checkData";
-import { useHistory } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHouseMedical } from "@fortawesome/free-solid-svg-icons";
-import { Loader } from "../loader/Loader";
-const storageName = "clinicaData";
+} from '@chakra-ui/react'
+import { FileUpload } from './fileUpLoad/FileUpload'
+import { useToast } from '@chakra-ui/react'
+import { checkClinicaData } from './checkData'
+import { useHistory } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHouseMedical } from '@fortawesome/free-solid-svg-icons'
+import { Loader } from '../loader/Loader'
+const storageName = 'clinicaData'
 
 const styleDefault = {
-  border: "1.5px solid #eee",
-  boxShadow: "none",
-  height: "32px",
-};
+  border: '1.5px solid #eee',
+  boxShadow: 'none',
+  height: '32px',
+}
 
 const styleGreen = {
-  border: "1.5px solid #38B2AC",
-  boxShadow: "none",
-  height: "32px",
-};
+  border: '1.5px solid #38B2AC',
+  boxShadow: 'none',
+  height: '32px',
+}
 
-export const ClinicaRegister = () => {
+export const MarketRegister = () => {
   //====================================================================
   //====================================================================
-  const toast = useToast();
+  const toast = useToast()
 
   const notify = useCallback(
     (data) => {
@@ -42,38 +42,38 @@ export const ClinicaRegister = () => {
         status: data.status && data.status,
         duration: 5000,
         isClosable: true,
-        position: "top-right",
-      });
+        position: 'top-right',
+      })
     },
-    [toast]
-  );
+    [toast],
+  )
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
-  const [load, setLoad] = useState(false);
+  const [load, setLoad] = useState(false)
 
-  const { request, loading } = useHttp();
+  const { request, loading } = useHttp()
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
-  const [baseUrl, setBaseUrl] = useState();
+  const [baseUrl, setBaseUrl] = useState()
 
   const getBaseUrl = useCallback(async () => {
     try {
-      const data = await request("/api/baseurl", "GET", null);
-      setBaseUrl(data.baseUrl);
+      const data = await request('/api/baseurl', 'GET', null)
+      setBaseUrl(data.baseUrl)
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
-      });
+        description: '',
+        status: 'error',
+      })
     }
-  }, [request, notify]);
+  }, [request, notify])
   //====================================================================
   //====================================================================
 
@@ -81,7 +81,7 @@ export const ClinicaRegister = () => {
   //====================================================================
   const [clinica, setClinica] = useState({
     image: null,
-  });
+  })
   //====================================================================
   //====================================================================
 
@@ -90,106 +90,106 @@ export const ClinicaRegister = () => {
   const handleImage = async (e) => {
     if (clinica.image) {
       return notify({
-        title: "Diqqat! Surat avval yuklangan",
+        title: 'Diqqat! Surat avval yuklangan',
         description:
           "Suratni qayta yulash uchun suratni ustiga bir marotaba bosib uni o'chiring!",
-        status: "error",
-      });
+        status: 'error',
+      })
     }
-    const files = e.target.files[0];
-    const data = new FormData();
-    data.append("file", files);
-    setLoad(true);
-    const res = await fetch("/api/upload", { method: "POST", body: data });
-    const file = await res.json();
-    setClinica({ ...clinica, image: file.filename });
-    setLoad(false);
+    const files = e.target.files[0]
+    const data = new FormData()
+    data.append('file', files)
+    setLoad(true)
+    const res = await fetch('/api/upload', { method: 'POST', body: data })
+    const file = await res.json()
+    setClinica({ ...clinica, image: file.filename })
+    setLoad(false)
     notify({
-      status: "success",
-      description: "",
-      title: "Surat muvaffaqqiyatli yuklandi",
-    });
-  };
+      status: 'success',
+      description: '',
+      title: 'Surat muvaffaqqiyatli yuklandi',
+    })
+  }
 
   const removeImage = async (filename) => {
     try {
-      const data = await request(`/api/upload/del`, "POST", { filename });
-      setClinica({ ...clinica, image: null });
-      document.getElementById("default-btn").value = null;
+      const data = await request(`/api/upload/del`, 'POST', { filename })
+      setClinica({ ...clinica, image: null })
+      document.getElementById('default-btn').value = null
       notify({
-        status: "success",
-        description: "",
+        status: 'success',
+        description: '',
         title: data.accept,
-      });
+      })
     } catch (error) {
       notify({
-        status: "error",
-        description: "",
+        status: 'error',
+        description: '',
         title: error,
-      });
+      })
     }
-  };
+  }
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
   const changeHandler = (e) => {
-    setClinica({ ...clinica, [e.target.name]: e.target.value });
-  };
-  const history = useHistory();
+    setClinica({ ...clinica, [e.target.name]: e.target.value })
+  }
+  const history = useHistory()
   const createHandler = async () => {
     if (checkClinicaData(clinica)) {
-      return notify(checkClinicaData(clinica));
+      return notify(checkClinicaData(clinica))
     }
     try {
-      const data = await request("/api/clinica/register", "POST", {
+      const data = await request('/api/clinica/register', 'POST', {
         ...clinica,
-      });
+      })
       localStorage.setItem(
         storageName,
         JSON.stringify({
           clinica: data,
-        })
-      );
+        }),
+      )
       notify({
         title:
           "Tabriklaymiz! Klinikangiz 'Alo24' dasturida muvaffaqqiyatli ro'yxatga olindi ",
-        description: "",
-        status: "success",
-      });
-      history.push("/newdirector");
+        description: '',
+        status: 'success',
+      })
+      history.push('/newdirector')
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
-      });
+        description: '',
+        status: 'error',
+      })
     }
-  };
+  }
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
   const keyPressed = (e) => {
-    if (e.key === "Enter") {
-      return createHandler();
+    if (e.key === 'Enter') {
+      return createHandler()
     }
-  };
+  }
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
   useEffect(() => {
-    getBaseUrl();
-  }, [getBaseUrl]);
+    getBaseUrl()
+  }, [getBaseUrl])
   //====================================================================
   //====================================================================
 
   if (loading) {
-    return <Loader />;
+    return <Loader />
   }
 
   return (
@@ -197,16 +197,16 @@ export const ClinicaRegister = () => {
       <div className="page-content container-fluid">
         <div className="row mt-5">
           <div className="col-xl-7 mx-auto">
-            <div className="card " style={{ borderTop: "4px solid #38B2AC " }}>
+            <div className="card " style={{ borderTop: '4px solid #38B2AC ' }}>
               <div className="card-body p-5">
                 <div
                   className="card-title d-flex align-items-center"
-                  style={{ fontSize: "20pt", color: "#38B2AC" }}
+                  style={{ fontSize: '20pt', color: '#38B2AC' }}
                 >
                   <div>
                     <FontAwesomeIcon icon={faHouseMedical} />
                   </div>
-                  <h5 className="mb-0 fs-5 ml-2" style={{ fontWeight: "600" }}>
+                  <h5 className="mb-0 fs-5 ml-2" style={{ fontWeight: '600' }}>
                     Shifoxona
                   </h5>
                 </div>
@@ -216,7 +216,7 @@ export const ClinicaRegister = () => {
                     <div className="col-md-12">
                       <FormControl isRequired>
                         <FormLabel
-                          style={{ color: "#38B2AC", marginTop: "1rem" }}
+                          style={{ color: '#38B2AC', marginTop: '1rem' }}
                         >
                           Shifoxona nomi
                         </FormLabel>
@@ -238,7 +238,7 @@ export const ClinicaRegister = () => {
                     <div className="col-md-12">
                       <FormControl>
                         <FormLabel
-                          style={{ color: "#38B2AC", marginTop: "1rem" }}
+                          style={{ color: '#38B2AC', marginTop: '1rem' }}
                         >
                           Tashkilot nomi
                         </FormLabel>
@@ -260,7 +260,7 @@ export const ClinicaRegister = () => {
                     <div className="col-md-12">
                       <FormControl>
                         <FormLabel
-                          style={{ color: "#38B2AC", marginTop: "1rem" }}
+                          style={{ color: '#38B2AC', marginTop: '1rem' }}
                         >
                           Manzil
                         </FormLabel>
@@ -281,7 +281,7 @@ export const ClinicaRegister = () => {
                     <div className="col-md-12">
                       <FormControl>
                         <FormLabel
-                          style={{ color: "#38B2AC", marginTop: "1rem" }}
+                          style={{ color: '#38B2AC', marginTop: '1rem' }}
                         >
                           Mo'ljal
                         </FormLabel>
@@ -303,7 +303,7 @@ export const ClinicaRegister = () => {
                     <div className="col-md-12">
                       <FormControl isRequired>
                         <FormLabel
-                          style={{ color: "#38B2AC", marginTop: "1rem" }}
+                          style={{ color: '#38B2AC', marginTop: '1rem' }}
                         >
                           Telefon raqam1
                         </FormLabel>
@@ -335,7 +335,7 @@ export const ClinicaRegister = () => {
                     <div className="col-md-12">
                       <FormControl>
                         <FormLabel
-                          style={{ color: "#38B2AC", marginTop: "1rem" }}
+                          style={{ color: '#38B2AC', marginTop: '1rem' }}
                         >
                           Telefon raqam2
                         </FormLabel>
@@ -367,7 +367,7 @@ export const ClinicaRegister = () => {
                     <div className="col-md-12">
                       <FormControl>
                         <FormLabel
-                          style={{ color: "#38B2AC", marginTop: "1rem" }}
+                          style={{ color: '#38B2AC', marginTop: '1rem' }}
                         >
                           Telefon raqam3
                         </FormLabel>
@@ -401,7 +401,7 @@ export const ClinicaRegister = () => {
                     <div className="col-md-12">
                       <FormControl>
                         <FormLabel
-                          style={{ color: "#38B2AC", marginTop: "1rem" }}
+                          style={{ color: '#38B2AC', marginTop: '1rem' }}
                         >
                           Bank nomi
                         </FormLabel>
@@ -422,7 +422,7 @@ export const ClinicaRegister = () => {
                     <div className="col-md-12">
                       <FormControl>
                         <FormLabel
-                          style={{ color: "#38B2AC", marginTop: "1rem" }}
+                          style={{ color: '#38B2AC', marginTop: '1rem' }}
                         >
                           INN
                         </FormLabel>
@@ -444,7 +444,7 @@ export const ClinicaRegister = () => {
                     <div className="col-md-12">
                       <FormControl>
                         <FormLabel
-                          style={{ color: "#38B2AC", marginTop: "1rem" }}
+                          style={{ color: '#38B2AC', marginTop: '1rem' }}
                         >
                           Hisob raqam
                         </FormLabel>
@@ -502,5 +502,5 @@ export const ClinicaRegister = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
