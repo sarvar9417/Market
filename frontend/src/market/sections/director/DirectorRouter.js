@@ -1,16 +1,16 @@
-import React from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
-import { Advers } from "./adver/Advers";
-import { EditDirector } from "./editDirector/EditDirector";
-import { EditDirectorPassword } from "./editDirector/EditDirectorPassword";
-import { Departments } from "./services/Departments";
-import { ProductConnectors } from "./services/ProductConnector";
-import { Products } from "./services/Products";
-import { Rooms } from "./services/Rooms";
-import { Services } from "./services/Services";
-import { ServiceType } from "./services/ServiceType";
-import { Warehouses } from "./services/Warehouses";
-import { Users } from "./users/Users";
+import React from 'react'
+import { Redirect, Route, Switch } from 'react-router-dom'
+import { Advers } from './adver/Advers'
+import { EditDirector } from './editDirector/EditDirector'
+import { EditDirectorPassword } from './editDirector/EditDirectorPassword'
+import { Categorys } from './services/Categorys'
+import { ProductConnectors } from './services/ProductConnector'
+import { Products } from './services/Products'
+import { Rooms } from './services/Rooms'
+import { Services } from './services/Services'
+import { ServiceType } from './services/ServiceType'
+import { Warehouses } from './services/Warehouses'
+import { Users } from './users/Users'
 
 export const DirectorRouter = () => {
   return (
@@ -27,7 +27,7 @@ export const DirectorRouter = () => {
           <EditDirectorPassword />
         </Route>
         <Route path="/alo24/departments">
-          <Departments />
+          <Categorys />
         </Route>
         <Route path="/alo24/servicetypes">
           <ServiceType />
@@ -58,5 +58,5 @@ export const DirectorRouter = () => {
         <Redirect to="/alo24" />
       </Switch>
     </div>
-  );
-};
+  )
+}
