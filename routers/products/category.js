@@ -108,6 +108,17 @@ module.exports.update = async (req, res) => {
       })
     }
 
+    const old = await Category.findOne({
+      market,
+      name,
+    })
+
+    if (old) {
+      return res.status(400).json({
+        message: "Diqqat! Ushbu bo'lim avval yaratilgan.",
+      })
+    }
+
     const category = await Category.findById(req.body._id)
 
     if (!category) {
@@ -139,7 +150,7 @@ module.exports.getAll = async (req, res) => {
 
     const categorys = await Category.find({
       market,
-    })
+    }).select('name')
 
     res.send(categorys)
   } catch (error) {

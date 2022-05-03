@@ -1,12 +1,10 @@
 const { Schema, model, Types } = require('mongoose')
 const Joi = require('joi')
 
-const category = new Schema(
+const unit = new Schema(
   {
     name: { type: String, required: true },
     market: { type: Schema.Types.ObjectId, ref: 'Market', required: true },
-    products: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
-    producttypes: [{ type: Schema.Types.ObjectId, ref: 'ProductType' }],
     isArchive: { type: Boolean, default: false },
   },
   {
@@ -14,14 +12,14 @@ const category = new Schema(
   },
 )
 
-function validateCategory(category) {
+function validateUnit(unit) {
   const schema = Joi.object({
     name: Joi.string().required(),
     market: Joi.string().required(),
   })
 
-  return schema.validate(category)
+  return schema.validate(unit)
 }
 
-module.exports.validateCategory = validateCategory
-module.exports.Category = model('Category', category)
+module.exports.validateUnit = validateUnit
+module.exports.Unit = model('Unit', unit)

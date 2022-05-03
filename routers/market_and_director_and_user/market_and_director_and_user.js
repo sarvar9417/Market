@@ -22,12 +22,12 @@ router.post('/branch/register', auth, (req, res) => {
   require('./branch.route').register(req, res)
 })
 
-router.put('/branch/edit', auth, (req, res) => {
-  require('./branch.route').edit(req, res)
+router.put('/branch/update', auth, (req, res) => {
+  require('./branch.route').update(req, res)
 })
 
-router.get('/branch', auth, (req, res) => {
-  require('./branch.route').getMarket(req, res)
+router.delete('/branch/delete', auth, (req, res) => {
+  require('./branch.route').delete(req, res)
 })
 
 router.get('/branch/getall', auth, (req, res) => {

@@ -63,7 +63,7 @@ module.exports.register = async (req, res) => {
   }
 }
 
-module.exports.edit = async (req, res) => {
+module.exports.update = async (req, res) => {
   try {
     const { branch } = req.body
 
@@ -112,9 +112,24 @@ module.exports.getAll = async (req, res) => {
       })
     }
 
-    const branchs = await Branch.find({ market: marketId })
+    const branchs = await Branch.find({ market: marketId, isArchive: false })
 
     res.status(200).send(branchs)
+  } catch (error) {
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
+  }
+}
+
+//Branch delete
+module.exports.delete = async (req, res) => {
+  try {
+    const { branchId } = req.body
+
+    const branch = await Branch.findById(branchId)
+    branch.isArchive = true
+    await branch.save()
+
+    res.send(branch)
   } catch (error) {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
   }

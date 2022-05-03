@@ -1,16 +1,12 @@
 const { Schema, model, Types } = require('mongoose')
 const Joi = require('joi')
 
-const servicetype = new Schema(
+const producttype = new Schema(
   {
     name: { type: String, required: true },
-    services: [{ type: Schema.Types.ObjectId, ref: 'Service', required: true }],
-    department: {
-      type: Schema.Types.ObjectId,
-      ref: 'Department',
-      required: true,
-    },
-    clinica: { type: Schema.Types.ObjectId, ref: 'Clinica', required: true },
+    products: [{ type: Schema.Types.ObjectId, ref: 'Product', required: true }],
+    category: { type: Schema.Types.ObjectId, ref: 'Category', required: true },
+    market: { type: Schema.Types.ObjectId, ref: 'Clinica', required: true },
     isArchive: { type: Boolean, default: false },
   },
   {
@@ -18,15 +14,15 @@ const servicetype = new Schema(
   },
 )
 
-function validateServiceType(servicetype) {
+function validateProductType(producttype) {
   const schema = Joi.object({
     name: Joi.string().required(),
-    department: Joi.string().required(),
-    clinica: Joi.string().required(),
+    category: Joi.string().required(),
+    market: Joi.string().required(),
   })
 
-  return schema.validate(servicetype)
+  return schema.validate(producttype)
 }
 
-module.exports.validateServiceType = validateServiceType
-module.exports.ServiceType = model('ServiceType', servicetype)
+module.exports.validateProductType = validateProductType
+module.exports.ProductType = model('ProductType', producttype)
