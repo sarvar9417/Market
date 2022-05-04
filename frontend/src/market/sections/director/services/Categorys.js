@@ -47,10 +47,10 @@ export const Category = () => {
   //====================================================================
   const { request, loading } = useHttp()
   const auth = useContext(AuthContext)
-  console.log(auth)
   const [category, setCategory] = useState({
     market: auth.market && auth.market._id,
   })
+
   //====================================================================
   //====================================================================
 
@@ -288,7 +288,7 @@ export const Category = () => {
                       <td>
                         {loading ? (
                           <button className="btn btn-info" disabled>
-                            <span class="spinner-border spinner-border-sm"></span>
+                            <span className="spinner-border spinner-border-sm"></span>
                             Loading...
                           </button>
                         ) : (
@@ -303,7 +303,7 @@ export const Category = () => {
                       <td>
                         {loading ? (
                           <button className="btn btn-danger" disabled>
-                            <span class="spinner-border spinner-border-sm"></span>
+                            <span className="spinner-border spinner-border-sm"></span>
                             Loading...
                           </button>
                         ) : (
