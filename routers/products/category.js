@@ -165,8 +165,6 @@ module.exports.delete = async (req, res) => {
   try {
     const { _id } = req.body
 
-    const marke = await Market.findById(_id)
-
     const category = await Category.findById(_id)
 
     if (category.products.length > 0) {

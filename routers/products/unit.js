@@ -142,11 +142,7 @@ module.exports.delete = async (req, res) => {
   try {
     const { _id } = req.body
 
-    const marke = await Market.findById(_id)
-
-    const unit = await Unit.findById(_id)
-
-    await Unit.findByIdAndDelete(_id)
+    const unit = await Unit.findByIdAndDelete(_id)
 
     res.send(unit)
   } catch (error) {
@@ -175,5 +171,3 @@ module.exports.getAll = async (req, res) => {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
   }
 }
-
-
