@@ -30,20 +30,20 @@ router.post('/product/register', auth, (req, res) => {
   require('./product').register(req, res)
 })
 
+router.put('/product/update', auth, (req, res) => {
+  require('./product').update(req, res)
+})
+
+router.delete('/product/delete', auth, (req, res) => {
+  require('./product').delete(req, res)
+})
+
 router.post('/product/getallcategory', auth, (req, res) => {
   require('./product').getAllcategory(req, res)
 })
 
 router.post('/product/getall', auth, (req, res) => {
   require('./product').getAll(req, res)
-})
-
-router.put('/product/update', auth, (req, res) => {
-  require('./product').update(req, res)
-})
-
-router.delete('/product', auth, (req, res) => {
-  require('./product').delete(req, res)
 })
 
 router.delete('/product/deleteall', auth, (req, res) => {
@@ -131,92 +131,6 @@ router.delete('/room', auth, (req, res) => {
 
 router.delete('/room/deleteall', auth, (req, res) => {
   require('./room').deleteAll(req, res)
-})
-
-//========================================================
-// PRODUCTS
-router.post('/product/registerall', auth, (req, res) => {
-  require('./product').registerAll(req, res)
-})
-
-router.post('/product/register', auth, (req, res) => {
-  require('./product').register(req, res)
-})
-
-router.post('/product/getall', auth, (req, res) => {
-  require('./product').getAll(req, res)
-})
-
-router.post('/product/getallreseption', auth, (req, res) => {
-  require('./product').getAllReseption(req, res)
-})
-
-router.put('/product/update', auth, (req, res) => {
-  require('./product').update(req, res)
-})
-
-router.delete('/product', auth, (req, res) => {
-  require('./product').delete(req, res)
-})
-
-router.delete('/product/deleteall', auth, (req, res) => {
-  require('./product').deleteAll(req, res)
-})
-
-//========================================================
-// WAREHOUSE
-router.post('/warehouse/registerall', auth, (req, res) => {
-  require('./warehouse').registerAll(req, res)
-})
-
-router.post('/warehouse/register', auth, (req, res) => {
-  require('./warehouse').register(req, res)
-})
-
-router.post('/warehouse/getall', auth, (req, res) => {
-  require('./warehouse').getAll(req, res)
-})
-
-router.post('/warehouse/getallproduct', auth, (req, res) => {
-  require('./warehouse').getAllProduct(req, res)
-})
-
-router.put('/warehouse/update', auth, (req, res) => {
-  require('./warehouse').update(req, res)
-})
-
-router.delete('/warehouse', auth, (req, res) => {
-  require('./warehouse').delete(req, res)
-})
-
-router.delete('/warehouse/deleteall', auth, (req, res) => {
-  require('./warehouse').deleteAll(req, res)
-})
-
-router.delete('/warehouse/deleteallproduct', auth, (req, res) => {
-  require('./warehouse').deleteAllProduct(req, res)
-})
-
-//========================================================
-// PRODUCTCONNECTOR
-router.post('/productconnector/register', auth, (req, res) => {
-  require('./productconnector').register(req, res)
-})
-
-router.post('/productconnector/getall', auth, (req, res) => {
-  require('./productconnector').getAll(req, res)
-})
-
-router.put('/productconnector/update', auth, (req, res) => {
-  require('./productconnector').update(req, res)
-})
-
-router.delete('/productconnector', auth, (req, res) => {
-  require('./productconnector').delete(req, res)
-})
-
-router.delete('/productconnector/deleteall', auth, (req, res) => {
-  require('./productconnector').deleteAll(req, res)
 })
 
 module.exports = router

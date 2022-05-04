@@ -131,21 +131,11 @@ module.exports.register = async (req, res) => {
       })
     }
 
-    const {
-      name,
-      producttype,
-      code,
-      category,
-      market,
-      price,
-      doctorProcient,
-      counterAgentProcient,
-      counterDoctorProcient,
-    } = req.body
+    const { name, producttype, code, category, market, unit } = req.body
 
     const product = await Product.findOne({
       market,
-      name,
+      code,
       category,
     })
 
@@ -167,7 +157,7 @@ module.exports.register = async (req, res) => {
 
     if (!categor) {
       return res.status(400).json({
-        message: "Diqqat! Bo'lim ma'lumotlari topilmadi.",
+        message: "Diqqat! Kategoriya ma'lumotlari topilmadi.",
       })
     }
 
@@ -175,19 +165,24 @@ module.exports.register = async (req, res) => {
 
     if (!Producttype && producttype) {
       return res.status(400).json({
-        message: `Diqqat! ${producttype} mahsulot turi mavjud emas.`,
+        message: `Diqqat! Ko'rsatilgan mahsulot turi mavjud emas.`,
+      })
+    }
+
+    const unitt = await Unit.findById(unit)
+
+    if (!unitt) {
+      return res.status(400).json({
+        message: `Diqqat! Ko'rsatilgan o'lchov birligi tizimda mavjud emas.`,
       })
     }
 
     const newProduct = new Product({
       name,
       code,
-      category: categor._id,
-      market: marke._id,
-      price,
-      doctorProcient,
-      counterAgentProcient,
-      counterDoctorProcient,
+      category,
+      market,
+      unit,
     })
 
     if (Producttype) {
@@ -218,6 +213,176 @@ module.exports.register = async (req, res) => {
   }
 }
 
+//Product update
+module.exports.update = async (req, res) => {
+  try {
+    const { _id, name, code, category, producttype, market } = req.body
+
+    const marke = await Market.findById(market)
+
+    if (!marke) {
+      return res.status(400).json({
+        message: "Diqqat! Do'kon ma'lumotlari topilmadi.",
+      })
+    }
+
+    const categor = await Category.findById(category)
+
+    if (!categor) {
+      return res.status(400).json({
+        message: "Diqqat! Bo'lim ma'lumotlari topilmadi.",
+      })
+    }
+
+    const product = await Product.findById(_id)
+
+    if (!product) {
+      return res.status(400).json({
+        message: `Diqqat! ${name} mahsuloti avval yaratilmagan.`,
+      })
+    }
+
+    const c = await Product.findOne({ market, code })
+
+    if (c && c._id.toString() !== _id) {
+      return res.status(400).json({
+        message: `Diqqat! ${code} kodli mahsulot tizimda avval ro'yxatga olingan.`,
+      })
+    }
+
+    product.name = name
+    product.code = code
+
+    if (product.category !== category) {
+      const removeCategory = await Category.findByIdAndUpdate(
+        product.category,
+        {
+          $pull: {
+            products: new ObjectId(product._id),
+          },
+        },
+      )
+
+      const updateCategory = await Category.findByIdAndUpdate(category, {
+        $push: {
+          products: _id,
+        },
+      })
+    }
+
+    if (!product.producttype && producttype) {
+      const productTypeUpdate1 = await ProductType.findByIdAndUpdate(
+        producttype,
+        {
+          $push: {
+            products: new ObjectId(product._id),
+          },
+        },
+      )
+      product.producttype = producttype
+    } else {
+      if (
+        product.producttype &&
+        producttype &&
+        product.producttype !== producttype
+      ) {
+        const productTypeUpdate = await ProductType.findByIdAndUpdate(
+          product.producttype,
+          {
+            $pull: {
+              products: new ObjectId(product._id),
+            },
+          },
+        )
+
+        const productTypeUpdate1 = await ProductType.findByIdAndUpdate(
+          producttype,
+          {
+            $push: {
+              products: new ObjectId(product._id),
+            },
+          },
+        )
+        product.producttype = producttype
+      } else {
+        if (product.producttype && !producttype) {
+          product.producttype = null
+        }
+      }
+    }
+
+    await product.save()
+
+    res.send(product)
+  } catch (error) {
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
+  }
+}
+
+//Product delete
+module.exports.delete = async (req, res) => {
+  try {
+    const { _id, category, market, name, producttype } = req.body
+
+    const marke = await Market.findById(market)
+
+    if (!marke) {
+      return res.status(400).json({
+        message: "Diqqat! Do'kon ma'lumotlari topilmadi.",
+      })
+    }
+
+    const categor = await Category.findById(category)
+
+    if (!categor) {
+      return res.status(400).json({
+        message: "Diqqat! Bo'lim ma'lumotlari topilmadi.",
+      })
+    }
+
+    const producttyp = await ProductType.findById(producttype)
+
+    if (producttype && !producttyp) {
+      return res.status(400).json({
+        message: "Diqqat! Xizmat turi ma'lumotlari topilmadi.",
+      })
+    }
+
+    const tovar = await Product.findById(_id)
+
+    if (tovar.total > 0) {
+      return res.status(400).json({
+        message:
+          "Diqqat! Mahsulot omborda mavjudligi sababli ushbu mahsulotni o'chirishni imkoni mavjud emas.",
+      })
+    }
+
+    const product = await Product.findByIdAndDelete(_id)
+
+    if (!product) {
+      return res.status(400).json({
+        message: `Diqqat! ${name} mahsuloti avval yaratilmagan.`,
+      })
+    }
+
+    const categoryUpdate = await Category.findByIdAndUpdate(category, {
+      $pull: {
+        products: new ObjectId(_id),
+      },
+    })
+
+    const producttypeUpdate = await ProductType.findByIdAndUpdate(producttype, {
+      $pull: {
+        products: new ObjectId(_id),
+      },
+    })
+
+    res.send(product)
+  } catch (error) {
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
+  }
+}
+
 //Product getall
 module.exports.getAll = async (req, res) => {
   try {
@@ -234,8 +399,8 @@ module.exports.getAll = async (req, res) => {
     const products = await Product.find({
       market,
     })
+      .select('name code unit')
       .populate('category', 'name')
-      .populate('market', 'name')
       .populate('producttype', 'name')
 
     res.send(products)
@@ -274,218 +439,6 @@ module.exports.getAllCategory = async (req, res) => {
       .populate('producttype', 'name')
 
     res.send(products)
-  } catch (error) {
-    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
-  }
-}
-
-//Product update
-module.exports.update = async (req, res) => {
-  try {
-    const {
-      _id,
-      name,
-      code,
-      category,
-      producttype,
-      market,
-      price,
-      doctorProcient,
-      counterAgentProcient,
-      counterDoctorProcient,
-    } = req.body
-
-    const marke = await Market.findById(market)
-
-    if (!marke) {
-      return res.status(400).json({
-        message: "Diqqat! Do'kon ma'lumotlari topilmadi.",
-      })
-    }
-
-    const categor = await Category.findById(category)
-
-    if (!categor) {
-      return res.status(400).json({
-        message: "Diqqat! Bo'lim ma'lumotlari topilmadi.",
-      })
-    }
-
-    const product = await Product.findById(_id)
-
-    if (!product) {
-      return res.status(400).json({
-        message: `Diqqat! ${name} mahsuloti avval yaratilmagan.`,
-      })
-    }
-
-    product.name = name
-    product.code = code
-    product.price = price
-    product.doctorProcient = doctorProcient
-    product.counterAgentProcient = counterAgentProcient
-    product.counterDoctorProcient = counterDoctorProcient
-
-    if (!product.producttype && producttype) {
-      const productTypeUpdate1 = await ProductType.findByIdAndUpdate(
-        producttype,
-        {
-          $push: {
-            products: new ObjectId(product._id),
-          },
-        },
-      )
-      product.producttype = producttype
-    } else {
-      if (
-        product.producttype &&
-        producttype &&
-        product.producttype !== producttype
-      ) {
-        const productTypeUpdate = await ProductType.findByIdAndUpdate(
-          product.producttype,
-          {
-            $pull: {
-              products: new ObjectId(product._id),
-            },
-          },
-        )
-
-        const productTypeUpdate1 = await ProductType.findByIdAndUpdate(
-          producttype,
-          {
-            $push: {
-              products: new ObjectId(product._id),
-            },
-          },
-        )
-        product.producttype = producttype
-      } else {
-        if (product.producttype && !producttype) {
-          product.producttype = undefined
-        }
-      }
-    }
-    await product.save()
-
-    res.send(product)
-  } catch (error) {
-    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
-  }
-}
-
-//Product delete
-module.exports.delete = async (req, res) => {
-  try {
-    const { _id, category, market, name, producttype } = req.body
-
-    const marke = await Market.findById(market)
-
-    if (!marke) {
-      return res.status(400).json({
-        message: "Diqqat! Do'kon ma'lumotlari topilmadi.",
-      })
-    }
-
-    const categor = await Category.findById(category)
-
-    if (!categor) {
-      return res.status(400).json({
-        message: "Diqqat! Bo'lim ma'lumotlari topilmadi.",
-      })
-    }
-
-    const producttyp = await ProductType.findById(producttype)
-
-    if (producttype && !producttyp) {
-      return res.status(400).json({
-        message: "Diqqat! Xizmat turi ma'lumotlari topilmadi.",
-      })
-    }
-
-    const product = await Product.findByIdAndDelete(_id)
-
-    if (!product) {
-      return res.status(400).json({
-        message: `Diqqat! ${name} mahsuloti avval yaratilmagan.`,
-      })
-    }
-
-    const categoryUpdate = await Category.findByIdAndUpdate(category, {
-      $pull: {
-        products: new ObjectId(_id),
-      },
-    })
-
-    const producttypeUpdate = await ProductType.findByIdAndUpdate(producttype, {
-      $pull: {
-        products: new ObjectId(_id),
-      },
-    })
-
-    for (const productconnector of product.productconnector) {
-      const del = await ProductConnector.findByIdAndDelete(productconnector)
-    }
-
-    res.send(product)
-  } catch (error) {
-    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
-  }
-}
-
-//Product deleteallcategory
-module.exports.deleteAllCategory = async (req, res) => {
-  try {
-    const { category, market, producttype } = req.body
-
-    const marke = await Market.findById(market)
-
-    if (!marke) {
-      return res.status(400).json({
-        message: "Diqqat! Do'kon ma'lumotlari topilmadi.",
-      })
-    }
-
-    const categor = await Category.findById(category)
-
-    if (!categor) {
-      return res.status(400).json({
-        message: "Diqqat! Bo'lim ma'lumotlari topilmadi.",
-      })
-    }
-
-    const products = await Product.find({
-      market,
-      category,
-    })
-
-    let all = []
-    for (const product of products) {
-      const del = await Product.findByIdAndDelete(product._id)
-
-      const categoryUpdate = await Category.findByIdAndUpdate(category, {
-        $pull: {
-          products: new ObjectId(product._id),
-        },
-      })
-
-      const producttypeUpdate = await ProductType.findByIdAndUpdate(
-        producttype,
-        {
-          $pull: {
-            products: new ObjectId(product._id),
-          },
-        },
-      )
-
-      for (const productconnector of product.productconnectors) {
-        const del = await ProductConnector.findByIdAndDelete(productconnector)
-      }
-
-      all.push(del)
-    }
-
-    res.send(all)
   } catch (error) {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
   }
