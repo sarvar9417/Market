@@ -62,11 +62,11 @@ module.exports.register = async (req, res) => {
       })
     }
 
-    const { name, market } = req.body
+    const { name, market, code } = req.body
 
     const category = await Category.findOne({
       market,
-      name,
+      code,
     })
 
     if (category) {
@@ -86,6 +86,7 @@ module.exports.register = async (req, res) => {
     const newCategory = new Category({
       name,
       market,
+      code,
     })
     await newCategory.save()
 
@@ -98,7 +99,7 @@ module.exports.register = async (req, res) => {
 //Category update
 module.exports.update = async (req, res) => {
   try {
-    const { name, market } = req.body
+    const { name, market, code } = req.body
 
     const marke = await Market.findById(market)
 
@@ -110,7 +111,7 @@ module.exports.update = async (req, res) => {
 
     const old = await Category.findOne({
       market,
-      name,
+      code,
     })
 
     if (old) {
@@ -128,6 +129,7 @@ module.exports.update = async (req, res) => {
     }
 
     category.name = name
+    category.code = code
     await category.save()
 
     res.send(category)
@@ -150,7 +152,7 @@ module.exports.getAll = async (req, res) => {
 
     const categorys = await Category.find({
       market,
-    }).select('name')
+    }).select('name code')
 
     res.send(categorys)
   } catch (error) {
@@ -158,7 +160,7 @@ module.exports.getAll = async (req, res) => {
   }
 }
 
-//Category update
+//Category delete
 module.exports.delete = async (req, res) => {
   try {
     const { _id } = req.body
