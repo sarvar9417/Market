@@ -22,26 +22,26 @@ export const checkCategory = (category) => {
   return false;
 };
 
-// ServiceType
-export const checkServiceType = (servicetype) => {
-  if (!servicetype.market)
+// ProductType
+export const checkProductType = (producttype) => {
+  if (!producttype.market)
     return {
       title: "Diqqat! Avtorzatsiyadan o'tilmagan.",
       description: "Iltimos bo'limdan chiqib qayta kiriting.",
       status: "error",
     };
 
-  if (!servicetype.category)
+  if (!producttype.category)
     return {
-      title: "Diqqat! Bo'lim tanlanmagan.",
-      description: "Iltimos bo'lim tanlang.",
+      title: "Diqqat! Kategoriya tanlanmagan.",
+      description: "Iltimos Kategoriya tanlang.",
       status: "error",
     };
 
-  if (!servicetype.name)
+  if (!producttype.name)
     return {
-      title: "Diqqat! Xizmat turi kiritilmagan.",
-      description: "Iltimos xizmat turini kiriting.",
+      title: "Diqqat! Mahsulot turi kiritilmagan.",
+      description: "Iltimos mahsulot turini kiriting.",
       status: "error",
     };
   return false;

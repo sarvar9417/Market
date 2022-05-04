@@ -3,18 +3,20 @@ import { Loader } from "../../../loader/Loader";
 import { useToast } from "@chakra-ui/react";
 import { useHttp } from "../../../hooks/http.hook";
 import { AuthContext } from "../../../context/AuthContext";
-import { checkCategory } from "./checkData";
+import { checkProductType } from "./checkData";
 import { Modal } from "./modal/Modal";
 import { Sort } from "./serviceComponents/Sort";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleUp, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 
-export const Category = () => {
+export const ProductType = () => {
   //====================================================================
   //====================================================================
   const [modal, setModal] = useState(false);
-  const [remove, setRemove] = useState();
 
   const clearInputs = useCallback(() => {
     const inputs = document.getElementsByTagName("input");
+    document.getElementsByTagName("select")[0].selectedIndex = 0;
     for (const input of inputs) {
       input.value = "";
     }
@@ -46,20 +48,22 @@ export const Category = () => {
   //====================================================================
   const { request, loading } = useHttp();
   const auth = useContext(AuthContext);
-  const [category, setCategory] = useState({
+
+  const [remove, setRemove] = useState({
     market: auth.market && auth.market._id,
-    name: null,
-    code: null,
   });
 
+  const [producttype, setProductType] = useState({
+    market: auth.market && auth.market._id,
+  });
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
-  const [categories, setCategories] = useState();
+  const [categories, setCategories] = useState([]);
 
-  const getCategory = useCallback(async () => {
+  const getCategories = useCallback(async () => {
     try {
       const data = await request(
         `/api/products/category/getall`,
@@ -83,24 +87,50 @@ export const Category = () => {
 
   //====================================================================
   //====================================================================
+  const [producttypes, setProductTypes] = useState([]);
+
+  const getProductTypes = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/products/producttype/getall`,
+        "POST",
+        { market: auth.market._id },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setProductTypes(data);
+    } catch (error) {
+      notify({
+        title: error,
+        description: "",
+        status: "error",
+      });
+    }
+  }, [request, auth, notify]);
+  //====================================================================
+  //====================================================================
+
+  //====================================================================
+  //====================================================================
 
   const createHandler = useCallback(async () => {
     try {
       const data = await request(
-        `/api/products/category/register`,
+        `/api/products/producttype/register`,
         "POST",
-        { ...category, code: `${category.code}` },
+        { ...producttype },
         {
           Authorization: `Bearer ${auth.token}`,
         }
       );
       notify({
-        title: `${data.name} bo'limi yaratildi!`,
+        title: `${data.name} mahsulot turi yaratildi!`,
         description: "",
         status: "success",
       });
-      getCategory();
-      setCategory({
+      getProductTypes();
+      setProductType({
         market: auth.market && auth.market._id,
       });
       clearInputs();
@@ -111,25 +141,25 @@ export const Category = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify, getCategory, category, clearInputs]);
+  }, [request, auth, notify, getProductTypes, producttype, clearInputs]);
 
   const updateHandler = useCallback(async () => {
     try {
       const data = await request(
-        `/api/products/category/update`,
+        `/api/products/producttype/update`,
         "PUT",
-        { ...category, code: `${category.code}` },
+        { ...producttype },
         {
           Authorization: `Bearer ${auth.token}`,
         }
       );
       notify({
-        title: `${data.name} bo'limi yangilandi!`,
+        title: `${data.name} mahsuloti yangilandi!`,
         description: "",
         status: "success",
       });
-      getCategory();
-      setCategory({
+      getProductTypes();
+      setProductType({
         market: auth.market && auth.market._id,
       });
       clearInputs();
@@ -140,13 +170,13 @@ export const Category = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify, getCategory, category, clearInputs]);
+  }, [request, auth, notify, getProductTypes, producttype, clearInputs]);
 
   const saveHandler = () => {
-    if (checkCategory(category)) {
-      return notify(checkCategory(category));
+    if (checkProductType(producttype)) {
+      return notify(checkProductType(producttype));
     }
-    if (category._id) {
+    if (producttype._id) {
       return updateHandler();
     } else {
       return createHandler();
@@ -162,7 +192,7 @@ export const Category = () => {
   const deleteHandler = useCallback(async () => {
     try {
       const data = await request(
-        `/api/products/category/delete`,
+        `/api/products/producttype/delete`,
         "DELETE",
         { ...remove },
         {
@@ -170,13 +200,13 @@ export const Category = () => {
         }
       );
       notify({
-        title: `${data.name} bo'limi o'chirildi!`,
+        title: `${data.name} nomli mahsulot turi o'chirildi!`,
         description: "",
         status: "success",
       });
-      getCategory();
+      getProductTypes();
       setModal(false);
-      setCategory({
+      setProductType({
         market: auth.market && auth.market._id,
       });
       clearInputs();
@@ -187,20 +217,19 @@ export const Category = () => {
         status: "error",
       });
     }
-  }, [auth, request, remove, notify, getCategory, clearInputs]);
-
+  }, [auth, request, remove, notify, getProductTypes, clearInputs]);
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
 
-  // const checkHandler = (e) => {
-  //   setCategory({ ...category, probirka: e.target.checked })
-  // }
+  const checkHandler = (e) => {
+    setProductType({ ...producttype, category: e.target.value });
+  };
 
   const inputHandler = (e) => {
-    setCategory({ ...category, [e.target.name]: e.target.value });
+    setProductType({ ...producttype, name: e.target.value });
   };
 
   //====================================================================
@@ -208,14 +237,14 @@ export const Category = () => {
 
   //====================================================================
   //====================================================================
-
   const [t, setT] = useState();
   useEffect(() => {
     if (!t) {
       setT(1);
-      getCategory();
+      getCategories();
+      getProductTypes();
     }
-  }, [getCategory, t]);
+  }, [getCategories, getProductTypes, t]);
   //====================================================================
   //====================================================================
 
@@ -231,41 +260,41 @@ export const Category = () => {
                   <thead>
                     <tr>
                       <th className="w-25">Kategoriya nomi</th>
-                      <th className="w-25">Kategoriya kodi</th>
+                      <th className="w-25">Mahsulot turi</th>
                       <th className="w-25">Saqlash</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
                       <td>
-                        <input
-                          style={{ minWidth: "70px" }}
-                          value={category.name ? category.name : ""}
-                          onKeyUp={keyPressed}
-                          onChange={inputHandler}
-                          type="text"
-                          className="form-control w-75"
-                          id="inputName"
-                          name="name"
-                          placeholder="Bo'lim nomini kiriting"
-                        />
+                        <select
+                          style={{ minWidth: "70px", maxWidth: "200px" }}
+                          className="form-control form-control-sm selectpicker"
+                          placeholder="Kategoriyani tanlang"
+                          onChange={checkHandler}
+                        >
+                          <option>Kategoriya tanlang</option>
+                          {categories &&
+                            categories.map((category, index) => {
+                              return (
+                                <option value={category._id} key={index}>
+                                  {category.name}
+                                </option>
+                              );
+                            })}
+                        </select>
                       </td>
                       <td>
                         <input
                           style={{ minWidth: "70px" }}
-                          value={category.code ? category.code : ""}
+                          name="name"
+                          value={producttype.name || ""}
                           onKeyUp={keyPressed}
-                          onChange={(e) =>
-                            setCategory({
-                              ...category,
-                              [e.target.name]: parseInt(e.target.value),
-                            })
-                          }
+                          onChange={inputHandler}
                           type="text"
-                          className="form-control w-75"
-                          id="inputName"
-                          name="code"
-                          placeholder="Bo'lim nomini kiriting"
+                          className="form-control w-75 py-0"
+                          id="name"
+                          placeholder="Mahsulot turining nomini kiriting"
                         />
                       </td>
                       <td>
@@ -293,20 +322,39 @@ export const Category = () => {
                 <table className="table m-0">
                   <thead>
                     <tr>
-                      <th className="">№</th>
+                      <th>№</th>
                       <th className="w-25">
-                        Nomi{"  "}
-                        <Sort
-                          data={category}
-                          setData={setCategory}
-                          property={"name"}
-                        />
+                        Kategoriya{"  "}
+                        <div className="btn-group-vertical ml-2">
+                          <FontAwesomeIcon
+                            onClick={() =>
+                              setProductTypes(
+                                [...producttypes].sort((a, b) =>
+                                  a.department.name > b.department.name ? 1 : -1
+                                )
+                              )
+                            }
+                            icon={faAngleUp}
+                            style={{ cursor: "pointer" }}
+                          />
+                          <FontAwesomeIcon
+                            icon={faAngleDown}
+                            style={{ cursor: "pointer" }}
+                            onClick={() =>
+                              setProductTypes(
+                                [...producttypes].sort((a, b) =>
+                                  b.department.name > a.department.name ? 1 : -1
+                                )
+                              )
+                            }
+                          />
+                        </div>
                       </th>
                       <th className="w-25">
-                        Kodi{"  "}
+                        Mahsulot turi{" "}
                         <Sort
-                          data={category}
-                          setData={setCategory}
+                          data={producttypes}
+                          setData={setProductTypes}
                           property={"name"}
                         />
                       </th>
@@ -315,18 +363,24 @@ export const Category = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {categories &&
-                      categories.map((c, key) => {
+                    {producttypes &&
+                      producttypes.map((s, key) => {
                         return (
                           <tr key={key}>
                             <td className="font-weight-bold">{key + 1}</td>
-                            <td>{c.name}</td>
-                            <td>{c.code}</td>
+                            <td>{s.category.name}</td>
+                            <td>{s.name}</td>
                             <td>
                               <button
-                                onClick={() =>
-                                  setCategory({ ...category, ...c })
-                                }
+                                onClick={() => {
+                                  const index = categories.findIndex(
+                                    (d) => s.category._id === d._id
+                                  );
+                                  document.getElementsByTagName(
+                                    "select"
+                                  )[0].selectedIndex = index + 1;
+                                  setProductType({ ...producttype, ...s });
+                                }}
                                 className="btn btn-success py-1 px-2"
                                 style={{ fontSize: "75%" }}
                               >
@@ -336,7 +390,7 @@ export const Category = () => {
                             <td>
                               <button
                                 onClick={() => {
-                                  setRemove(c);
+                                  setRemove({ ...remove, ...s });
                                   setModal(true);
                                 }}
                                 className="btn btn-secondary py-1 px-2"
@@ -360,7 +414,7 @@ export const Category = () => {
         modal={modal}
         setModal={setModal}
         basic={remove && remove.name}
-        text={"bo'limini o'chirishni tasdiqlaysizmi?"}
+        text={"mahsulot turini o'chirishni tasdiqlaysizmi?"}
         handler={deleteHandler}
       />
     </>
