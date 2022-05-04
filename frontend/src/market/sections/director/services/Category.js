@@ -56,7 +56,7 @@ export const Category = () => {
 
   //====================================================================
   //====================================================================
-  const [categories, setCategories] = useState();
+  const [categories, setCategories] = useState([]);
 
   const getCategory = useCallback(async () => {
     try {
@@ -245,13 +245,10 @@ export const Category = () => {
   //====================================================================
   //====================================================================
 
-  const [t, setT] = useState();
+  const [t, setT] = useState(0);
   useEffect(() => {
-    if (!t) {
-      setT(1);
-      getCategory();
-    }
-  }, [getCategory, t]);
+    getCategory();
+  }, [getCategory, categories]);
   //====================================================================
   //====================================================================
 
@@ -276,10 +273,11 @@ export const Category = () => {
                       <td>
                         <input
                           style={{ minWidth: "70px" }}
-                          value={category.name}
+                          value={category.name ? category.name : ""}
                           onKeyUp={keyPressed}
                           onChange={inputHandler}
                           type="text"
+                          name="name"
                           className="form-control w-75"
                           id="inputName"
                           placeholder="Bo'lim nomini kiriting"
@@ -329,8 +327,8 @@ export const Category = () => {
                       <th className="w-25">
                         Nomi{"  "}
                         <Sort
-                          data={category}
-                          setData={setCategory}
+                          data={categories}
+                          setData={setCategories}
                           property={"name"}
                         />
                       </th>
@@ -339,7 +337,7 @@ export const Category = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {categories &&
+                    {categories.length > 0 &&
                       categories.map((d, key) => {
                         return (
                           <tr key={key}>
