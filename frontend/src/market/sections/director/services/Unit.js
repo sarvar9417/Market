@@ -333,7 +333,7 @@ export const Unit = () => {
         modal={modal}
         setModal={setModal}
         basic={remove && remove.name}
-        text={"mahsulot turini o'chirishni tasdiqlaysizmi?"}
+        text={"o'lchov birlikini o'chirishni tasdiqlaysizmi?"}
         handler={deleteHandler}
       />
     </>
