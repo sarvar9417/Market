@@ -228,14 +228,14 @@ export const Navbar = ({ baseUrl }) => {
                       aria-labelledby="buttonsDropdown"
                     >
                       <li>
-                        <Link className="dropdown-item" to="/alo24/departments">
+                        <Link className="dropdown-item" to="/alo24/category">
                           Kategoriya
                         </Link>
                       </li>
                       <li>
                         <Link
                           className="dropdown-item"
-                          to="/alo24/servicetypes"
+                          to="/alo24/producttypes"
                         >
                           Mahsulotlar turlari
                         </Link>
@@ -243,6 +243,11 @@ export const Navbar = ({ baseUrl }) => {
                       <li>
                         <Link className="dropdown-item" to="/alo24/services">
                           Mahsulotlar
+                        </Link>
+                      </li>
+                      <li>
+                        <Link className="dropdown-item" to="/alo24/unit">
+                          Unit
                         </Link>
                       </li>
                     </ul>

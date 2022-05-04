@@ -47,6 +47,23 @@ export const checkProductType = (producttype) => {
   return false;
 };
 
+export const checkUnit = (unit) => {
+  if (!unit.market) {
+    return {
+      title: "Diqqat! Avtorzatsiyadan o'tilmagan.",
+      description: "Iltimos bo'limdan chiqib qayta kiriting.",
+      status: "error",
+    };
+  }
+  if (!unit.name) {
+    return {
+      title: "Diqqat! O'lchov birliki kiritilmagan.",
+      description: "Iltimos ulchov birligini kiriting.",
+      status: "error",
+    };
+  }
+};
+
 export const checkService = (service) => {
   if (!service.market)
     return {

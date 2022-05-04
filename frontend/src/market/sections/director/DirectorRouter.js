@@ -11,6 +11,7 @@ import { Services } from "./services/Services";
 import { ProductType } from "./services/ProductType";
 import { Warehouses } from "./services/Warehouses";
 import { Users } from "./users/Users";
+import { Unit } from "./services/Unit";
 
 export const DirectorRouter = () => {
   return (
@@ -26,14 +27,17 @@ export const DirectorRouter = () => {
         <Route path="/alo24/editdirectorpassword">
           <EditDirectorPassword />
         </Route>
-        <Route path="/alo24/departments">
+        <Route path="/alo24/category">
           <Category />
         </Route>
-        <Route path="/alo24/servicetypes">
+        <Route path="/alo24/producttypes">
           <ProductType />
         </Route>
         <Route path="/alo24/services">
           <Services />
+        </Route>
+        <Route path="/alo24/unit">
+          <Unit />
         </Route>
         <Route path="/alo24/rooms">
           <Rooms />
