@@ -19,4 +19,6 @@ module.exports.routers = (app) => {
   app.use('/api/adver', require('./adver/adver.route'))
   app.use('/api/cashier', require('./cashier/cashier.route'))
   app.use('/api/doctor', require('./doctor/doctor.route'))
+  app.use('/api/supplier', require('./supplier/supplier.route'))
+  app.use('/api/exchangerate', require('./exchangerate/exchangerate.route'))
 }

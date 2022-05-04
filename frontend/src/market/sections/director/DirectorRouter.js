@@ -1,17 +1,18 @@
-import React from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
-import { Advers } from "./adver/Advers";
-import { EditDirector } from "./editDirector/EditDirector";
-import { EditDirectorPassword } from "./editDirector/EditDirectorPassword";
-import { Category } from "./services/Categorys";
-import { ProductConnectors } from "./services/ProductConnector";
-import { Products } from "./services/Products";
-import { Rooms } from "./services/Rooms";
-import { Services } from "./services/Services";
-import { ProductType } from "./services/ProductType";
-import { Warehouses } from "./services/Warehouses";
-import { Users } from "./users/Users";
-import { Unit } from "./services/Unit";
+import React from 'react'
+import { Redirect, Route, Switch } from 'react-router-dom'
+import { Advers } from './adver/Advers'
+import { EditDirector } from './editDirector/EditDirector'
+import { EditDirectorPassword } from './editDirector/EditDirectorPassword'
+import { Category } from './services/Categorys'
+import { ProductConnectors } from './services/ProductConnector'
+import { Products } from './services/Products'
+import { Rooms } from './services/Rooms'
+import { Services } from './services/Services'
+import { ProductType } from './services/ProductType'
+import { Warehouses } from './services/Warehouses'
+import { Users } from './users/Users'
+import { Unit } from './services/Unit'
+import { Exchangerate } from './services/Exchangerate'
 
 export const DirectorRouter = () => {
   return (
@@ -52,6 +53,10 @@ export const DirectorRouter = () => {
           <ProductConnectors />
         </Route>
 
+        <Route path="/alo24/exchangerate">
+          <Exchangerate />
+        </Route>
+
         {/* Users */}
         <Route path="/alo24/users">
           <Users />
@@ -62,5 +67,5 @@ export const DirectorRouter = () => {
         <Redirect to="/alo24" />
       </Switch>
     </div>
-  );
-};
+  )
+}
