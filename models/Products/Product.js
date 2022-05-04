@@ -4,10 +4,9 @@ const Joi = require('joi')
 const product = new Schema(
   {
     name: { type: String, required: true },
-    shortname: { type: String },
     unit: { type: Schema.Types.ObjectId, ref: 'Unit' },
     code: { type: Number, required: true },
-    price: { type: Number, default: 0 },
+    price: { type: Schema.Types.ObjectId, ref: 'ProductPrice' },
     total: { type: Number, default: 0 },
     category: { type: Schema.Types.ObjectId, ref: 'Category' },
     producttype: { type: Schema.Types.ObjectId, ref: 'ProductType' },
@@ -22,10 +21,9 @@ const product = new Schema(
 function validateProduct(product) {
   const schema = Joi.object({
     name: Joi.string().required(),
-    shortname: Joi.string(),
     unit: Joi.string(),
     code: Joi.number(),
-    price: Joi.number(),
+    price: Joi.string(),
     total: Joi.number(),
     category: Joi.string(),
     producttype: Joi.string(),
