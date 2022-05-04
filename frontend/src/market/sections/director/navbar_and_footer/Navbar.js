@@ -1,14 +1,14 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { Link, useHistory } from 'react-router-dom'
-import { AuthContext } from '../../../context/AuthContext'
-import { useHttp } from '../../../hooks/http.hook'
-import { useToast } from '@chakra-ui/react'
+import React, { useCallback, useContext, useEffect, useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+import { AuthContext } from "../../../context/AuthContext";
+import { useHttp } from "../../../hooks/http.hook";
+import { useToast } from "@chakra-ui/react";
 
 export const Navbar = ({ baseUrl }) => {
-  const history = useHistory()
+  const history = useHistory();
   //====================================================================
   //====================================================================
-  const toast = useToast()
+  const toast = useToast();
 
   const notify = useCallback(
     (data) => {
@@ -18,21 +18,21 @@ export const Navbar = ({ baseUrl }) => {
         status: data.status && data.status,
         duration: 5000,
         isClosable: true,
-        position: 'top-right',
-      })
+        position: "top-right",
+      });
     },
-    [toast],
-  )
+    [toast]
+  );
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
 
-  const { request } = useHttp()
-  const auth = useContext(AuthContext)
+  const { request } = useHttp();
+  const auth = useContext(AuthContext);
 
-  const [user, setUser] = useState(auth.user)
+  const [user, setUser] = useState(auth.user);
   //====================================================================
   //====================================================================
 
@@ -42,20 +42,20 @@ export const Navbar = ({ baseUrl }) => {
   const getDirector = useCallback(async () => {
     try {
       const data = await request(
-        '/api/user',
-        'POST',
+        "/api/user",
+        "POST",
         {
           userId: auth.userId,
         },
         {
           Authorization: `Bearer ${auth.token}`,
-        },
-      )
-      setUser(data)
+        }
+      );
+      setUser(data);
     } catch (error) {
-      notify({ title: error, description: '', status: 'error' })
+      notify({ title: error, description: "", status: "error" });
     }
-  }, [request, auth, notify])
+  }, [request, auth, notify]);
 
   //====================================================================
   //====================================================================
@@ -63,8 +63,8 @@ export const Navbar = ({ baseUrl }) => {
   //====================================================================
   //====================================================================
   useEffect(() => {
-    getDirector()
-  }, [getDirector])
+    getDirector();
+  }, [getDirector]);
   //====================================================================
   //====================================================================
 
@@ -75,7 +75,7 @@ export const Navbar = ({ baseUrl }) => {
           {/* Row start */}
           <div className="row gutters">
             <div className="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
-              <Link to="/alo24" className="logo" style={{ fontSize: '26pt' }}>
+              <Link to="/alo24" className="logo" style={{ fontSize: "26pt" }}>
                 Alo24
               </Link>
             </div>
@@ -135,8 +135,8 @@ export const Navbar = ({ baseUrl }) => {
                       </Link>
                       <button
                         onClick={() => {
-                          auth.logout()
-                          history.push('/')
+                          auth.logout();
+                          history.push("/");
                         }}
                       >
                         <i className="icon-log-out1" /> Sign Out
@@ -179,7 +179,7 @@ export const Navbar = ({ baseUrl }) => {
               <li className="nav-item">
                 <Link
                   className={`nav-link ${
-                    window.location.pathname === '/alo24' ? 'active-page' : ''
+                    window.location.pathname === "/alo24" ? "active-page" : ""
                   }`}
                   to=""
                 >
@@ -195,16 +195,16 @@ export const Navbar = ({ baseUrl }) => {
                   aria-haspopup="true"
                   aria-expanded="false"
                   className={`nav-link ${
-                    window.location.pathname === '/alo24/departments' ||
-                    window.location.pathname === '/alo24/servicetypes' ||
-                    window.location.pathname === '/alo24/services' ||
-                    window.location.pathname === '/alo24/rooms' ||
-                    window.location.pathname === '/alo24/products' ||
-                    window.location.pathname === '/alo24/recieptproducts' ||
-                    window.location.pathname === '/alo24/rooms' ||
-                    window.location.pathname === '/alo24/productconnector'
-                      ? 'active-page'
-                      : ''
+                    window.location.pathname === "/alo24/departments" ||
+                    window.location.pathname === "/alo24/servicetypes" ||
+                    window.location.pathname === "/alo24/services" ||
+                    window.location.pathname === "/alo24/rooms" ||
+                    window.location.pathname === "/alo24/products" ||
+                    window.location.pathname === "/alo24/recieptproducts" ||
+                    window.location.pathname === "/alo24/rooms" ||
+                    window.location.pathname === "/alo24/productconnector"
+                      ? "active-page"
+                      : ""
                   }`}
                 >
                   <i className="icon-users nav-icon" />
@@ -221,7 +221,7 @@ export const Navbar = ({ baseUrl }) => {
                       aria-haspopup="true"
                       aria-expanded="false"
                     >
-                      Xizmatlar
+                      Mahsulotlar
                     </Link>
                     <ul
                       className="dropdown-menu dropdown-menu-right"
@@ -229,7 +229,7 @@ export const Navbar = ({ baseUrl }) => {
                     >
                       <li>
                         <Link className="dropdown-item" to="/alo24/departments">
-                          Bo'limlar
+                          Kategoriya
                         </Link>
                       </li>
                       <li>
@@ -237,12 +237,12 @@ export const Navbar = ({ baseUrl }) => {
                           className="dropdown-item"
                           to="/alo24/servicetypes"
                         >
-                          Xizmat turlari
+                          Mahsulotlar turlari
                         </Link>
                       </li>
                       <li>
                         <Link className="dropdown-item" to="/alo24/services">
-                          Xizmatlar
+                          Mahsulotlar
                         </Link>
                       </li>
                     </ul>
@@ -296,9 +296,9 @@ export const Navbar = ({ baseUrl }) => {
               <li className="nav-item dropdown">
                 <Link
                   className={`nav-link ${
-                    window.location.pathname === '/alo24/users'
-                      ? 'active-page'
-                      : ''
+                    window.location.pathname === "/alo24/users"
+                      ? "active-page"
+                      : ""
                   }`}
                   to="/alo24/users"
                   role="button"
@@ -331,9 +331,9 @@ export const Navbar = ({ baseUrl }) => {
               <li className="nav-item dropdown">
                 <span
                   className={`nav-link dropdown-toggle ${
-                    window.location.pathname === '/alo24/adver'
-                      ? 'active-page'
-                      : ''
+                    window.location.pathname === "/alo24/adver"
+                      ? "active-page"
+                      : ""
                   }`}
                   to="#"
                   id="uiElementsDropdown"
@@ -533,5 +533,5 @@ export const Navbar = ({ baseUrl }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

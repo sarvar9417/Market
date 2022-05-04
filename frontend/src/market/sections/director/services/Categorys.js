@@ -1,31 +1,31 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { Loader } from '../../../loader/Loader'
-import { useToast } from '@chakra-ui/react'
-import { useHttp } from '../../../hooks/http.hook'
-import { AuthContext } from '../../../context/AuthContext'
-import { checkCategory } from './checkData'
-import { Modal } from './modal/Modal'
-import { Sort } from './serviceComponents/Sort'
+import React, { useCallback, useContext, useEffect, useState } from "react";
+import { Loader } from "../../../loader/Loader";
+import { useToast } from "@chakra-ui/react";
+import { useHttp } from "../../../hooks/http.hook";
+import { AuthContext } from "../../../context/AuthContext";
+import { checkCategory } from "./checkData";
+import { Modal } from "./modal/Modal";
+import { Sort } from "./serviceComponents/Sort";
 
 export const Category = () => {
   //====================================================================
   //====================================================================
-  const [modal, setModal] = useState(false)
-  const [modal1, setModal1] = useState(false)
-  const [remove, setRemove] = useState()
+  const [modal, setModal] = useState(false);
+  const [modal1, setModal1] = useState(false);
+  const [remove, setRemove] = useState();
 
   const clearInputs = useCallback(() => {
-    const inputs = document.getElementsByTagName('input')
+    const inputs = document.getElementsByTagName("input");
     for (const input of inputs) {
-      input.value = ''
+      input.value = "";
     }
-  }, [])
+  }, []);
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
-  const toast = useToast()
+  const toast = useToast();
 
   const notify = useCallback(
     (data) => {
@@ -35,48 +35,50 @@ export const Category = () => {
         status: data.status && data.status,
         duration: 5000,
         isClosable: true,
-        position: 'top-right',
-      })
+        position: "top-right",
+      });
     },
-    [toast],
-  )
+    [toast]
+  );
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
-  const { request, loading } = useHttp()
-  const auth = useContext(AuthContext)
+  const { request, loading } = useHttp();
+  const auth = useContext(AuthContext);
   const [category, setCategory] = useState({
     market: auth.market && auth.market._id,
-  })
+    name: null,
+    code: null,
+  });
 
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
-  const [categories, setCategories] = useState()
+  const [categories, setCategories] = useState();
 
   const getCategory = useCallback(async () => {
     try {
       const data = await request(
         `/api/products/category/getall`,
-        'POST',
+        "POST",
         { market: auth.market._id },
         {
           Authorization: `Bearer ${auth.token}`,
-        },
-      )
-      setCategories(data)
+        }
+      );
+      setCategories(data);
     } catch (error) {
       notify({
         title: error,
-        description: '',
-        status: 'error',
-      })
+        description: "",
+        status: "error",
+      });
     }
-  }, [request, auth, notify])
+  }, [request, auth, notify]);
   //====================================================================
   //====================================================================
 
@@ -87,144 +89,107 @@ export const Category = () => {
     try {
       const data = await request(
         `/api/products/category/register`,
-        'POST',
-        { ...category },
+        "POST",
+        { ...category, code: `${category.code}` },
         {
           Authorization: `Bearer ${auth.token}`,
-        },
-      )
+        }
+      );
       notify({
         title: `${data.name} bo'limi yaratildi!`,
-        description: '',
-        status: 'success',
-      })
-      getCategory()
+        description: "",
+        status: "success",
+      });
+      getCategory();
       setCategory({
         market: auth.market && auth.market._id,
-      })
-      clearInputs()
+      });
+      clearInputs();
     } catch (error) {
       notify({
         title: error,
-        description: '',
-        status: 'error',
-      })
+        description: "",
+        status: "error",
+      });
     }
-  }, [request, auth, notify, getCategory, category, clearInputs])
+  }, [request, auth, notify, getCategory, category, clearInputs]);
 
   const updateHandler = useCallback(async () => {
     try {
       const data = await request(
-        `/api/products/category`,
-        'PUT',
-        { ...category },
+        `/api/products/category/update`,
+        "PUT",
+        { ...category, code: `${category.code}` },
         {
           Authorization: `Bearer ${auth.token}`,
-        },
-      )
+        }
+      );
       notify({
         title: `${data.name} bo'limi yangilandi!`,
-        description: '',
-        status: 'success',
-      })
-      getCategory()
+        description: "",
+        status: "success",
+      });
+      getCategory();
       setCategory({
         market: auth.market && auth.market._id,
-      })
-      clearInputs()
+      });
+      clearInputs();
     } catch (error) {
       notify({
         title: error,
-        description: '',
-        status: 'error',
-      })
+        description: "",
+        status: "error",
+      });
     }
-  }, [request, auth, notify, getCategory, category, clearInputs])
+  }, [request, auth, notify, getCategory, category, clearInputs]);
 
   const saveHandler = () => {
     if (checkCategory(category)) {
-      return notify(checkCategory(category))
+      return notify(checkCategory(category));
     }
     if (category._id) {
-      return updateHandler()
+      return updateHandler();
     } else {
-      return createHandler()
+      return createHandler();
     }
-  }
+  };
 
   const keyPressed = (e) => {
-    if (e.key === 'Enter') {
-      return saveHandler()
+    if (e.key === "Enter") {
+      return saveHandler();
     }
-  }
+  };
 
   const deleteHandler = useCallback(async () => {
     try {
       const data = await request(
         `/api/products/category/delete`,
-        'DELETE',
+        "DELETE",
         { ...remove },
         {
           Authorization: `Bearer ${auth.token}`,
-        },
-      )
+        }
+      );
       notify({
         title: `${data.name} bo'limi o'chirildi!`,
-        description: '',
-        status: 'success',
-      })
-      getCategory()
-      setModal(false)
+        description: "",
+        status: "success",
+      });
+      getCategory();
+      setModal(false);
       setCategory({
         market: auth.market && auth.market._id,
-      })
-      clearInputs()
+      });
+      clearInputs();
     } catch (error) {
       notify({
         title: error,
-        description: '',
-        status: 'error',
-      })
+        description: "",
+        status: "error",
+      });
     }
-  }, [auth, request, remove, notify, getCategory, clearInputs])
+  }, [auth, request, remove, notify, getCategory, clearInputs]);
 
-  const deleteAll = useCallback(async () => {
-    if (categories && categories.length === 0) {
-      return notify({
-        title: `Bo'limlar mavjud emas`,
-        description: '',
-        status: 'warning',
-      })
-    }
-    try {
-      const data = await request(
-        `/api/products/category/deleteall`,
-        'DELETE',
-        { ...categories },
-        {
-          Authorization: `Bearer ${auth.token}`,
-        },
-      )
-      localStorage.setItem('delete', data)
-      notify({
-        title: `Barcha bo'limlar o'chirildi!`,
-        description: '',
-        status: 'success',
-      })
-      getCategory()
-      setModal1(false)
-      setCategory({
-        market: auth.market && auth.market._id,
-      })
-      clearInputs()
-    } catch (error) {
-      notify({
-        title: error,
-        description: '',
-        status: 'error',
-      })
-    }
-  }, [auth, request, notify, getCategory, clearInputs, categories])
   //====================================================================
   //====================================================================
 
@@ -236,8 +201,8 @@ export const Category = () => {
   // }
 
   const inputHandler = (e) => {
-    setCategory({ ...category, name: e.target.value })
-  }
+    setCategory({ ...category, [e.target.name]: e.target.value });
+  };
 
   //====================================================================
   //====================================================================
@@ -245,19 +210,19 @@ export const Category = () => {
   //====================================================================
   //====================================================================
 
-  const [t, setT] = useState()
+  const [t, setT] = useState();
   useEffect(() => {
     if (!t) {
-      setT(1)
-      getCategory()
+      setT(1);
+      getCategory();
     }
-  }, [getCategory, t])
+  }, [getCategory, t]);
   //====================================================================
   //====================================================================
 
   return (
     <>
-      {loading ? <Loader /> : ''}
+      {loading ? <Loader /> : ""}
       <div className="content-wrapper px-lg-5 px-3">
         <div className="row gutters">
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -266,22 +231,41 @@ export const Category = () => {
                 <table className="table m-0">
                   <thead>
                     <tr>
-                      <th className="w-25">Bo'lim nomi</th>
+                      <th className="w-25">Kategoriya nomi</th>
+                      <th className="w-25">Kategoriya kodi</th>
                       <th className="w-25">Saqlash</th>
-                      <th className="w-25">Bo'limlarni o'chirish</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
                       <td>
                         <input
-                          style={{ minWidth: '70px' }}
-                          value={category.name}
+                          style={{ minWidth: "70px" }}
+                          value={category.name ? category.name : ""}
                           onKeyUp={keyPressed}
                           onChange={inputHandler}
                           type="text"
                           className="form-control w-75"
                           id="inputName"
+                          name="name"
+                          placeholder="Bo'lim nomini kiriting"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          style={{ minWidth: "70px" }}
+                          value={category.code ? category.code : ""}
+                          onKeyUp={keyPressed}
+                          onChange={(e) =>
+                            setCategory({
+                              ...category,
+                              [e.target.name]: parseInt(e.target.value),
+                            })
+                          }
+                          type="text"
+                          className="form-control w-75"
+                          id="inputName"
+                          name="code"
                           placeholder="Bo'lim nomini kiriting"
                         />
                       </td>
@@ -300,21 +284,6 @@ export const Category = () => {
                           </button>
                         )}
                       </td>
-                      <td>
-                        {loading ? (
-                          <button className="btn btn-danger" disabled>
-                            <span className="spinner-border spinner-border-sm"></span>
-                            Loading...
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => setModal1(true)}
-                            className="btn btn-danger py-0 px-4 pt-1"
-                          >
-                            <span className="icon-trash-2"></span>
-                          </button>
-                        )}
-                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -327,11 +296,19 @@ export const Category = () => {
                     <tr>
                       <th className="">№</th>
                       <th className="w-25">
-                        Nomi{'  '}
+                        Nomi{"  "}
                         <Sort
                           data={category}
                           setData={setCategory}
-                          property={'name'}
+                          property={"name"}
+                        />
+                      </th>
+                      <th className="w-25">
+                        Kodi{"  "}
+                        <Sort
+                          data={category}
+                          setData={setCategory}
+                          property={"name"}
                         />
                       </th>
                       <th className="w-25">Tahrirlash</th>
@@ -340,17 +317,19 @@ export const Category = () => {
                   </thead>
                   <tbody>
                     {categories &&
-                      categories.map((d, key) => {
+                      categories.map((c, key) => {
                         return (
                           <tr key={key}>
                             <td className="font-weight-bold">{key + 1}</td>
-                            <td>{d.name}</td>
+                            <td>{c.name}</td>
+                            <td>{c.code}</td>
                             <td>
                               <button
-                                onClick={() => setCategory(d)}
-                                type="button"
+                                onClick={() =>
+                                  setCategory({ ...category, ...c })
+                                }
                                 className="btn btn-success py-1 px-2"
-                                style={{ fontSize: '75%' }}
+                                style={{ fontSize: "75%" }}
                               >
                                 Tahrirlash
                               </button>
@@ -358,18 +337,17 @@ export const Category = () => {
                             <td>
                               <button
                                 onClick={() => {
-                                  setRemove(d)
-                                  setModal(true)
+                                  setRemove(c);
+                                  setModal(true);
                                 }}
-                                type="button"
                                 className="btn btn-secondary py-1 px-2"
-                                style={{ fontSize: '75%' }}
+                                style={{ fontSize: "75%" }}
                               >
                                 O'chirish
                               </button>
                             </td>
                           </tr>
-                        )
+                        );
                       })}
                   </tbody>
                 </table>
@@ -386,14 +364,6 @@ export const Category = () => {
         text={"bo'limini o'chirishni tasdiqlaysizmi?"}
         handler={deleteHandler}
       />
-
-      <Modal
-        modal={modal1}
-        setModal={setModal1}
-        basic={'Barcha'}
-        text={"bo'limlarni o'chirishni tasdiqlaysizmi?"}
-        handler={deleteAll}
-      />
     </>
-  )
-}
+  );
+};
