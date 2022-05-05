@@ -400,8 +400,9 @@ module.exports.getAll = async (req, res) => {
       market,
     })
       .select('name code unit')
-      .populate('category', 'name')
+      .populate('category', 'name code')
       .populate('producttype', 'name')
+      .populate('unit', 'name')
 
     res.send(products)
   } catch (error) {
