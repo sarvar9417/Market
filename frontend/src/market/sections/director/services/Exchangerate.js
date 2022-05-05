@@ -5,7 +5,7 @@ import { useHttp } from '../../../hooks/http.hook'
 import { AuthContext } from '../../../context/AuthContext'
 import { checkExchangerate } from './checkData'
 import { Modal } from './modal/Modal'
-import { Sort } from './serviceComponents/Sort'
+import { Sort } from './productComponents/Sort'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons'
 
