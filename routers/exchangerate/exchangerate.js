@@ -88,9 +88,35 @@ module.exports.getAll = async (req, res) => {
 
     const exchangerates = await Exchangerate.find({
       market,
-    }).select('exchangerate')
+    })
+      .select('exchangerate createdAt market')
+      .sort({ _id: -1 })
 
     res.send(exchangerates)
+  } catch (error) {
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
+  }
+}
+
+//Exchangerate get
+module.exports.get = async (req, res) => {
+  try {
+    const { market } = req.body
+    const marke = await Market.findById(market)
+
+    if (!marke) {
+      return res.status(400).json({
+        message: "Diqqat! Do'kon ma'lumotlari topilmadi.",
+      })
+    }
+
+    const exchangerates = await Exchangerate.find({
+      market,
+    })
+      .select('exchangerate')
+      .sort({ _id: -1 })
+
+    res.send(exchangerates[0])
   } catch (error) {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
   }

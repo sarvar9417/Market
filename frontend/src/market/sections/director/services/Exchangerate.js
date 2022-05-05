@@ -16,7 +16,6 @@ export const Exchangerate = () => {
 
   const clearInputs = useCallback(() => {
     const inputs = document.getElementsByTagName('input')
-    document.getElementsByTagName('select')[0].selectedIndex = 0
     for (const input of inputs) {
       input.value = ''
     }
@@ -61,38 +60,12 @@ export const Exchangerate = () => {
 
   //====================================================================
   //====================================================================
-  const [categories, setCategories] = useState([])
-
-  const getCategories = useCallback(async () => {
-    try {
-      const data = await request(
-        `/api/products/category/getall`,
-        'POST',
-        { market: auth.market._id },
-        {
-          Authorization: `Bearer ${auth.token}`,
-        },
-      )
-      setCategories(data)
-    } catch (error) {
-      notify({
-        title: error,
-        description: '',
-        status: 'error',
-      })
-    }
-  }, [request, auth, notify])
-  //====================================================================
-  //====================================================================
-
-  //====================================================================
-  //====================================================================
   const [exchangerates, setExchangerates] = useState([])
 
   const getExchangerates = useCallback(async () => {
     try {
       const data = await request(
-        `/api/products/exchangerate/getall`,
+        `/api/exchangerate/getall`,
         'POST',
         { market: auth.market._id },
         {
@@ -117,7 +90,7 @@ export const Exchangerate = () => {
   const createHandler = useCallback(async () => {
     try {
       const data = await request(
-        `/api/products/exchangerate/register`,
+        `/api/exchangerate/register`,
         'POST',
         { ...exchangerate },
         {
@@ -125,7 +98,7 @@ export const Exchangerate = () => {
         },
       )
       notify({
-        title: `${data.name} mahsulot turi yaratildi!`,
+        title: `Valyuta kursi yaratildi!`,
         description: '',
         status: 'success',
       })
@@ -146,7 +119,7 @@ export const Exchangerate = () => {
   const updateHandler = useCallback(async () => {
     try {
       const data = await request(
-        `/api/products/exchangerate/update`,
+        `/api/exchangerate/update`,
         'PUT',
         { ...exchangerate },
         {
@@ -154,7 +127,7 @@ export const Exchangerate = () => {
         },
       )
       notify({
-        title: `${data.name} mahsuloti yangilandi!`,
+        title: `Valyuta kursi yangilandi!`,
         description: '',
         status: 'success',
       })
@@ -192,7 +165,7 @@ export const Exchangerate = () => {
   const deleteHandler = useCallback(async () => {
     try {
       const data = await request(
-        `/api/products/exchangerate/delete`,
+        `/api/exchangerate/delete`,
         'DELETE',
         { ...remove },
         {
@@ -200,7 +173,7 @@ export const Exchangerate = () => {
         },
       )
       notify({
-        title: `${data.name} nomli mahsulot turi o'chirildi!`,
+        title: `Valyuta kursi o'chirildi!`,
         description: '',
         status: 'success',
       })
@@ -224,12 +197,8 @@ export const Exchangerate = () => {
   //====================================================================
   //====================================================================
 
-  const checkHandler = (e) => {
-    setExchangerate({ ...exchangerate, category: e.target.value })
-  }
-
   const inputHandler = (e) => {
-    setExchangerate({ ...exchangerate, name: e.target.value })
+    setExchangerate({ ...exchangerate, exchangerate: e.target.value })
   }
 
   //====================================================================
@@ -241,10 +210,9 @@ export const Exchangerate = () => {
   useEffect(() => {
     if (!t) {
       setT(1)
-      getCategories()
       getExchangerates()
     }
-  }, [getCategories, getExchangerates, t])
+  }, [getExchangerates, t])
   //====================================================================
   //====================================================================
 
@@ -259,45 +227,26 @@ export const Exchangerate = () => {
                 <table className="table m-0">
                   <thead>
                     <tr>
-                      <th className="w-25">Kategoriya nomi</th>
-                      <th className="w-25">Mahsulot turi</th>
-                      <th className="w-25">Saqlash</th>
+                      <th className="w-25 text-center">Kursni kiriting</th>
+                      <th className="w-25 text-center">Saqlash</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td>
-                        <select
-                          style={{ minWidth: '70px', maxWidth: '200px' }}
-                          className="form-control form-control-sm selectpicker"
-                          placeholder="Kategoriyani tanlang"
-                          onChange={checkHandler}
-                        >
-                          <option>Kategoriya tanlang</option>
-                          {categories &&
-                            categories.map((category, index) => {
-                              return (
-                                <option value={category._id} key={index}>
-                                  {category.name}
-                                </option>
-                              )
-                            })}
-                        </select>
-                      </td>
-                      <td>
+                      <td className="tex-center">
                         <input
                           style={{ minWidth: '70px' }}
-                          name="name"
-                          value={exchangerate.name || ''}
+                          name="exchangerate"
+                          value={exchangerate.exchangerate || ''}
                           onKeyUp={keyPressed}
                           onChange={inputHandler}
                           type="text"
                           className="form-control w-75 py-0"
-                          id="name"
-                          placeholder="Mahsulot turining nomini kiriting"
+                          id="exchangerate"
+                          placeholder="Valyuta kursini kiriting"
                         />
                       </td>
-                      <td>
+                      <td className="text-center">
                         {loading ? (
                           <button className="btn btn-info" disabled>
                             <span className="spinner-border spinner-border-sm"></span>
@@ -306,7 +255,7 @@ export const Exchangerate = () => {
                         ) : (
                           <button
                             onClick={saveHandler}
-                            className="btn btn-info py-1 px-4"
+                            className="btn btn-info py-1 px-4 "
                           >
                             Saqlash
                           </button>
@@ -324,15 +273,13 @@ export const Exchangerate = () => {
                     <tr>
                       <th>№</th>
                       <th className="w-25">
-                        Kategoriya{'  '}
+                        Sana
                         <div className="btn-group-vertical ml-2">
                           <FontAwesomeIcon
                             onClick={() =>
                               setExchangerates(
                                 [...exchangerates].sort((a, b) =>
-                                  a.department.name > b.department.name
-                                    ? 1
-                                    : -1,
+                                  a.createdAt > b.createdAt ? 1 : -1,
                                 ),
                               )
                             }
@@ -345,9 +292,7 @@ export const Exchangerate = () => {
                             onClick={() =>
                               setExchangerates(
                                 [...exchangerates].sort((a, b) =>
-                                  b.department.name > a.department.name
-                                    ? 1
-                                    : -1,
+                                  b.createdAt > a.createdAt ? 1 : -1,
                                 ),
                               )
                             }
@@ -355,11 +300,11 @@ export const Exchangerate = () => {
                         </div>
                       </th>
                       <th className="w-25">
-                        Mahsulot turi{' '}
+                        Kurs{' '}
                         <Sort
                           data={exchangerates}
                           setData={setExchangerates}
-                          property={'name'}
+                          property={'exchangerate'}
                         />
                       </th>
                       <th className="w-25">Tahrirlash</th>
@@ -372,19 +317,13 @@ export const Exchangerate = () => {
                         return (
                           <tr key={key}>
                             <td className="font-weight-bold">{key + 1}</td>
-                            <td>{s.category.name}</td>
-                            <td>{s.name}</td>
+                            <td>
+                              {new Date(s.createdAt).toLocaleDateString()}
+                            </td>
+                            <td>{s.exchangerate}</td>
                             <td>
                               <button
-                                onClick={() => {
-                                  const index = categories.findIndex(
-                                    (d) => s.category._id === d._id,
-                                  )
-                                  document.getElementsByTagName(
-                                    'select',
-                                  )[0].selectedIndex = index + 1
-                                  setExchangerate({ ...exchangerate, ...s })
-                                }}
+                                onClick={() => setExchangerate(s)}
                                 className="btn btn-success py-1 px-2"
                                 style={{ fontSize: '75%' }}
                               >
@@ -418,7 +357,7 @@ export const Exchangerate = () => {
         modal={modal}
         setModal={setModal}
         basic={remove && remove.name}
-        text={"mahsulot turini o'chirishni tasdiqlaysizmi?"}
+        text={"valyuta kursini o'chirishni tasdiqlaysizmi?"}
         handler={deleteHandler}
       />
     </>
