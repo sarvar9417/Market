@@ -64,37 +64,43 @@ export const checkUnit = (unit) => {
   }
 };
 
-export const checkService = (service) => {
-  if (!service.market)
+export const checkProduct = (product) => {
+  if (!product.market)
     return {
       title: "Diqqat! Avtorzatsiyadan o'tilmagan.",
       description: "Iltimos bo'limdan chiqib qayta kiring.",
       status: "error",
     };
-  if (!service.category)
+  if (!product.category)
     return {
-      title: "Diqqat! Bo'lim tanlanmagan.",
-      description: "Iltimos bo'limni tanlang.",
+      title: "Diqqat! Mahsulot kategoriyasi tanlanmagan.",
+      description: "Iltimos kategoriyani tanlang.",
       status: "error",
     };
-  if (!service.servicetype)
+  if (!product.producttype)
     return {
-      title: "Diqqat! Xizmat turi tanlanmagan.",
-      description: "Iltimos xizmat turini tanlang.",
-      status: "error",
-    };
-
-  if (!service.name)
-    return {
-      title: "Diqqat! Xizmat nomi kiritilmagan.",
-      description: "Iltimos xizmat nomini kiriting.",
+      title: "Diqqat! Mahsulot turi tanlanmagan.",
+      description: "Iltimos mahsulot turini tanlang.",
       status: "error",
     };
 
-  if (!service.price)
+  if (!product.name)
     return {
-      title: "Diqqat! Xizmat narxi kiritilmagan.",
-      description: "Iltimos xizmat narxi kiriting.",
+      title: "Diqqat! Mahsulot nomi kiritilmagan.",
+      description: "Iltimos mahsulot nomini kiriting.",
+      status: "error",
+    };
+
+  if (!product.code)
+    return {
+      title: "Diqqat! Mahsulot kodi kiritilmagan.",
+      description: "Iltimos kodini kiriting.",
+      status: "error",
+    };
+  if (!product.unit)
+    return {
+      title: "Diqqat! O'lchov birliki kiritilmagan.",
+      description: "Iltimos o'lchov birlikini kiriting.",
       status: "error",
     };
   return false;
@@ -248,34 +254,6 @@ export const checkUploadRooms = (market, rooms) => {
         status: "error",
       };
     }
-  }
-  return false;
-};
-
-// Mahsulotni tekshirish
-export const checkProduct = (product) => {
-  if (!product.name) {
-    return {
-      title: `Diqqat! Mahsulot nomi ko'rsatilmagan.`,
-      description: "Iltimos mahsulot narxini kiriting.",
-      status: "error",
-    };
-  }
-
-  if (!product.price) {
-    return {
-      title: `Diqqat! Mahsulot narxi kiritilmagan.`,
-      description: "Iltimos mahsulot narxini kiriting.",
-      status: "error",
-    };
-  }
-
-  if (!product.unit) {
-    return {
-      title: `Diqqat! o'lchov birligi tanlanmagan.`,
-      description: "Iltimos o'lchov birligini tanlang.",
-      status: "error",
-    };
   }
   return false;
 };

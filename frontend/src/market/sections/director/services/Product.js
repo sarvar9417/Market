@@ -1,0 +1,428 @@
+import React, { useCallback, useContext, useEffect, useState } from "react";
+import { Loader } from "../../../loader/Loader";
+import { useToast } from "@chakra-ui/react";
+import { useHttp } from "../../../hooks/http.hook";
+import { AuthContext } from "../../../context/AuthContext";
+import { checkProduct } from "./checkData";
+import { Modal } from "./modal/Modal";
+import { TableProduct } from "./productComponents/TableProduct";
+import { InputProduct } from "./productComponents/InputProduct";
+
+export const Product = () => {
+  //====================================================================
+  //====================================================================
+  // Pagenation
+  const [currentPage, setCurrentPage] = useState(0);
+  const [countPage, setCountPage] = useState(10);
+
+  const indexLastProduct = (currentPage + 1) * countPage;
+  const indexFirstProduct = indexLastProduct - countPage;
+  const [currentProducts, setCurrentProducts] = useState([]);
+
+  //====================================================================
+  //====================================================================
+
+  //====================================================================
+  //====================================================================
+  const [modal, setModal] = useState(false);
+  const [remove, setRemove] = useState();
+
+  const clearInputs = useCallback(() => {
+    const inputs = document.getElementsByTagName("input");
+    document.getElementsByTagName("select")[0].selectedIndex = 0;
+    for (const input of inputs) {
+      input.value = "";
+    }
+  }, []);
+  //====================================================================
+  //====================================================================
+
+  //====================================================================
+  //====================================================================
+  const toast = useToast();
+
+  const notify = useCallback(
+    (data) => {
+      toast({
+        title: data.title && data.title,
+        description: data.description && data.description,
+        status: data.status && data.status,
+        duration: 5000,
+        isClosable: true,
+        position: "top-right",
+      });
+    },
+    [toast]
+  );
+  //====================================================================
+  //====================================================================
+
+  //====================================================================
+  //====================================================================
+  const { request, loading } = useHttp();
+  const auth = useContext(AuthContext);
+
+  const [product, setProduct] = useState({
+    market: auth.market && auth.market._id,
+  });
+
+  //====================================================================
+  //====================================================================
+
+  //====================================================================
+  //====================================================================
+  const [products, setProducts] = useState([]);
+  const [searchStorage, setSearchStrorage] = useState();
+
+  const getProducts = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/products/product/getall`,
+        "POST",
+        { market: auth.market._id },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setProducts(data);
+      setSearchStrorage(data);
+      setCurrentProducts(data.slice(indexFirstProduct, indexLastProduct));
+    } catch (error) {
+      notify({
+        title: error,
+        description: "",
+        status: "error",
+      });
+    }
+  }, [
+    request,
+    auth,
+    notify,
+    setCurrentProducts,
+    indexLastProduct,
+    indexFirstProduct,
+    setSearchStrorage,
+  ]);
+  //====================================================================
+  //====================================================================
+
+  //====================================================================
+  //====================================================================
+  const [categories, setCategories] = useState();
+
+  const getCategories = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/products/category/getall`,
+        "POST",
+        { market: auth.market._id },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setCategories(data);
+    } catch (error) {
+      notify({
+        title: error,
+        description: "",
+        status: "error",
+      });
+    }
+  }, [request, auth, notify]);
+  //====================================================================
+  //====================================================================
+
+  //====================================================================
+  //====================================================================
+
+  const [units, setUnits] = useState([]);
+
+  const getUnits = useCallback(async () => {
+    try {
+      const data = await request(
+        "/api/products/unit/getall",
+        "POST",
+        { market: auth.market._id },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setUnits(data);
+    } catch (error) {
+      notify({
+        title: error,
+        description: "",
+        status: "error",
+      });
+    }
+  }, [request, notify, auth]);
+
+  //====================================================================
+  //====================================================================
+
+  //====================================================================
+  //====================================================================
+  const [producttypes, setProductTypes] = useState();
+
+  const getProductTypes = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/products/producttype/getall`,
+        "POST",
+        { market: auth.market._id },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setProductTypes(data);
+    } catch (error) {
+      notify({
+        title: error,
+        description: "",
+        status: "error",
+      });
+    }
+  }, [request, auth, notify]);
+  //====================================================================
+  //====================================================================
+
+  //====================================================================
+  //====================================================================
+
+  const createHandler = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/products/product/register`,
+        "POST",
+        { ...product },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      notify({
+        title: `${data.name} xizmati yaratildi!`,
+        description: "",
+        status: "success",
+      });
+      getProducts();
+      setProduct({
+        market: auth.market && auth.market._id,
+      });
+      clearInputs();
+    } catch (error) {
+      notify({
+        title: error,
+        description: "",
+        status: "error",
+      });
+    }
+  }, [auth, request, getProducts, product, notify, clearInputs]);
+
+  const updateHandler = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/products/product/update`,
+        "PUT",
+        { market: auth.market && auth.market._id, ...product },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      notify({
+        title: `${data.name} xizmati yangilandi!`,
+        description: "",
+        status: "success",
+      });
+      getProducts();
+      setProduct({
+        market: auth.market && auth.market._id,
+      });
+      clearInputs();
+      document.getElementsByTagName("select")[0].selectedIndex = 0;
+    } catch (error) {
+      notify({
+        title: error,
+        description: "",
+        status: "error",
+      });
+    }
+  }, [auth, request, getProducts, product, notify, clearInputs]);
+
+  const saveHandler = () => {
+    if (checkProduct(product)) {
+      return notify(checkProduct(product));
+    }
+    if (product._id) {
+      return updateHandler();
+    } else {
+      return createHandler();
+    }
+  };
+
+  const keyPressed = (e) => {
+    if (e.key === "Enter") {
+      return saveHandler();
+    }
+  };
+
+  const deleteHandler = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/products/product/delete`,
+        "DELETE",
+        { ...remove, market: auth.market && auth.market._id },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      notify({
+        title: `${data.name} xizmati o'chirildi!`,
+        description: "",
+        status: "success",
+      });
+      getProducts();
+      setProduct({
+        market: auth.market && auth.market._id,
+      });
+      clearInputs();
+      setModal(false);
+    } catch (error) {
+      notify({
+        title: error,
+        description: "",
+        status: "error",
+      });
+    }
+  }, [auth, request, remove, notify, getProducts, clearInputs]);
+
+  //====================================================================
+  //====================================================================
+
+  //====================================================================
+  //====================================================================
+
+  const inputHandler = (e) => {
+    setProduct({ ...product, [e.target.name]: e.target.value });
+  };
+
+  //====================================================================
+  //====================================================================
+
+  //====================================================================
+  //====================================================================
+  // SEARCH
+
+  const searchCategory = useCallback(
+    (e) => {
+      const searching = searchStorage.filter((item) =>
+        item.category.name.toLowerCase().includes(e.target.value.toLowerCase())
+      );
+      setProducts(searching);
+      setCurrentProducts(searching.slice(0, countPage));
+    },
+    [searchStorage, countPage]
+  );
+
+  const searchProductType = useCallback(
+    (e) => {
+      const searching = searchStorage.filter((item) =>
+        item.producttype.name
+          .toLowerCase()
+          .includes(e.target.value.toLowerCase())
+      );
+      setProducts(searching);
+      setCurrentProducts(searching.slice(0, countPage));
+    },
+    [searchStorage, countPage]
+  );
+
+  const searchName = useCallback(
+    (e) => {
+      const searching = searchStorage.filter((item) =>
+        item.name.toLowerCase().includes(e.target.value.toLowerCase())
+      );
+      setProducts(searching);
+      setCurrentProducts(searching.slice(0, countPage));
+    },
+    [searchStorage, countPage]
+  );
+  //====================================================================
+  //====================================================================
+  const setPageSize = useCallback(
+    (e) => {
+      setCurrentPage(0);
+      setCountPage(e.target.value);
+      setCurrentProducts(products.slice(0, e.target.value));
+    },
+    [products]
+  );
+  //====================================================================
+  //====================================================================
+
+  //====================================================================
+  //====================================================================
+  const [t, setT] = useState();
+  useEffect(() => {
+    if (!t) {
+      setT(1);
+      getCategories();
+      getProducts();
+      getProductTypes();
+      getUnits();
+    }
+  }, [getProducts, getUnits, getCategories, getProductTypes, t]);
+  //====================================================================
+  //====================================================================
+
+  return (
+    <>
+      {loading ? <Loader /> : ""}
+      <div className="content-wrapper px-lg-5 px-3">
+        <div className="row gutters">
+          <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <InputProduct
+              producttypes={producttypes}
+              categories={categories}
+              setProduct={setProduct}
+              product={product}
+              keyPressed={keyPressed}
+              inputHandler={inputHandler}
+              saveHandler={saveHandler}
+              loading={loading}
+              units={units}
+            />
+            <TableProduct
+              producttypes={producttypes}
+              product={product}
+              searchName={searchName}
+              searchProductType={searchProductType}
+              searchCategory={searchCategory}
+              categories={categories}
+              products={products}
+              setRemove={setRemove}
+              setModal={setModal}
+              setProducts={setProducts}
+              setProduct={setProduct}
+              setCurrentPage={setCurrentPage}
+              countPage={countPage}
+              setCountPage={setCountPage}
+              currentProducts={currentProducts}
+              setCurrentProducts={setCurrentProducts}
+              currentPage={currentPage}
+              setPageSize={setPageSize}
+              loading={loading}
+            />
+          </div>
+        </div>
+      </div>
+
+      <Modal
+        modal={modal}
+        setModal={setModal}
+        basic={remove && remove.name}
+        text={"mahsulotnti o'chirishni tasdiqlaysizmi?"}
+        handler={deleteHandler}
+      />
+    </>
+  );
+};

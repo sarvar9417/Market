@@ -51,7 +51,7 @@ export const ExcelUpload = ({ setData, setModal, loading }) => {
           <span class="spinner-border spinner-border-sm"></span>
           Loading...
         </button>
-        :
+          :
         <button
           onClick={() => {
             document.getElementById("excelLoader").click();

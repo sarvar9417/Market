@@ -241,7 +241,7 @@ export const Navbar = ({ baseUrl }) => {
                         </Link>
                       </li>
                       <li>
-                        <Link className="dropdown-item" to="/alo24/services">
+                        <Link className="dropdown-item" to="/alo24/product">
                           Mahsulotlar
                         </Link>
                       </li>

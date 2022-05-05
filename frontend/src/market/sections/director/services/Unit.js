@@ -5,7 +5,7 @@ import { useHttp } from "../../../hooks/http.hook";
 import { AuthContext } from "../../../context/AuthContext";
 import { checkUnit } from "./checkData";
 import { Modal } from "./modal/Modal";
-import { Sort } from "./serviceComponents/Sort";
+import { Sort } from "./productComponents/Sort";
 
 export const Unit = () => {
   //====================================================================
