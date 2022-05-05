@@ -30,8 +30,8 @@ export const ExcelUpload = ({ setData, setModal, loading }) => {
     });
 
     promise.then((d) => {
-        setData(d);
-        setModal(true)
+      setData(d);
+      setModal(true);
     });
   };
 
@@ -47,20 +47,21 @@ export const ExcelUpload = ({ setData, setModal, loading }) => {
         }}
       />
       <Tooltip hasArrow label="Barcha xizmatlarni import qilish" bg="green.400">
-        {loading ? <button className="btn btn-success" disabled>
-          <span class="spinner-border spinner-border-sm"></span>
-          Loading...
-        </button>
-          :
-        <button
-          onClick={() => {
-            document.getElementById("excelLoader").click();
-          }}
-          className="btn btn-success py-0 px-3 pt-1 align-middle"
-        >
-          <FontAwesomeIcon style={{ fontSize: "12pt" }} icon={faFileExcel} />
-        </button>
-        }
+        {loading ? (
+          <button className="btn btn-success" disabled>
+            <span className="spinner-border spinner-border-sm"></span>
+            Loading...
+          </button>
+        ) : (
+          <button
+            onClick={() => {
+              document.getElementById("excelLoader").click();
+            }}
+            className="btn btn-success py-0 px-3 pt-1 align-middle"
+          >
+            <FontAwesomeIcon style={{ fontSize: "12px" }} icon={faFileExcel} />
+          </button>
+        )}
       </Tooltip>
     </>
   );

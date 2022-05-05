@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleUp, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { Pagination } from "../../components/Pagination";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
+import { ExcelTable } from "./ExcelTable";
+import { ExcelUpload } from "../productComponents/ExcelUpload";
 
 export const TableProduct = ({
   searchName,
@@ -20,12 +22,17 @@ export const TableProduct = ({
   currentPage,
   setPageSize,
   loading,
+  tableExcel,
+  searchCode,
+  searchCategoryCode,
+  setImports,
+  setModal2,
 }) => {
   return (
     <div className="table-container">
       <div className="table-container">
         <div className="table-responsive">
-          <table className="table m-0" id="products-table">
+          <table className="table m-0">
             <thead className="bg-white">
               <tr>
                 <th>
@@ -52,17 +59,27 @@ export const TableProduct = ({
                 </th>
                 <th>
                   <input
-                    onChange={searchProductType}
+                    onChange={searchCategoryCode}
                     style={{ maxWidth: "100px" }}
                     type="search"
                     className="form-control form-control-sm selectpicker"
-                    placeholder="Mahsulot turi"
+                    placeholder="Kategoriya"
                     aria-controls="basicExample"
                   />
                 </th>
                 <th>
                   <input
                     onChange={searchName}
+                    style={{ maxWidth: "100px" }}
+                    type="search"
+                    className="form-control form-control-sm selectpicker"
+                    placeholder="Mahsulot"
+                    aria-controls="basicExample"
+                  />
+                </th>
+                <th>
+                  <input
+                    onChange={searchCode}
                     style={{ maxWidth: "100px" }}
                     type="search"
                     className="form-control form-control-sm selectpicker"
@@ -89,6 +106,13 @@ export const TableProduct = ({
                       filename="Mahsulotlar"
                     />
                   </div>
+                </th>
+                <th className="text-center">
+                  <ExcelUpload
+                    setData={setImports}
+                    setModal={setModal2}
+                    loading={loading}
+                  />
                 </th>
               </tr>
             </thead>
@@ -123,7 +147,7 @@ export const TableProduct = ({
                   </div>
                 </th>
                 <th className="border-right">
-                  Mahsulot turi
+                  Kategoriya kodi
                   <div className="btn-group-vertical ml-2">
                     <FontAwesomeIcon
                       onClick={() =>
@@ -243,9 +267,7 @@ export const TableProduct = ({
                         {currentPage * countPage + key + 1}
                       </td>
                       <td className="border-right">{p.category.name}</td>
-                      <td className="border-right">
-                        {p.producttype && p.producttype.name}
-                      </td>
+                      <td className="border-right">{p.category.code}</td>
                       <td className="border-right">{p.name}</td>
                       <td className="border-right">{p.code}</td>
                       <td className="border-right">{p.unit.name}</td>
@@ -297,6 +319,9 @@ export const TableProduct = ({
                 })}
             </tbody>
           </table>
+          <div className="d-none">
+            <ExcelTable data={tableExcel} id="products-table" />
+          </div>
         </div>
       </div>
     </div>
