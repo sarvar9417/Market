@@ -3,8 +3,6 @@ import { Link, useHistory } from 'react-router-dom'
 import { AuthContext } from '../../../context/AuthContext'
 import { useHttp } from '../../../hooks/http.hook'
 import { useToast } from '@chakra-ui/react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHandHoldingDollar } from '@fortawesome/free-solid-svg-icons'
 
 export const Navbar = ({ baseUrl }) => {
   const history = useHistory()
@@ -144,12 +142,10 @@ export const Navbar = ({ baseUrl }) => {
                   <li>
                     <Link
                       className={`dropdown-item ${
-                        activePage === '/alo24/exchangerate'
-                          ? 'active-page'
-                          : ''
+                        activePage === '/alo24/category' ? 'active-page' : ''
                       }`}
                       onClick={() => {
-                        setActivePage('/alo24/exchangerate')
+                        setActivePage('/alo24/category')
                       }}
                       to="/alo24/category"
                     >
@@ -253,12 +249,7 @@ export const Navbar = ({ baseUrl }) => {
                   }}
                   to="/alo24/exchangerate"
                 >
-                  <FontAwesomeIcon
-                    icon={faHandHoldingDollar}
-                    className={`text-xl pr-1 text-gray-600 ${
-                      activePage === '/alo24/exchangerate' ? 'text-white' : ''
-                    } `}
-                  />
+                  <i class="icon-dollar-sign nav-icon"></i>
                   Valyuta kursi
                 </Link>
               </li>

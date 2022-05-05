@@ -323,7 +323,9 @@ export const Exchangerate = () => {
                             <td>
                               {new Date(s.createdAt).toLocaleDateString()}
                             </td>
-                            <td>{s.exchangerate}</td>
+                            <td className="font-bold ">
+                              1 $ - {s.exchangerate} so'm
+                            </td>
                             <td>
                               <button
                                 onClick={() => setExchangerate(s)}
