@@ -22,7 +22,7 @@ router.post('/getall', auth, (req, res) => {
 })
 
 router.post('/get', auth, (req, res) => {
-  require('./exchangerate').getAll(req, res)
+  require('./exchangerate').get(req, res)
 })
 
 module.exports = router

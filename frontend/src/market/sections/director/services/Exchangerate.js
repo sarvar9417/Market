@@ -97,6 +97,7 @@ export const Exchangerate = () => {
           Authorization: `Bearer ${auth.token}`,
         },
       )
+      localStorage.setItem('data', data)
       notify({
         title: `Valyuta kursi yaratildi!`,
         description: '',
@@ -126,6 +127,7 @@ export const Exchangerate = () => {
           Authorization: `Bearer ${auth.token}`,
         },
       )
+      localStorage.setItem('data', data)
       notify({
         title: `Valyuta kursi yangilandi!`,
         description: '',
@@ -172,6 +174,7 @@ export const Exchangerate = () => {
           Authorization: `Bearer ${auth.token}`,
         },
       )
+      localStorage.setItem('data', data)
       notify({
         title: `Valyuta kursi o'chirildi!`,
         description: '',
