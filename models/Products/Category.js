@@ -17,7 +17,7 @@ const category = new Schema(
 
 function validateCategory(category) {
   const schema = Joi.object({
-    code: Joi.string().required(),
+    code: Joi.number().required(),
     name: Joi.string().required(),
     market: Joi.string().required(),
   })
