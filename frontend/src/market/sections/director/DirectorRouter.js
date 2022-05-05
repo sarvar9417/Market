@@ -13,6 +13,7 @@ import { Warehouses } from './services/Warehouses'
 import { Users } from './users/Users'
 import { Unit } from './services/Unit'
 import { Exchangerate } from './services/Exchangerate'
+import { Product } from './services/Product'
 
 export const DirectorRouter = () => {
   return (
@@ -34,17 +35,11 @@ export const DirectorRouter = () => {
         <Route path="/alo24/producttypes">
           <ProductType />
         </Route>
-        <Route path="/alo24/services">
-          <Services />
+        <Route path="/alo24/product">
+          <Product />
         </Route>
         <Route path="/alo24/unit">
           <Unit />
-        </Route>
-        <Route path="/alo24/rooms">
-          <Rooms />
-        </Route>
-        <Route path="/alo24/products">
-          <Products />
         </Route>
         <Route path="/alo24/recieptproducts">
           <Warehouses />
