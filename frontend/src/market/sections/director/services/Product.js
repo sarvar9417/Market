@@ -3,10 +3,11 @@ import { Loader } from "../../../loader/Loader";
 import { useToast } from "@chakra-ui/react";
 import { useHttp } from "../../../hooks/http.hook";
 import { AuthContext } from "../../../context/AuthContext";
-import { checkProduct } from "./checkData";
+import { checkProduct, checkUploadWarehouses } from "./checkData";
 import { Modal } from "./modal/Modal";
 import { TableProduct } from "./productComponents/TableProduct";
 import { InputProduct } from "./productComponents/InputProduct";
+import { ExcelCols } from "./productComponents/ExcelCols";
 
 export const Product = () => {
   //====================================================================
@@ -25,6 +26,7 @@ export const Product = () => {
   //====================================================================
   //====================================================================
   const [modal, setModal] = useState(false);
+  const [modal2, setModal2] = useState(false);
   const [remove, setRemove] = useState();
 
   const clearInputs = useCallback(() => {
@@ -66,6 +68,14 @@ export const Product = () => {
     market: auth.market && auth.market._id,
   });
 
+  const sections = [
+    { name: "Kategoriya", value: "categoriyaname" },
+    { name: "Kategoriya kodi", value: "categoriyacode" },
+    { name: "Mahsulot", value: "name" },
+    { name: "Mahsulot kodi", value: "code" },
+    { name: "O'lchov birliki", value: "unit" },
+  ];
+
   //====================================================================
   //====================================================================
 
@@ -73,6 +83,9 @@ export const Product = () => {
   //====================================================================
   const [products, setProducts] = useState([]);
   const [searchStorage, setSearchStrorage] = useState();
+  const [tableExcel, setTableExcel] = useState([]);
+  const [changeImports, setChangeImports] = useState([]);
+  const [imports, setImports] = useState([]);
 
   const getProducts = useCallback(async () => {
     try {
@@ -87,6 +100,7 @@ export const Product = () => {
       setProducts(data);
       setSearchStrorage(data);
       setCurrentProducts(data.slice(indexFirstProduct, indexLastProduct));
+      setTableExcel(data);
     } catch (error) {
       notify({
         title: error,
@@ -108,7 +122,7 @@ export const Product = () => {
 
   //====================================================================
   //====================================================================
-  const [categories, setCategories] = useState();
+  const [categories, setCategories] = useState([]);
 
   const getCategories = useCallback(async () => {
     try {
@@ -209,6 +223,7 @@ export const Product = () => {
         market: auth.market && auth.market._id,
       });
       clearInputs();
+      document.getElementsByTagName("select")[0].selectedIndex = 0;
     } catch (error) {
       notify({
         title: error,
@@ -308,6 +323,44 @@ export const Product = () => {
   //====================================================================
   //====================================================================
 
+  const uploadAllProducts = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/products/product/registerall`,
+        "POST",
+        [...changeImports],
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      localStorage.setItem("data", data);
+      notify({
+        title: `Barcha mahsulotlar yuklandi!`,
+        description: "",
+        status: "success",
+      });
+      getProducts();
+      setProduct({
+        market: auth.market && auth.market._id,
+      });
+      clearInputs();
+      setModal2(false);
+    } catch (e) {
+      notify({
+        title: e,
+        description: "",
+        status: "error",
+      });
+    }
+  }, [auth, request, getProducts, notify, clearInputs, changeImports]);
+
+  const checkUploadData = () => {
+    if (checkUploadWarehouses(auth.market, changeImports)) {
+      return notify(checkUploadWarehouses(auth.market, changeImports));
+    }
+    uploadAllProducts();
+  };
+
   //====================================================================
   //====================================================================
   // SEARCH
@@ -316,6 +369,18 @@ export const Product = () => {
     (e) => {
       const searching = searchStorage.filter((item) =>
         item.category.name.toLowerCase().includes(e.target.value.toLowerCase())
+      );
+      setProducts(searching);
+      setCurrentProducts(searching.slice(0, countPage));
+    },
+    [searchStorage, countPage]
+  );
+  const searchCategoryCode = useCallback(
+    (e) => {
+      const searching = searchStorage.filter((item) =>
+        String(item.category.code)
+          .toLowerCase()
+          .includes(e.target.value.toLowerCase())
       );
       setProducts(searching);
       setCurrentProducts(searching.slice(0, countPage));
@@ -340,6 +405,17 @@ export const Product = () => {
     (e) => {
       const searching = searchStorage.filter((item) =>
         item.name.toLowerCase().includes(e.target.value.toLowerCase())
+      );
+      setProducts(searching);
+      setCurrentProducts(searching.slice(0, countPage));
+    },
+    [searchStorage, countPage]
+  );
+
+  const searchCode = useCallback(
+    (e) => {
+      const searching = searchStorage.filter((item) =>
+        String(item.code).includes(e.target.value)
       );
       setProducts(searching);
       setCurrentProducts(searching.slice(0, countPage));
@@ -393,12 +469,15 @@ export const Product = () => {
             />
             <TableProduct
               producttypes={producttypes}
+              setImports={setImports}
               product={product}
               searchName={searchName}
               searchProductType={searchProductType}
               searchCategory={searchCategory}
+              searchCategoryCode={searchCategoryCode}
               categories={categories}
               products={products}
+              tableExcel={tableExcel}
               setRemove={setRemove}
               setModal={setModal}
               setProducts={setProducts}
@@ -411,6 +490,8 @@ export const Product = () => {
               currentPage={currentPage}
               setPageSize={setPageSize}
               loading={loading}
+              searchCode={searchCode}
+              setModal2={setModal2}
             />
           </div>
         </div>
@@ -422,6 +503,20 @@ export const Product = () => {
         basic={remove && remove.name}
         text={"mahsulotnti o'chirishni tasdiqlaysizmi?"}
         handler={deleteHandler}
+      />
+
+      <Modal
+        modal={modal2}
+        setModal={setModal2}
+        handler={checkUploadData}
+        text={
+          <ExcelCols
+            createdData={changeImports}
+            setData={setChangeImports}
+            data={imports}
+            sections={sections}
+          />
+        }
       />
     </>
   );

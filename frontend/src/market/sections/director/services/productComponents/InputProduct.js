@@ -19,9 +19,9 @@ export const InputProduct = ({
             <tr>
               <th>Kategoriya nomi</th>
               <th>Mahsulot turi</th>
-              <th>O'lchov birliki</th>
-              <th>Mahsulot nomi</th>
               <th>Mahsulot kodi</th>
+              <th>Mahsulot nomi</th>
+              <th>O'lchov birliki</th>
               <th>Saqlash</th>
             </tr>
           </thead>
@@ -43,13 +43,11 @@ export const InputProduct = ({
                 >
                   <option value="delete">Kategoriyani tanlang</option>
                   {categories &&
-                    categories.map((category, index) => {
-                      return (
-                        <option key={index} value={category._id}>
-                          {category.name}
-                        </option>
-                      );
-                    })}
+                    categories.map((category, index) => (
+                      <option key={index} value={category._id}>
+                        {category.name}
+                      </option>
+                    ))}
                 </select>
               </td>
               <td>
@@ -79,6 +77,33 @@ export const InputProduct = ({
                 </select>
               </td>
               <td>
+                <input
+                  style={{ minWidth: "70px" }}
+                  name="code"
+                  value={product.code || ""}
+                  onKeyUp={keyPressed}
+                  onChange={inputHandler}
+                  type="number"
+                  className="form-control w-75"
+                  id="price"
+                  placeholder="Mahsulot kodini kiriting"
+                />
+              </td>
+              <td>
+                <input
+                  style={{ minWidth: "70px" }}
+                  name="name"
+                  value={product.name || ""}
+                  onKeyUp={keyPressed}
+                  onChange={inputHandler}
+                  type="text"
+                  className="form-control w-75"
+                  id="shortname"
+                  placeholder="Mahsulot nomini kiriting"
+                />
+              </td>
+
+              <td>
                 <select
                   className="form-control form-control-sm selectpicker"
                   id="select"
@@ -103,32 +128,6 @@ export const InputProduct = ({
                       </option>
                     ))}
                 </select>
-              </td>
-              <td>
-                <input
-                  style={{ minWidth: "70px" }}
-                  name="name"
-                  value={product.name || ""}
-                  onKeyUp={keyPressed}
-                  onChange={inputHandler}
-                  type="text"
-                  className="form-control w-75"
-                  id="shortname"
-                  placeholder="Mahsulot nomini kiriting"
-                />
-              </td>
-              <td>
-                <input
-                  style={{ minWidth: "70px" }}
-                  name="code"
-                  value={product.code || ""}
-                  onKeyUp={keyPressed}
-                  onChange={inputHandler}
-                  type="number"
-                  className="form-control w-75"
-                  id="price"
-                  placeholder="Mahsulot kodini kiriting"
-                />
               </td>
               <td>
                 {loading ? (
