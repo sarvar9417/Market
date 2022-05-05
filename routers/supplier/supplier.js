@@ -103,6 +103,7 @@ module.exports.delete = async (req, res) => {
 module.exports.getAll = async (req, res) => {
   try {
     const { market } = req.body
+
     const marke = await Market.findById(market)
 
     if (!marke) {
