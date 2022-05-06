@@ -120,13 +120,13 @@ export const InputProduct = ({
                   placeholder="Xizmat turini tanlang"
                   style={{ minWidth: "70px" }}
                 >
-                  <option value="delete">O'lchov birlikini tanlang</option>
                   {units &&
                     units.map((unit, ind) => (
                       <option key={ind} value={unit._id}>
                         {unit.name}
                       </option>
                     ))}
+                  <option value="delete">O'lchov birlikini tanlang</option>
                 </select>
               </td>
               <td>
