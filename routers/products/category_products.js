@@ -104,33 +104,21 @@ router.delete('/unit/delete', auth, (req, res) => {
 })
 
 //========================================================
-// ROOMS
-router.post('/room/registerall', auth, (req, res) => {
-  require('./room').registerAll(req, res)
+// INCOMING
+// CRUD
+router.post('/incoming/register', auth, (req, res) => {
+  require('./incoming').register(req, res)
 })
 
-router.post('/room/register', auth, (req, res) => {
-  require('./room').register(req, res)
+router.post('/incoming/getall', auth, (req, res) => {
+  require('./incoming').getAll(req, res)
 })
 
-router.post('/room/getall', auth, (req, res) => {
-  require('./room').getAll(req, res)
+router.put('/incoming/update', auth, (req, res) => {
+  require('./incoming').update(req, res)
 })
 
-router.post('/room/notbusy', auth, (req, res) => {
-  require('./room').getnotbusy(req, res)
+router.delete('/incoming/delete', auth, (req, res) => {
+  require('./incoming').delete(req, res)
 })
-
-router.put('/room/update', auth, (req, res) => {
-  require('./room').update(req, res)
-})
-
-router.delete('/room', auth, (req, res) => {
-  require('./room').delete(req, res)
-})
-
-router.delete('/room/deleteall', auth, (req, res) => {
-  require('./room').deleteAll(req, res)
-})
-
 module.exports = router

@@ -123,67 +123,21 @@ export const Navbar = ({ baseUrl }) => {
                   aria-haspopup="true"
                   aria-expanded="false"
                   className={`nav-link dropdown-toggle ${
-                    window.location.pathname === "/alo24/category" ||
-                    window.location.pathname === "/alo24/producttypes" ||
-                    window.location.pathname === "/alo24/services" ||
-                    window.location.pathname === "/alo24/rooms" ||
-                    window.location.pathname === "/alo24/products" ||
-                    window.location.pathname === "/alo24/recieptproducts" ||
-                    window.location.pathname === "/alo24/rooms" ||
-                    window.location.pathname === "/alo24/productconnector"
-                      ? "active-page"
-                      : ""
+                    activePage === '/alo24/category' ||
+                    activePage === '/alo24/producttypes' ||
+                    activePage === '/alo24/product'
+                      ? 'active-page'
+                      : ''
+
                   }`}
                 >
                   <i className="icon-users nav-icon" />
-                  Mahsulot
+                  Mahsulotlar
                 </span>
                 <ul className="dropdown-menu" aria-labelledby="doctoRs">
                   <li>
-                    <Link
-                      className={`dropdown-item ${
-                        activePage === "/alo24/category" ? "active-page" : ""
-                      }`}
-                      onClick={() => {
-                        setActivePage("/alo24/category");
-                      }}
-                      to="/alo24/category"
-                    >
-                      Mahsulot kategoriyalari
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={`dropdown-item ${
-                        activePage === "/alo24/producttypes"
-                          ? "active-page"
-                          : ""
-                      }`}
-                      onClick={() => {
-                        setActivePage("/alo24/producttypes");
-                      }}
-                      to="/alo24/producttypes"
-                    >
-                      Mahsulotlar turlari
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/alo24/product">
-                      Mahsulotlar
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/alo24/unit">
-                      O'lchov birliklari
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/alo24/rooms">
-                      Yetkazib beruvchilar
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
+                    <span
+
                       className="dropdown-toggle sub-nav-link"
                       to="#"
                       id="buttonsDropdown"
@@ -192,34 +146,88 @@ export const Navbar = ({ baseUrl }) => {
                       aria-haspopup="true"
                       aria-expanded="false"
                     >
-                      Omborxona
-                    </Link>
+                      Yaratish
+                    </span>
                     <ul
                       className="dropdown-menu dropdown-menu-right"
                       aria-labelledby="buttonsDropdown"
                     >
                       <li>
-                        <Link className="dropdown-item" to="/alo24/products">
-                          Barcha mahsulotlar
+                        <Link
+                          className={`dropdown-item ${
+                            activePage === '/alo24/category'
+                              ? 'active-page'
+                              : ''
+                          }`}
+                          onClick={() => {
+                            setActivePage('/alo24/category')
+                          }}
+                          to="/alo24/category"
+                        >
+                          Mahsulot kategoriyalari
                         </Link>
                       </li>
                       <li>
                         <Link
-                          className="dropdown-item"
-                          to="/alo24/recieptproducts"
+                          className={`dropdown-item ${
+                            activePage === '/alo24/producttypes'
+                              ? 'active-page'
+                              : ''
+                          }`}
+                          onClick={() => {
+                            setActivePage('/alo24/producttypes')
+                          }}
+                          to="/alo24/producttypes"
                         >
-                          Keltirilgan mahsulotlar
+                          Mahsulotlar turlari
                         </Link>
                       </li>
                       <li>
                         <Link
-                          className="dropdown-item"
-                          to="/alo24/productconnector"
+                          className={`dropdown-item ${
+                            activePage === '/alo24/product' ? 'active-page' : ''
+                          }`}
+                          onClick={() => {
+                            setActivePage('/alo24/product')
+                          }}
+                          to="/alo24/product"
                         >
-                          Xizmatlarga bog'lash
+                          Mahsulotlar
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={`dropdown-item ${
+                            activePage === '/alo24/unit' ? 'active-page' : ''
+                          }`}
+                          onClick={() => {
+                            setActivePage('/alo24/unit')
+                          }}
+                          to="/alo24/unit"
+                        >
+                          O'lchov birliklari
+                        </Link>
+                      </li>
+                      <li>
+                        <Link className="dropdown-item" to="/alo24/rooms">
+                          Yetkazib beruvchilar
                         </Link>
                       </li>
                     </ul>
+                  </li>
+
+                  <li>
+                    <Link
+                      className={`dropdown-item ${
+                        activePage === '/alo24/incoming' ? 'active-page' : ''
+                      }`}
+                      onClick={() => {
+                        setActivePage('/alo24/incoming')
+                      }}
+                      to="/alo24/incoming"
+                    >
+                      Qabul qilish
+                    </Link>
                   </li>
                 </ul>
               </li>

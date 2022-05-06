@@ -1,4 +1,8 @@
-const { Product, validateProduct } = require('../../models/Products/Product')
+const {
+  Product,
+  validateProduct,
+  validateProductExcel,
+} = require('../../models/Products/Product')
 const { Market } = require('../../models/MarketAndBranch/Market')
 const { Category } = require('../../models/Products/Category')
 const { ProductType } = require('../../models/Products/ProductType')
@@ -8,19 +12,20 @@ const ObjectId = require('mongodb').ObjectId
 //Product registerall
 module.exports.registerAll = async (req, res) => {
   try {
-    const products = req.body
+    const products = req.body.products
+    const market = req.body.market
     const all = []
-    for (const s of products) {
-      const { error } = validateProduct(s)
+    for (const product of products) {
+      const { error } = validateProductExcel(product)
       if (error) {
         return res.status(400).json({
           error: error.message,
         })
       }
 
-      const { name, code, unit, producttype, category, market } = s
+      const { name, code, unit, category, categorycode } = product
 
-      const marke = await Market.findOne({ name: market })
+      const marke = await Market.findById(market)
 
       if (!marke) {
         return res.status(400).json({
@@ -29,43 +34,31 @@ module.exports.registerAll = async (req, res) => {
       }
 
       const categor = await Category.findOne({
-        code: category,
-        market: marke._id,
+        code: categorycode,
+        market,
       })
 
       if (!categor) {
         return res.status(400).json({
-          message: `Diqqat! ${category} kategoriyasi mavjud emas.`,
+          message: `Diqqat! ${categorycode} kodli kategoriya mavjud emas.`,
         })
       }
 
-      const Producttype = await ProductType.findOne({
-        name: producttype,
-        category: categor._id,
-        market: marke._id,
-      })
-
-      if (!Producttype && producttype) {
-        return res.status(400).json({
-          message: `Diqqat! ${category} kategoriyasida ${producttype} mahsulot turi mavjud emas.`,
-        })
-      }
-
-      const product = await Product.findOne({
-        market: marke._id,
+      const produc = await Product.findOne({
+        market,
         code,
-        category: categor._id,
       })
 
-      if (product) {
+      if (produc) {
         return res.status(400).json({
-          message: `Diqqat! ${name} mahsuloti avval yaratilgan.`,
+          message: `Diqqat! ${code} kodli mahsulot avval yaratilgan.`,
         })
       }
 
+      let u = null
       if (unit) {
         const unitt = await Unit.findOne({
-          market: marke._id,
+          market,
           name: unit,
         })
 
@@ -74,19 +67,16 @@ module.exports.registerAll = async (req, res) => {
             message: `Diqqat! ${unit} o'lchov birligi tizimda mavjud emas.`,
           })
         }
+        u = unitt._id
       }
 
       const newProduct = new Product({
         name,
         code,
         category: categor._id,
-        market: marke._id,
-        unit,
+        market,
+        unit: u,
       })
-
-      if (Producttype) {
-        newProduct.producttype = Producttype._id
-      }
 
       all.push(newProduct)
     }
@@ -102,21 +92,11 @@ module.exports.registerAll = async (req, res) => {
           },
         },
       )
-
-      if (product.producttype) {
-        const updateProductType = await ProductType.findByIdAndUpdate(
-          product.producttype._id,
-          {
-            $push: {
-              products: product._id,
-            },
-          },
-        )
-      }
     })
 
     res.send(all)
   } catch (error) {
+    console.log(error)
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
   }
 }
