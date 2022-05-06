@@ -27,7 +27,37 @@ export const TableProduct = ({
   searchCategoryCode,
   setImports,
   setModal2,
+  categories,
+  producttypes,
+  product,
 }) => {
+  const edit = (e, p) => {
+    setProduct({
+      ...product,
+      _id: p._id,
+      name: p.name,
+      code: p.code,
+      category: p.category._id,
+      unit: p.unit._id,
+      producttype: p.producttype._id,
+    });
+    for (let option of document.getElementsByTagName("select")[0].options) {
+      if (option.value === p.category._id) {
+        option.selected = true;
+      }
+    }
+    for (let option of document.getElementsByTagName("select")[1].options) {
+      if (option.value === p.producttype._id) {
+        option.selected = true;
+      }
+    }
+    for (let option of document.getElementsByTagName("select")[2].options) {
+      if (option.value === p.unit._id) {
+        option.selected = true;
+      }
+    }
+  };
+
   return (
     <div className="table-container">
       <div className="table-container">
@@ -283,7 +313,9 @@ export const TableProduct = ({
                         ) : (
                           <button
                             id={`btn${key}`}
-                            onClick={() => setProduct(p)}
+                            onClick={(e) => {
+                              edit(e, p);
+                            }}
                             className="btn btn-success py-1 px-2"
                             style={{ fontSize: "75%" }}
                           >

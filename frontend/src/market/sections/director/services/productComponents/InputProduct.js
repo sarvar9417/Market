@@ -41,13 +41,13 @@ export const InputProduct = ({
                   placeholder="Bo'limni tanlang"
                   style={{ minWidth: "70px" }}
                 >
-                  <option value="delete">Kategoriyani tanlang</option>
                   {categories &&
                     categories.map((category, index) => (
                       <option key={index} value={category._id}>
                         {category.name}
                       </option>
                     ))}
+                  <option value="delete">Kategoriyani tanlang</option>
                 </select>
               </td>
               <td>
@@ -67,13 +67,13 @@ export const InputProduct = ({
                   placeholder="Xizmat turini tanlang"
                   style={{ minWidth: "70px" }}
                 >
-                  <option value="delete">Mahsulot turini tanlang</option>
                   {producttypes &&
                     producttypes.map((producttype, ind) => (
                       <option key={ind} value={producttype._id}>
                         {producttype.name}
                       </option>
                     ))}
+                  <option value="delete">Mahsulot turini tanlang</option>
                 </select>
               </td>
               <td>
@@ -120,13 +120,13 @@ export const InputProduct = ({
                   placeholder="Xizmat turini tanlang"
                   style={{ minWidth: "70px" }}
                 >
-                  <option value="delete">O'lchov birlikini tanlang</option>
                   {units &&
                     units.map((unit, ind) => (
                       <option key={ind} value={unit._id}>
                         {unit.name}
                       </option>
                     ))}
+                  <option value="delete">O'lchov birlikini tanlang</option>
                 </select>
               </td>
               <td>

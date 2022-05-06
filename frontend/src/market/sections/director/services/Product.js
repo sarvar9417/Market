@@ -35,7 +35,24 @@ export const Product = () => {
     for (const input of inputs) {
       input.value = ''
     }
-  }, [])
+
+    for (let option of document.getElementsByTagName("select")[0].options) {
+      if (option.value === "delete") {
+        option.selected = true;
+      }
+    }
+    for (let option of document.getElementsByTagName("select")[1].options) {
+      if (option.value === "delete") {
+        option.selected = true;
+      }
+    }
+    for (let option of document.getElementsByTagName("select")[2].options) {
+      if (option.value === "delete") {
+        option.selected = true;
+      }
+    }
+  }, []);
+
   //====================================================================
   //====================================================================
 
@@ -221,9 +238,9 @@ export const Product = () => {
       getProducts()
       setProduct({
         market: auth.market && auth.market._id,
-      })
-      clearInputs()
-      document.getElementsByTagName('select')[0].selectedIndex = 0
+      });
+      clearInputs();
+
     } catch (error) {
       notify({
         title: error,
@@ -237,8 +254,9 @@ export const Product = () => {
     try {
       const data = await request(
         `/api/products/product/update`,
-        'PUT',
-        { market: auth.market && auth.market._id, ...product },
+        "PUT",
+        { ...product },
+
         {
           Authorization: `Bearer ${auth.token}`,
         },
@@ -251,9 +269,9 @@ export const Product = () => {
       getProducts()
       setProduct({
         market: auth.market && auth.market._id,
-      })
-      clearInputs()
-      document.getElementsByTagName('select')[0].selectedIndex = 0
+      });
+      clearInputs();
+
     } catch (error) {
       notify({
         title: error,
@@ -312,7 +330,7 @@ export const Product = () => {
 
   //====================================================================
   //====================================================================
-
+  console.log(products);
   //====================================================================
   //====================================================================
 
@@ -434,7 +452,7 @@ export const Product = () => {
   )
   //====================================================================
   //====================================================================
-
+  console.log(product);
   //====================================================================
   //====================================================================
   const [t, setT] = useState()
