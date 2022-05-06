@@ -66,7 +66,8 @@ export const Incoming = () => {
       data.map((supplier) => {
         return s.push({
           label: supplier.name,
-          value: supplier.id,
+          value: supplier._id,
+          supplier: { ...supplier },
         })
       })
       setSuppliers(s)
@@ -106,7 +107,7 @@ export const Incoming = () => {
       data.map((category) => {
         return s.push({
           label: category.code + ' - ' + category.name,
-          value: category.id,
+          value: category._id,
         })
       })
       setCategorys(s)
@@ -119,14 +120,27 @@ export const Incoming = () => {
     }
   }, [request, auth, notify])
 
+  const changeCategory = (e) => {
+    if (e.value === 'all') {
+      setProducts(allproducts)
+    } else {
+      const filter = allproducts.filter((product) => {
+        return product.category === e.value
+      })
+      setProducts(filter)
+    }
+  }
+
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
   // Product
-  const [allprducts, setAllProducts] = useState([])
+  const [allproducts, setAllProducts] = useState([])
   const [products, setProducts] = useState([])
+  const [incomings, setIncomings] = useState([])
+  const [incoming, setIncoming] = useState()
 
   const getProducts = useCallback(async () => {
     try {
@@ -138,16 +152,13 @@ export const Incoming = () => {
           Authorization: `Bearer ${auth.token}`,
         },
       )
-      let s = [
-        {
-          label: 'Barcha mahsulotlar',
-          value: 'all',
-        },
-      ]
-      data.map((poduct) => {
+      let s = []
+      data.map((product) => {
         return s.push({
-          label: poduct.code + ' - ' + poduct.name,
-          value: poduct.id,
+          label: product.code + ' - ' + product.name,
+          value: product._id,
+          category: product.category._id,
+          product: { ...product },
         })
       })
       setProducts(s)
@@ -161,6 +172,23 @@ export const Incoming = () => {
     }
   }, [request, auth, notify])
 
+  const changeProducts = (e) => {
+    let i = {
+      totalprice: 0,
+      unitprice: 0,
+      pieces: 0,
+      user: auth.userId,
+      supplier,
+      product: {
+        _id: e.product._id,
+        name: e.product.name,
+        code: e.product.code,
+      },
+      category: e.product.category,
+      unit: e.product.unit,
+    }
+    setIncoming(i)
+  }
   //====================================================================
   //====================================================================
 
@@ -171,6 +199,61 @@ export const Incoming = () => {
 
   const changeVisible = () => setVisible(!visible)
 
+  //====================================================================
+  //====================================================================
+
+  //====================================================================
+  //====================================================================
+  // SEARCH
+
+  const searchCategory = (e) => {
+    const searching = allproducts.filter(
+      (item) =>
+        item.product.category.code.toString().includes(e.target.value) ||
+        item.product.category.name
+          .toLowerCase()
+          .includes(e.target.value.toLowerCase()),
+    )
+
+    setProducts(searching)
+  }
+  //====================================================================
+  //====================================================================
+
+  //====================================================================
+  //====================================================================
+  // InputHandler
+
+  const inputHandler = (e) => {
+    if (e.target.name === 'pieces') {
+      let val = e.target.value
+      setIncoming({
+        ...incoming,
+        pieces: val === '' ? 0 : val,
+        totalprice: val === '' ? 0 : incoming.unitprice * e.target.value,
+      })
+    }
+    if (e.target.name === 'unitprice') {
+      let val = e.target.value
+      setIncoming({
+        ...incoming,
+        unitprice: val === '' ? 0 : val,
+        totalprice:
+          val === '' ? 0 : parseFloat(e.target.value) * incoming.pieces,
+      })
+    }
+    if (e.target.name === 'totalprice') {
+      let val = e.target.value
+      setIncoming({
+        ...incoming,
+        unitprice:
+          val === '' || val === 0
+            ? 0
+            : parseFloat(e.target.value) / incoming.pieces,
+        totalprice: val === '' ? 0 : val,
+      })
+    }
+  }
   //====================================================================
   //====================================================================
 
@@ -219,6 +302,12 @@ export const Incoming = () => {
             </div>
             <div className={` ${visible ? '' : 'd-none'}`}>
               <RegisterIncoming
+                inputHandler={inputHandler}
+                searchCategory={searchCategory}
+                incomings={incomings}
+                incoming={incoming}
+                changeProducts={changeProducts}
+                changeCategory={changeCategory}
                 products={products}
                 categorys={categorys}
                 loading={loading}
