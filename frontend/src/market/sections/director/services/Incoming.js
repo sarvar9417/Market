@@ -48,7 +48,7 @@ export const Incoming = () => {
 
   //====================================================================
   //====================================================================
-  // COUNTERDOCTORS
+  // SUPPLIERS
   const [suppliers, setSuppliers] = useState([])
   const [supplier, setSupplier] = useState()
 
@@ -84,6 +84,88 @@ export const Incoming = () => {
 
   //====================================================================
   //====================================================================
+  // CATEGORYS
+  const [categorys, setCategorys] = useState([])
+
+  const getCategorys = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/products/category/getall`,
+        'POST',
+        { market: auth.market._id },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      )
+      let s = [
+        {
+          label: 'Barcha kategriyalar',
+          value: 'all',
+        },
+      ]
+      data.map((category) => {
+        return s.push({
+          label: category.code + ' - ' + category.name,
+          value: category.id,
+        })
+      })
+      setCategorys(s)
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      })
+    }
+  }, [request, auth, notify])
+
+  //====================================================================
+  //====================================================================
+
+  //====================================================================
+  //====================================================================
+  // Product
+  const [allprducts, setAllProducts] = useState([])
+  const [products, setProducts] = useState([])
+
+  const getProducts = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/products/product/getall`,
+        'POST',
+        { market: auth.market._id },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      )
+      let s = [
+        {
+          label: 'Barcha mahsulotlar',
+          value: 'all',
+        },
+      ]
+      data.map((poduct) => {
+        return s.push({
+          label: poduct.code + ' - ' + poduct.name,
+          value: poduct.id,
+        })
+      })
+      setProducts(s)
+      setAllProducts(s)
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      })
+    }
+  }, [request, auth, notify])
+
+  //====================================================================
+  //====================================================================
+
+  //====================================================================
+  //====================================================================
   // Visible
   const [visible, setVisible] = useState(false)
 
@@ -102,8 +184,10 @@ export const Incoming = () => {
     if (auth.market && !t) {
       setT(1)
       getSuppliers()
+      getCategorys()
+      getProducts()
     }
-  }, [auth, getSuppliers, t])
+  }, [auth, getSuppliers, t, getCategorys, getProducts])
 
   //====================================================================
   //====================================================================
@@ -135,6 +219,8 @@ export const Incoming = () => {
             </div>
             <div className={` ${visible ? '' : 'd-none'}`}>
               <RegisterIncoming
+                products={products}
+                categorys={categorys}
                 loading={loading}
                 suppliers={suppliers}
                 supplier={supplier}

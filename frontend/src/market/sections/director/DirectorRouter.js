@@ -5,7 +5,6 @@ import { EditDirector } from './editDirector/EditDirector'
 import { EditDirectorPassword } from './editDirector/EditDirectorPassword'
 import { Category } from './services/Categorys'
 import { ProductType } from './services/ProductType'
-import { Warehouses } from './services/Warehouses'
 import { Users } from './users/Users'
 import { Unit } from './services/Unit'
 import { Exchangerate } from './services/Exchangerate'
@@ -37,9 +36,6 @@ export const DirectorRouter = () => {
         </Route>
         <Route path="/alo24/unit">
           <Unit />
-        </Route>
-        <Route path="/alo24/recieptproducts">
-          <Warehouses />
         </Route>
 
         <Route path="/alo24/exchangerate">

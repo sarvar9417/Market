@@ -35,5 +35,18 @@ function validateProduct(product) {
   return schema.validate(product)
 }
 
+function validateProductExcel(product) {
+  const schema = Joi.object({
+    name: Joi.string().required(),
+    unit: Joi.string(),
+    code: Joi.number().required(),
+    categorycode: Joi.number(),
+    category: Joi.string(),
+  })
+
+  return schema.validate(product)
+}
+
 module.exports.validateProduct = validateProduct
+module.exports.validateProductExcel = validateProductExcel
 module.exports.Product = model('Product', product)
