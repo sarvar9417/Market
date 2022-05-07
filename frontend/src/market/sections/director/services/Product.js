@@ -240,7 +240,6 @@ export const Product = () => {
         market: auth.market && auth.market._id,
       });
       clearInputs();
-
     } catch (error) {
       notify({
         title: error,
@@ -271,7 +270,6 @@ export const Product = () => {
         market: auth.market && auth.market._id,
       });
       clearInputs();
-
     } catch (error) {
       notify({
         title: error,
