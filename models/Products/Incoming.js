@@ -33,9 +33,25 @@ function validateIncoming(incoming) {
     file: Joi.string(),
     market: Joi.string().required(),
   })
+  return schema.validate(incoming)
+}
 
+function validateIncomingAll(incoming) {
+  const schema = Joi.object({
+    totalprice: Joi.number().required(),
+    unitprice: Joi.number().required(),
+    pieces: Joi.number().required(),
+    product: Joi.object().required(),
+    category: Joi.object().required(),
+    unit: Joi.object().required(),
+    supplier: Joi.object().required(),
+    user: Joi.string().required(),
+    pieces: Joi.number().required(),
+    file: Joi.string(),
+  })
   return schema.validate(incoming)
 }
 
 module.exports.validateIncoming = validateIncoming
+module.exports.validateIncomingAll = validateIncomingAll
 module.exports.Incoming = model('Incoming', incoming)

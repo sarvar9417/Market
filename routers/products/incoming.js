@@ -1,8 +1,105 @@
-const { Incoming, validateIncoming } = require('../../models/Products/Incoming')
+const {
+  Incoming,
+  validateIncoming,
+  validateIncomingAll,
+} = require('../../models/Products/Incoming')
 const { Market } = require('../../models/MarketAndBranch/Market')
-const { Product } = require('../../models/Products/Product')
 const { ProductType } = require('../../models/Products/ProductType')
 const { Category } = require('../../models/Products/Category')
+const { Unit } = require('../../models/Products/Unit')
+const { Product } = require('../../models/Products//Product')
+
+//Incoming registerall
+module.exports.registerAll = async (req, res) => {
+  try {
+    const products = req.body.products
+    const market = req.body.market
+    const user = req.body.user
+    const all = []
+
+    for (const newproduct of products) {
+      const { error } = validateIncomingAll(newproduct)
+      if (error) {
+        return res.status(400).json({
+          error: error.message,
+        })
+      }
+
+      const {
+        product,
+        unit,
+        category,
+        supplier,
+        pieces,
+        unitprice,
+        totalprice,
+      } = newproduct
+
+      const marke = await Market.findById(market)
+
+      if (!marke) {
+        return res.status(400).json({
+          message: "Diqqat! Do'kon ma'lumotlari topilmadi.",
+        })
+      }
+
+      const categor = await Category.findById(category._id)
+
+      if (!categor) {
+        return res.status(400).json({
+          message: `Diqqat! ${category.code} kodli kategoriya mavjud emas.`,
+        })
+      }
+
+      const produc = await Product.findById(product._id)
+
+      if (!produc) {
+        return res.status(400).json({
+          message: `Diqqat! ${product.code} kodli mahsulot avval yaratilmagan.`,
+        })
+      }
+
+      const unitt = await Unit.findById(unit._id)
+
+      if (!unitt) {
+        return res.status(400).json({
+          message: `Diqqat! ${unit.name} o'lchov birligi tizimda mavjud emas.`,
+        })
+      }
+
+      const newProduct = new Incoming({
+        product: product._id,
+        category: category._id,
+        supplier: supplier._id,
+        unit: unit._id,
+        pieces,
+        unitprice,
+        totalprice,
+        unit: unit._id,
+        market,
+        user,
+      })
+
+      all.push(newProduct)
+    }
+
+    all.map(async (product) => {
+      await product.save()
+
+      await product.save()
+
+      const produc = await Product.findById(product.product)
+      produc.total = produc.total + product.pieces
+
+      await produc.save()
+    })
+
+    res.send(all)
+  } catch (error) {
+    console.log(error)
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
+  }
+}
 
 //Incoming register
 module.exports.register = async (req, res) => {
@@ -96,9 +193,9 @@ module.exports.update = async (req, res) => {
 }
 
 //Incoming getall
-module.exports.getAll = async (req, res) => {
+module.exports.get = async (req, res) => {
   try {
-    const { market } = req.body
+    const { market, beginDay, endDay } = req.body
     const marke = await Market.findById(market)
 
     if (!marke) {
@@ -109,12 +206,17 @@ module.exports.getAll = async (req, res) => {
 
     const incomings = await Incoming.find({
       market,
+      createdAt: {
+        $gte: beginDay,
+        $lt: endDay,
+      },
     })
-      .select('-isArchive, -updatedAt')
+      .select('-isArchive, -updatedAt, -market')
       .populate('product', 'name code')
       .populate('category', 'name code')
       .populate('unit', 'name')
       .populate('supplier', 'name')
+      .populate('user', 'firstname lastname')
 
     res.send(incomings)
   } catch (error) {

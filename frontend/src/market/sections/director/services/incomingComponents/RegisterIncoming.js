@@ -2,19 +2,20 @@ import React from 'react'
 import 'react-datepicker/dist/react-datepicker.css'
 import Select from 'react-select'
 import makeAnimated from 'react-select/animated'
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPenAlt, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPenAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 
 const animatedComponents = makeAnimated()
 
 export const RegisterIncoming = ({
-                                   removeIncoming,
-                                   addIncoming,
+  createHandler,
+  removeIncoming,
+  addIncoming,
   inputHandler,
   searchCategory,
   incomings,
-                                   incoming,
-                                   editIncoming,
+  incoming,
+  editIncoming,
   changeProduct,
   changeCategory,
   products,
@@ -136,7 +137,10 @@ export const RegisterIncoming = ({
                         />
                       </td>
                       <td className="border  m-0 px-3 py-1 text-center">
-                        <button onClick={addIncoming} className="bg-emerald-600 text-white px-4 py-1 rounded hover:bg-emerald-500">
+                        <button
+                          onClick={addIncoming}
+                          className="bg-emerald-600 text-white px-4 py-1 rounded hover:bg-emerald-500"
+                        >
                           +
                         </button>
                       </td>
@@ -217,7 +221,9 @@ export const RegisterIncoming = ({
             <div className="card-body">
               <div className="row gutters">
                 <div className="col-12">
-                  <div className="text-teal-900 font-bold text-lg">Yetzib beruvchi: {supplier && supplier.name}</div>
+                  <div className="text-teal-900 font-bold text-lg">
+                    Yetzib beruvchi: {supplier && supplier.name}
+                  </div>
                   <table className="table">
                     <thead>
                       <tr>
@@ -249,7 +255,9 @@ export const RegisterIncoming = ({
                       {incomings.map((product, key) => {
                         return (
                           <tr key={key}>
-                            <td className="font-bold text-center border">{key + 1}</td>
+                            <td className="font-bold text-center border">
+                              {key + 1}
+                            </td>
                             <td className="border text-black font-bold">
                               <span>{product.category.code} - </span>
                               <span>{product.category.name}</span>
@@ -268,10 +276,20 @@ export const RegisterIncoming = ({
                               <span>{product.totalprice} $</span>
                             </td>
                             <td className="border text-black font-bold text-center py-0">
-                              <button onClick={()=>editIncoming(product, key)} className="bg-teal-500 hover:bg-teal-600 px-4 py-1 text-white"><FontAwesomeIcon icon={faPenAlt}/></button>
+                              <button
+                                onClick={() => editIncoming(product, key)}
+                                className="bg-teal-500 hover:bg-teal-600 px-4 py-1 text-white"
+                              >
+                                <FontAwesomeIcon icon={faPenAlt} />
+                              </button>
                             </td>
                             <td className="border text-black font-bold text-center py-0">
-                              <button onClick={()=>removeIncoming(key)} className="bg-red-500 hover:bg-red-600 px-4 py-1 text-white"><FontAwesomeIcon icon={faTrashAlt}/></button>
+                              <button
+                                onClick={() => removeIncoming(key)}
+                                className="bg-red-500 hover:bg-red-600 px-4 py-1 text-white"
+                              >
+                                <FontAwesomeIcon icon={faTrashAlt} />
+                              </button>
                             </td>
                           </tr>
                         )
@@ -288,7 +306,12 @@ export const RegisterIncoming = ({
                         Loading...
                       </button>
                     ) : (
-                      <button className="btn btn-primary">Saqlash</button>
+                      <button
+                        onClick={createHandler}
+                        className="btn btn-primary"
+                      >
+                        Saqlash
+                      </button>
                     )}
                   </div>
                 </div>

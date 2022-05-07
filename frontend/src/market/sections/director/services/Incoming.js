@@ -4,12 +4,12 @@ import { RegisterIncoming } from './incomingComponents/RegisterIncoming'
 import { useHttp } from './../../../hooks/http.hook'
 import { AuthContext } from '../../../context/AuthContext'
 export const Incoming = () => {
-  //   const [beginDay, setBeginDay] = useState(
-  //     new Date(new Date().setUTCHours(0, 0, 0, 0)),
-  //   )
-  //   const [endDay, setEndDay] = useState(
-  //     new Date(new Date().setDate(new Date().getDate() + 1)),
-  //   )
+  const [beginDay, setBeginDay] = useState(
+    new Date(new Date().setUTCHours(0, 0, 0, 0)),
+  )
+  const [endDay, setEndDay] = useState(
+    new Date(new Date().setDate(new Date().getDate() + 1)),
+  )
   //====================================================================
   //====================================================================
   // MODAL
@@ -190,25 +190,57 @@ export const Incoming = () => {
     setIncoming(i)
   }
 
-  const addIncoming = ()=>{
+  const addIncoming = () => {
     let i = [...incomings]
-    i.unshift({...incoming})
+    i.unshift({ ...incoming })
     setIncomings(i)
     setIncoming()
   }
 
-  const editIncoming = (product, index)=>{
+  const editIncoming = (product, index) => {
     setIncoming(product)
-    let i =  [...incomings]
+    let i = [...incomings]
     i.splice(index, 1)
     setIncomings(i)
   }
 
-  const removeIncoming = (index)=>{
-    let i =  [...incomings]
+  const removeIncoming = (index) => {
+    let i = [...incomings]
     i.splice(index, 1)
     setIncomings(i)
   }
+
+  //====================================================================
+  //====================================================================
+
+  //====================================================================
+  //====================================================================
+  // IMPORTS
+  const [imports, setImports] = useState([])
+
+  const getImports = useCallback(
+    async (beginDay, endDay) => {
+      try {
+        const data = await request(
+          `/api/products/incoming/get`,
+          'POST',
+          { market: auth.market._id, beginDay, endDay },
+          {
+            Authorization: `Bearer ${auth.token}`,
+          },
+        )
+        console.log(data)
+        setImports(data)
+      } catch (error) {
+        notify({
+          title: error,
+          description: '',
+          status: 'error',
+        })
+      }
+    },
+    [request, auth, notify],
+  )
 
   //====================================================================
   //====================================================================
@@ -280,6 +312,73 @@ export const Incoming = () => {
 
   //====================================================================
   //====================================================================
+  // CreateHandler
+  const createHandler = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/products/incoming/registerall`,
+        'POST',
+        {
+          market: auth.market._id,
+          user: auth.userId,
+          products: [...incomings],
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      )
+      localStorage.setItem('data', data)
+      notify({
+        title: `Mahsulotlar qabul qilindi!`,
+        description: '',
+        status: 'success',
+      })
+      setIncomings([])
+      setIncoming()
+      setVisible(false)
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      })
+    }
+  }, [auth, request, incomings, notify])
+
+  //====================================================================
+  //====================================================================
+
+  //====================================================================
+  //====================================================================
+
+  //====================================================================
+  //====================================================================
+  // ChangeDate
+
+  const changeStart = (e) => {
+    setBeginDay(new Date(new Date(e).setUTCHours(0, 0, 0, 0)))
+    getImports(new Date(new Date(e).setUTCHours(0, 0, 0, 0)), endDay)
+  }
+
+  const changeEnd = (e) => {
+    const date = new Date(
+      new Date(new Date().setDate(new Date(e).getDate() + 1)).setUTCHours(
+        0,
+        0,
+        0,
+        0,
+      ),
+    )
+
+    setEndDay(date)
+    getImports(beginDay, date)
+  }
+
+  //====================================================================
+  //====================================================================
+
+  //====================================================================
+  //====================================================================
   // useEffect
 
   const [t, setT] = useState(0)
@@ -290,8 +389,18 @@ export const Incoming = () => {
       getSuppliers()
       getCategorys()
       getProducts()
+      getImports(beginDay, endDay)
     }
-  }, [auth, getSuppliers, t, getCategorys, getProducts])
+  }, [
+    auth,
+    getSuppliers,
+    t,
+    getCategorys,
+    getProducts,
+    getImports,
+    beginDay,
+    endDay,
+  ])
 
   //====================================================================
   //====================================================================
@@ -323,12 +432,13 @@ export const Incoming = () => {
             </div>
             <div className={` ${visible ? '' : 'd-none'}`}>
               <RegisterIncoming
-                  removeIncoming={removeIncoming}
-                  addIncoming={addIncoming}
+                createHandler={createHandler}
+                removeIncoming={removeIncoming}
+                addIncoming={addIncoming}
                 inputHandler={inputHandler}
                 searchCategory={searchCategory}
                 incomings={incomings}
-                  editIncoming={editIncoming}
+                editIncoming={editIncoming}
                 incoming={incoming}
                 changeProduct={changeProduct}
                 changeCategory={changeCategory}
