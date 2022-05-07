@@ -18,7 +18,7 @@ export const InputProduct = ({
           <thead>
             <tr>
               <th>Kategoriya nomi</th>
-              <th>Mahsulot turi</th>
+              {/*<th>Mahsulot turi</th>*/}
               <th>Mahsulot kodi</th>
               <th>Mahsulot nomi</th>
               <th>O'lchov birliki</th>
@@ -44,38 +44,38 @@ export const InputProduct = ({
                   {categories &&
                     categories.map((category, index) => (
                       <option key={index} value={category._id}>
-                        {category.name}
+                        {category.code +" "+category.name}
                       </option>
                     ))}
                   <option value="delete">Kategoriyani tanlang</option>
                 </select>
               </td>
-              <td>
-                <select
-                  className="form-control form-control-sm selectpicker"
-                  id="select"
-                  onChange={(e) => {
-                    if (e.target.value === "delete") {
-                      setProduct({ ...product, producttype: null });
-                    } else {
-                      setProduct({
-                        ...product,
-                        producttype: e.target.value,
-                      });
-                    }
-                  }}
-                  placeholder="Xizmat turini tanlang"
-                  style={{ minWidth: "70px" }}
-                >
-                  {producttypes &&
-                    producttypes.map((producttype, ind) => (
-                      <option key={ind} value={producttype._id}>
-                        {producttype.name}
-                      </option>
-                    ))}
-                  <option value="delete">Mahsulot turini tanlang</option>
-                </select>
-              </td>
+              {/*<td>*/}
+              {/*  <select*/}
+              {/*    className="form-control form-control-sm selectpicker"*/}
+              {/*    id="select"*/}
+              {/*    onChange={(e) => {*/}
+              {/*      if (e.target.value === "delete") {*/}
+              {/*        setProduct({ ...product, producttype: null });*/}
+              {/*      } else {*/}
+              {/*        setProduct({*/}
+              {/*          ...product,*/}
+              {/*          producttype: e.target.value,*/}
+              {/*        });*/}
+              {/*      }*/}
+              {/*    }}*/}
+              {/*    placeholder="Xizmat turini tanlang"*/}
+              {/*    style={{ minWidth: "70px" }}*/}
+              {/*  >*/}
+              {/*    {producttypes &&*/}
+              {/*      producttypes.map((producttype, ind) => (*/}
+              {/*        <option key={ind} value={producttype._id}>*/}
+              {/*          {producttype.name}*/}
+              {/*        </option>*/}
+              {/*      ))}*/}
+              {/*    <option value="delete">Mahsulot turini tanlang</option>*/}
+              {/*  </select>*/}
+              {/*</td>*/}
               <td>
                 <input
                   style={{ minWidth: "70px" }}

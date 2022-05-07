@@ -32,6 +32,7 @@ export const TableProduct = ({
   product,
 }) => {
   const edit = (e, p) => {
+    console.log(p)
     setProduct({
       ...product,
       _id: p._id,
@@ -39,7 +40,7 @@ export const TableProduct = ({
       code: p.code,
       category: p.category._id,
       unit: p.unit._id,
-      producttype: p.producttype._id,
+      producttype: p.producttype && p.producttype._id,
     });
     for (let option of document.getElementsByTagName("select")[0].options) {
       if (option.value === p.category._id) {
@@ -47,7 +48,7 @@ export const TableProduct = ({
       }
     }
     for (let option of document.getElementsByTagName("select")[1].options) {
-      if (option.value === p.producttype._id) {
+      if (p.producttype && option.value === p.producttype._id) {
         option.selected = true;
       }
     }

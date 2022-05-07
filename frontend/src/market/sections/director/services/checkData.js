@@ -77,12 +77,6 @@ export const checkProduct = (product) => {
       description: "Iltimos kategoriya nomini yoki kodini tanlang.",
       status: "error",
     };
-  if (!product.producttype)
-    return {
-      title: "Diqqat! Mahsulot turi tanlanmagan.",
-      description: "Iltimos mahsulot turini tanlang.",
-      status: "error",
-    };
 
   if (!product.name)
     return {

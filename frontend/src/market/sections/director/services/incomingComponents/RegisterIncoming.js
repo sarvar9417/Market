@@ -2,15 +2,20 @@ import React from 'react'
 import 'react-datepicker/dist/react-datepicker.css'
 import Select from 'react-select'
 import makeAnimated from 'react-select/animated'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faPenAlt, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
 
 const animatedComponents = makeAnimated()
 
 export const RegisterIncoming = ({
+                                   removeIncoming,
+                                   addIncoming,
   inputHandler,
   searchCategory,
   incomings,
-  incoming,
-  changeProducts,
+                                   incoming,
+                                   editIncoming,
+  changeProduct,
   changeCategory,
   products,
   categorys,
@@ -70,7 +75,7 @@ export const RegisterIncoming = ({
                         placeholder="Mahsulotlar"
                         isClearable={true}
                         isLoading={loading}
-                        onChange={changeProducts}
+                        onChange={changeProduct}
                         components={animatedComponents}
                         options={products}
                         theme={(theme) => ({
@@ -90,13 +95,13 @@ export const RegisterIncoming = ({
                 {incoming ? (
                   <tbody>
                     <tr className="bg-slate-100">
-                      <td className="border m-0 px-3 py-2 font-bold">
+                      <td className="border m-0 px-3 py-2 font-bold text-black">
                         {incoming.supplier.name}
                       </td>
-                      <td className="border m-0 px-3 py-2 font-bold">
+                      <td className="border m-0 px-3 py-2 font-bold text-black">
                         {incoming.category.code} - {incoming.category.name}
                       </td>
-                      <td className="border m-0 px-3 py-2 font-bold">
+                      <td className="border m-0 px-3 py-2 font-bold text-black">
                         {incoming.product.code} - {incoming.product.name}
                       </td>
                       <td className="border m-0 px-3 py-2 font-bold">
@@ -105,17 +110,17 @@ export const RegisterIncoming = ({
                           value={incoming.pieces && incoming.pieces}
                           type="number"
                           step={0.001}
-                          className="outline-none text-right"
+                          className="outline-none text-right text-black font-bold"
                           style={{ maxWidth: '50px' }}
                           name="pieces"
                         />
                       </td>
-                      <td className="border m-0 px-3 py-2 font-bold">
+                      <td className="border m-0 px-3 py-2 font-bolds">
                         <input
                           onChange={inputHandler}
                           value={incoming.unitprice && incoming.unitprice}
                           type="number"
-                          className="outline-none text-right"
+                          className="outline-none text-right text-black font-bold"
                           style={{ maxWidth: '50px' }}
                           name="unitprice"
                         />
@@ -126,12 +131,12 @@ export const RegisterIncoming = ({
                           value={incoming.totalprice}
                           type="number"
                           style={{ maxWidth: '50px' }}
-                          className="outline-none text-right w-full"
+                          className="outline-none text-right w-full font-bold text-black"
                           name="totalprice"
                         />
                       </td>
                       <td className="border  m-0 px-3 py-1 text-center">
-                        <button className="bg-emerald-600 text-white px-4 py-1 rounded hover:bg-emerald-500">
+                        <button onClick={addIncoming} className="bg-emerald-600 text-white px-4 py-1 rounded hover:bg-emerald-500">
                           +
                         </button>
                       </td>
@@ -212,6 +217,7 @@ export const RegisterIncoming = ({
             <div className="card-body">
               <div className="row gutters">
                 <div className="col-12">
+                  <div className="text-teal-900 font-bold text-lg">Yetzib beruvchi: {supplier && supplier.name}</div>
                   <table className="table">
                     <thead>
                       <tr>
@@ -226,25 +232,46 @@ export const RegisterIncoming = ({
                           Soni
                         </th>
                         <th className="border py-1 fontbold text-center">
-                          Chakana narxi
+                          Narx (1)
                         </th>
                         <th className="border py-1 fontbold text-center">
                           Ulgurji narxi
+                        </th>
+                        <th className="border py-1 fontbold text-center">
+                          Tahrirlash
+                        </th>
+                        <th className="border py-1 fontbold text-center">
+                          O'chirish
                         </th>
                       </tr>
                     </thead>
                     <tbody>
                       {incomings.map((product, key) => {
                         return (
-                          <tr>
-                            <td className="font-bold text-center">{key + 1}</td>
-                            <td>
-                              <span>{product.category.code}</span>
+                          <tr key={key}>
+                            <td className="font-bold text-center border">{key + 1}</td>
+                            <td className="border text-black font-bold">
+                              <span>{product.category.code} - </span>
                               <span>{product.category.name}</span>
                             </td>
-                            <td>
-                              <span>{product.product.code}</span>
+                            <td className="border text-black font-bold">
+                              <span>{product.product.code} - </span>
                               <span>{product.product.name}</span>
+                            </td>
+                            <td className="border text-black font-bold text-right">
+                              <span>{product.pieces} </span>
+                            </td>
+                            <td className="border text-black font-bold text-right">
+                              <span> {product.unitprice} $</span>
+                            </td>
+                            <td className="border text-black font-bold text-right">
+                              <span>{product.totalprice} $</span>
+                            </td>
+                            <td className="border text-black font-bold text-center py-0">
+                              <button onClick={()=>editIncoming(product, key)} className="bg-teal-500 hover:bg-teal-600 px-4 py-1 text-white"><FontAwesomeIcon icon={faPenAlt}/></button>
+                            </td>
+                            <td className="border text-black font-bold text-center py-0">
+                              <button onClick={()=>removeIncoming(key)} className="bg-red-500 hover:bg-red-600 px-4 py-1 text-white"><FontAwesomeIcon icon={faTrashAlt}/></button>
                             </td>
                           </tr>
                         )

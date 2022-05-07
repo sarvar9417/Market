@@ -172,7 +172,7 @@ export const Incoming = () => {
     }
   }, [request, auth, notify])
 
-  const changeProducts = (e) => {
+  const changeProduct = (e) => {
     let i = {
       totalprice: 0,
       unitprice: 0,
@@ -189,6 +189,27 @@ export const Incoming = () => {
     }
     setIncoming(i)
   }
+
+  const addIncoming = ()=>{
+    let i = [...incomings]
+    i.unshift({...incoming})
+    setIncomings(i)
+    setIncoming()
+  }
+
+  const editIncoming = (product, index)=>{
+    setIncoming(product)
+    let i =  [...incomings]
+    i.splice(index, 1)
+    setIncomings(i)
+  }
+
+  const removeIncoming = (index)=>{
+    let i =  [...incomings]
+    i.splice(index, 1)
+    setIncomings(i)
+  }
+
   //====================================================================
   //====================================================================
 
@@ -302,11 +323,14 @@ export const Incoming = () => {
             </div>
             <div className={` ${visible ? '' : 'd-none'}`}>
               <RegisterIncoming
+                  removeIncoming={removeIncoming}
+                  addIncoming={addIncoming}
                 inputHandler={inputHandler}
                 searchCategory={searchCategory}
                 incomings={incomings}
+                  editIncoming={editIncoming}
                 incoming={incoming}
-                changeProducts={changeProducts}
+                changeProduct={changeProduct}
                 changeCategory={changeCategory}
                 products={products}
                 categorys={categorys}

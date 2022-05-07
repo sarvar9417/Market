@@ -196,7 +196,7 @@ module.exports.register = async (req, res) => {
 //Product update
 module.exports.update = async (req, res) => {
   try {
-    const { _id, name, code, category, producttype, market } = req.body
+    const { _id, name, code, category, producttype, market, unit } = req.body
 
     const marke = await Market.findById(market)
 
@@ -226,12 +226,13 @@ module.exports.update = async (req, res) => {
 
     if (c && c._id.toString() !== _id) {
       return res.status(400).json({
-        message: `Diqqat! ${code} kodli mahsulot tizimda avval ro'yxatga olingan.`,
+        message: `Diqqat! ${code} kodli mahsulot tizimda avval ro'yxatga olinmagan.`,
       })
     }
 
     product.name = name
     product.code = code
+    product.unit = unit
 
     if (product.category !== category) {
       const removeCategory = await Category.findByIdAndUpdate(

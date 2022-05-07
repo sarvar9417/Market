@@ -69,7 +69,7 @@ export const Supplier = () => {
   const getSuppliers = useCallback(async () => {
     try {
       const data = await request(
-        `/api/products/supplier/getall`,
+        `/api/supplier/getall`,
         "POST",
         { market: auth.market._id },
         {
@@ -94,7 +94,7 @@ export const Supplier = () => {
   const createHandler = useCallback(async () => {
     try {
       const data = await request(
-        `/api/products/supplier/register`,
+        `/api/supplier/register`,
         "POST",
         { ...supplier },
         {
@@ -123,7 +123,7 @@ export const Supplier = () => {
   const updateHandler = useCallback(async () => {
     try {
       const data = await request(
-        `/api/products/supplier/update`,
+        `/api/supplier/update`,
         "PUT",
         { ...supplier },
         {
@@ -169,7 +169,7 @@ export const Supplier = () => {
   const deleteHandler = useCallback(async () => {
     try {
       const data = await request(
-        `/api/products/supplier/delete`,
+        `/api/supplier/delete`,
         "DELETE",
         { ...remove },
         {
