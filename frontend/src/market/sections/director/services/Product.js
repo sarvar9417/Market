@@ -36,22 +36,22 @@ export const Product = () => {
       input.value = "";
     }
 
-    for (let option of document.getElementsByTagName("select")[0].options) {
-      if (option.value === "delete") {
-        option.selected = true;
+    for (let option of document.getElementsByTagName('select')[0].options) {
+      if (option.value === 'delete') {
+        option.selected = true
       }
     }
-    for (let option of document.getElementsByTagName("select")[1].options) {
-      if (option.value === "delete") {
-        option.selected = true;
+    for (let option of document.getElementsByTagName('select')[1].options) {
+      if (option.value === 'delete') {
+        option.selected = true
       }
     }
-    for (let option of document.getElementsByTagName("select")[2].options) {
-      if (option.value === "delete") {
-        option.selected = true;
+    for (let option of document.getElementsByTagName('select')[2].options) {
+      if (option.value === 'delete') {
+        option.selected = true
       }
     }
-  }, []);
+  }, [])
 
   //====================================================================
   //====================================================================
@@ -240,6 +240,7 @@ export const Product = () => {
         market: auth.market && auth.market._id,
       });
       clearInputs();
+
     } catch (error) {
       notify({
         title: error,
@@ -253,7 +254,7 @@ export const Product = () => {
     try {
       const data = await request(
         `/api/products/product/update`,
-        "PUT",
+        'PUT',
         { ...product },
 
         {
@@ -268,8 +269,8 @@ export const Product = () => {
       getProducts();
       setProduct({
         market: auth.market && auth.market._id,
-      });
       clearInputs();
+
     } catch (error) {
       notify({
         title: error,

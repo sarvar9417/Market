@@ -106,12 +106,17 @@ router.delete('/unit/delete', auth, (req, res) => {
 //========================================================
 // INCOMING
 // CRUD
+
+router.post('/incoming/registerall', auth, (req, res) => {
+  require('./incoming').registerAll(req, res)
+})
+
 router.post('/incoming/register', auth, (req, res) => {
   require('./incoming').register(req, res)
 })
 
-router.post('/incoming/getall', auth, (req, res) => {
-  require('./incoming').getAll(req, res)
+router.post('/incoming/get', auth, (req, res) => {
+  require('./incoming').get(req, res)
 })
 
 router.put('/incoming/update', auth, (req, res) => {
