@@ -36,22 +36,22 @@ export const Product = () => {
       input.value = ''
     }
 
-    for (let option of document.getElementsByTagName("select")[0].options) {
-      if (option.value === "delete") {
-        option.selected = true;
+    for (let option of document.getElementsByTagName('select')[0].options) {
+      if (option.value === 'delete') {
+        option.selected = true
       }
     }
-    for (let option of document.getElementsByTagName("select")[1].options) {
-      if (option.value === "delete") {
-        option.selected = true;
+    for (let option of document.getElementsByTagName('select')[1].options) {
+      if (option.value === 'delete') {
+        option.selected = true
       }
     }
-    for (let option of document.getElementsByTagName("select")[2].options) {
-      if (option.value === "delete") {
-        option.selected = true;
+    for (let option of document.getElementsByTagName('select')[2].options) {
+      if (option.value === 'delete') {
+        option.selected = true
       }
     }
-  }, []);
+  }, [])
 
   //====================================================================
   //====================================================================
@@ -238,8 +238,8 @@ export const Product = () => {
       getProducts()
       setProduct({
         market: auth.market && auth.market._id,
-      });
-      clearInputs();
+      })
+      clearInputs()
     } catch (error) {
       notify({
         title: error,
@@ -253,7 +253,7 @@ export const Product = () => {
     try {
       const data = await request(
         `/api/products/product/update`,
-        "PUT",
+        'PUT',
         { ...product },
 
         {
@@ -268,8 +268,8 @@ export const Product = () => {
       getProducts()
       setProduct({
         market: auth.market && auth.market._id,
-      });
-      clearInputs();
+      })
+      clearInputs()
     } catch (error) {
       notify({
         title: error,
@@ -350,7 +350,7 @@ export const Product = () => {
       )
       localStorage.setItem('data', data)
       notify({
-        title: `Barcha mahsulotlar yuklandi!`,
+        title: `Barcha mahsulolar yuklandi!`,
         description: '',
         status: 'success',
       })
@@ -382,20 +382,12 @@ export const Product = () => {
 
   const searchCategory = useCallback(
     (e) => {
-      const searching = searchStorage.filter((item) =>
-        item.category.name.toLowerCase().includes(e.target.value.toLowerCase()),
-      )
-      setProducts(searching)
-      setCurrentProducts(searching.slice(0, countPage))
-    },
-    [searchStorage, countPage],
-  )
-  const searchCategoryCode = useCallback(
-    (e) => {
-      const searching = searchStorage.filter((item) =>
-        String(item.category.code)
-          .toLowerCase()
-          .includes(e.target.value.toLowerCase()),
+      const searching = searchStorage.filter(
+        (item) =>
+          item.category.name
+            .toLowerCase()
+            .includes(e.target.value.toLowerCase()) ||
+          String(item.category.code).includes(e.target.value),
       )
       setProducts(searching)
       setCurrentProducts(searching.slice(0, countPage))
@@ -418,19 +410,10 @@ export const Product = () => {
 
   const searchName = useCallback(
     (e) => {
-      const searching = searchStorage.filter((item) =>
-        item.name.toLowerCase().includes(e.target.value.toLowerCase()),
-      )
-      setProducts(searching)
-      setCurrentProducts(searching.slice(0, countPage))
-    },
-    [searchStorage, countPage],
-  )
-
-  const searchCode = useCallback(
-    (e) => {
-      const searching = searchStorage.filter((item) =>
-        String(item.code).includes(e.target.value),
+      const searching = searchStorage.filter(
+        (item) =>
+          item.name.toLowerCase().includes(e.target.value.toLowerCase()) ||
+          String(item.code).includes(e.target.value),
       )
       setProducts(searching)
       setCurrentProducts(searching.slice(0, countPage))
@@ -463,7 +446,6 @@ export const Product = () => {
   }, [getProducts, getUnits, getCategories, getProductTypes, t])
   //====================================================================
   //====================================================================
-  console.log(product)
   return (
     <>
       {loading ? <Loader /> : ''}
@@ -488,7 +470,6 @@ export const Product = () => {
               searchName={searchName}
               searchProductType={searchProductType}
               searchCategory={searchCategory}
-              searchCategoryCode={searchCategoryCode}
               categories={categories}
               products={products}
               tableExcel={tableExcel}
@@ -504,7 +485,6 @@ export const Product = () => {
               currentPage={currentPage}
               setPageSize={setPageSize}
               loading={loading}
-              searchCode={searchCode}
               setModal2={setModal2}
             />
           </div>
