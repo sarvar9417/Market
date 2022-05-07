@@ -350,7 +350,7 @@ export const Product = () => {
       );
       localStorage.setItem("data", data);
       notify({
-        title: `Barcha mahsulotlar yuklandi!`,
+        title: `Barcha mahsulolar yuklandi!`,
         description: "",
         status: "success",
       });
