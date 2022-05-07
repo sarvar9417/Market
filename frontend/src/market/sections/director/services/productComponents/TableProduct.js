@@ -23,8 +23,6 @@ export const TableProduct = ({
   setPageSize,
   loading,
   tableExcel,
-  searchCode,
-  searchCategoryCode,
   setImports,
   setModal2,
   categories,
@@ -32,7 +30,6 @@ export const TableProduct = ({
   product,
 }) => {
   const edit = (e, p) => {
-    console.log(p)
     setProduct({
       ...product,
       _id: p._id,
@@ -40,7 +37,6 @@ export const TableProduct = ({
       code: p.code,
       category: p.category._id,
       unit: p.unit._id,
-      producttype: p.producttype && p.producttype._id,
     });
     for (let option of document.getElementsByTagName("select")[0].options) {
       if (option.value === p.category._id) {
@@ -48,11 +44,6 @@ export const TableProduct = ({
       }
     }
     for (let option of document.getElementsByTagName("select")[1].options) {
-      if (p.producttype && option.value === p.producttype._id) {
-        option.selected = true;
-      }
-    }
-    for (let option of document.getElementsByTagName("select")[2].options) {
       if (option.value === p.unit._id) {
         option.selected = true;
       }
@@ -90,16 +81,6 @@ export const TableProduct = ({
                 </th>
                 <th>
                   <input
-                    onChange={searchCategoryCode}
-                    style={{ maxWidth: "100px" }}
-                    type="search"
-                    className="form-control form-control-sm selectpicker"
-                    placeholder="Kategoriya"
-                    aria-controls="basicExample"
-                  />
-                </th>
-                <th>
-                  <input
                     onChange={searchName}
                     style={{ maxWidth: "100px" }}
                     type="search"
@@ -108,17 +89,7 @@ export const TableProduct = ({
                     aria-controls="basicExample"
                   />
                 </th>
-                <th>
-                  <input
-                    onChange={searchCode}
-                    style={{ maxWidth: "100px" }}
-                    type="search"
-                    className="form-control form-control-sm selectpicker"
-                    placeholder="Mahsulot"
-                    aria-controls="basicExample"
-                  />
-                </th>
-                <th>
+                <th className="text-center">
                   <Pagination
                     setCurrentDatas={setCurrentProducts}
                     datas={products}
@@ -150,7 +121,7 @@ export const TableProduct = ({
             <thead>
               <tr>
                 <th className="border-right">№</th>
-                <th className="border-right">
+                <th className="border-right" style={{ maxWidth: "200px" }}>
                   Kategoriya
                   <div className="btn-group-vertical ml-2">
                     <FontAwesomeIcon
@@ -171,33 +142,6 @@ export const TableProduct = ({
                         setCurrentProducts(
                           [...currentProducts].sort((a, b) =>
                             b.category.name > a.category.name ? 1 : -1
-                          )
-                        )
-                      }
-                    />
-                  </div>
-                </th>
-                <th className="border-right">
-                  Kategoriya kodi
-                  <div className="btn-group-vertical ml-2">
-                    <FontAwesomeIcon
-                      onClick={() =>
-                        setCurrentProducts(
-                          [...currentProducts].sort((a, b) =>
-                            a.producttype.name > b.producttype.name ? 1 : -1
-                          )
-                        )
-                      }
-                      icon={faAngleUp}
-                      style={{ cursor: "pointer" }}
-                    />
-                    <FontAwesomeIcon
-                      icon={faAngleDown}
-                      style={{ cursor: "pointer" }}
-                      onClick={() =>
-                        setCurrentProducts(
-                          [...currentProducts].sort((a, b) =>
-                            b.producttype.name > a.producttype.name ? 1 : -1
                           )
                         )
                       }
@@ -232,35 +176,11 @@ export const TableProduct = ({
                   </div>
                 </th>
                 <th className="border-right">
-                  Mahsulot kodi
-                  <div className="btn-group-vertical ml-2">
-                    <FontAwesomeIcon
-                      onClick={() =>
-                        setCurrentProducts(
-                          [...currentProducts].sort((a, b) =>
-                            a.code > b.code ? 1 : -1
-                          )
-                        )
-                      }
-                      icon={faAngleUp}
-                      style={{ cursor: "pointer" }}
-                    />
-                    <FontAwesomeIcon
-                      icon={faAngleDown}
-                      style={{ cursor: "pointer" }}
-                      onClick={() =>
-                        setCurrentProducts(
-                          [...currentProducts].sort((a, b) =>
-                            b.code > a.code ? 1 : -1
-                          )
-                        )
-                      }
-                    />
-                  </div>
-                </th>
-                <th className="border-right">
                   Mahsulot o'lchov birliki
-                  <div className="btn-group-vertical ml-2">
+                  <div
+                    className="btn-group-vertical ml-2"
+                    style={{ maxWidth: "30px" }}
+                  >
                     <FontAwesomeIcon
                       onClick={() =>
                         setCurrentProducts(
@@ -294,14 +214,24 @@ export const TableProduct = ({
                 currentProducts.map((p, key) => {
                   return (
                     <tr key={key}>
-                      <td className="border-right font-weight-bold">
+                      <td
+                        className="border-right font-weight-bold"
+                        style={{ width: "10%" }}
+                      >
                         {currentPage * countPage + key + 1}
                       </td>
-                      <td className="border-right">{p.category.name}</td>
-                      <td className="border-right">{p.category.code}</td>
-                      <td className="border-right">{p.name}</td>
-                      <td className="border-right">{p.code}</td>
-                      <td className="border-right">{p.unit.name}</td>
+                      <td className="border-right">
+                        {p.category.name} {p.category.code}
+                      </td>
+                      <td className="border-right">
+                        {p.name} {p.code}
+                      </td>
+                      <td
+                        className="border-right mx-auto"
+                        style={{ width: "15%" }}
+                      >
+                        {p.unit.name}
+                      </td>
                       <td className="border-right text-center">
                         {loading ? (
                           <button
