@@ -446,7 +446,6 @@ export const Product = () => {
   }, [getProducts, getUnits, getCategories, getProductTypes, t]);
   //====================================================================
   //====================================================================
-  console.log(product);
   return (
     <>
       {loading ? <Loader /> : ""}
