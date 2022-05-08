@@ -1,10 +1,10 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { useToast } from '@chakra-ui/react'
-import { RegisterIncoming } from './incomingComponents/RegisterIncoming'
-import { useHttp } from './../../../hooks/http.hook'
-import { AuthContext } from '../../../context/AuthContext'
-import { TableIncoming } from './incomingComponents/TableIncoming'
-import { ReportIncomings } from './incomingComponents/ReportIncomings'
+import React, { useCallback, useContext, useEffect, useState } from "react";
+import { useToast } from "@chakra-ui/react";
+import { RegisterIncoming } from "./incomingComponents/RegisterIncoming";
+import { useHttp } from "./../../../hooks/http.hook";
+import { AuthContext } from "../../../context/AuthContext";
+import { TableIncoming } from "./incomingComponents/TableIncoming";
+import { ReportIncomings } from "./incomingComponents/ReportIncomings";
 import { Modal } from "./modal/Modal";
 
 export const Incoming = () => {
@@ -210,50 +210,50 @@ export const Incoming = () => {
   //====================================================================
   //====================================================================
   // BRAND
-  const [brand, setBrand] = useState([]);
+  // const [brand, setBrand] = useState([]);
 
-  const getBrand = useCallback(async () => {
-    try {
-      const data = await request(
-        `/api/products/brand/getall`,
-        "POST",
-        { market: auth.market._id },
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
-      );
-      let s = [
-        {
-          label: "Barcha brendlar",
-          value: "all",
-        },
-      ];
-      data.map((brand) => {
-        return s.push({
-          label: brand.name,
-          value: brand._id,
-        });
-      });
-      setBrand(s);
-    } catch (error) {
-      notify({
-        title: error,
-        description: "",
-        status: "error",
-      });
-    }
-  }, [request, auth, notify]);
+  // const getBrand = useCallback(async () => {
+  //   try {
+  //     const data = await request(
+  //       `/api/products/brand/getall`,
+  //       "POST",
+  //       { market: auth.market._id },
+  //       {
+  //         Authorization: `Bearer ${auth.token}`,
+  //       }
+  //     );
+  //     let s = [
+  //       {
+  //         label: "Barcha brendlar",
+  //         value: "all",
+  //       },
+  //     ];
+  //     data.map((brand) => {
+  //       return s.push({
+  //         label: brand.name,
+  //         value: brand._id,
+  //       });
+  //     });
+  //     setBrand(s);
+  //   } catch (error) {
+  //     notify({
+  //       title: error,
+  //       description: "",
+  //       status: "error",
+  //     });
+  //   }
+  // }, [request, auth, notify]);
 
-  const changeBrand = (e) => {
-    if (e.value === "all") {
-      setProducts(allproducts);
-    } else {
-      const filter = allproducts.filter((item) => {
-        return item.product.brand._id === e.value;
-      });
-      setProducts(filter);
-    }
-  };
+  // const changeBrand = (e) => {
+  //   if (e.value === "all") {
+  //     setProducts(allproducts);
+  //   } else {
+  //     const filter = allproducts.filter((item) => {
+  //       return item.product.brand._id === e.value;
+  //     });
+  //     setProducts(filter);
+  //   }
+  // };
 
   //====================================================================
   //====================================================================
@@ -276,7 +276,12 @@ export const Incoming = () => {
       let s = [];
       data.map((product) => {
         return s.push({
-          label: product.code + " - " + product.name,
+          label:
+            product.code +
+            " - " +
+            product.name +
+            ", " +
+            product.brand.name.toUpperCase(),
           value: product._id,
           category: product.category._id,
           product: { ...product },
@@ -577,7 +582,7 @@ export const Incoming = () => {
       getCategorys();
       getProducts();
       getProductType();
-      getBrand();
+      // getBrand();
       getImports(beginDay, endDay);
     }
   }, [
@@ -588,7 +593,7 @@ export const Incoming = () => {
     getProducts,
     getImports,
     getProductType,
-    getBrand,
+    // getBrand,
     beginDay,
     endDay,
     // getProductType,
@@ -606,15 +611,17 @@ export const Incoming = () => {
               <div className="row">
                 <div className="col-12 text-right">
                   <button
-                    className={`btn btn-primary mb-2 ${visible ? "d-none" : ""
-                      }`}
+                    className={`btn btn-primary mb-2 ${
+                      visible ? "d-none" : ""
+                    }`}
                     onClick={changeVisible}
                   >
                     Qabul qilish
                   </button>
                   <button
-                    className={`btn btn-primary mb-2 ${visible ? "" : "d-none"
-                      }`}
+                    className={`btn btn-primary mb-2 ${
+                      visible ? "" : "d-none"
+                    }`}
                     onClick={changeVisible}
                   >
                     Qabul qilish
@@ -634,19 +641,19 @@ export const Incoming = () => {
                   changeProduct={changeProduct}
                   changeCategory={changeCategory}
                   changeProductType={changeProductType}
-                  changeBrand={changeBrand}
+                  // changeBrand={changeBrand}
                   products={products}
                   categorys={categorys}
                   productType={productTypes}
-                  brand={brand}
+                  // brand={brand}
                   loading={loading}
                   suppliers={suppliers}
                   supplier={supplier}
                   setSupplier={setSupplier}
                   setModal={setModal}
-                // productType={productType}
-                // setProductType={setProductType}
-                // changeProductType={changeProductType}
+                  // productType={productType}
+                  // setProductType={setProductType}
+                  // changeProductType={changeProductType}
                 />
               </div>
             </div>
