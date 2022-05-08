@@ -307,7 +307,7 @@ export const Incoming = () => {
       },
       category: e.product.category,
       producttype: e.product.producttype,
-      brand: e.product.brand,
+      brand: e.product.brand && e.product.brand,
       unit: e.product.unit,
     };
     setIncoming(i);
