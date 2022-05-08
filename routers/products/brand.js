@@ -121,8 +121,9 @@ module.exports.getAll = async (req, res) => {
 
     const brand = await Brand.find({
       market,
-    }).select('name')
-
+    })
+      .select('name')
+      .sort({ _id: -1 })
     res.send(brand)
   } catch (error) {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })

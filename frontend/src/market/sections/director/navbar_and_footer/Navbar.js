@@ -1,14 +1,14 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import { AuthContext } from "../../../context/AuthContext";
-import { useHttp } from "../../../hooks/http.hook";
-import { useToast } from "@chakra-ui/react";
+import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { Link, useHistory } from 'react-router-dom'
+import { AuthContext } from '../../../context/AuthContext'
+import { useHttp } from '../../../hooks/http.hook'
+import { useToast } from '@chakra-ui/react'
 
 export const Navbar = ({ baseUrl }) => {
-  const history = useHistory();
+  const history = useHistory()
   //====================================================================
   //====================================================================
-  const toast = useToast();
+  const toast = useToast()
 
   const notify = useCallback(
     (data) => {
@@ -18,22 +18,22 @@ export const Navbar = ({ baseUrl }) => {
         status: data.status && data.status,
         duration: 5000,
         isClosable: true,
-        position: "top-right",
-      });
+        position: 'top-right',
+      })
     },
-    [toast]
-  );
-  const [activePage, setActivePage] = useState(window.location.pathname);
+    [toast],
+  )
+  const [activePage, setActivePage] = useState(window.location.pathname)
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
 
-  const { request } = useHttp();
-  const auth = useContext(AuthContext);
+  const { request } = useHttp()
+  const auth = useContext(AuthContext)
 
-  const [user, setUser] = useState(auth.user);
+  const [user, setUser] = useState(auth.user)
   //====================================================================
   //====================================================================
 
@@ -43,20 +43,20 @@ export const Navbar = ({ baseUrl }) => {
   const getDirector = useCallback(async () => {
     try {
       const data = await request(
-        "/api/user",
-        "POST",
+        '/api/user',
+        'POST',
         {
           userId: auth.userId,
         },
         {
           Authorization: `Bearer ${auth.token}`,
-        }
-      );
-      setUser(data);
+        },
+      )
+      setUser(data)
     } catch (error) {
-      notify({ title: error, description: "", status: "error" });
+      notify({ title: error, description: '', status: 'error' })
     }
-  }, [request, auth, notify]);
+  }, [request, auth, notify])
 
   //====================================================================
   //====================================================================
@@ -64,8 +64,8 @@ export const Navbar = ({ baseUrl }) => {
   //====================================================================
   //====================================================================
   useEffect(() => {
-    getDirector();
-  }, [getDirector]);
+    getDirector()
+  }, [getDirector])
   //====================================================================
   //====================================================================
 
@@ -95,19 +95,19 @@ export const Navbar = ({ baseUrl }) => {
           >
             <ul className="navbar-nav">
               <li className="nav-item mr-4 px-2">
-                <span className="logo" style={{ fontSize: "26pt" }}>
+                <span className="logo" style={{ fontSize: '26pt' }}>
                   Alo24
                 </span>
               </li>
               <li className="nav-item">
                 <Link
                   className={`nav-link ${
-                    activePage === "/alo24" || activePage === "/"
-                      ? "active-page"
-                      : ""
+                    activePage === '/alo24' || activePage === '/'
+                      ? 'active-page'
+                      : ''
                   }`}
                   onClick={() => {
-                    setActivePage("/alo24");
+                    setActivePage('/alo24')
                   }}
                   to="/"
                 >
@@ -123,11 +123,11 @@ export const Navbar = ({ baseUrl }) => {
                   aria-haspopup="true"
                   aria-expanded="false"
                   className={`nav-link dropdown-toggle ${
-                    activePage === "/alo24/category" ||
-                    activePage === "/alo24/producttypes" ||
-                    activePage === "/alo24/product"
-                      ? "active-page"
-                      : ""
+                    activePage === '/alo24/category' ||
+                    activePage === '/alo24/producttypes' ||
+                    activePage === '/alo24/product'
+                      ? 'active-page'
+                      : ''
                   }`}
                 >
                   <i className="icon-users nav-icon" />
@@ -153,12 +153,12 @@ export const Navbar = ({ baseUrl }) => {
                       <li>
                         <Link
                           className={`dropdown-item ${
-                            activePage === "/alo24/category"
-                              ? "active-page"
-                              : ""
+                            activePage === '/alo24/category'
+                              ? 'active-page'
+                              : ''
                           }`}
                           onClick={() => {
-                            setActivePage("/alo24/category");
+                            setActivePage('/alo24/category')
                           }}
                           to="/alo24/category"
                         >
@@ -168,12 +168,12 @@ export const Navbar = ({ baseUrl }) => {
                       <li>
                         <Link
                           className={`dropdown-item ${
-                            activePage === "/alo24/producttypes"
-                              ? "active-page"
-                              : ""
+                            activePage === '/alo24/producttypes'
+                              ? 'active-page'
+                              : ''
                           }`}
                           onClick={() => {
-                            setActivePage("/alo24/producttypes");
+                            setActivePage('/alo24/producttypes')
                           }}
                           to="/alo24/producttypes"
                         >
@@ -183,10 +183,23 @@ export const Navbar = ({ baseUrl }) => {
                       <li>
                         <Link
                           className={`dropdown-item ${
-                            activePage === "/alo24/product" ? "active-page" : ""
+                            activePage === '/alo24/brand' ? 'active-page' : ''
                           }`}
                           onClick={() => {
-                            setActivePage("/alo24/product");
+                            setActivePage('/alo24/brand')
+                          }}
+                          to="/alo24/brand"
+                        >
+                          Brandlar
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={`dropdown-item ${
+                            activePage === '/alo24/product' ? 'active-page' : ''
+                          }`}
+                          onClick={() => {
+                            setActivePage('/alo24/product')
                           }}
                           to="/alo24/product"
                         >
@@ -196,10 +209,10 @@ export const Navbar = ({ baseUrl }) => {
                       <li>
                         <Link
                           className={`dropdown-item ${
-                            activePage === "/alo24/unit" ? "active-page" : ""
+                            activePage === '/alo24/unit' ? 'active-page' : ''
                           }`}
                           onClick={() => {
-                            setActivePage("/alo24/unit");
+                            setActivePage('/alo24/unit')
                           }}
                           to="/alo24/unit"
                         >
@@ -217,10 +230,10 @@ export const Navbar = ({ baseUrl }) => {
                   <li>
                     <Link
                       className={`dropdown-item ${
-                        activePage === "/alo24/incoming" ? "active-page" : ""
+                        activePage === '/alo24/incoming' ? 'active-page' : ''
                       }`}
                       onClick={() => {
-                        setActivePage("/alo24/incoming");
+                        setActivePage('/alo24/incoming')
                       }}
                       to="/alo24/incoming"
                     >
@@ -232,9 +245,9 @@ export const Navbar = ({ baseUrl }) => {
               <li className="nav-item dropdown">
                 <Link
                   className={`nav-link ${
-                    window.location.pathname === "/alo24/users"
-                      ? "active-page"
-                      : ""
+                    window.location.pathname === '/alo24/users'
+                      ? 'active-page'
+                      : ''
                   }`}
                   to="/alo24/users"
                   role="button"
@@ -246,12 +259,12 @@ export const Navbar = ({ baseUrl }) => {
               <li className="nav-item dropdown">
                 <Link
                   className={`nav-link ${
-                    activePage === "/alo24/exchangerate" || activePage === "/"
-                      ? "active-page"
-                      : ""
+                    activePage === '/alo24/exchangerate' || activePage === '/'
+                      ? 'active-page'
+                      : ''
                   }`}
                   onClick={() => {
-                    setActivePage("/alo24/exchangerate");
+                    setActivePage('/alo24/exchangerate')
                   }}
                   to="/alo24/exchangerate"
                 >
@@ -313,8 +326,8 @@ export const Navbar = ({ baseUrl }) => {
                     </Link>
                     <button
                       onClick={() => {
-                        auth.logout();
-                        history.push("/");
+                        auth.logout()
+                        history.push('/')
                       }}
                     >
                       <i className="icon-log-out1" /> Sign Out
@@ -337,5 +350,5 @@ export const Navbar = ({ baseUrl }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

@@ -133,8 +133,8 @@ router.post('/brand/register', auth, (req, res) => {
   require('./brand').register(req, res)
 })
 
-router.post('/brand/get', auth, (req, res) => {
-  require('./brand').get(req, res)
+router.post('/brand/getall', auth, (req, res) => {
+  require('./brand').getAll(req, res)
 })
 
 router.put('/brand/update', auth, (req, res) => {
