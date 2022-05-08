@@ -10,6 +10,7 @@ export const InputProduct = ({
   producttypes,
   loading,
   units,
+  brands,
 }) => {
   return (
     <div className="table-container">
@@ -17,8 +18,9 @@ export const InputProduct = ({
         <table className="table m-0">
           <thead>
             <tr>
-              <th>Kategoriya nomi</th>
-              {/*<th>Mahsulot turi</th>*/}
+              <th>Kategoriya</th>
+              <th>Mahsulot turi</th>
+              <th>Brend</th>
               <th>Mahsulot kodi</th>
               <th>Mahsulot nomi</th>
               <th>O'lchov birliki</th>
@@ -44,38 +46,64 @@ export const InputProduct = ({
                   {categories &&
                     categories.map((category, index) => (
                       <option key={index} value={category._id}>
-                        {category.code +" "+category.name}
+                        {category.code + " " + category.name}
                       </option>
                     ))}
-                  <option value="delete">Kategoriyani tanlang</option>
+                  <option value="delete">Kategoriya</option>
                 </select>
               </td>
-              {/*<td>*/}
-              {/*  <select*/}
-              {/*    className="form-control form-control-sm selectpicker"*/}
-              {/*    id="select"*/}
-              {/*    onChange={(e) => {*/}
-              {/*      if (e.target.value === "delete") {*/}
-              {/*        setProduct({ ...product, producttype: null });*/}
-              {/*      } else {*/}
-              {/*        setProduct({*/}
-              {/*          ...product,*/}
-              {/*          producttype: e.target.value,*/}
-              {/*        });*/}
-              {/*      }*/}
-              {/*    }}*/}
-              {/*    placeholder="Xizmat turini tanlang"*/}
-              {/*    style={{ minWidth: "70px" }}*/}
-              {/*  >*/}
-              {/*    {producttypes &&*/}
-              {/*      producttypes.map((producttype, ind) => (*/}
-              {/*        <option key={ind} value={producttype._id}>*/}
-              {/*          {producttype.name}*/}
-              {/*        </option>*/}
-              {/*      ))}*/}
-              {/*    <option value="delete">Mahsulot turini tanlang</option>*/}
-              {/*  </select>*/}
-              {/*</td>*/}
+              <td>
+                <select
+                  className="form-control form-control-sm selectpicker"
+                  id="select"
+                  onChange={(e) => {
+                    if (e.target.value === "delete") {
+                      setProduct({ ...product, producttype: null });
+                    } else {
+                      setProduct({
+                        ...product,
+                        producttype: e.target.value,
+                      });
+                    }
+                  }}
+                  placeholder="Xizmat turini tanlang"
+                  style={{ minWidth: "70px" }}
+                >
+                  {producttypes &&
+                    producttypes.map((producttype, ind) => (
+                      <option key={ind} value={producttype._id}>
+                        {producttype.name}
+                      </option>
+                    ))}
+                  <option value="delete">Mahsulot turi</option>
+                </select>
+              </td>
+              <td>
+                <select
+                  className="form-control form-control-sm selectpicker"
+                  id="select"
+                  onChange={(e) => {
+                    if (e.target.value === "delete") {
+                      setProduct({ ...product, brand: null });
+                    } else {
+                      setProduct({
+                        ...product,
+                        brand: e.target.value,
+                      });
+                    }
+                  }}
+                  placeholder="Mahsulot brendini tanlang"
+                  style={{ minWidth: "70px" }}
+                >
+                  {brands &&
+                    brands.map((b, ind) => (
+                      <option key={ind} value={b._id}>
+                        {b.name}
+                      </option>
+                    ))}
+                  <option value="delete">Brend</option>
+                </select>
+              </td>
               <td>
                 <input
                   style={{ minWidth: "70px" }}
