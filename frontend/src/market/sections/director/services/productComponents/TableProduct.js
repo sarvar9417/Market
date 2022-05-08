@@ -148,6 +148,60 @@ export const TableProduct = ({
                     />
                   </div>
                 </th>
+                <th className="border-right" style={{ maxWidth: "200px" }}>
+                  Mahsulot turi
+                  <div className="btn-group-vertical ml-2">
+                    <FontAwesomeIcon
+                      onClick={() =>
+                        setCurrentProducts(
+                          [...currentProducts].sort((a, b) =>
+                            a.producttype.name > b.producttype.name ? 1 : -1
+                          )
+                        )
+                      }
+                      icon={faAngleUp}
+                      style={{ cursor: "pointer" }}
+                    />
+                    <FontAwesomeIcon
+                      icon={faAngleDown}
+                      style={{ cursor: "pointer" }}
+                      onClick={() =>
+                        setCurrentProducts(
+                          [...currentProducts].sort((a, b) =>
+                            b.producttype.name > a.producttype.name ? 1 : -1
+                          )
+                        )
+                      }
+                    />
+                  </div>
+                </th>
+                <th className="border-right" style={{ maxWidth: "200px" }}>
+                  Brend
+                  <div className="btn-group-vertical ml-2">
+                    <FontAwesomeIcon
+                      onClick={() =>
+                        setCurrentProducts(
+                          [...currentProducts].sort((a, b) =>
+                            a.brand.name > b.brand.name ? 1 : -1
+                          )
+                        )
+                      }
+                      icon={faAngleUp}
+                      style={{ cursor: "pointer" }}
+                    />
+                    <FontAwesomeIcon
+                      icon={faAngleDown}
+                      style={{ cursor: "pointer" }}
+                      onClick={() =>
+                        setCurrentProducts(
+                          [...currentProducts].sort((a, b) =>
+                            b.brand.name > a.brand.name ? 1 : -1
+                          )
+                        )
+                      }
+                    />
+                  </div>
+                </th>
                 <th className="border-right">
                   Mahsulot
                   <div className="btn-group-vertical ml-2">
@@ -224,6 +278,12 @@ export const TableProduct = ({
                         {p.category.name} {p.category.code}
                       </td>
                       <td className="border-right">
+                        {p.producttype && p.producttype.name}
+                      </td>
+                      <td className="border-right">
+                        {p.brand && p.brand.name}
+                      </td>
+                      <td className="border-right">
                         {p.name} {p.code}
                       </td>
                       <td
@@ -273,7 +333,7 @@ export const TableProduct = ({
                             className="btn btn-secondary py-1 px-2"
                             style={{ fontSize: "75%" }}
                           >
-                            Saqlash
+                            O'chirish
                           </button>
                         )}
                       </td>

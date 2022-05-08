@@ -303,20 +303,28 @@ export const TableIncoming = ({
                 currentImports.map((p, key) => {
                   return (
                     <tr key={key}>
-                      <td className="border-right font-weight-bold">
+                      <td className="border-right font-bold text-black">
                         {currentPage * countPage + key + 1}
                       </td>
-                      <td className="border-right">{p.supplier.name}</td>
-                      <td className="border-right">
+                      <td className="border-right font-bold text-black">
+                        {p.supplier.name}
+                      </td>
+                      <td className="border-right font-bold text-black">
                         {p.category.code} {p.category.name}
                       </td>
-                      <td className="border-right">
+                      <td className="border-right font-bold text-black">
                         {p.product.code} {p.product.name}
                       </td>
-                      <td className="border-right">{p.pieces}</td>
-                      <td className="border-right">{p.unitprice}</td>
-                      <td className="border-right">{p.totalprice}</td>
-                      <td className="border-right">
+                      <td className="border-right font-bold text-black">
+                        {p.pieces}
+                      </td>
+                      <td className="border-right font-bold text-black">
+                        {p.unitprice}
+                      </td>
+                      <td className="border-right font-bold text-black">
+                        {p.totalprice}
+                      </td>
+                      <td className="border-right font-bold text-black">
                         {p.user.firstname} {p.user.lastname}{" "}
                       </td>
                     </tr>

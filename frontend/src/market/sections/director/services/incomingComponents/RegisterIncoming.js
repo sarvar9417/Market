@@ -1,11 +1,11 @@
-import React from 'react'
-import 'react-datepicker/dist/react-datepicker.css'
-import Select from 'react-select'
-import makeAnimated from 'react-select/animated'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPenAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import React from "react";
+import "react-datepicker/dist/react-datepicker.css";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenAlt, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
-const animatedComponents = makeAnimated()
+const animatedComponents = makeAnimated();
 
 export const RegisterIncoming = ({
   createHandler,
@@ -24,6 +24,9 @@ export const RegisterIncoming = ({
   suppliers,
   supplier,
   setSupplier,
+  changeProductType,
+  productType,
+  setModal,
 }) => {
   return (
     <>
@@ -36,43 +39,73 @@ export const RegisterIncoming = ({
               <table className="table">
                 <thead>
                   <tr>
-                    <th className="border p-1 text-black">
-                      <Select
-                        placeholder="Yetkazib beruvchilar"
-                        isClearable={true}
-                        isLoading={loading}
-                        onChange={(e) => setSupplier(e.supplier)}
-                        components={animatedComponents}
-                        options={suppliers}
-                        theme={(theme) => ({
-                          ...theme,
-                          color: 'black',
-                          borderRadius: 0,
-                          padding: 0,
-                          height: 0,
-                        })}
-                      />
+                    <th
+                      className="border p-1 text-black "
+                      style={{ marginTop: "10px" }}
+                    >
+                      <div>
+                        <Select
+                          placeholder="Yetkazib beruvchilar"
+                          isClearable={true}
+                          isLoading={loading}
+                          onChange={(e) => setSupplier(e.supplier)}
+                          components={animatedComponents}
+                          options={suppliers}
+                          theme={(theme) => ({
+                            ...theme,
+                            color: "black",
+                            borderRadius: 0,
+                            padding: 0,
+                            height: 0,
+                          })}
+                        />
+                      </div>
                     </th>
                     <th className="border p-1 text-black">
-                      <Select
-                        isDisabled={!supplier}
-                        placeholder="Mahsulot kategoriyalari"
-                        isClearable={true}
-                        isLoading={loading}
-                        onChange={changeCategory}
-                        components={animatedComponents}
-                        options={categorys}
-                        theme={(theme) => ({
-                          ...theme,
-                          borderRadius: 0,
-                          padding: 0,
-                          height: 0,
-                        })}
-                      />
+                      <div>
+                        <Select
+                          isDisabled={!supplier}
+                          placeholder="Mahsulot kategoriyalari"
+                          isClearable={true}
+                          isLoading={loading}
+                          onChange={changeCategory}
+                          components={animatedComponents}
+                          options={categorys}
+                          theme={(theme) => ({
+                            ...theme,
+                            borderRadius: 0,
+                            padding: 0,
+                            height: 0,
+                          })}
+                        />
+                      </div>
                     </th>
+                    {/* <th
+                      className="border p-1 text-black "
+                      style={{ marginTop: "10px" }}
+                    >
+                      <div>
+                        <Select
+                          isDisabled={!categorys}
+                          placeholder="Mahsulot turlari"
+                          isClearable={true}
+                          isLoading={loading}
+                          onChange={changeProductType}
+                          components={animatedComponents}
+                          options={productType}
+                          theme={(theme) => ({
+                            ...theme,
+                            color: "black",
+                            borderRadius: 0,
+                            padding: 0,
+                            height: 0,
+                          })}
+                        />
+                      </div>
+                    </th> */}
                     <th className="border p-1 text-black">
                       <Select
-                        isDisabled={!supplier}
+                        isDisabled={!categorys}
                         placeholder="Mahsulotlar"
                         isClearable={true}
                         isLoading={loading}
@@ -87,10 +120,7 @@ export const RegisterIncoming = ({
                         })}
                       />
                     </th>
-                    <th className="border">Soni</th>
-                    <th className="border">Narx (1)</th>
-                    <th className="border">Umumiy narx</th>
-                    <th className="border">Qo'shish</th>
+                    <th className="border p-2">Qo'shish</th>
                   </tr>
                 </thead>
                 {incoming ? (
@@ -105,43 +135,12 @@ export const RegisterIncoming = ({
                       <td className="border m-0 px-3 py-2 font-bold text-black">
                         {incoming.product.code} - {incoming.product.name}
                       </td>
-                      <td className="border m-0 px-3 py-2 font-bold">
-                        <input
-                          onChange={inputHandler}
-                          value={incoming.pieces && incoming.pieces}
-                          type="number"
-                          step={0.001}
-                          className="outline-none text-right text-black font-bold"
-                          style={{ maxWidth: '50px' }}
-                          name="pieces"
-                        />
-                      </td>
-                      <td className="border m-0 px-3 py-2 font-bolds">
-                        <input
-                          onChange={inputHandler}
-                          value={incoming.unitprice && incoming.unitprice}
-                          type="number"
-                          className="outline-none text-right text-black font-bold"
-                          style={{ maxWidth: '50px' }}
-                          name="unitprice"
-                        />
-                      </td>
-                      <td className="border m-0 px-3 py-2 font-bold text-right">
-                        <input
-                          onChange={inputHandler}
-                          value={incoming.totalprice}
-                          type="number"
-                          style={{ maxWidth: '50px' }}
-                          className="outline-none text-right w-full font-bold text-black"
-                          name="totalprice"
-                        />
-                      </td>
-                      <td className="border  m-0 px-3 py-1 text-center">
+                      <td className="border m-0 px-3">
                         <button
-                          onClick={addIncoming}
-                          className="bg-emerald-600 text-white px-4 py-1 rounded hover:bg-emerald-500"
+                          className="btn btn-primary"
+                          onClick={() => setModal(true)}
                         >
-                          +
+                          Keyingi
                         </button>
                       </td>
                     </tr>
@@ -252,48 +251,49 @@ export const RegisterIncoming = ({
                       </tr>
                     </thead>
                     <tbody>
-                      {incomings.map((product, key) => {
-                        return (
-                          <tr key={key}>
-                            <td className="font-bold text-center border">
-                              {key + 1}
-                            </td>
-                            <td className="border text-black font-bold">
-                              <span>{product.category.code} - </span>
-                              <span>{product.category.name}</span>
-                            </td>
-                            <td className="border text-black font-bold">
-                              <span>{product.product.code} - </span>
-                              <span>{product.product.name}</span>
-                            </td>
-                            <td className="border text-black font-bold text-right">
-                              <span>{product.pieces} </span>
-                            </td>
-                            <td className="border text-black font-bold text-right">
-                              <span> {product.unitprice} $</span>
-                            </td>
-                            <td className="border text-black font-bold text-right">
-                              <span>{product.totalprice} $</span>
-                            </td>
-                            <td className="border text-black font-bold text-center py-0">
-                              <button
-                                onClick={() => editIncoming(product, key)}
-                                className="bg-teal-500 hover:bg-teal-600 px-4 py-1 text-white"
-                              >
-                                <FontAwesomeIcon icon={faPenAlt} />
-                              </button>
-                            </td>
-                            <td className="border text-black font-bold text-center py-0">
-                              <button
-                                onClick={() => removeIncoming(key)}
-                                className="bg-red-500 hover:bg-red-600 px-4 py-1 text-white"
-                              >
-                                <FontAwesomeIcon icon={faTrashAlt} />
-                              </button>
-                            </td>
-                          </tr>
-                        )
-                      })}
+                      {incomings &&
+                        incomings.map((product, key) => {
+                          return (
+                            <tr key={key}>
+                              <td className="font-bold text-center border">
+                                {key + 1}
+                              </td>
+                              <td className="border text-black font-bold">
+                                <span>{product.category.code} - </span>
+                                <span>{product.category.name}</span>
+                              </td>
+                              <td className="border text-black font-bold">
+                                <span>{product.product.code} - </span>
+                                <span>{product.product.name}</span>
+                              </td>
+                              <td className="border text-black font-bold text-right">
+                                <span>{product.pieces} </span>
+                              </td>
+                              <td className="border text-black font-bold text-right">
+                                <span> {product.unitprice} $</span>
+                              </td>
+                              <td className="border text-black font-bold text-right">
+                                <span>{product.totalprice} $</span>
+                              </td>
+                              <td className="border text-black font-bold text-center py-0">
+                                <button
+                                  onClick={() => editIncoming(product, key)}
+                                  className="bg-teal-500 hover:bg-teal-600 px-4 py-1 text-white"
+                                >
+                                  <FontAwesomeIcon icon={faPenAlt} />
+                                </button>
+                              </td>
+                              <td className="border text-black font-bold text-center py-0">
+                                <button
+                                  onClick={() => removeIncoming(key)}
+                                  className="bg-red-500 hover:bg-red-600 px-4 py-1 text-white"
+                                >
+                                  <FontAwesomeIcon icon={faTrashAlt} />
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })}
                     </tbody>
                     <tfoot></tfoot>
                   </table>
@@ -322,5 +322,5 @@ export const RegisterIncoming = ({
       </div>
       {/* Row end */}
     </>
-  )
-}
+  );
+};
