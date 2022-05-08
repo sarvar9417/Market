@@ -28,6 +28,7 @@ export const TableProduct = ({
   categories,
   producttypes,
   product,
+  searchBrand,
 }) => {
   const edit = (e, p) => {
     setProduct({
@@ -79,6 +80,25 @@ export const TableProduct = ({
                     placeholder="Kategoriya"
                   />
                 </th>
+                <th>
+                  <input
+                    onChange={searchProductType}
+                    style={{ maxWidth: "100px", minWidth: "100px" }}
+                    type="search"
+                    className="w-100 form-control form-control-sm selectpicker"
+                    placeholder="Mahsulot turi"
+                  />
+                </th>
+                <th>
+                  <input
+                    onChange={searchBrand}
+                    style={{ maxWidth: "100px", minWidth: "100px" }}
+                    type="search"
+                    className="w-100 form-control form-control-sm selectpicker"
+                    placeholder="Brand"
+                  />
+                </th>
+
                 <th>
                   <input
                     onChange={searchName}
@@ -275,7 +295,7 @@ export const TableProduct = ({
                         {currentPage * countPage + key + 1}
                       </td>
                       <td className="border-right">
-                        {p.category.name} {p.category.code}
+                        {p.category.code} {p.category.name}
                       </td>
                       <td className="border-right">
                         {p.producttype && p.producttype.name}
@@ -284,7 +304,7 @@ export const TableProduct = ({
                         {p.brand && p.brand.name}
                       </td>
                       <td className="border-right">
-                        {p.name} {p.code}
+                        {p.code} {p.name}
                       </td>
                       <td
                         className="border-right mx-auto"
