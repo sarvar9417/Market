@@ -11,6 +11,7 @@ const product = new Schema(
     total: { type: Number, default: 0 },
     category: { type: Schema.Types.ObjectId, ref: 'Category' },
     producttype: { type: Schema.Types.ObjectId, ref: 'ProductType' },
+    brand: { type: Schema.Types.ObjectId, ref: 'Brand' },
     market: { type: Schema.Types.ObjectId, ref: 'Market', required: true },
     isArchive: { type: Boolean, default: false },
   },
@@ -29,6 +30,7 @@ function validateProduct(product) {
     total: Joi.number(),
     category: Joi.string(),
     producttype: Joi.string(),
+    brand: Joi.string(),
     market: Joi.string().required(),
   })
 
@@ -42,6 +44,7 @@ function validateProductExcel(product) {
     producttype: Joi.string(),
     code: Joi.number().required(),
     categorycode: Joi.number(),
+    brand: Joi.string(),
     category: Joi.string(),
   })
 

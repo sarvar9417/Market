@@ -240,7 +240,7 @@ module.exports.get = async (req, res) => {
       })
     }
 
-    const incomings = await Incoming.find({
+    const incomings = await IncomingConnector.find({
       market,
       createdAt: {
         $gte: beginDay,
@@ -248,11 +248,9 @@ module.exports.get = async (req, res) => {
       },
     })
       .select('-isArchive, -updatedAt, -market')
-      .populate('product', 'name code')
-      .populate('category', 'name code')
-      .populate('unit', 'name')
+      .populate('incoming', '-isArchive, -updatedAt, -market -user -supplier')
       .populate('supplier', 'name')
-      .populate('user', 'firstname lastname')
+      .populate('user', 'lastname firstname')
 
     res.send(incomings)
   } catch (error) {

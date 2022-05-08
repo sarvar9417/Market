@@ -7,6 +7,7 @@ const { Market } = require('../../models/MarketAndBranch/Market')
 const { Category } = require('../../models/Products/Category')
 const { ProductType } = require('../../models/Products/ProductType')
 const { Unit } = require('../../models/Products/Unit')
+const { Brand } = require('../../models/Products/Brand')
 const ObjectId = require('mongodb').ObjectId
 
 //Product registerall
@@ -23,7 +24,15 @@ module.exports.registerAll = async (req, res) => {
         })
       }
 
-      const { name, code, unit, category, categorycode, producttype } = product
+      const {
+        name,
+        code,
+        unit,
+        category,
+        categorycode,
+        producttype,
+        brand,
+      } = product
 
       const marke = await Market.findById(market)
 
@@ -52,6 +61,17 @@ module.exports.registerAll = async (req, res) => {
       if (!producttyp) {
         return res.status(400).json({
           message: `Diqqat! ${producttyp} mahsulot turi tizimda mavjud emas.`,
+        })
+      }
+
+      const bran = await Brand.findOne({
+        name: brand,
+        market,
+      })
+
+      if (!bran) {
+        return res.status(400).json({
+          message: `Diqqat! ${brand} brandi tizimda mavjud emas.`,
         })
       }
 
@@ -87,6 +107,7 @@ module.exports.registerAll = async (req, res) => {
         category: categor._id,
         producttype: producttyp._id,
         market,
+        brand: bran._id,
         unit: u,
       })
 
@@ -132,7 +153,7 @@ module.exports.register = async (req, res) => {
       })
     }
 
-    const { name, producttype, code, category, market, unit } = req.body
+    const { name, producttype, code, category, market, unit, brand } = req.body
 
     const product = await Product.findOne({
       market,
@@ -183,6 +204,7 @@ module.exports.register = async (req, res) => {
       code,
       category,
       market,
+      brand,
       unit,
     })
 
@@ -405,6 +427,7 @@ module.exports.getAll = async (req, res) => {
       .populate('category', 'name code')
       .populate('producttype', 'name')
       .populate('unit', 'name')
+      .populate('brand', 'name')
 
     res.send(products)
   } catch (error) {
