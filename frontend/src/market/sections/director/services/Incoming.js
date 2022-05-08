@@ -4,6 +4,7 @@ import { RegisterIncoming } from './incomingComponents/RegisterIncoming'
 import { useHttp } from './../../../hooks/http.hook'
 import { AuthContext } from '../../../context/AuthContext'
 import { TableIncoming } from './incomingComponents/TableIncoming'
+import { ReportIncomings } from './incomingComponents/ReportIncomings'
 export const Incoming = () => {
   const [beginDay, setBeginDay] = useState(
     new Date(new Date().setUTCHours(0, 0, 0, 0)),
@@ -469,13 +470,11 @@ export const Incoming = () => {
     <div>
       <div className="content-wrapper px-lg-5 px-3">
         <div className="row gutters">
-          <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+          <div className="col-12">
             <div className="row">
-              <div className="col-12 text-end">
+              <div className="col-12 text-end text-right">
                 <button
-                  className={`btn btn-primary mb-2 w-100 ${
-                    visible ? 'd-none' : ''
-                  }`}
+                  className={`btn btn-primary mb-2 ${visible ? 'd-none' : ''}`}
                   onClick={changeVisible}
                 >
                   Qabul qilish
@@ -511,7 +510,13 @@ export const Incoming = () => {
               />
             </div>
           </div>
-          <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+          <div className="w-full mt-7">
+            <div className="bg-primary py-1 rounded-t text-center text-white font-bold text-base">
+              Qabul qilingan mahsulotlar
+            </div>
+            <ReportIncomings />
+          </div>
+          <div className=" col-12 d-none">
             <TableIncoming
               currentImports={currentImports}
               imports={imports}
