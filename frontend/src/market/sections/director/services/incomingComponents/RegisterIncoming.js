@@ -33,9 +33,9 @@ export const RegisterIncoming = ({
   const [value, setValue] = useState({
     supplier: false,
     category: false,
-    producttype: false,
-    brand: false,
-    product: false,
+    // producttype: false,
+    // brand: false,
+    // product: false,
   });
 
   return (
@@ -55,6 +55,7 @@ export const RegisterIncoming = ({
                     >
                       <div>
                         <Select
+                          id="select"
                           placeholder="Yetkazib beruvchilar"
                           isClearable={true}
                           isLoading={loading}
@@ -80,6 +81,7 @@ export const RegisterIncoming = ({
                     <th className="border p-1 text-black">
                       <div>
                         <Select
+                          id="select"
                           isDisabled={!value.supplier}
                           placeholder="Mahsulot kategoriyalari"
                           isClearable={true}
@@ -105,13 +107,13 @@ export const RegisterIncoming = ({
                     >
                       <div>
                         <Select
-                          isDisabled={!value.category}
+                          id="select"
+                          isDisabled={!value.supplier}
                           placeholder="Mahsulot turlari"
                           isClearable={true}
                           isLoading={loading}
                           onChange={(e) => {
                             changeProductType(e);
-                            setValue({ ...value, producttype: true });
                           }}
                           components={animatedComponents}
                           options={productType}
@@ -125,7 +127,7 @@ export const RegisterIncoming = ({
                         />
                       </div>
                     </th>
-                    <th className="border p-1 text-black">
+                    {/* <th className="border p-1 text-black">
                       <Select
                         isDisabled={!value.category}
                         placeholder="Brendlar"
@@ -133,7 +135,6 @@ export const RegisterIncoming = ({
                         isLoading={loading}
                         onChange={(e) => {
                           changeBrand(e);
-                          setValue({ ...value, brand: true });
                         }}
                         components={animatedComponents}
                         options={brand}
@@ -144,14 +145,18 @@ export const RegisterIncoming = ({
                           height: 0,
                         })}
                       />
-                    </th>
+                    </th> */}
                     <th className="border p-1 text-black">
                       <Select
-                        isDisabled={!value.category}
+                        id="select"
+                        isDisabled={!value.supplier}
                         placeholder="Mahsulotlar"
                         isClearable={true}
                         isLoading={loading}
-                        onChange={changeProduct}
+                        onChange={(e) => {
+                          changeProduct(e);
+                          setModal(true);
+                        }}
                         components={animatedComponents}
                         options={products}
                         theme={(theme) => ({
@@ -162,7 +167,6 @@ export const RegisterIncoming = ({
                         })}
                       />
                     </th>
-                    <th className="border text-center">Qo'shish</th>
                   </tr>
                 </thead>
                 {incoming ? (
@@ -177,19 +181,11 @@ export const RegisterIncoming = ({
                       <td className="border m-0 px-3 py-2 font-bold text-black">
                         {incoming.producttype.name}
                       </td>
-                      <td className="border m-0 px-3 py-2 font-bold text-black">
+                      {/* <td className="border m-0 px-3 py-2 font-bold text-black">
                         {incoming.brand.name}
-                      </td>
+                      </td> */}
                       <td className="border m-0 px-3 py-2 font-bold text-black">
                         {incoming.product.code} - {incoming.product.name}
-                      </td>
-                      <td className="border m-0 px-3">
-                        <button
-                          className="btn btn-primary"
-                          onClick={() => setModal(true)}
-                        >
-                          Keyingi
-                        </button>
                       </td>
                     </tr>
                   </tbody>
@@ -279,13 +275,10 @@ export const RegisterIncoming = ({
                           Kategoriyasi va kategoriya kodi
                         </th>
                         <th className="border py-1 fontbold text-center">
-                          Mahsulot turi
-                        </th>
-                        <th className="border py-1 fontbold text-center">
-                          Brendi
-                        </th>
-                        <th className="border py-1 fontbold text-center">
                           Nomi va kodi
+                        </th>
+                        <th className="border py-1 fontbold text-center">
+                          Mahsulot turi
                         </th>
                         <th className="border py-1 fontbold text-center">
                           Soni
@@ -313,18 +306,15 @@ export const RegisterIncoming = ({
                                 {key + 1}
                               </td>
                               <td className="border text-black font-bold">
-                                <span>{product.category.code} - </span>
-                                <span>{product.category.name}</span>
+                                {product.category.code}
+                              </td>
+                              <td className="border text-black font-bold">
+                                {product.product.code} {" - "}{" "}
+                                {product.product.name},{" "}
+                                {product.brand.name.toUpperCase()}
                               </td>
                               <td className="border text-black font-bold">
                                 <span>{product.producttype.name}</span>
-                              </td>
-                              <td className="border text-black font-bold">
-                                <span>{product.brand.name}</span>
-                              </td>
-                              <td className="border text-black font-bold">
-                                <span>{product.product.code} - </span>
-                                <span>{product.product.name}</span>
                               </td>
                               <td className="border text-black font-bold text-right">
                                 <span>{product.pieces} </span>
