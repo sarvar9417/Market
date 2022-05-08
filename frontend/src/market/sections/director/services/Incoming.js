@@ -604,16 +604,16 @@ export const Incoming = () => {
           <div className="row gutters">
             <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
               <div className="row">
-                <div className="col-12 text-end">
+                <div className="col-12 text-right">
                   <button
-                    className={`btn btn-primary mb-2 w-100 ${visible ? "d-none" : ""
+                    className={`btn btn-primary mb-2 ${visible ? "d-none" : ""
                       }`}
                     onClick={changeVisible}
                   >
                     Qabul qilish
                   </button>
                   <button
-                    className={`btn btn-primary mb-2 w-100 ${visible ? "" : "d-none"
+                    className={`btn btn-primary mb-2 ${visible ? "" : "d-none"
                       }`}
                     onClick={changeVisible}
                   >
@@ -650,7 +650,13 @@ export const Incoming = () => {
                 />
               </div>
             </div>
-            <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div className="w-full mt-2">
+              <div className="bg-primary py-1 rounded-t text-center text-white font-bold text-base">
+                Qabul qilingan mahsulotlar
+              </div>
+              <ReportIncomings />
+            </div>
+            <div className="d-none col-12">
               <TableIncoming
                 currentImports={currentImports}
                 imports={imports}
@@ -673,33 +679,6 @@ export const Incoming = () => {
               />
             </div>
           </div>
-          <div className="w-full mt-7">
-            <div className="bg-primary py-1 rounded-t text-center text-white font-bold text-base">
-              Qabul qilingan mahsulotlar
-            </div>
-            <ReportIncomings />
-          </div>
-          <div className=" col-12 d-none">
-            <TableIncoming
-              currentImports={currentImports}
-              imports={imports}
-              setCurrentImports={setCurrentImports}
-              setImports={setImports}
-              searchCategoryTable={searchCategoryTable}
-              searchSupplier={searchSupplier}
-              searchProduct={searchProduct}
-              countPage={countPage}
-              setCountPage={setCountPage}
-              currentPage={currentPage}
-              setPageSize={setPageSize}
-              loading={loading}
-              dataExcel={dataExcel}
-              changeStart={changeStart}
-              changeEnd={changeEnd}
-            />
-          </div>
-
-
         </div>
       </div>
 
