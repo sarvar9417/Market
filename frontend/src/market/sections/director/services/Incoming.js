@@ -137,12 +137,19 @@ export const Incoming = () => {
 
   const changeCategory = (e) => {
     if (e.value === "all") {
+      setProductTypes(productType);
       setProducts(allproducts);
     } else {
-      const filter = allproducts.filter((product) => {
+      const filter = productType.filter((product) => {
+        return (
+          product.producttype && product.producttype.category._id === e.value
+        );
+      });
+      const filter2 = allproducts.filter((product) => {
         return product.category === e.value;
       });
-      setProducts(filter);
+      setProductTypes(filter);
+      setProducts(filter2);
     }
   };
 
@@ -151,51 +158,101 @@ export const Incoming = () => {
 
   //====================================================================
   //====================================================================
-  // CATEGORYS;
-  // const [productType, setProductType] = useState([]);
+  // PRODUCTTYPE
+  const [productType, setProductType] = useState([]);
+  const [productTypes, setProductTypes] = useState([]);
 
-  // const getProductType = useCallback(async () => {
-  //   try {
-  //     const data = await request(
-  //       `/api/products/producttype/getall`,
-  //       "POST",
-  //       { market: auth.market._id },
-  //       {
-  //         Authorization: `Bearer ${auth.token}`,
-  //       }
-  //     );
-  //     let s = [
-  //       {
-  //         label: "Barcha mahsulot turlari",
-  //         value: "all",
-  //       },
-  //     ];
-  //     data.map((producttype) => {
-  //       return s.push({
-  //         label: producttype.name,
-  //         value: producttype._id,
-  //       });
-  //     });
-  //     setProductType(s);
-  //   } catch (error) {
-  //     notify({
-  //       title: error,
-  //       description: "",
-  //       status: "error",
-  //     });
-  //   }
-  // }, [request, auth, notify]);
+  const getProductType = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/products/producttype/getall`,
+        "POST",
+        { market: auth.market._id },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      let s = [
+        {
+          label: "Barcha mahsulot turlari",
+          value: "all",
+        },
+      ];
+      data.map((producttype) => {
+        return s.push({
+          label: producttype.name,
+          value: producttype._id,
+          producttype: { ...producttype },
+        });
+      });
+      setProductType(s);
+      setProductTypes(s);
+    } catch (error) {
+      notify({
+        title: error,
+        description: "",
+        status: "error",
+      });
+    }
+  }, [request, auth, notify]);
 
-  // const changeProductType = (e) => {
-  //   if (e === "all") {
-  //     setProducts(allproducts);
-  //   } else {
-  //     const filter = allproducts.filter((product) => {
-  //       return product.producttype === e;
-  //     });
-  //     setProducts(filter);
-  //   }
-  // };
+  const changeProductType = (e) => {
+    if (e.value === "all") {
+      setProducts(allproducts);
+    } else {
+      const filter = allproducts.filter((product) => {
+        return product.product.producttype._id === e.value;
+      });
+      setProducts(filter);
+    }
+  };
+  //====================================================================
+  //====================================================================
+  // BRAND
+  const [brand, setBrand] = useState([]);
+
+  const getBrand = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/products/brand/getall`,
+        "POST",
+        { market: auth.market._id },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      let s = [
+        {
+          label: "Barcha brendlar",
+          value: "all",
+        },
+      ];
+      data.map((brand) => {
+        return s.push({
+          label: brand.name,
+          value: brand._id,
+        });
+      });
+      setBrand(s);
+    } catch (error) {
+      notify({
+        title: error,
+        description: "",
+        status: "error",
+      });
+    }
+  }, [request, auth, notify]);
+
+  const changeBrand = (e) => {
+    if (e.value === "all") {
+      setProducts(allproducts);
+    } else {
+      const filter = allproducts.filter((item) => {
+        return item.product.brand._id === e.value;
+      });
+      setProducts(filter);
+    }
+  };
 
   //====================================================================
   //====================================================================
@@ -226,7 +283,6 @@ export const Incoming = () => {
       });
       setProducts(s);
       setAllProducts(s);
-      console.log(s);
     } catch (error) {
       notify({
         title: error,
@@ -250,6 +306,7 @@ export const Incoming = () => {
       },
       category: e.product.category,
       producttype: e.product.producttype,
+      brand: e.product.brand,
       unit: e.product.unit,
     };
     setIncoming(i);
@@ -372,6 +429,23 @@ export const Incoming = () => {
     setImports(searching);
     setCurrentImports(searching.slice(0, countPage));
   };
+
+  const searchProductType = (e) => {
+    const searching = searchStorage.filter((item) =>
+      item.product.name.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    setImports(searching);
+    setCurrentImports(searching.slice(0, countPage));
+  };
+
+  const searchBrand = (e) => {
+    const searching = searchStorage.filter((item) =>
+      item.brand.name.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    setImports(searching);
+    setCurrentImports(searching.slice(0, countPage));
+  };
+
   //====================================================================
   //====================================================================
 
@@ -501,6 +575,8 @@ export const Incoming = () => {
       getSuppliers();
       getCategorys();
       getProducts();
+      getProductType();
+      getBrand();
       getImports(beginDay, endDay);
     }
   }, [
@@ -510,6 +586,8 @@ export const Incoming = () => {
     getCategorys,
     getProducts,
     getImports,
+    getProductType,
+    getBrand,
     beginDay,
     endDay,
     // getProductType,
@@ -556,8 +634,12 @@ export const Incoming = () => {
                   incoming={incoming}
                   changeProduct={changeProduct}
                   changeCategory={changeCategory}
+                  changeProductType={changeProductType}
+                  changeBrand={changeBrand}
                   products={products}
                   categorys={categorys}
+                  productType={productTypes}
+                  brand={brand}
                   loading={loading}
                   suppliers={suppliers}
                   supplier={supplier}
@@ -578,6 +660,8 @@ export const Incoming = () => {
                 searchCategoryTable={searchCategoryTable}
                 searchSupplier={searchSupplier}
                 searchProduct={searchProduct}
+                searchBrand={searchBrand}
+                searchProductType={searchProductType}
                 countPage={countPage}
                 setCountPage={setCountPage}
                 currentPage={currentPage}

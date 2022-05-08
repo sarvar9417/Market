@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
@@ -26,8 +26,18 @@ export const RegisterIncoming = ({
   setSupplier,
   changeProductType,
   productType,
+  brand,
+  changeBrand,
   setModal,
 }) => {
+  const [value, setValue] = useState({
+    supplier: false,
+    category: false,
+    producttype: false,
+    brand: false,
+    product: false,
+  });
+
   return (
     <>
       {/* Row start */}
@@ -48,7 +58,13 @@ export const RegisterIncoming = ({
                           placeholder="Yetkazib beruvchilar"
                           isClearable={true}
                           isLoading={loading}
-                          onChange={(e) => setSupplier(e.supplier)}
+                          onChange={(e) => {
+                            setSupplier(e.supplier);
+                            setValue({
+                              ...value,
+                              supplier: true,
+                            });
+                          }}
                           components={animatedComponents}
                           options={suppliers}
                           theme={(theme) => ({
@@ -64,11 +80,14 @@ export const RegisterIncoming = ({
                     <th className="border p-1 text-black">
                       <div>
                         <Select
-                          isDisabled={!supplier}
+                          isDisabled={!value.supplier}
                           placeholder="Mahsulot kategoriyalari"
                           isClearable={true}
                           isLoading={loading}
-                          onChange={changeCategory}
+                          onChange={(e) => {
+                            changeCategory(e);
+                            setValue({ ...value, category: true });
+                          }}
                           components={animatedComponents}
                           options={categorys}
                           theme={(theme) => ({
@@ -80,17 +99,20 @@ export const RegisterIncoming = ({
                         />
                       </div>
                     </th>
-                    {/* <th
+                    <th
                       className="border p-1 text-black "
                       style={{ marginTop: "10px" }}
                     >
                       <div>
                         <Select
-                          isDisabled={!categorys}
+                          isDisabled={!value.category}
                           placeholder="Mahsulot turlari"
                           isClearable={true}
                           isLoading={loading}
-                          onChange={changeProductType}
+                          onChange={(e) => {
+                            changeProductType(e);
+                            setValue({ ...value, producttype: true });
+                          }}
                           components={animatedComponents}
                           options={productType}
                           theme={(theme) => ({
@@ -102,10 +124,30 @@ export const RegisterIncoming = ({
                           })}
                         />
                       </div>
-                    </th> */}
+                    </th>
                     <th className="border p-1 text-black">
                       <Select
-                        isDisabled={!categorys}
+                        isDisabled={!value.category}
+                        placeholder="Brendlar"
+                        isClearable={true}
+                        isLoading={loading}
+                        onChange={(e) => {
+                          changeBrand(e);
+                          setValue({ ...value, brand: true });
+                        }}
+                        components={animatedComponents}
+                        options={brand}
+                        theme={(theme) => ({
+                          ...theme,
+                          borderRadius: 0,
+                          padding: 0,
+                          height: 0,
+                        })}
+                      />
+                    </th>
+                    <th className="border p-1 text-black">
+                      <Select
+                        isDisabled={!value.category}
                         placeholder="Mahsulotlar"
                         isClearable={true}
                         isLoading={loading}
@@ -120,7 +162,7 @@ export const RegisterIncoming = ({
                         })}
                       />
                     </th>
-                    <th className="border p-2">Qo'shish</th>
+                    <th className="border text-center">Qo'shish</th>
                   </tr>
                 </thead>
                 {incoming ? (
@@ -131,6 +173,12 @@ export const RegisterIncoming = ({
                       </td>
                       <td className="border m-0 px-3 py-2 font-bold text-black">
                         {incoming.category.code} - {incoming.category.name}
+                      </td>
+                      <td className="border m-0 px-3 py-2 font-bold text-black">
+                        {incoming.producttype.name}
+                      </td>
+                      <td className="border m-0 px-3 py-2 font-bold text-black">
+                        {incoming.brand.name}
                       </td>
                       <td className="border m-0 px-3 py-2 font-bold text-black">
                         {incoming.product.code} - {incoming.product.name}
@@ -231,6 +279,12 @@ export const RegisterIncoming = ({
                           Kategoriyasi va kategoriya kodi
                         </th>
                         <th className="border py-1 fontbold text-center">
+                          Mahsulot turi
+                        </th>
+                        <th className="border py-1 fontbold text-center">
+                          Brendi
+                        </th>
+                        <th className="border py-1 fontbold text-center">
                           Nomi va kodi
                         </th>
                         <th className="border py-1 fontbold text-center">
@@ -261,6 +315,12 @@ export const RegisterIncoming = ({
                               <td className="border text-black font-bold">
                                 <span>{product.category.code} - </span>
                                 <span>{product.category.name}</span>
+                              </td>
+                              <td className="border text-black font-bold">
+                                <span>{product.producttype.name}</span>
+                              </td>
+                              <td className="border text-black font-bold">
+                                <span>{product.brand.name}</span>
                               </td>
                               <td className="border text-black font-bold">
                                 <span>{product.product.code} - </span>

@@ -421,12 +421,12 @@ export const Product = () => {
     [searchStorage, countPage]
   );
 
-  const searchProductType = useCallback(
+  const searchName = useCallback(
     (e) => {
-      const searching = searchStorage.filter((item) =>
-        item.producttype.name
-          .toLowerCase()
-          .includes(e.target.value.toLowerCase())
+      const searching = searchStorage.filter(
+        (item) =>
+          item.name.toLowerCase().includes(e.target.value.toLowerCase()) ||
+          String(item.code).includes(e.target.value)
       );
       setProducts(searching);
       setCurrentProducts(searching.slice(0, countPage));
@@ -434,12 +434,20 @@ export const Product = () => {
     [searchStorage, countPage]
   );
 
-  const searchName = useCallback(
+  const searchProductType = useCallback(
     (e) => {
-      const searching = searchStorage.filter(
-        (item) =>
-          item.name.toLowerCase().includes(e.target.value.toLowerCase()) ||
-          String(item.code).includes(e.target.value)
+      const searching = searchStorage.filter((item) =>
+        item.name.toLowerCase().includes(e.target.value.toLowerCase())
+      );
+      setProducts(searching);
+      setCurrentProducts(searching.slice(0, countPage));
+    },
+    [searchStorage, countPage]
+  );
+  const searchBrand = useCallback(
+    (e) => {
+      const searching = searchStorage.filter((item) =>
+        item.name.toLowerCase().includes(e.target.value.toLowerCase())
       );
       setProducts(searching);
       setCurrentProducts(searching.slice(0, countPage));
@@ -497,6 +505,7 @@ export const Product = () => {
               product={product}
               searchName={searchName}
               searchProductType={searchProductType}
+              searchBrand={searchBrand}
               searchCategory={searchCategory}
               categories={categories}
               products={products}
