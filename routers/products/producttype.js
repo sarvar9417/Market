@@ -264,6 +264,7 @@ module.exports.getAll = async (req, res) => {
     const productstypes = await ProductType.find({
       market,
     })
+      .sort({ _id: -1 })
       .select('name category')
       .populate('category', 'name')
 

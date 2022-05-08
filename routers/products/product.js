@@ -23,7 +23,7 @@ module.exports.registerAll = async (req, res) => {
         })
       }
 
-      const { name, code, unit, category, categorycode } = product
+      const { name, code, unit, category, categorycode, producttype } = product
 
       const marke = await Market.findById(market)
 
@@ -41,6 +41,17 @@ module.exports.registerAll = async (req, res) => {
       if (!categor) {
         return res.status(400).json({
           message: `Diqqat! ${categorycode} kodli kategoriya mavjud emas.`,
+        })
+      }
+
+      const producttyp = await ProductType.findOne({
+        name: producttype,
+        market,
+      })
+
+      if (!producttyp) {
+        return res.status(400).json({
+          message: `Diqqat! ${producttyp} mahsulot turi tizimda mavjud emas.`,
         })
       }
 
@@ -74,6 +85,7 @@ module.exports.registerAll = async (req, res) => {
         name,
         code,
         category: categor._id,
+        producttype: producttyp._id,
         market,
         unit: u,
       })
@@ -85,7 +97,16 @@ module.exports.registerAll = async (req, res) => {
       await product.save()
 
       const updateCategory = await Category.findByIdAndUpdate(
-        product.category._id,
+        product.category,
+        {
+          $push: {
+            products: product._id,
+          },
+        },
+      )
+
+      const updateProducttype = await ProductType.findByIdAndUpdate(
+        product.producttype,
         {
           $push: {
             products: product._id,

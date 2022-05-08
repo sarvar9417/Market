@@ -106,7 +106,6 @@ router.delete('/unit/delete', auth, (req, res) => {
 //========================================================
 // INCOMING
 // CRUD
-
 router.post('/incoming/registerall', auth, (req, res) => {
   require('./incoming').registerAll(req, res)
 })
@@ -125,5 +124,24 @@ router.put('/incoming/update', auth, (req, res) => {
 
 router.delete('/incoming/delete', auth, (req, res) => {
   require('./incoming').delete(req, res)
+})
+
+//========================================================
+// BRAND
+// CRUD
+router.post('/brand/register', auth, (req, res) => {
+  require('./brand').register(req, res)
+})
+
+router.post('/brand/get', auth, (req, res) => {
+  require('./brand').get(req, res)
+})
+
+router.put('/brand/update', auth, (req, res) => {
+  require('./brand').update(req, res)
+})
+
+router.delete('/brand/delete', auth, (req, res) => {
+  require('./brand').delete(req, res)
 })
 module.exports = router

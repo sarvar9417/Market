@@ -66,6 +66,7 @@ module.exports.register = async (req, res) => {
     const category = await Category.findOne({
       market,
       code,
+      name,
     })
 
     if (category) {
@@ -151,7 +152,9 @@ module.exports.getAll = async (req, res) => {
 
     const categorys = await Category.find({
       market,
-    }).select('name code')
+    })
+      .select('name code')
+      .sort({ _id: -1 })
 
     res.send(categorys)
   } catch (error) {

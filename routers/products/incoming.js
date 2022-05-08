@@ -8,6 +8,8 @@ const { ProductType } = require('../../models/Products/ProductType')
 const { Category } = require('../../models/Products/Category')
 const { Unit } = require('../../models/Products/Unit')
 const { Product } = require('../../models/Products//Product')
+const { Brand } = require('../../models/Products/Brand')
+const { IncomingConnector } = require('../../models/Products/IncomingConnector')
 
 //Incoming registerall
 module.exports.registerAll = async (req, res) => {
@@ -29,6 +31,8 @@ module.exports.registerAll = async (req, res) => {
         product,
         unit,
         category,
+        producttype,
+        brand,
         supplier,
         pieces,
         unitprice,
@@ -51,6 +55,22 @@ module.exports.registerAll = async (req, res) => {
         })
       }
 
+      const productstyp = await Category.findById(producttype._id)
+
+      if (!productstyp) {
+        return res.status(400).json({
+          message: `Diqqat! ${producttype.name} nomli mahsulot turi tizimda mavjud emas.`,
+        })
+      }
+
+      const bran = await Brand.findById(brand._id)
+
+      if (!bran) {
+        return res.status(400).json({
+          message: `Diqqat! ${brand.name} nomli brand turi tizimda mavjud emas.`,
+        })
+      }
+
       const produc = await Product.findById(product._id)
 
       if (!produc) {
@@ -70,6 +90,8 @@ module.exports.registerAll = async (req, res) => {
       const newProduct = new Incoming({
         product: product._id,
         category: category._id,
+        producttype: producttype._id,
+        brand: brand._id,
         supplier: supplier._id,
         unit: unit._id,
         pieces,
@@ -83,16 +105,30 @@ module.exports.registerAll = async (req, res) => {
       all.push(newProduct)
     }
 
-    all.map(async (product) => {
-      await product.save()
+    let p = []
+    let t = 0
 
+    all.map(async (product) => {
       await product.save()
 
       const produc = await Product.findById(product.product)
       produc.total = produc.total + product.pieces
-
+      produc.incomingprice = product.unitprice
       await produc.save()
+
+      p.push(product._id)
+      t += product.totalprice
     })
+
+    const newIncomingConnector = new IncomingConnector({
+      total: t,
+      incoming: [...p],
+      supplier: products[0].supplier._id,
+      market,
+      user,
+    })
+
+    await newIncomingConnector.save()
 
     res.send(all)
   } catch (error) {
