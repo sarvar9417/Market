@@ -20,6 +20,8 @@ export const TableIncoming = ({
   dataExcel,
   changeStart,
   changeEnd,
+  searchBrand,
+  searchProductType,
 }) => {
   return (
     <div className="table-container">
@@ -57,6 +59,26 @@ export const TableIncoming = ({
                     type="search"
                     className="form-control form-control-sm selectpicker"
                     placeholder="Kategoriya"
+                    aria-controls="basicExample"
+                  />
+                </th>
+                <th>
+                  <input
+                    onChange={searchProductType}
+                    style={{ maxWidth: "100px" }}
+                    type="search"
+                    className="form-control form-control-sm selectpicker"
+                    placeholder="Mahsulot turi"
+                    aria-controls="basicExample"
+                  />
+                </th>
+                <th>
+                  <input
+                    onChange={searchBrand}
+                    style={{ maxWidth: "100px" }}
+                    type="search"
+                    className="form-control form-control-sm selectpicker"
+                    placeholder="Brend"
                     aria-controls="basicExample"
                   />
                 </th>
@@ -155,6 +177,60 @@ export const TableIncoming = ({
                         setCurrentImports(
                           [...currentImports].sort((a, b) =>
                             b.category.name > a.category.name ? 1 : -1
+                          )
+                        )
+                      }
+                    />
+                  </div>
+                </th>
+                <th className="border-right">
+                  Mahsulot turi
+                  <div className="btn-group-vertical ml-2">
+                    <FontAwesomeIcon
+                      onClick={() =>
+                        setCurrentImports(
+                          [...currentImports].sort((a, b) =>
+                            a.producttype.name > b.producttype.name ? 1 : -1
+                          )
+                        )
+                      }
+                      icon={faAngleUp}
+                      style={{ cursor: "pointer" }}
+                    />
+                    <FontAwesomeIcon
+                      icon={faAngleDown}
+                      style={{ cursor: "pointer" }}
+                      onClick={() =>
+                        setCurrentImports(
+                          [...currentImports].sort((a, b) =>
+                            b.producttype.name > a.producttype.name ? 1 : -1
+                          )
+                        )
+                      }
+                    />
+                  </div>
+                </th>
+                <th className="border-right">
+                  Brend
+                  <div className="btn-group-vertical ml-2">
+                    <FontAwesomeIcon
+                      onClick={() =>
+                        setCurrentImports(
+                          [...currentImports].sort((a, b) =>
+                            a.brand.name > b.brand.name ? 1 : -1
+                          )
+                        )
+                      }
+                      icon={faAngleUp}
+                      style={{ cursor: "pointer" }}
+                    />
+                    <FontAwesomeIcon
+                      icon={faAngleDown}
+                      style={{ cursor: "pointer" }}
+                      onClick={() =>
+                        setCurrentImports(
+                          [...currentImports].sort((a, b) =>
+                            b.brand.name > a.brand.name ? 1 : -1
                           )
                         )
                       }
@@ -311,6 +387,12 @@ export const TableIncoming = ({
                       </td>
                       <td className="border-right font-bold text-black">
                         {p.category.code} {p.category.name}
+                      </td>
+                      <td className="border-right font-bold text-black">
+                        {p.producttype && p.producttype.name}
+                      </td>
+                      <td className="border-right font-bold text-black">
+                        {p.brand && p.brand.name}
                       </td>
                       <td className="border-right font-bold text-black">
                         {p.product.code} {p.product.name}
