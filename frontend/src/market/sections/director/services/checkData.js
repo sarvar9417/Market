@@ -103,6 +103,13 @@ export const checkProduct = (product) => {
       description: "Iltimos mahsulot turini kiriting.",
       status: "error",
     };
+
+  if (!product.price)
+    return {
+      title: "Diqqat! Mahsulot narxi kiritilmagan.",
+      description: "Iltimos narxini kiriting.",
+      status: "error",
+    };
   return false;
 };
 
