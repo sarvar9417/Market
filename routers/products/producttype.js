@@ -75,7 +75,6 @@ const ObjectId = require('mongodb').ObjectId
 // }
 
 //ProductType register
-
 module.exports.register = async (req, res) => {
   try {
     const { error } = validateProductType(req.body)
@@ -107,11 +106,11 @@ module.exports.register = async (req, res) => {
       })
     }
 
-    const departmen = await Category.findById(category)
+    const categor = await Category.findById(category)
 
-    if (!departmen) {
+    if (!categor) {
       return res.status(400).json({
-        message: "Diqqat! Bo'lim ma'lumotlari topilmadi.",
+        message: "Diqqat! Kategoriya ma'lumotlari topilmadi.",
       })
     }
 
@@ -122,13 +121,17 @@ module.exports.register = async (req, res) => {
     })
     await newProductType.save()
 
-    const updateCategory = await Category.findByIdAndUpdate(category, {
+    const producttype = await ProductType.findById(newProductType._id)
+      .select('name category')
+      .populate('category', 'code')
+
+    await Category.findByIdAndUpdate(category, {
       $push: {
         producttypes: newProductType._id,
       },
     })
 
-    res.send(newProductType)
+    res.send(producttype)
   } catch (error) {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
   }
@@ -137,8 +140,7 @@ module.exports.register = async (req, res) => {
 //ProductType update
 module.exports.update = async (req, res) => {
   try {
-    const { _id, name, category, newcategory, market } = req.body
-
+    const { _id, name, category, market } = req.body
     const marke = await Market.findById(market)
 
     if (!marke) {
@@ -150,7 +152,7 @@ module.exports.update = async (req, res) => {
 
     if (!categor) {
       return res.status(400).json({
-        message: "Diqqat! Bo'lim ma'lumotlari topilmadi.",
+        message: "Diqqat! Kategoriya ma'lumotlari topilmadi.",
       })
     }
 
@@ -162,13 +164,13 @@ module.exports.update = async (req, res) => {
       })
     }
 
-    const updateOldCategory = await Category.findByIdAndUpdate(categor._id, {
+    const updateOldCategory = await Category.findByIdAndUpdate(product.category, {
       $pull: {
         producttypes: _id,
       },
     })
 
-    const updateNewCategory = await Category.findByIdAndUpdate(newcategory, {
+    const updateNewCategory = await Category.findByIdAndUpdate(category, {
       $push: {
         producttypes: _id,
       },
@@ -184,7 +186,10 @@ module.exports.update = async (req, res) => {
       })
     }
 
-    res.send(product)
+    const updatedproduct = await ProductType.findById(_id)
+      .select('name category')
+      .populate('category', 'code')
+    res.send(updatedproduct)
   } catch (error) {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
   }
@@ -207,7 +212,7 @@ module.exports.delete = async (req, res) => {
 
     if (!categor) {
       return res.status(400).json({
-        message: "Diqqat! Bo'lim ma'lumotlari topilmadi.",
+        message: "Diqqat! Kategoriya ma'lumotlari topilmadi.",
       })
     }
 
@@ -266,7 +271,7 @@ module.exports.getAll = async (req, res) => {
     })
       .sort({ _id: -1 })
       .select('name category')
-      .populate('category', 'name')
+      .populate('category', 'code')
 
     res.send(productstypes)
   } catch (error) {
@@ -291,7 +296,7 @@ module.exports.getAllCategory = async (req, res) => {
 
     if (!departmen) {
       return res.status(400).json({
-        message: "Diqqat! Bo'lim ma'lumotlari topilmadi.",
+        message: "Diqqat! Kategoriya ma'lumotlari topilmadi.",
       })
     }
 
@@ -325,7 +330,7 @@ module.exports.deleteAllCategory = async (req, res) => {
 
     if (!departmen) {
       return res.status(400).json({
-        message: "Diqqat! Bo'lim ma'lumotlari topilmadi.",
+        message: "Diqqat! Kategoriya ma'lumotlari topilmadi.",
       })
     }
 

@@ -31,7 +31,7 @@ export const checkProductType = (producttype) => {
       status: "error",
     };
 
-  if (!producttype.category)
+  if (!producttype.category || producttype.category === 'all')
     return {
       title: "Diqqat! Kategoriya tanlanmagan.",
       description: "Iltimos Kategoriya tanlang.",

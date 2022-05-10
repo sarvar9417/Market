@@ -68,6 +68,17 @@ module.exports.update = async (req, res) => {
       })
     }
 
+    const old = await Brand.findOne({
+      market,
+      name
+    })
+
+    if (old) {
+      return res.status(400).json({
+        message: `Diqqat! ${name} brandi avval yaratilgan.`,
+      })
+    }
+
     brand.name = name
     await brand.save()
 

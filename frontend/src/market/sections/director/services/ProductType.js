@@ -129,7 +129,9 @@ export const ProductType = () => {
         description: "",
         status: "success",
       });
-      getProductTypes();
+      let c = [...producttypes]
+      c.unshift({ ...data })
+      setProductTypes([...c])
       setProductType({
         market: auth.market && auth.market._id,
       });
@@ -141,7 +143,7 @@ export const ProductType = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify, getProductTypes, producttype, clearInputs]);
+  }, [request, auth, notify, setProductTypes, producttype, clearInputs, producttypes]);
 
   const updateHandler = useCallback(async () => {
     try {
@@ -158,7 +160,10 @@ export const ProductType = () => {
         description: "",
         status: "success",
       });
-      getProductTypes();
+      let index = producttypes.findIndex((producttyp) => { return producttype._id === producttyp._id })
+      let c = [...producttypes]
+      c.splice(index, 1, { ...data })
+      setProductTypes([...c])
       setProductType({
         market: auth.market && auth.market._id,
       });
@@ -170,7 +175,7 @@ export const ProductType = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify, getProductTypes, producttype, clearInputs]);
+  }, [request, auth, notify, setProductTypes, producttype, clearInputs, producttypes]);
 
   const saveHandler = () => {
     if (checkProductType(producttype)) {
@@ -204,7 +209,10 @@ export const ProductType = () => {
         description: "",
         status: "success",
       });
-      getProductTypes();
+      let index = producttypes.findIndex((producttyp) => { return remove._id === producttyp._id })
+      let c = [...producttypes]
+      c.splice(index, 1)
+      setProductTypes([...c])
       setModal(false);
       setProductType({
         market: auth.market && auth.market._id,
@@ -217,7 +225,7 @@ export const ProductType = () => {
         status: "error",
       });
     }
-  }, [auth, request, remove, notify, getProductTypes, clearInputs]);
+  }, [auth, request, remove, notify, setProductTypes, clearInputs, producttypes]);
   //====================================================================
   //====================================================================
 
@@ -273,12 +281,12 @@ export const ProductType = () => {
                           placeholder="Kategoriyani tanlang"
                           onChange={checkHandler}
                         >
-                          <option>Kategoriya tanlang</option>
+                          <option value="all">Kategoriya tanlang</option>
                           {categories &&
                             categories.map((category, index) => {
                               return (
                                 <option value={category._id} key={index}>
-                                  {category.name}
+                                  {category.code}
                                 </option>
                               );
                             })}
@@ -368,7 +376,7 @@ export const ProductType = () => {
                         return (
                           <tr key={key}>
                             <td className="font-weight-bold">{key + 1}</td>
-                            <td>{s.category.name}</td>
+                            <td>{s.category.code}</td>
                             <td>{s.name}</td>
                             <td>
                               <button

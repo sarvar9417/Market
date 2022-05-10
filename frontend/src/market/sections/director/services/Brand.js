@@ -106,7 +106,9 @@ export const Brand = () => {
         description: '',
         status: 'success',
       })
-      getBrands()
+      let c = [...brands]
+      c.unshift({ ...data })
+      setBrands([...c])
       setBrand({
         market: auth.market && auth.market._id,
       })
@@ -118,7 +120,7 @@ export const Brand = () => {
         status: 'error',
       })
     }
-  }, [request, auth, notify, getBrands, brand, clearInputs])
+  }, [request, auth, notify, setBrands, brand, clearInputs, brands])
 
   const updateHandler = useCallback(async () => {
     try {
@@ -135,7 +137,10 @@ export const Brand = () => {
         description: '',
         status: 'success',
       })
-      getBrands()
+      let index = brands.findIndex((bran) => { return brand._id === bran._id })
+      let c = [...brands]
+      c.splice(index, 1, { ...data })
+      setBrands([...c])
       setBrand({
         market: auth.market && auth.market._id,
       })
@@ -147,7 +152,7 @@ export const Brand = () => {
         status: 'error',
       })
     }
-  }, [request, auth, notify, getBrands, brand, clearInputs])
+  }, [request, auth, notify, setBrands, brand, clearInputs, brands])
 
   const saveHandler = () => {
     if (checkBrand(brand)) {
@@ -181,7 +186,10 @@ export const Brand = () => {
         description: '',
         status: 'success',
       })
-      getBrands()
+      let index = brands.findIndex((bran) => { return remove._id === bran._id })
+      let c = [...brands]
+      c.splice(index, 1)
+      setBrands([...c])
       setModal(false)
       setBrand({
         market: auth.market && auth.market._id,
@@ -194,7 +202,7 @@ export const Brand = () => {
         status: 'error',
       })
     }
-  }, [auth, request, remove, notify, getBrands, clearInputs])
+  }, [auth, request, remove, notify, setBrands, clearInputs, brands])
   //====================================================================
   //====================================================================
 

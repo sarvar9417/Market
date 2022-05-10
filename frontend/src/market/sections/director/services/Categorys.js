@@ -95,11 +95,13 @@ export const Category = () => {
         }
       );
       notify({
-        title: `${data.name} bo'limi yaratildi!`,
+        title: `${data.name} kategoriyasi yaratildi!`,
         description: "",
         status: "success",
       });
-      getCategory();
+      let c = [...categories]
+      c.unshift({ ...data })
+      setCategories([...c])
       setCategory({
         market: auth.market && auth.market._id,
       });
@@ -111,7 +113,7 @@ export const Category = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify, getCategory, category, clearInputs]);
+  }, [request, auth, notify, setCategory, category, clearInputs, categories]);
 
   const updateHandler = useCallback(async () => {
     try {
@@ -124,11 +126,14 @@ export const Category = () => {
         }
       );
       notify({
-        title: `${data.name} bo'limi yangilandi!`,
+        title: `${data.name} kategoriyasi yangilandi!`,
         description: "",
         status: "success",
       });
-      getCategory();
+      let index = categories.findIndex((categor) => { return category._id === categor._id })
+      let c = [...categories]
+      c.splice(index, 1, { ...data })
+      setCategories([...c])
       setCategory({
         market: auth.market && auth.market._id,
       });
@@ -140,7 +145,7 @@ export const Category = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify, getCategory, category, clearInputs]);
+  }, [request, auth, notify, category, clearInputs, categories]);
 
   const saveHandler = () => {
     if (checkCategory(category)) {
@@ -170,11 +175,14 @@ export const Category = () => {
         }
       );
       notify({
-        title: `${data.name} bo'limi o'chirildi!`,
+        title: `${data.name} kategoriyasi o'chirildi!`,
         description: "",
         status: "success",
       });
-      getCategory();
+      let index = categories.findIndex((categor) => { return remove._id === categor._id })
+      let c = [...categories]
+      c.splice(index, 1)
+      setCategories([...c])
       setModal(false);
       setCategory({
         market: auth.market && auth.market._id,
@@ -187,7 +195,7 @@ export const Category = () => {
         status: "error",
       });
     }
-  }, [auth, request, remove, notify, getCategory, clearInputs]);
+  }, [auth, request, remove, notify, clearInputs, categories]);
 
   //====================================================================
   //====================================================================
@@ -230,9 +238,9 @@ export const Category = () => {
                 <table className="table m-0">
                   <thead>
                     <tr>
-                      <th className="w-25">Kategoriya nomi</th>
-                      <th className="w-25">Kategoriya kodi</th>
-                      <th className="w-25">Saqlash</th>
+                      <th className="">Kategoriya nomi</th>
+                      <th className="">Kategoriya kodi</th>
+                      <th className="">Saqlash</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -294,7 +302,7 @@ export const Category = () => {
                   <thead>
                     <tr>
                       <th className="">№</th>
-                      <th className="w-25">
+                      <th className="hidden sm:block">
                         Nomi{"  "}
                         <Sort
                           data={category}
@@ -302,7 +310,7 @@ export const Category = () => {
                           property={"name"}
                         />
                       </th>
-                      <th className="w-25">
+                      <th className="">
                         Kodi{"  "}
                         <Sort
                           data={category}
@@ -310,8 +318,8 @@ export const Category = () => {
                           property={"name"}
                         />
                       </th>
-                      <th className="w-25">Tahrirlash</th>
-                      <th className="w-25">O'chirish</th>
+                      <th className="">Tahrirlash</th>
+                      <th className="">O'chirish</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -320,7 +328,7 @@ export const Category = () => {
                         return (
                           <tr key={key}>
                             <td className="font-weight-bold">{key + 1}</td>
-                            <td>{c.name}</td>
+                            <td className="hidden sm:block">{c.name}</td>
                             <td>{c.code}</td>
                             <td>
                               <button
@@ -360,7 +368,7 @@ export const Category = () => {
         modal={modal}
         setModal={setModal}
         basic={remove && remove.name}
-        text={"bo'limini o'chirishni tasdiqlaysizmi?"}
+        text={"kategoriyasini o'chirishni tasdiqlaysizmi?"}
         handler={deleteHandler}
       />
     </>

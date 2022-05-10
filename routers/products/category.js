@@ -33,7 +33,7 @@ module.exports.registerAll = async (req, res) => {
 
       if (category) {
         return res.status(400).json({
-          message: `Diqqat! ${name} bo'limi avval yaratilgan.`,
+          message: `Diqqat! ${name} kategoriyai avval yaratilgan.`,
         })
       }
 
@@ -68,10 +68,9 @@ module.exports.register = async (req, res) => {
       code,
       name,
     })
-
     if (category) {
       return res.status(400).json({
-        message: "Diqqat! Ushbu bo'lim avval yaratilgan.",
+        message: "Diqqat! Ushbu kategoriya avval yaratilgan.",
       })
     }
 
@@ -112,11 +111,12 @@ module.exports.update = async (req, res) => {
     const old = await Category.findOne({
       market,
       code,
+      name,
     })
 
     if (old) {
       return res.status(400).json({
-        message: "Diqqat! Ushbu bo'lim avval yaratilgan.",
+        message: "Diqqat! Ushbu kategoriya avval yaratilgan.",
       })
     }
 
@@ -124,7 +124,7 @@ module.exports.update = async (req, res) => {
 
     if (!category) {
       return res.status(400).json({
-        message: "Diqqat! Ushbu bo'lim topilmadi.",
+        message: "Diqqat! Ushbu kategoriya topilmadi.",
       })
     }
 
@@ -169,10 +169,17 @@ module.exports.delete = async (req, res) => {
 
     const category = await Category.findById(_id)
 
+    if (category.producttypes.length > 0) {
+      return res.status(400).json({
+        message:
+          "Diqqat! Ushbu kategoriyada mahsulotlar turlari mavjud bo'lganligi sababli kategoriyani o'chirish mumkin emas.",
+      })
+    }
+
     if (category.products.length > 0) {
       return res.status(400).json({
         message:
-          "Diqqat! Ushbu bo'limda mahsulotlar mavjud bo'lganligi sababli bo'limni o'chirish mumkin emas.",
+          "Diqqat! Ushbu kategoriyada mahsulotlar mavjud bo'lganligi sababli kategoriyani o'chirish mumkin emas.",
       })
     }
 
