@@ -6,6 +6,8 @@ import { AuthContext } from "../../../context/AuthContext";
 import { checkCategory } from "./checkData";
 import { Modal } from "./modal/Modal";
 import { Sort } from "./productComponents/Sort";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFloppyDisk, faPenAlt, faRepeat, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 export const Category = () => {
   //====================================================================
@@ -13,12 +15,7 @@ export const Category = () => {
   const [modal, setModal] = useState(false);
   const [remove, setRemove] = useState();
 
-  const clearInputs = useCallback(() => {
-    const inputs = document.getElementsByTagName("input");
-    for (const input of inputs) {
-      input.value = "";
-    }
-  }, []);
+ 
   //====================================================================
   //====================================================================
 
@@ -46,11 +43,26 @@ export const Category = () => {
   //====================================================================
   const { request, loading } = useHttp();
   const auth = useContext(AuthContext);
+
+
   const [category, setCategory] = useState({
     market: auth.market && auth.market._id,
     name: null,
     code: null,
   });
+
+  const clearInputs = useCallback(() => {
+    const inputs = document.getElementsByTagName("input");
+    for (const input of inputs) {
+      input.value = "";
+    }
+    setCategory(
+      {
+        market: auth.market && auth.market._id
+      }
+    )
+
+  }, [auth]);
 
   //====================================================================
   //====================================================================
@@ -217,6 +229,9 @@ export const Category = () => {
   //====================================================================
   //====================================================================
 
+  //====================================================================
+  //====================================================================
+
   const [t, setT] = useState();
   useEffect(() => {
     if (!t) {
@@ -238,27 +253,15 @@ export const Category = () => {
                 <table className="table m-0">
                   <thead>
                     <tr>
-                      <th className="">Kategoriya nomi</th>
-                      <th className="">Kategoriya kodi</th>
-                      <th className="">Saqlash</th>
+                      <th className="border text-center"> Kategoriya kodi</th>
+                      <th className="border text-center">Kategoriya nomi</th>
+                      <th className="border text-center">Saqlash</th>
+                      <th className="border text-center">Tozalash</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td>
-                        <input
-                          style={{ minWidth: "70px" }}
-                          value={category.name ? category.name : ""}
-                          onKeyUp={keyPressed}
-                          onChange={inputHandler}
-                          type="text"
-                          className="form-control w-75"
-                          id="inputName"
-                          name="name"
-                          placeholder="Bo'lim nomini kiriting"
-                        />
-                      </td>
-                      <td>
+                      <td className=" text-center border">
                         <input
                           style={{ minWidth: "70px" }}
                           value={category.code ? category.code : ""}
@@ -270,13 +273,26 @@ export const Category = () => {
                             })
                           }
                           type="text"
-                          className="form-control w-75"
+                          className="focus: outline-none focus:ring focus: border-blue-500 py-2 px-3 rounded"
                           id="inputName"
                           name="code"
-                          placeholder="Bo'lim nomini kiriting"
+                          placeholder= "Kategoriya kodini kiriting"
                         />
                       </td>
-                      <td>
+                      <td className=" text-center border">
+                        <input
+                          style={{ minWidth: "70px" }}
+                          value={category.name ? category.name : ""}
+                          onKeyUp={keyPressed}
+                          onChange={inputHandler}
+                          type="text"
+                          className="focus: outline-none focus:ring focus: border-blue-500 py-2 px-3 rounded"
+                          id="inputName"
+                          name="name"
+                          placeholder="Kategotiya nomini kiriting"
+                        />
+                      </td>
+                      <td className="text-center border">
                         {loading ? (
                           <button className="btn btn-info" disabled>
                             <span className="spinner-border spinner-border-sm"></span>
@@ -285,12 +301,28 @@ export const Category = () => {
                         ) : (
                           <button
                             onClick={saveHandler}
-                            className="btn btn-info py-1 px-4"
+                            className="btn btn-success py-1 px-4"
                           >
-                            Saqlash
+                            <FontAwesomeIcon className="text-base" icon={faFloppyDisk}/>
                           </button>
                         )}
                       </td>
+                       <td className="text-center border">
+                        {loading ? (
+                          <button className="btn btn-info" disabled>
+                            <span className="spinner-border spinner-border-sm"></span>
+                            Loading...
+                          </button>
+                        ) : (
+                          <button
+                            onClick={clearInputs}
+                            className="btn btn-secondary py-1 px-4"
+                          >
+                            <FontAwesomeIcon className="text-base" icon={faRepeat}/>
+                          </button>
+                        )}
+                      </td>
+                      
                     </tr>
                   </tbody>
                 </table>
@@ -301,16 +333,8 @@ export const Category = () => {
                 <table className="table m-0">
                   <thead>
                     <tr>
-                      <th className="">№</th>
-                      <th className="hidden sm:block">
-                        Nomi{"  "}
-                        <Sort
-                          data={category}
-                          setData={setCategory}
-                          property={"name"}
-                        />
-                      </th>
-                      <th className="">
+                      <th className="border text-center">№</th>
+                      <th className="border text-center">
                         Kodi{"  "}
                         <Sort
                           data={category}
@@ -318,8 +342,16 @@ export const Category = () => {
                           property={"name"}
                         />
                       </th>
-                      <th className="">Tahrirlash</th>
-                      <th className="">O'chirish</th>
+                      <th className=" border text-center ">
+                        Nomi{"  "}
+                        <Sort
+                          data={category}
+                          setData={setCategory}
+                          property={"name"}
+                        />
+                      </th>
+                      <th className=" border text-center">Tahrirlash</th>
+                      <th className=" border text-center">O'chirish</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -327,30 +359,31 @@ export const Category = () => {
                       categories.map((c, key) => {
                         return (
                           <tr key={key}>
-                            <td className="font-weight-bold">{key + 1}</td>
-                            <td className="hidden sm:block">{c.name}</td>
-                            <td>{c.code}</td>
-                            <td>
-                              <button
+                            <td className="font-bold text-center border">{key + 1}</td>
+                            <td className="text-black font-bold text-center border">{c.code}</td>
+                            <td className=" text-black font-bold text-center border ">{c.name}</td>                            
+                            <td className="text-center border">
+                              <button 
                                 onClick={() =>
                                   setCategory({ ...category, ...c })
                                 }
-                                className="btn btn-success py-1 px-2"
+                                className="btn btn-success py-1 px-4"
                                 style={{ fontSize: "75%" }}
                               >
-                                Tahrirlash
+                               <FontAwesomeIcon className="text-base" icon={faPenAlt}/>
                               </button>
                             </td>
-                            <td>
+                            <td className="text-center border">
+                              
                               <button
                                 onClick={() => {
                                   setRemove(c);
                                   setModal(true);
                                 }}
-                                className="btn btn-secondary py-1 px-2"
+                                className="btn btn-secondary py-1 px-4"
                                 style={{ fontSize: "75%" }}
                               >
-                                O'chirish
+                                <FontAwesomeIcon className="text-base" icon={faTrashCan}/> 
                               </button>
                             </td>
                           </tr>
