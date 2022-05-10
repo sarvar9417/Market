@@ -160,6 +160,17 @@ export const Product = () => {
       });
     }
   }, [request, auth, notify]);
+
+  const changeCategory = (e) => {
+    if (e.target.value === 'delete') {
+
+    }
+    setProduct({ ...product, category: e.target.value })
+    const filter = producttypes.filter((producttype) => {
+      return producttype.category._id === e.target.value
+    })
+    setProductTypes(filter)
+  }
   //====================================================================
   //====================================================================
 
@@ -194,6 +205,7 @@ export const Product = () => {
   //====================================================================
   //====================================================================
   const [producttypes, setProductTypes] = useState();
+  const [allproducttypes, setAllProductTypes] = useState();
 
   const getProductTypes = useCallback(async () => {
     try {
@@ -206,6 +218,7 @@ export const Product = () => {
         }
       );
       setProductTypes(data);
+      setAllProductTypes(data)
     } catch (error) {
       notify({
         title: error,
@@ -261,7 +274,9 @@ export const Product = () => {
         description: "",
         status: "success",
       });
-      getProducts();
+      let c = [...products]
+      c.unshift({ ...data })
+      setProducts([...c])
       setProduct({
         market: auth.market && auth.market._id,
       });
@@ -273,7 +288,7 @@ export const Product = () => {
         status: "error",
       });
     }
-  }, [auth, request, getProducts, product, notify, clearInputs]);
+  }, [auth, request, setProducts, product, notify, clearInputs, products]);
 
   const updateHandler = useCallback(async () => {
     try {
@@ -291,7 +306,10 @@ export const Product = () => {
         description: "",
         status: "success",
       });
-      getProducts();
+      let index = products.findIndex((produc) => { return product._id === produc._id })
+      let c = [...products]
+      c.splice(index, 1, { ...data })
+      setProducts([...c])
       setProduct({
         market: auth.market && auth.market._id,
       });
@@ -303,7 +321,7 @@ export const Product = () => {
         status: "error",
       });
     }
-  }, [auth, request, getProducts, product, notify, clearInputs]);
+  }, [auth, request, setProducts, product, notify, clearInputs, products]);
 
   const saveHandler = () => {
     if (checkProduct(product)) {
@@ -336,7 +354,10 @@ export const Product = () => {
         description: "",
         status: "success",
       });
-      getProducts();
+      let index = products.findIndex((produc) => { return remove._id === produc._id })
+      let c = [...products]
+      c.splice(index, 1)
+      setProducts([...c])
       setProduct({
         market: auth.market && auth.market._id,
       });
@@ -349,7 +370,7 @@ export const Product = () => {
         status: "error",
       });
     }
-  }, [auth, request, remove, notify, getProducts, clearInputs]);
+  }, [auth, request, remove, notify, setProducts, clearInputs, products]);
 
   //====================================================================
   //====================================================================
@@ -488,6 +509,7 @@ export const Product = () => {
         <div className="row gutters">
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <InputProduct
+              changeCategory={changeCategory}
               producttypes={producttypes}
               categories={categories}
               setProduct={setProduct}

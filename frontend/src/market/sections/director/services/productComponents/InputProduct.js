@@ -1,6 +1,7 @@
 import React from "react";
 
 export const InputProduct = ({
+  changeCategory,
   categories,
   setProduct,
   product,
@@ -33,20 +34,12 @@ export const InputProduct = ({
                 <select
                   className="form-control form-control-sm selectpicker"
                   id="select"
-                  onChange={(e) => {
-                    if (e.target.value === "delete") {
-                      setProduct({ ...product, category: null });
-                    } else {
-                      setProduct({ ...product, category: e.target.value });
-                    }
-                  }}
-                  placeholder="Bo'limni tanlang"
-                  style={{ minWidth: "70px" }}
+                  onChange={changeCategory}
                 >
                   {categories &&
                     categories.map((category, index) => (
                       <option key={index} value={category._id}>
-                        {category.code + " " + category.name}
+                        {category.code}
                       </option>
                     ))}
                   <option value="delete">Kategoriya</option>
@@ -112,7 +105,7 @@ export const InputProduct = ({
                   onKeyUp={keyPressed}
                   onChange={inputHandler}
                   type="number"
-                  className="form-control w-75"
+                  className="form-control"
                   id="price"
                   placeholder="Mahsulot kodini kiriting"
                 />
@@ -125,7 +118,7 @@ export const InputProduct = ({
                   onKeyUp={keyPressed}
                   onChange={inputHandler}
                   type="text"
-                  className="form-control w-75"
+                  className="form-control"
                   id="shortname"
                   placeholder="Mahsulot nomini kiriting"
                 />
