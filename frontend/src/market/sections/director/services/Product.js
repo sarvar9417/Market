@@ -51,6 +51,11 @@ export const Product = () => {
         option.selected = true;
       }
     }
+    for (let option of document.getElementsByTagName("select")[3].options) {
+      if (option.value === "delete") {
+        option.selected = true;
+      }
+    }
   }, []);
 
   //====================================================================
@@ -162,15 +167,16 @@ export const Product = () => {
   }, [request, auth, notify]);
 
   const changeCategory = (e) => {
-    if (e.target.value === 'delete') {
-
+    if (e.target.value === "delete") {
+      setProductTypes(allproducttypes);
+      setProduct({ ...product, category: null });
     }
-    setProduct({ ...product, category: e.target.value })
-    const filter = producttypes.filter((producttype) => {
-      return producttype.category._id === e.target.value
-    })
-    setProductTypes(filter)
-  }
+    setProduct({ ...product, category: e.target.value });
+    const filter = allproducttypes.filter((producttype) => {
+      return producttype.category._id === e.target.value;
+    });
+    setProductTypes(filter);
+  };
   //====================================================================
   //====================================================================
 
@@ -218,7 +224,7 @@ export const Product = () => {
         }
       );
       setProductTypes(data);
-      setAllProductTypes(data)
+      setAllProductTypes(data);
     } catch (error) {
       notify({
         title: error,
@@ -274,13 +280,14 @@ export const Product = () => {
         description: "",
         status: "success",
       });
-      let c = [...products]
-      c.unshift({ ...data })
-      setProducts([...c])
+      let c = [...products];
+      c.unshift({ ...data });
+      setProducts([...c]);
       setProduct({
         market: auth.market && auth.market._id,
       });
       clearInputs();
+      getProducts();
     } catch (error) {
       notify({
         title: error,
@@ -288,7 +295,16 @@ export const Product = () => {
         status: "error",
       });
     }
-  }, [auth, request, setProducts, product, notify, clearInputs, products]);
+  }, [
+    auth,
+    request,
+    setProducts,
+    product,
+    notify,
+    clearInputs,
+    products,
+    getProducts,
+  ]);
 
   const updateHandler = useCallback(async () => {
     try {
@@ -306,14 +322,17 @@ export const Product = () => {
         description: "",
         status: "success",
       });
-      let index = products.findIndex((produc) => { return product._id === produc._id })
-      let c = [...products]
-      c.splice(index, 1, { ...data })
-      setProducts([...c])
+      let index = products.findIndex((produc) => {
+        return product._id === produc._id;
+      });
+      let c = [...products];
+      c.splice(index, 1, { ...data });
+      setProducts([...c]);
       setProduct({
         market: auth.market && auth.market._id,
       });
       clearInputs();
+      getProducts();
     } catch (error) {
       notify({
         title: error,
@@ -321,7 +340,16 @@ export const Product = () => {
         status: "error",
       });
     }
-  }, [auth, request, setProducts, product, notify, clearInputs, products]);
+  }, [
+    auth,
+    request,
+    setProducts,
+    product,
+    notify,
+    clearInputs,
+    products,
+    getProducts,
+  ]);
 
   const saveHandler = () => {
     if (checkProduct(product)) {
@@ -354,14 +382,17 @@ export const Product = () => {
         description: "",
         status: "success",
       });
-      let index = products.findIndex((produc) => { return remove._id === produc._id })
-      let c = [...products]
-      c.splice(index, 1)
-      setProducts([...c])
+      let index = products.findIndex((produc) => {
+        return remove._id === produc._id;
+      });
+      let c = [...products];
+      c.splice(index, 1);
+      setProducts([...c]);
       setProduct({
         market: auth.market && auth.market._id,
       });
       clearInputs();
+      getProducts();
       setModal(false);
     } catch (error) {
       notify({
@@ -370,7 +401,16 @@ export const Product = () => {
         status: "error",
       });
     }
-  }, [auth, request, remove, notify, setProducts, clearInputs, products]);
+  }, [
+    auth,
+    request,
+    remove,
+    notify,
+    setProducts,
+    clearInputs,
+    products,
+    getProducts,
+  ]);
 
   //====================================================================
   //====================================================================

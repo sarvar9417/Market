@@ -38,14 +38,26 @@ export const TableProduct = ({
       code: p.code,
       category: p.category._id,
       unit: p.unit._id,
+      producttype: p.producttype._id,
+      brand: p.brand._id,
     });
     for (let option of document.getElementsByTagName("select")[0].options) {
       if (option.value === p.category._id) {
         option.selected = true;
       }
     }
-    for (let option of document.getElementsByTagName("select")[1].options) {
+    for (let option of document.getElementsByTagName("select")[3].options) {
       if (option.value === p.unit._id) {
+        option.selected = true;
+      }
+    }
+    for (let option of document.getElementsByTagName("select")[1].options) {
+      if (option.value === p.producttype._id) {
+        option.selected = true;
+      }
+    }
+    for (let option of document.getElementsByTagName("select")[2].options) {
+      if (option.value === p.brand._id) {
         option.selected = true;
       }
     }
