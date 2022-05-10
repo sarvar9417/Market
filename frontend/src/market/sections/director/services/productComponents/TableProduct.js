@@ -151,6 +151,7 @@ export const TableProduct = ({
                   />
                 </th>
                 <th></th>
+                <th></th>
               </tr>
             </thead>
             <thead>
@@ -324,6 +325,36 @@ export const TableProduct = ({
                     />
                   </div>
                 </th>
+                <th className="border-right">
+                  Soni
+                  <div
+                    className="btn-group-vertical ml-2"
+                    style={{ maxWidth: "30px" }}
+                  >
+                    <FontAwesomeIcon
+                      onClick={() =>
+                        setCurrentProducts(
+                          [...currentProducts].sort((a, b) =>
+                            a.unit.name > b.unit.name ? 1 : -1
+                          )
+                        )
+                      }
+                      icon={faAngleUp}
+                      style={{ cursor: "pointer" }}
+                    />
+                    <FontAwesomeIcon
+                      icon={faAngleDown}
+                      style={{ cursor: "pointer" }}
+                      onClick={() =>
+                        setCurrentProducts(
+                          [...currentProducts].sort((a, b) =>
+                            b.uni.name > a.unit.name ? 1 : -1
+                          )
+                        )
+                      }
+                    />
+                  </div>
+                </th>
                 <th className="border-right text-center">Tahrirlash</th>
                 <th className="text-center">O'chirish</th>
               </tr>
@@ -349,17 +380,12 @@ export const TableProduct = ({
                       <td className="border-right">
                         {p.code} {p.name}
                       </td>
-                      <td
-                        className="border-right mx-auto"
-                        style={{ width: "15%" }}
-                      >
-                        {p.unit.name}
-                      </td>
-                      <td
-                        className="border-right mx-auto"
-                        style={{ width: "15%" }}
-                      >
+                      <td className="border-right mx-auto">{p.unit.name}</td>
+                      <td className="border-right mx-auto">
                         {(p.price && p.price) || 0}
+                      </td>
+                      <td className="border-right mx-auto">
+                        {(p.count && p.count) || 0}
                       </td>
                       <td className="border-right text-center">
                         {loading ? (
