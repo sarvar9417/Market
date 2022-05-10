@@ -91,11 +91,13 @@ export const Product = () => {
   });
 
   const sections = [
-    { name: "Kategoriya kodi", value: "categorycode" },
-    { name: "Kategoriya", value: "category" },
+    { name: "Kategoriya kodi", value: "category" },
+    { name: "Mahsulot turi", value: "producttype" },
+    { name: "Brend", value: "brand" },
     { name: "Mahsulot kodi", value: "code" },
-    { name: "Mahsulot", value: "name" },
+    { name: "Mahsulot nomi", value: "name" },
     { name: "O'lchov birligi", value: "unit" },
+    { name: "Narxi", value: "price" },
   ];
 
   //====================================================================
@@ -421,7 +423,7 @@ export const Product = () => {
   const inputHandler = (e) => {
     setProduct({ ...product, [e.target.name]: e.target.value });
   };
-
+  console.log(changeImports);
   //====================================================================
   //====================================================================
 

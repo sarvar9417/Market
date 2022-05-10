@@ -99,8 +99,8 @@ export const checkProduct = (product) => {
     };
   if (!product.producttype)
     return {
-      title: "Diqqat! Brend kiritilmagan.",
-      description: "Iltimos brendni kiriting.",
+      title: "Diqqat! Mahsulot turini kiritilmagan.",
+      description: "Iltimos mahsulot turini kiriting.",
       status: "error",
     };
   return false;
@@ -335,7 +335,7 @@ export const checkProducts = (products) => {
   let k = 0;
   for (const product of products) {
     k++;
-    if (!product.categorycode) {
+    if (!product.category) {
       return {
         title: `Diqqat! ${k}-qatorda kategoriya kodi kiritilmagan.`,
         description: "Iltimos kategoriya kodini kiriting.",
@@ -343,7 +343,7 @@ export const checkProducts = (products) => {
       };
     }
 
-    if (typeof product.categorycode !== "number") {
+    if (typeof product.category !== "number") {
       return {
         title: `Diqqat! ${k}-qatorda kategoriya kodi to'g'ri kiritilmagan.`,
         description: "Iltimos kategoriya kodini to'g'ri kiriting.",
@@ -367,10 +367,42 @@ export const checkProducts = (products) => {
       };
     }
 
+    if (!product.name) {
+      return {
+        title: `Diqqat! ${k}-qatorda mahsulot kodi kiritilmagan.`,
+        description: "Iltimos mahsulot kodini kiriting.",
+        status: "error",
+      };
+    }
+
+    if (!product.producttype) {
+      return {
+        title: `Diqqat! ${k}-qatorda mahsulot kodi kiritilmagan.`,
+        description: "Iltimos mahsulot kodini kiriting.",
+        status: "error",
+      };
+    }
+
     if (!product.unit) {
       return {
         title: `Diqqat! ${k}-qatorda mahsulot o'lchov birligi kiritilmagan.`,
         description: "Iltimos mahsulot o'lchov birligini kiriting.",
+        status: "error",
+      };
+    }
+
+    if (!product.price) {
+      return {
+        title: `Diqqat! ${k}-qatorda mahsulot narxi kiritilmagan.`,
+        description: "Iltimos mahsulot narhini kiriting.",
+        status: "error",
+      };
+    }
+
+    if (typeof product.price !== "number") {
+      return {
+        title: `Diqqat! ${k}-qatorda mahsulot narxi to'g'ri kiritilmagan.`,
+        description: "Iltimos mahsulot narxini to'g'ri kiriting.",
         status: "error",
       };
     }
