@@ -306,9 +306,7 @@ export const TableProduct = ({
                       >
                         {currentPage * countPage + key + 1}
                       </td>
-                      <td className="border-right">
-                        {p.category.code} {p.category.name}
-                      </td>
+                      <td className="border-right">{p.category.code}</td>
                       <td className="border-right">
                         {p.producttype && p.producttype.name}
                       </td>

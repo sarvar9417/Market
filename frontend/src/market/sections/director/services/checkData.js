@@ -31,7 +31,7 @@ export const checkProductType = (producttype) => {
       status: "error",
     };
 
-  if (!producttype.category || producttype.category === 'all')
+  if (!producttype.category || producttype.category === "all")
     return {
       title: "Diqqat! Kategoriya tanlanmagan.",
       description: "Iltimos Kategoriya tanlang.",
@@ -95,12 +95,6 @@ export const checkProduct = (product) => {
     return {
       title: "Diqqat! O'lchov birliki kiritilmagan.",
       description: "Iltimos o'lchov birlikini kiriting.",
-      status: "error",
-    };
-  if (!product.brand)
-    return {
-      title: "Diqqat! Brend kiritilmagan.",
-      description: "Iltimos brendni kiriting.",
       status: "error",
     };
   if (!product.producttype)
