@@ -55,7 +55,7 @@ module.exports.registerAll = async (req, res) => {
         })
       }
 
-      const productstyp = await Category.findById(producttype._id)
+      const productstyp = await ProductType.findById(producttype._id)
 
       if (!productstyp) {
         return res.status(400).json({

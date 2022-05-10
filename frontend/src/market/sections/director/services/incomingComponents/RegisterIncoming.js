@@ -311,7 +311,7 @@ export const RegisterIncoming = ({
                               <td className="border text-black font-bold">
                                 {product.product.code} {" - "}{" "}
                                 {product.product.name},{" "}
-                                {product.brand.name.toUpperCase()}
+                                {product.brand && product.brand.name.toUpperCase()}
                               </td>
                               <td className="border text-black font-bold">
                                 <span>{product.producttype.name}</span>

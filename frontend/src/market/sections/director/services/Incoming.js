@@ -274,14 +274,17 @@ export const Incoming = () => {
         }
       );
       let s = [];
+      console.log(data);
       data.map((product) => {
         return s.push({
-          label:
+          label: product.brand ?
             product.code +
             " - " +
             product.name +
             ", " +
-            product.brand.name.toUpperCase(),
+            product.brand.name.toUpperCase() : product.code +
+            " - " +
+            product.name,
           value: product._id,
           category: product.category._id,
           product: { ...product },
@@ -611,17 +614,15 @@ export const Incoming = () => {
               <div className="row">
                 <div className="col-12 text-right">
                   <button
-                    className={`btn btn-primary mb-2 ${
-                      visible ? "d-none" : ""
-                    }`}
+                    className={`btn btn-primary mb-2 ${visible ? "d-none" : ""
+                      }`}
                     onClick={changeVisible}
                   >
                     Qabul qilish
                   </button>
                   <button
-                    className={`btn btn-primary mb-2 ${
-                      visible ? "" : "d-none"
-                    }`}
+                    className={`btn btn-primary mb-2 ${visible ? "" : "d-none"
+                      }`}
                     onClick={changeVisible}
                   >
                     Qabul qilish
@@ -651,9 +652,9 @@ export const Incoming = () => {
                   supplier={supplier}
                   setSupplier={setSupplier}
                   setModal={setModal}
-                  // productType={productType}
-                  // setProductType={setProductType}
-                  // changeProductType={changeProductType}
+                // productType={productType}
+                // setProductType={setProductType}
+                // changeProductType={changeProductType}
                 />
               </div>
             </div>
@@ -663,7 +664,7 @@ export const Incoming = () => {
               </div>
               <ReportIncomings />
             </div>
-            <div className="d-none col-12">
+            {/* <div className="d-none col-12">
               <TableIncoming
                 currentImports={currentImports}
                 imports={imports}
@@ -684,7 +685,7 @@ export const Incoming = () => {
                 changeEnd={changeEnd}
                 setCurrentPage={setCurrentPage}
               />
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
