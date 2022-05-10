@@ -391,7 +391,7 @@ export const ProductType = () => {
                         />
                       </th>
                       <th className="w-25 border text-center">Tahrirlash</th>
-                      <th className="w-25border text-center">O'chirish</th>
+                      <th className="w-25 border text-center">O'chirish</th>
                     </tr>
                   </thead>
                   <tbody>
