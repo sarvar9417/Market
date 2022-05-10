@@ -25,6 +25,8 @@ export const InputProduct = ({
               <th>Mahsulot kodi</th>
               <th>Mahsulot nomi</th>
               <th>O'lchov birliki</th>
+              <th>Mahsulotlar soni</th>
+              <th>Narxi</th>
               <th>Saqlash</th>
             </tr>
           </thead>
@@ -149,6 +151,32 @@ export const InputProduct = ({
                     ))}
                   <option value="delete">O'lchov birlikini tanlang</option>
                 </select>
+              </td>
+              <td>
+                <input
+                  style={{ minWidth: "70px" }}
+                  name="count"
+                  value={product.name || ""}
+                  onKeyUp={keyPressed}
+                  onChange={inputHandler}
+                  type="number"
+                  className="form-control"
+                  id="shortname"
+                  placeholder="Narhini kiriting"
+                />
+              </td>
+              <td>
+                <input
+                  style={{ minWidth: "70px" }}
+                  name="price"
+                  value={product.name || ""}
+                  onKeyUp={keyPressed}
+                  onChange={inputHandler}
+                  type="number"
+                  className="form-control"
+                  id="shortname"
+                  placeholder="Narhini kiriting"
+                />
               </td>
               <td>
                 {loading ? (
