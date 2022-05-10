@@ -39,7 +39,7 @@ export const TableProduct = ({
       category: p.category._id,
       unit: p.unit._id,
       producttype: p.producttype._id,
-      brand: p.brand._id,
+      brand: p.brand ? p.brand._id : "",
     });
     for (let option of document.getElementsByTagName("select")[0].options) {
       if (option.value === p.category._id) {
@@ -56,9 +56,11 @@ export const TableProduct = ({
         option.selected = true;
       }
     }
-    for (let option of document.getElementsByTagName("select")[2].options) {
-      if (option.value === p.brand._id) {
-        option.selected = true;
+    if (p.brand) {
+      for (let option of document.getElementsByTagName("select")[2].options) {
+        if (option.value === p.brand._id) {
+          option.selected = true;
+        }
       }
     }
   };
