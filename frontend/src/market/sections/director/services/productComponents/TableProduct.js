@@ -40,6 +40,7 @@ export const TableProduct = ({
       unit: p.unit._id,
       producttype: p.producttype._id,
       brand: p.brand ? p.brand._id : "",
+      price: p.price && p.price,
     });
     for (let option of document.getElementsByTagName("select")[0].options) {
       if (option.value === p.category._id) {

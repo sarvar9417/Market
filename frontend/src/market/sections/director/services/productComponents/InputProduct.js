@@ -169,7 +169,7 @@ export const InputProduct = ({
                 <input
                   style={{ minWidth: "70px" }}
                   name="price"
-                  value={product.name || ""}
+                  value={product.price || ""}
                   onKeyUp={keyPressed}
                   onChange={inputHandler}
                   type="number"
