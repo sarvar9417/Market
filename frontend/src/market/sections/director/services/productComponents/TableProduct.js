@@ -382,10 +382,10 @@ export const TableProduct = ({
                       </td>
                       <td className="border-right mx-auto">{p.unit.name}</td>
                       <td className="border-right mx-auto">
-                        {(p.price && p.price) || 0}
+                        {(p.price && p.price.sellingprice) || 0}
                       </td>
                       <td className="border-right mx-auto">
-                        {(p.count && p.count) || 0}
+                        {p.total}
                       </td>
                       <td className="border-right text-center">
                         {loading ? (

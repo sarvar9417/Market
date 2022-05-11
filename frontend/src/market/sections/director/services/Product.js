@@ -98,6 +98,7 @@ export const Product = () => {
     { name: "Mahsulot nomi", value: "name" },
     { name: "O'lchov birligi", value: "unit" },
     { name: "Narxi", value: "price" },
+    { name: "Soni", value: "total" },
   ];
 
   //====================================================================
@@ -121,6 +122,7 @@ export const Product = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+      console.log(data);
       setProducts(data);
       setSearchStrorage(data);
       setCurrentProducts(data.slice(indexFirstProduct, indexLastProduct));
@@ -423,7 +425,6 @@ export const Product = () => {
   const inputHandler = (e) => {
     setProduct({ ...product, [e.target.name]: e.target.value });
   };
-  console.log(changeImports);
   //====================================================================
   //====================================================================
 

@@ -3,7 +3,7 @@ const Joi = require('joi')
 
 const category = new Schema(
   {
-    name: { type: String, required: true },
+    name: { type: String },
     code: { type: Number, required: true },
     market: { type: Schema.Types.ObjectId, ref: 'Market', required: true },
     products: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
@@ -18,7 +18,7 @@ const category = new Schema(
 function validateCategory(category) {
   const schema = Joi.object({
     code: Joi.number().required(),
-    name: Joi.string().required(),
+    name: Joi.string(),
     market: Joi.string().required(),
   })
 
