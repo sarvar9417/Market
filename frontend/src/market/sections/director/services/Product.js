@@ -122,7 +122,6 @@ export const Product = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      console.log(data);
       setProducts(data);
       setSearchStrorage(data);
       setCurrentProducts(data.slice(indexFirstProduct, indexLastProduct));

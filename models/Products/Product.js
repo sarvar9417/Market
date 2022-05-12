@@ -5,7 +5,7 @@ const product = new Schema(
   {
     name: { type: String, required: true },
     unit: { type: Schema.Types.ObjectId, ref: "Unit" },
-    code: { type: Number, required: true },
+    code: { type: String, required: true },
     price: { type: Schema.Types.ObjectId, ref: "ProductPrice" },
     total: { type: Number, default: 0 },
     category: { type: Schema.Types.ObjectId, ref: "Category" },
@@ -23,7 +23,7 @@ function validateProduct(product) {
   const schema = Joi.object({
     name: Joi.string().required(),
     unit: Joi.string(),
-    code: Joi.number(),
+    code: Joi.string(),
     price: Joi.number(),
     total: Joi.number(),
     category: Joi.string(),
@@ -40,7 +40,7 @@ function validateProductExcel(product) {
     name: Joi.string().required(),
     unit: Joi.string(),
     producttype: Joi.string().required(),
-    code: Joi.number().required(),
+    code: Joi.string().required(),
     category: Joi.number(),
     brand: Joi.string(),
     price: Joi.number(),
