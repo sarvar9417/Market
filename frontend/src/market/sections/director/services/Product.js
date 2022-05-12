@@ -502,7 +502,9 @@ export const Product = () => {
   const searchProductType = useCallback(
     (e) => {
       const searching = searchStorage.filter((item) =>
-        item.name.toLowerCase().includes(e.target.value.toLowerCase())
+        item.producttype.name
+          .toLowerCase()
+          .includes(e.target.value.toLowerCase())
       );
       setProducts(searching);
       setCurrentProducts(searching.slice(0, countPage));
@@ -511,9 +513,14 @@ export const Product = () => {
   );
   const searchBrand = useCallback(
     (e) => {
-      const searching = searchStorage.filter((item) =>
-        item.name.toLowerCase().includes(e.target.value.toLowerCase())
-      );
+      const searching = searchStorage.filter((item) => {
+        if (item.brand && item.brand) {
+          return item.brand.name
+            .toLowerCase()
+            .includes(e.target.value.toLowerCase());
+        }
+        return null;
+      });
       setProducts(searching);
       setCurrentProducts(searching.slice(0, countPage));
     },

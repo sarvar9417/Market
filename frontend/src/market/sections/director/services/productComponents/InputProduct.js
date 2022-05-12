@@ -161,7 +161,6 @@ export const InputProduct = ({
                   onChange={inputHandler}
                   type="number"
                   className="form-control"
-                  id="shortname"
                   placeholder="Sonini kiriting"
                 />
               </td>
@@ -174,8 +173,8 @@ export const InputProduct = ({
                   onChange={inputHandler}
                   type="number"
                   className="form-control"
-                  id="shortname"
                   placeholder="Narxini kiriting"
+
                 />
               </td>
               <td>
