@@ -155,14 +155,13 @@ export const InputProduct = ({
               <td>
                 <input
                   style={{ minWidth: "70px" }}
-                  name="count"
-                  value={product.name || ""}
+                  name="total"
+                  value={product.total || ""}
                   onKeyUp={keyPressed}
                   onChange={inputHandler}
                   type="number"
                   className="form-control"
-                  id="shortname"
-                  placeholder="Narhini kiriting"
+                  placeholder="Sonini kiriting"
                 />
               </td>
               <td>
@@ -174,7 +173,6 @@ export const InputProduct = ({
                   onChange={inputHandler}
                   type="number"
                   className="form-control"
-                  id="shortname"
                   placeholder="Narhini kiriting"
                 />
               </td>
