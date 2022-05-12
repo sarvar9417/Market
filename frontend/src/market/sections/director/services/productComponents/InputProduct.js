@@ -1,3 +1,5 @@
+import { faFloppyDisk, faRepeat } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
 export const InputProduct = ({
@@ -14,41 +16,28 @@ export const InputProduct = ({
   brands,
 }) => {
   return (
-    <div className="table-container">
-      <div className="table-responsive">
-        <table className="table m-0">
-          <thead>
-            <tr>
-              <th>Kategoriya</th>
-              <th>Mahsulot turi</th>
-              <th>Brend</th>
-              <th>Mahsulot kodi</th>
-              <th>Mahsulot nomi</th>
-              <th>O'lchov birliki</th>
-              <th>Mahsulotlar soni</th>
-              <th>Narxi</th>
-              <th>Saqlash</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <select
-                  className="form-control form-control-sm selectpicker"
-                  id="select"
-                  onChange={changeCategory}
-                >
-                  {categories &&
-                    categories.map((category, index) => (
-                      <option key={index} value={category._id}>
-                        {category.code}
-                      </option>
-                    ))}
-                  <option value="delete">Kategoriya</option>
-                </select>
-              </td>
-              <td>
-                <select
+
+    <div className="table-container p-2">
+      <div className="grid lg:grid-cols-4 grid-cols-1 md:grid-cols-2 p-2">
+        <div className="p-1">
+          <p className="bg-zinc-50 p-2 font-bold text-base">Kategoriya</p>
+          <select
+            className="form-control form-control-sm selectpicker"
+            id="select"
+            onChange={changeCategory}
+            >
+            {categories &&
+            categories.map((category, index) => (
+            <option key={index} value={category._id}>
+            {category.code}
+            </option>
+            ))}
+            <option value="delete">Kategoriya</option>
+          </select>
+        </div>
+        <div className="p-1">
+          <p className="bg-zinc-50 p-2 font-bold text-base">Maxsulot turi</p>
+          <select
                   className="form-control form-control-sm selectpicker"
                   id="select"
                   onChange={(e) => {
@@ -62,7 +51,7 @@ export const InputProduct = ({
                     }
                   }}
                   placeholder="Xizmat turini tanlang"
-                  style={{ minWidth: "70px" }}
+                  
                 >
                   {producttypes &&
                     producttypes.map((producttype, ind) => (
@@ -72,9 +61,10 @@ export const InputProduct = ({
                     ))}
                   <option value="delete">Mahsulot turi</option>
                 </select>
-              </td>
-              <td>
-                <select
+        </div>
+        <div className="p-1">
+          <p className="bg-zinc-50 p-2 font-bold text-base">Brend</p>
+          <select
                   className="form-control form-control-sm selectpicker"
                   id="select"
                   onChange={(e) => {
@@ -88,7 +78,7 @@ export const InputProduct = ({
                     }
                   }}
                   placeholder="Mahsulot brendini tanlang"
-                  style={{ minWidth: "70px" }}
+                  
                 >
                   {brands &&
                     brands.map((b, ind) => (
@@ -98,36 +88,10 @@ export const InputProduct = ({
                     ))}
                   <option value="delete">Brend</option>
                 </select>
-              </td>
-              <td>
-                <input
-                  style={{ minWidth: "70px" }}
-                  name="code"
-                  value={product.code || ""}
-                  onKeyUp={keyPressed}
-                  onChange={inputHandler}
-                  type="number"
-                  className="form-control"
-                  id="price"
-                  placeholder="Mahsulot kodini kiriting"
-                />
-              </td>
-              <td>
-                <input
-                  style={{ minWidth: "70px" }}
-                  name="name"
-                  value={product.name || ""}
-                  onKeyUp={keyPressed}
-                  onChange={inputHandler}
-                  type="text"
-                  className="form-control"
-                  id="shortname"
-                  placeholder="Mahsulot nomini kiriting"
-                />
-              </td>
-
-              <td>
-                <select
+        </div>
+        <div className="p-1">
+          <p className="bg-zinc-50 p-2 font-bold text-base">O'lchov birligi</p>
+          <select
                   className="form-control form-control-sm selectpicker"
                   id="select"
                   onChange={(e) => {
@@ -141,7 +105,6 @@ export const InputProduct = ({
                     }
                   }}
                   placeholder="Xizmat turini tanlang"
-                  style={{ minWidth: "70px" }}
                 >
                   {units &&
                     units.map((unit, ind) => (
@@ -149,53 +112,97 @@ export const InputProduct = ({
                         {unit.name}
                       </option>
                     ))}
-                  <option value="delete">O'lchov birlikini tanlang</option>
+                  <option value="delete">O'lchov birligini tanlang</option>
                 </select>
-              </td>
-              <td>
-                <input
-                  style={{ minWidth: "70px" }}
-                  name="total"
-                  value={product.total || ""}
-                  onKeyUp={keyPressed}
-                  onChange={inputHandler}
-                  type="number"
-                  className="form-control"
-                  id="shortname"
-                  placeholder="Sonini kiriting"
-                />
-              </td>
-              <td>
-                <input
-                  style={{ minWidth: "70px" }}
-                  name="price"
-                  value={product.price || ""}
-                  onKeyUp={keyPressed}
-                  onChange={inputHandler}
-                  type="number"
-                  className="form-control"
-                  id="shortname"
-                  placeholder="Narxini kiriting"
-                />
-              </td>
-              <td>
-                {loading ? (
-                  <button className="btn btn-info" disabled>
-                    <span className="spinner-border spinner-border-sm"></span>
-                    Loading...
-                  </button>
-                ) : (
-                  <button
-                    onClick={saveHandler}
-                    className="btn btn-info py-1 px-4"
-                  >
-                    Saqlash
-                  </button>
-                )}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        </div>
+      </div>
+
+      <div className="grid lg:grid-cols-4 grid-cols-1 md:grid-cols-2 p-2">
+        <div className="p-1">
+          <p className="bg-zinc-50 p-2 font-bold text-base">Maxsulot kodi</p>
+          <input
+            name="code"
+            value={product.code || ""}
+            onKeyUp={keyPressed}
+            onChange={inputHandler}
+            type="number"
+            className="form-control"
+            id="price"
+            placeholder="Mahsulot kodini kiriting"
+          />
+        </div>   
+        <div className="p-1">
+          <p className="bg-zinc-50 p-2 font-bold text-base">Maxsulot nomi</p>
+          <input
+          name="name"
+          value={product.name || ""}
+          onKeyUp={keyPressed}
+          onChange={inputHandler}
+          type="text"
+          className="form-control"
+          id="shortname"
+          placeholder="Mahsulot nomini kiriting"
+          />
+        </div> 
+        <div className="p-1">
+          <p className="bg-zinc-50 p-2 font-bold text-base">Maxsulotlar soni</p>
+          <input
+          name="total"
+          value={product.total || ""}
+          onKeyUp={keyPressed}
+          onChange={inputHandler}
+          type="number"
+          className="form-control"
+          id="shortname"
+          placeholder="Sonini kiriting"
+          />
+        </div>   
+        <div className="p-1">
+          <p className="bg-zinc-50 p-2 font-bold text-base">Maxsulot narxi</p>
+          <input
+          name="price"
+          value={product.price || ""}
+          onKeyUp={keyPressed}
+          onChange={inputHandler}
+          type="number"
+          className="form-control"
+          id="shortname"
+          placeholder="Narxini kiriting"
+          />
+        </div>  
+             
+      </div>
+      <div className="flex justify-end p-2">
+        <div className="px-1 mx-2">
+        {loading ? (
+          <button className="btn btn-info" disabled>
+          <span className="spinner-border spinner-border-sm"></span>
+          Loading...
+          </button>
+          ) : (
+          <button
+          onClick={saveHandler}
+          className="btn btn-success py-1 px-4"
+          >
+          <FontAwesomeIcon className="text-base" icon={faFloppyDisk}/>
+          </button>
+        )}
+        </div>
+        <div>
+        {loading ? (
+          <button className="btn btn-info" disabled>
+          <span className="spinner-border spinner-border-sm"></span>
+          Loading...
+          </button>
+          ) : (
+          <button
+          onClick={saveHandler}
+          className="btn btn-secondary py-1 px-4"
+          >
+          <FontAwesomeIcon className="text-base" icon={faRepeat}/>
+          </button>
+        )}
+        </div>
       </div>
     </div>
   );
