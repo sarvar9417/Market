@@ -382,7 +382,7 @@ export const checkProducts = (products) => {
       };
     }
 
-    if (!product.price) {
+    if (product.price && typeof product.price !== "number") {
       return {
         title: `Diqqat! ${k}-qatorda mahsulot narxi kiritilmagan.`,
         description: "Iltimos mahsulot narxini kiriting.",
@@ -390,15 +390,7 @@ export const checkProducts = (products) => {
       };
     }
 
-    if (typeof product.price !== "number") {
-      return {
-        title: `Diqqat! ${k}-qatorda mahsulot narxi to'g'ri kiritilmagan.`,
-        description: "Iltimos mahsulot narxini to'g'ri kiriting.",
-        status: "error",
-      };
-    }
-
-    if (!product.total && typeof product.total !== "number") {
+    if (product.total && typeof product.total !== "number") {
       return {
         title: `Diqqat! ${k}-qatorda mahsulot soni to'g'ri kiritilmagan.`,
         description: "Iltimos mahsulot sonini to'g'ri kiriting.",

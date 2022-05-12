@@ -173,7 +173,18 @@ module.exports.registerAll = async (req, res) => {
       })
     });
 
-    res.send(all);
+    const productss = await Product.find({
+      market,
+    })
+      .sort({ _id: -1 })
+      .select("name code unit category producttype brand price total")
+      .populate("category", "name code")
+      .populate("producttype", "name")
+      .populate("unit", "name")
+      .populate("brand", "name")
+      .populate("price", "sellingprice")
+
+    res.send(productss);
   } catch (error) {
     res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
   }
@@ -189,7 +200,7 @@ module.exports.register = async (req, res) => {
       });
     }
 
-    const { name, producttype, code, category, market, unit, brand } = req.body;
+    const { name, producttype, code, category, market, unit, brand, total, price } = req.body;
 
     const product = await Product.findOne({
       market,
@@ -235,6 +246,8 @@ module.exports.register = async (req, res) => {
       });
     }
 
+
+
     const newProduct = new Product({
       name,
       code,
@@ -242,21 +255,30 @@ module.exports.register = async (req, res) => {
       market,
       brand,
       unit,
+      total,
+      producttype: Producttype._id
     });
 
-    if (Producttype) {
-      newProduct.producttype = Producttype._id;
-    }
-    await newProduct.save();
+    // Create Price
+    if (price) {
+      const newPrice = new ProductPrice({
+        sellingprice: price,
+        market
+      })
 
-    const updateCategory = await Category.findByIdAndUpdate(categor._id, {
+      await newPrice.save()
+      newProduct.price = newPrice._id
+      await newProduct.save();
+    }
+
+    await Category.findByIdAndUpdate(categor._id, {
       $push: {
         products: newProduct._id,
       },
     });
 
     if (Producttype) {
-      const updateProductType = await ProductType.findByIdAndUpdate(
+      await ProductType.findByIdAndUpdate(
         Producttype._id,
         {
           $push: {
@@ -459,6 +481,7 @@ module.exports.getAll = async (req, res) => {
     const products = await Product.find({
       market,
     })
+      .sort({ _id: -1 })
       .select("name code unit category producttype brand price total")
       .populate("category", "name code")
       .populate("producttype", "name")

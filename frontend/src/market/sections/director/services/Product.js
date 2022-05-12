@@ -437,13 +437,13 @@ export const Product = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      localStorage.setItem("data", data);
       notify({
         title: `Barcha mahsulolar yuklandi!`,
         description: "",
         status: "success",
       });
-      getProducts();
+      console.log(data);
+      setProducts(data)
       setProduct({
         market: auth.market && auth.market._id,
       });
@@ -456,7 +456,7 @@ export const Product = () => {
         status: "error",
       });
     }
-  }, [auth, request, getProducts, notify, clearInputs, changeImports]);
+  }, [auth, request, notify, clearInputs, changeImports]);
 
   const checkUploadData = () => {
     if (checkProducts(changeImports)) {
