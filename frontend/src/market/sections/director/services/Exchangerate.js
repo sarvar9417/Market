@@ -7,7 +7,7 @@ import { checkExchangerate } from './checkData'
 import { Modal } from './modal/Modal'
 import { Sort } from './productComponents/Sort'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons'
+import { faAngleUp, faAngleDown, faFloppyDisk, faRepeat, faPenAlt, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 
 export const Exchangerate = () => {
   //====================================================================
@@ -228,28 +228,28 @@ export const Exchangerate = () => {
             <div className="table-container">
               <div className="table-responsive">
                 <table className="table m-0">
-                  <thead>
+                  <thead className='border'>
                     <tr>
-                      <th className="w-25 text-center">Kursni kiriting</th>
-                      <th className="w-25 text-center">Saqlash</th>
+                      <th className="border text-center">Kursni kiriting</th>
+                      <th className="border text-center">Saqlash</th>
+                      <th className="border text-center">Tozalash</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td className="tex-center">
+                      <td className="border text-center">
                         <input
-                          style={{ minWidth: '70px' }}
                           name="exchangerate"
                           value={exchangerate.exchangerate || ''}
                           onKeyUp={keyPressed}
                           onChange={inputHandler}
-                          type="text"
-                          className="form-control w-75 py-0"
+                          type="number"
+                          className="focus:outline-none focus:ring focus:border-blue-500 rounded py-1 px-3"
                           id="exchangerate"
                           placeholder="Valyuta kursini kiriting"
                         />
                       </td>
-                      <td className="text-center">
+                      <td className="text-center border">
                         {loading ? (
                           <button className="btn btn-info" disabled>
                             <span className="spinner-border spinner-border-sm"></span>
@@ -258,9 +258,24 @@ export const Exchangerate = () => {
                         ) : (
                           <button
                             onClick={saveHandler}
-                            className="btn btn-info py-1 px-4 "
+                            className="btn btn-success py-1 px-4 text-base"
                           >
-                            Saqlash
+                            <FontAwesomeIcon className='text-base' icon={faFloppyDisk}/>
+                          </button>
+                        )}
+                      </td>
+                      <td className="text-center border">
+                        {loading ? (
+                          <button className="btn btn-info" disabled>
+                            <span className="spinner-border spinner-border-sm"></span>
+                            Loading...
+                          </button>
+                        ) : (
+                          <button
+                            onClick={clearInputs}
+                            className="btn btn-secondary py-1 px-4 text-base"
+                          >
+                            <FontAwesomeIcon className='text-base' icon={faRepeat}/>
                           </button>
                         )}
                       </td>
@@ -273,9 +288,9 @@ export const Exchangerate = () => {
               <div className="table-responsive">
                 <table className="table m-0">
                   <thead>
-                    <tr>
-                      <th>№</th>
-                      <th className="w-25">
+                    <tr className='border text-center'>
+                      <th className='border text-center'>№</th>
+                      <th className="border text-center">
                         Sana
                         <div className="btn-group-vertical ml-2">
                           <FontAwesomeIcon
@@ -302,7 +317,7 @@ export const Exchangerate = () => {
                           />
                         </div>
                       </th>
-                      <th className="w-25">
+                      <th className="border text-center">
                         Kurs{' '}
                         <Sort
                           data={exchangerates}
@@ -310,8 +325,8 @@ export const Exchangerate = () => {
                           property={'exchangerate'}
                         />
                       </th>
-                      <th className="w-25">Tahrirlash</th>
-                      <th className="w-25">O'chirish</th>
+                      <th className="border text-center">Tahrirlash</th>
+                      <th className="border text-center">O'chirish</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -319,32 +334,31 @@ export const Exchangerate = () => {
                       exchangerates.map((s, key) => {
                         return (
                           <tr key={key}>
-                            <td className="font-weight-bold">{key + 1}</td>
-                            <td>
+                            <td className="font-bold text-bold border text-center text-black">{key + 1}</td>
+                            <td className='font-bold text-bold border text-center text-black'>
                               {new Date(s.createdAt).toLocaleDateString()}
                             </td>
-                            <td className="font-bold ">
+                            <td className="font-bold text-bold border text-center text-black">
                               1 $ - {s.exchangerate} so'm
                             </td>
-                            <td>
+                            <td className='border text-center text-base'>
                               <button
                                 onClick={() => setExchangerate(s)}
-                                className="btn btn-success py-1 px-2"
-                                style={{ fontSize: '75%' }}
+                                className="btn btn-success py-1 px-4"
                               >
-                                Tahrirlash
+                                <FontAwesomeIcon className='text-base' icon={faPenAlt}/>
                               </button>
                             </td>
-                            <td>
+                            <td className='border text-center'>
                               <button
                                 onClick={() => {
                                   setRemove({ ...remove, ...s })
                                   setModal(true)
                                 }}
-                                className="btn btn-secondary py-1 px-2"
-                                style={{ fontSize: '75%' }}
+                                className="btn btn-secondary py-1 px-4"
+                                
                               >
-                                O'chirish
+                                <FontAwesomeIcon className='text-base' icon={faTrashCan}/>
                               </button>
                             </td>
                           </tr>
