@@ -40,7 +40,8 @@ export const TableProduct = ({
       unit: p.unit._id,
       producttype: p.producttype._id,
       brand: p.brand ? p.brand._id : "",
-      price: p.price && p.price,
+      price: p.price.sellingprice || 0,
+      total: p.total || 0,
     });
     for (let option of document.getElementsByTagName("select")[0].options) {
       if (option.value === p.category._id) {
@@ -119,7 +120,7 @@ export const TableProduct = ({
                     placeholder="Brand"
                   />
                 </th>
-                <th className="text-center">
+                <th className="text-center" colSpan={2}>
                   <Pagination
                     setCurrentDatas={setCurrentProducts}
                     datas={products}
@@ -146,7 +147,6 @@ export const TableProduct = ({
                     loading={loading}
                   />
                 </th>
-                <th></th>
               </tr>
             </thead>
             <thead>
@@ -234,7 +234,7 @@ export const TableProduct = ({
                   </div>
                 </th>
                 <th className="border-right">
-                  Mahsulot o'lchov birliki
+                  Soni - O'.B.
                   <div
                     className="btn-group-vertical ml-2"
                     style={{ maxWidth: "30px" }}
