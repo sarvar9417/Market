@@ -7,7 +7,13 @@ import { checkCategory } from "./checkData";
 import { Modal } from "./modal/Modal";
 import { Sort } from "./productComponents/Sort";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk, faPenAlt, faRepeat, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import {
+  faFloppyDisk,
+  faPenAlt,
+  faRepeat,
+  faTrashCan,
+} from "@fortawesome/free-solid-svg-icons";
+import { Pagination } from "../components/Pagination";
 
 export const Category = () => {
   //====================================================================
@@ -15,7 +21,6 @@ export const Category = () => {
   const [modal, setModal] = useState(false);
   const [remove, setRemove] = useState();
 
- 
   //====================================================================
   //====================================================================
 
@@ -44,6 +49,8 @@ export const Category = () => {
   const { request, loading } = useHttp();
   const auth = useContext(AuthContext);
 
+  const [currentPage, setCurrentPage] = useState(0);
+  const [countPage, setCountPage] = useState(10);
 
   const [category, setCategory] = useState({
     market: auth.market && auth.market._id,
@@ -56,12 +63,9 @@ export const Category = () => {
     for (const input of inputs) {
       input.value = "";
     }
-    setCategory(
-      {
-        market: auth.market && auth.market._id
-      }
-    )
-
+    setCategory({
+      market: auth.market && auth.market._id,
+    });
   }, [auth]);
 
   //====================================================================
@@ -69,7 +73,9 @@ export const Category = () => {
 
   //====================================================================
   //====================================================================
-  const [categories, setCategories] = useState();
+  const [categories, setCategories] = useState([]);
+  const [currentCategories, setCurrentCategories] = useState([]);
+  const [searchStorage, setSearchStorage] = useState([]);
 
   const getCategory = useCallback(async () => {
     try {
@@ -82,6 +88,8 @@ export const Category = () => {
         }
       );
       setCategories(data);
+      setCurrentCategories(data);
+      setSearchStorage(data);
     } catch (error) {
       notify({
         title: error,
@@ -90,6 +98,28 @@ export const Category = () => {
       });
     }
   }, [request, auth, notify]);
+  //====================================================================
+  //====================================================================
+
+  //====================================================================
+  //====================================================================
+
+  const searchCategory = (e) => {
+    const searching = searchStorage.filter(
+      (item) =>
+        item.name.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        String(item.code).includes(e.target.value)
+    );
+    setCategories(searching);
+    setCurrentCategories(searching);
+  };
+
+  const setPageSize = (e) => {
+    setCurrentPage(0);
+    setCountPage(e.target.value);
+    setCurrentCategories(categories.slice(0, e.target.value));
+  };
+
   //====================================================================
   //====================================================================
 
@@ -111,13 +141,14 @@ export const Category = () => {
         description: "",
         status: "success",
       });
-      let c = [...categories]
-      c.unshift({ ...data })
-      setCategories([...c])
+      let c = [...categories];
+      c.unshift({ ...data });
+      setCategories([...c]);
       setCategory({
         market: auth.market && auth.market._id,
       });
       clearInputs();
+      getCategory();
     } catch (error) {
       notify({
         title: error,
@@ -125,7 +156,16 @@ export const Category = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify, setCategory, category, clearInputs, categories]);
+  }, [
+    request,
+    auth,
+    notify,
+    setCategory,
+    category,
+    clearInputs,
+    categories,
+    getCategory,
+  ]);
 
   const updateHandler = useCallback(async () => {
     try {
@@ -142,14 +182,17 @@ export const Category = () => {
         description: "",
         status: "success",
       });
-      let index = categories.findIndex((categor) => { return category._id === categor._id })
-      let c = [...categories]
-      c.splice(index, 1, { ...data })
-      setCategories([...c])
+      let index = categories.findIndex((categor) => {
+        return category._id === categor._id;
+      });
+      let c = [...categories];
+      c.splice(index, 1, { ...data });
+      setCategories([...c]);
       setCategory({
         market: auth.market && auth.market._id,
       });
       clearInputs();
+      getCategory();
     } catch (error) {
       notify({
         title: error,
@@ -157,7 +200,7 @@ export const Category = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify, category, clearInputs, categories]);
+  }, [request, auth, notify, category, clearInputs, categories, getCategory]);
 
   const saveHandler = () => {
     if (checkCategory(category)) {
@@ -191,15 +234,18 @@ export const Category = () => {
         description: "",
         status: "success",
       });
-      let index = categories.findIndex((categor) => { return remove._id === categor._id })
-      let c = [...categories]
-      c.splice(index, 1)
-      setCategories([...c])
+      let index = categories.findIndex((categor) => {
+        return remove._id === categor._id;
+      });
+      let c = [...categories];
+      c.splice(index, 1);
+      setCategories([...c]);
       setModal(false);
       setCategory({
         market: auth.market && auth.market._id,
       });
       clearInputs();
+      getCategory();
     } catch (error) {
       notify({
         title: error,
@@ -207,7 +253,7 @@ export const Category = () => {
         status: "error",
       });
     }
-  }, [auth, request, remove, notify, clearInputs, categories]);
+  }, [auth, request, remove, notify, clearInputs, categories, getCategory]);
 
   //====================================================================
   //====================================================================
@@ -276,7 +322,7 @@ export const Category = () => {
                           className="focus: outline-none focus:ring focus: border-blue-500 py-2 px-3 rounded"
                           id="inputName"
                           name="code"
-                          placeholder= "Kategoriya kodini kiriting"
+                          placeholder="Kategoriya kodini kiriting"
                         />
                       </td>
                       <td className=" text-center border">
@@ -303,11 +349,14 @@ export const Category = () => {
                             onClick={saveHandler}
                             className="btn btn-success py-1 px-4"
                           >
-                            <FontAwesomeIcon className="text-base" icon={faFloppyDisk}/>
+                            <FontAwesomeIcon
+                              className="text-base"
+                              icon={faFloppyDisk}
+                            />
                           </button>
                         )}
                       </td>
-                       <td className="text-center border">
+                      <td className="text-center border">
                         {loading ? (
                           <button className="btn btn-info" disabled>
                             <span className="spinner-border spinner-border-sm"></span>
@@ -318,11 +367,13 @@ export const Category = () => {
                             onClick={clearInputs}
                             className="btn btn-secondary py-1 px-4"
                           >
-                            <FontAwesomeIcon className="text-base" icon={faRepeat}/>
+                            <FontAwesomeIcon
+                              className="text-base"
+                              icon={faRepeat}
+                            />
                           </button>
                         )}
                       </td>
-                      
                     </tr>
                   </tbody>
                 </table>
@@ -331,6 +382,41 @@ export const Category = () => {
             <div className="table-container">
               <div className="table-responsive">
                 <table className="table m-0">
+                  <thead className="bg-white">
+                    <tr>
+                      <th>
+                        <select
+                          className="form-control form-control-sm selectpicker"
+                          placeholder="Bo'limni tanlang"
+                          onChange={setPageSize}
+                          style={{ minWidth: "50px" }}
+                        >
+                          <option value={10}>10</option>
+                          <option value={25}>25</option>
+                          <option value={50}>50</option>
+                          <option value={100}>100</option>
+                        </select>
+                      </th>
+                      <th className="text-center">
+                        <input
+                          style={{ maxWidth: "120px", minWidth: "100px" }}
+                          type="search"
+                          className="w-100 form-control form-control-sm selectpicker"
+                          placeholder="Kategoriya"
+                          onChange={searchCategory}
+                        />
+                      </th>
+                      <th className="text-center">
+                        <Pagination
+                          setCurrentDatas={setCurrentCategories}
+                          datas={categories}
+                          setCurrentPage={setCurrentPage}
+                          countPage={countPage}
+                          totalDatas={categories.length}
+                        />
+                      </th>
+                    </tr>
+                  </thead>
                   <thead>
                     <tr>
                       <th className="border text-center">№</th>
@@ -355,26 +441,34 @@ export const Category = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {categories &&
-                      categories.map((c, key) => {
+                    {currentCategories &&
+                      currentCategories.map((c, key) => {
                         return (
                           <tr key={key}>
-                            <td className="font-bold text-center border">{key + 1}</td>
-                            <td className="text-black font-bold text-center border">{c.code}</td>
-                            <td className=" text-black font-bold text-center border ">{c.name}</td>                            
+                            <td className="font-bold text-center border">
+                              {currentPage * countPage + key + 1}
+                            </td>
+                            <td className="text-black font-bold text-center border">
+                              {c.code}
+                            </td>
+                            <td className=" text-black font-bold text-center border ">
+                              {c.name}
+                            </td>
                             <td className="text-center border">
-                              <button 
+                              <button
                                 onClick={() =>
                                   setCategory({ ...category, ...c })
                                 }
                                 className="btn btn-success py-1 px-4"
                                 style={{ fontSize: "75%" }}
                               >
-                               <FontAwesomeIcon className="text-base" icon={faPenAlt}/>
+                                <FontAwesomeIcon
+                                  className="text-base"
+                                  icon={faPenAlt}
+                                />
                               </button>
                             </td>
                             <td className="text-center border">
-                              
                               <button
                                 onClick={() => {
                                   setRemove(c);
@@ -383,7 +477,10 @@ export const Category = () => {
                                 className="btn btn-secondary py-1 px-4"
                                 style={{ fontSize: "75%" }}
                               >
-                                <FontAwesomeIcon className="text-base" icon={faTrashCan}/> 
+                                <FontAwesomeIcon
+                                  className="text-base"
+                                  icon={faTrashCan}
+                                />
                               </button>
                             </td>
                           </tr>

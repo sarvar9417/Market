@@ -40,6 +40,7 @@ export const TableProduct = ({
       unit: p.unit._id,
       producttype: p.producttype._id,
       brand: p.brand ? p.brand._id : "",
+      price: p.price && p.price,
     });
     for (let option of document.getElementsByTagName("select")[0].options) {
       if (option.value === p.category._id) {
@@ -112,17 +113,6 @@ export const TableProduct = ({
                     placeholder="Brand"
                   />
                 </th>
-
-                <th>
-                  <input
-                    onChange={searchName}
-                    style={{ maxWidth: "100px" }}
-                    type="search"
-                    className="form-control form-control-sm selectpicker"
-                    placeholder="Mahsulot"
-                    aria-controls="basicExample"
-                  />
-                </th>
                 <th className="text-center">
                   <Pagination
                     setCurrentDatas={setCurrentProducts}
@@ -151,7 +141,6 @@ export const TableProduct = ({
                   />
                 </th>
                 <th></th>
-                <th></th>
               </tr>
             </thead>
             <thead>
@@ -164,7 +153,7 @@ export const TableProduct = ({
                       onClick={() =>
                         setCurrentProducts(
                           [...currentProducts].sort((a, b) =>
-                            a.category.name > b.category.name ? 1 : -1
+                            a.category.code > b.category.code ? 1 : -1
                           )
                         )
                       }
@@ -177,7 +166,7 @@ export const TableProduct = ({
                       onClick={() =>
                         setCurrentProducts(
                           [...currentProducts].sort((a, b) =>
-                            b.category.name > a.category.name ? 1 : -1
+                            b.category.code > a.category.code ? 1 : -1
                           )
                         )
                       }
@@ -185,7 +174,7 @@ export const TableProduct = ({
                   </div>
                 </th>
                 <th className="border-right" style={{ maxWidth: "200px" }}>
-                  Mahsulot turi
+                  Mahsulot turi va mahsulot
                   <div className="btn-group-vertical ml-2">
                     <FontAwesomeIcon
                       onClick={() =>
@@ -232,33 +221,6 @@ export const TableProduct = ({
                         setCurrentProducts(
                           [...currentProducts].sort((a, b) =>
                             b.brand.name > a.brand.name ? 1 : -1
-                          )
-                        )
-                      }
-                    />
-                  </div>
-                </th>
-                <th className="border-right">
-                  Mahsulot
-                  <div className="btn-group-vertical ml-2">
-                    <FontAwesomeIcon
-                      onClick={() =>
-                        setCurrentProducts(
-                          [...currentProducts].sort((a, b) =>
-                            a.name > b.name ? 1 : -1
-                          )
-                        )
-                      }
-                      icon={faAngleUp}
-                      style={{ cursor: "pointer" }}
-                    />
-                    <FontAwesomeIcon
-                      icon={faAngleDown}
-                      style={{ cursor: "pointer" }}
-                      onClick={() =>
-                        setCurrentProducts(
-                          [...currentProducts].sort((a, b) =>
-                            b.name > a.name ? 1 : -1
                           )
                         )
                       }
@@ -325,36 +287,6 @@ export const TableProduct = ({
                     />
                   </div>
                 </th>
-                <th className="border-right">
-                  Soni
-                  <div
-                    className="btn-group-vertical ml-2"
-                    style={{ maxWidth: "30px" }}
-                  >
-                    <FontAwesomeIcon
-                      onClick={() =>
-                        setCurrentProducts(
-                          [...currentProducts].sort((a, b) =>
-                            a.unit.name > b.unit.name ? 1 : -1
-                          )
-                        )
-                      }
-                      icon={faAngleUp}
-                      style={{ cursor: "pointer" }}
-                    />
-                    <FontAwesomeIcon
-                      icon={faAngleDown}
-                      style={{ cursor: "pointer" }}
-                      onClick={() =>
-                        setCurrentProducts(
-                          [...currentProducts].sort((a, b) =>
-                            b.uni.name > a.unit.name ? 1 : -1
-                          )
-                        )
-                      }
-                    />
-                  </div>
-                </th>
                 <th className="border-right text-center">Tahrirlash</th>
                 <th className="text-center">O'chirish</th>
               </tr>
@@ -370,17 +302,15 @@ export const TableProduct = ({
                       >
                         {currentPage * countPage + key + 1}
                       </td>
-                      <td className="border-right">{p.category.code}</td>
                       <td className="border-right">
-                        {p.producttype && p.producttype.name}
+                        {p.category.code} {p.code}
+                      </td>
+                      <td className="border-right">
+                        {p.producttype && p.producttype.name} {p.name}
                       </td>
                       <td className="border-right">
                         {p.brand && p.brand.name}
                       </td>
-                      <td className="border-right">
-                        {p.code} {p.name}
-                      </td>
-                      <td className="border-right mx-auto">{p.unit.name}</td>
                       <td className="border-right mx-auto">
                         {(p.price && p.price.sellingprice) || 0}
                       </td>

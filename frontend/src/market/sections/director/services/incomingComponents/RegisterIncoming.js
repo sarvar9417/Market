@@ -46,181 +46,44 @@ export const RegisterIncoming = ({
           <div className="card">
             <div className="card-header">
               <div className="card-title">Mahsulotni qabul qilish</div>
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th
-                      className="border p-1 text-black "
-                      style={{ marginTop: "10px" }}
-                    >
-                      <div>
-                        <Select
-                          id="select"
-                          placeholder="Yetkazib beruvchilar"
-                          isClearable={true}
-                          isLoading={loading}
-                          onChange={(e) => {
-                            setSupplier(e.supplier);
-                            setValue({
-                              ...value,
-                              supplier: true,
-                            });
-                          }}
-                          components={animatedComponents}
-                          options={suppliers}
-                          theme={(theme) => ({
-                            ...theme,
-                            color: "black",
-                            borderRadius: 0,
-                            padding: 0,
-                            height: 0,
-                          })}
-                        />
-                      </div>
-                    </th>
-                    <th className="border p-1 text-black">
-                      <div>
-                        <Select
-                          id="select"
-                          isDisabled={!value.supplier}
-                          placeholder="Mahsulot kategoriyalari"
-                          isClearable={true}
-                          isLoading={loading}
-                          onChange={(e) => {
-                            changeCategory(e);
-                            setValue({ ...value, category: true });
-                          }}
-                          components={animatedComponents}
-                          options={categorys}
-                          theme={(theme) => ({
-                            ...theme,
-                            borderRadius: 0,
-                            padding: 0,
-                            height: 0,
-                          })}
-                        />
-                      </div>
-                    </th>
-                    <th
-                      className="border p-1 text-black "
-                      style={{ marginTop: "10px" }}
-                    >
-                      <div>
-                        <Select
-                          id="select"
-                          isDisabled={!value.supplier}
-                          placeholder="Mahsulot turlari"
-                          isClearable={true}
-                          isLoading={loading}
-                          onChange={(e) => {
-                            changeProductType(e);
-                          }}
-                          components={animatedComponents}
-                          options={productType}
-                          theme={(theme) => ({
-                            ...theme,
-                            color: "black",
-                            borderRadius: 0,
-                            padding: 0,
-                            height: 0,
-                          })}
-                        />
-                      </div>
-                    </th>
-                    {/* <th className="border p-1 text-black">
-                      <Select
-                        isDisabled={!value.category}
-                        placeholder="Brendlar"
-                        isClearable={true}
-                        isLoading={loading}
-                        onChange={(e) => {
-                          changeBrand(e);
-                        }}
-                        components={animatedComponents}
-                        options={brand}
-                        theme={(theme) => ({
-                          ...theme,
-                          borderRadius: 0,
-                          padding: 0,
-                          height: 0,
-                        })}
-                      />
-                    </th> */}
-                    <th className="border p-1 text-black">
-                      <Select
-                        id="select"
-                        isDisabled={!value.supplier}
-                        placeholder="Mahsulotlar"
-                        isClearable={true}
-                        isLoading={loading}
-                        onChange={(e) => {
-                          changeProduct(e);
-                          setModal(true);
-                        }}
-                        components={animatedComponents}
-                        options={products}
-                        theme={(theme) => ({
-                          ...theme,
-                          borderRadius: 0,
-                          padding: 0,
-                          height: 0,
-                        })}
-                      />
-                    </th>
-                  </tr>
-                </thead>
-                {incoming ? (
-                  <tbody>
-                    <tr className="bg-slate-100">
-                      <td className="border m-0 px-3 py-2 font-bold text-black">
-                        {incoming.supplier.name}
-                      </td>
-                      <td className="border m-0 px-3 py-2 font-bold text-black">
-                        {incoming.category.code} - {incoming.category.name}
-                      </td>
-                      <td className="border m-0 px-3 py-2 font-bold text-black">
-                        {incoming.producttype.name}
-                      </td>
-                      {/* <td className="border m-0 px-3 py-2 font-bold text-black">
-                        {incoming.brand.name}
-                      </td> */}
-                      <td className="border m-0 px-3 py-2 font-bold text-black">
-                        {incoming.product.code} - {incoming.product.name}
-                      </td>
-                    </tr>
-                  </tbody>
-                ) : (
-                  <tbody></tbody>
-                )}
-              </table>
-              {/* <div className="row mt-3">
-                <div className="col-md-4">
-                  <p className="font-bold text-teal-700">Yetkazib beruvchi</p>
+            </div>
+            <div className="card-body  ">
+              <div className="bg-primary p-1 flex justify-between">
+                <div className="w-1/3">
                   <Select
+                    id="select"
                     placeholder="Yetkazib beruvchilar"
                     isClearable={true}
                     isLoading={loading}
-                    onChange={(e) => setSupplier(e.supplier)}
+                    onChange={(e) => {
+                      setSupplier(e.supplier);
+                      setValue({
+                        ...value,
+                        supplier: true,
+                      });
+                    }}
                     components={animatedComponents}
                     options={suppliers}
                     theme={(theme) => ({
                       ...theme,
+                      color: "black",
                       borderRadius: 0,
                       padding: 0,
                       height: 0,
                     })}
                   />
                 </div>
-                <div className="col-md-4">
-                  <p className="font-bold text-teal-700">
-                    Mahsulot categoriyasi
-                  </p>
+                <div className="w-1/3 px-1">
                   <Select
-                    isDisabled={!supplier}
-                    placeholder="Mahsulot kategoriyalari"
+                    id="select"
+                    isDisabled={!value.supplier}
+                    placeholder="Kategoriyalar"
                     isClearable={true}
                     isLoading={loading}
-                    onChange={changeCategory}
+                    onChange={(e) => {
+                      changeCategory(e);
+                      setValue({ ...value, category: true });
+                    }}
                     components={animatedComponents}
                     options={categorys}
                     theme={(theme) => ({
@@ -231,15 +94,40 @@ export const RegisterIncoming = ({
                     })}
                   />
                 </div>
-                <div className="col-md-4">
-                  <p className="font-bold text-teal-700">Mahsulotlar</p>
+                <div className="w-1/3">
                   <Select
-                    isDisabled={!supplier}
-                    closeMenuOnSelect={false}
+                    id="select"
+                    isDisabled={!value.supplier}
+                    placeholder="Mahsulot turlari"
+                    isClearable={true}
+                    isLoading={loading}
+                    onChange={(e) => {
+                      changeProductType(e);
+                    }}
+                    components={animatedComponents}
+                    options={productType}
+                    theme={(theme) => ({
+                      ...theme,
+                      color: "black",
+                      borderRadius: 0,
+                      padding: 0,
+                      height: 0,
+                    })}
+                  />
+                </div>
+              </div>
+              <div className="bg-primary p-1">
+                <div>
+                  <Select
+                    id="select"
+                    isDisabled={!value.supplier}
                     placeholder="Mahsulotlar"
                     isClearable={true}
                     isLoading={loading}
-                    onChange={changeProducts}
+                    onChange={(e) => {
+                      changeProduct(e);
+                      setModal(true);
+                    }}
                     components={animatedComponents}
                     options={products}
                     theme={(theme) => ({
@@ -248,12 +136,10 @@ export const RegisterIncoming = ({
                       padding: 0,
                       height: 0,
                     })}
-                    isMulti
                   />
                 </div>
-              </div> */}
+              </div>
             </div>
-            <div className="card-body"></div>
           </div>
         </div>
         <div className="col-12">
@@ -369,7 +255,7 @@ export const RegisterIncoming = ({
             </div>
           </div>
         </div>
-      </div>
+      </div >
       {/* Row end */}
     </>
   );

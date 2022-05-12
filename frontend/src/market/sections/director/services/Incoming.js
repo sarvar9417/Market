@@ -274,7 +274,6 @@ export const Incoming = () => {
         }
       );
       let s = [];
-      console.log(data);
       data.map((product) => {
         return s.push({
           label: product.brand ?
@@ -344,6 +343,90 @@ export const Incoming = () => {
 
   //====================================================================
   //====================================================================
+
+  //====================================================================
+  //====================================================================
+  // CONNECTORS
+
+  const [connectors, setConnectors] = useState([])
+
+  const [totalprice, setTotalPrice] = useState(0)
+  const [totalproducts, setTotalProducts] = useState(0)
+  const [totalproducttypes, setTotalProductTypes] = useState(0)
+
+  const [dailyConnectors, setDailyConnectors] = useState([])
+
+  const daily = useCallback((connectors) => {
+    let price = 0
+    let producttype = 0
+    let product = 0
+    let supplier = 0
+    const connectorss = []
+    let connector = {}
+    for (const key in connectors) {
+      if (key === '0') {
+        connector.total = connectors[key].total
+        connector.producttypes = connectors[key].incoming.length
+        connector.products = (connectors[key].incoming).reduce((summ, produc) => { return summ + produc.pieces }, 0)
+        connector.suppliers = 1
+        connector.day = new Date(connectors[key].createdAt).toLocaleDateString()
+      } else {
+        if (
+          new Date(connectors[key].createdAt).toLocaleDateString()
+          ===
+          new Date(connectors[key - 1].createdAt).toLocaleDateString()
+          &&
+          connectors[key].supplier._id === connectors[key - 1].supplier._id
+        ) {
+          connector.total += connectors[key].total
+          connector.producttypes += connectors[key].incoming.length
+          connector.suppliers += 1
+          connector.products += (connectors[key].incoming).reduce((summ, produc) => { return summ + produc.pieces }, 0)
+        } else {
+          connectorss.push(connector)
+          connector.total = connectors[key].total
+          connector.producttypes = connectors[key].incoming.length
+          connector.products = (connectors[key].incoming).reduce((summ, produc) => { return summ + produc.pieces }, 0)
+          connector.suppliers = 1
+          connector.day = new Date(connectors[key].createdAt).toLocaleDateString()
+        }
+      }
+      price += connectors[key].total
+      producttype += connectors[key].incoming.length
+      product += connectors[key].incoming.reduce((summ, produc) => { return summ + produc.pieces }, 0)
+    }
+    connectorss.push(connector)
+    setTotalPrice(price)
+    setTotalProducts(product)
+    setSupplier(supplier)
+    setTotalProductTypes(producttype)
+    console.log(connectorss);
+    setDailyConnectors(connectorss)
+  }, [])
+
+  const getIncomingConnectors = useCallback(
+    async (beginDay, endDay) => {
+      try {
+        const data = await request(
+          `/api/products/incoming/getconnectors`,
+          "POST",
+          { market: auth.market._id, beginDay, endDay },
+          {
+            Authorization: `Bearer ${auth.token}`,
+          }
+        );
+        setConnectors(data);
+        daily(data)
+      } catch (error) {
+        notify({
+          title: error,
+          description: "",
+          status: "error",
+        });
+      }
+    },
+    [request, auth, notify, daily]
+  );
 
   //====================================================================
   //====================================================================
@@ -516,6 +599,7 @@ export const Incoming = () => {
           market: auth.market._id,
           user: auth.userId,
           products: [...incomings],
+          beginDay, endDay
         },
         {
           Authorization: `Bearer ${auth.token}`,
@@ -586,7 +670,8 @@ export const Incoming = () => {
       getProducts();
       getProductType();
       // getBrand();
-      getImports(beginDay, endDay);
+      // getImports(beginDay, endDay);
+      getIncomingConnectors(beginDay, endDay)
     }
   }, [
     auth,
@@ -594,12 +679,13 @@ export const Incoming = () => {
     t,
     getCategorys,
     getProducts,
-    getImports,
+    // getImports,
     getProductType,
     // getBrand,
     beginDay,
     endDay,
     // getProductType,
+    getIncomingConnectors
   ]);
 
   //====================================================================
@@ -662,7 +748,7 @@ export const Incoming = () => {
               <div className="bg-primary py-1 rounded-t text-center text-white font-bold text-base">
                 Qabul qilingan mahsulotlar
               </div>
-              <ReportIncomings />
+              <ReportIncomings dailyConnectors={dailyConnectors} suppliers={suppliers} />
             </div>
             {/* <div className="d-none col-12">
               <TableIncoming
