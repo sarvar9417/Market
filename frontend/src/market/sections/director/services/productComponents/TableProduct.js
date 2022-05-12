@@ -312,7 +312,8 @@ export const TableProduct = ({
                         {p.category.code} {p.code}
                       </td>
                       <td className="border-right">
-                        {p.producttype && p.producttype.name} {p.name}
+                        <strong>{p.producttype && p.producttype.name}</strong>{" "}
+                        {p.name}
                       </td>
                       <td className="border-right">
                         {p.brand && p.brand.name}
