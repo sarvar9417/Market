@@ -128,7 +128,6 @@ export const Product = () => {
       setSearchStrorage(data);
       setCurrentProducts(data.slice(indexFirstProduct, indexLastProduct));
       setTableExcel(data);
-      console.log(data);
     } catch (error) {
       notify({
         title: error,

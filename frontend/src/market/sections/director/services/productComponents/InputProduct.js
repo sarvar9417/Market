@@ -156,7 +156,7 @@ export const InputProduct = ({
                 <input
                   style={{ minWidth: "70px" }}
                   name="total"
-                  value={product.total || ""}
+                  value={product.total}
                   onKeyUp={keyPressed}
                   onChange={inputHandler}
                   type="number"
@@ -168,13 +168,12 @@ export const InputProduct = ({
                 <input
                   style={{ minWidth: "70px" }}
                   name="price"
-                  value={product.price || ""}
+                  value={product.price && product.price}
                   onKeyUp={keyPressed}
                   onChange={inputHandler}
                   type="number"
                   className="form-control"
                   placeholder="Narxini kiriting"
-
                 />
               </td>
               <td>

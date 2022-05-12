@@ -14,21 +14,24 @@ export const Pagination = ({
     pageNumbers.push(i);
   }
 
-  const pageHandle = useCallback((data) => {
-    setCurrentPage(data.selected);
-    setCurrentDatas(
-      datas.slice(
-        data.selected * countPage,
-        data.selected * countPage + countPage
-      )
-    );
-  }, [datas, setCurrentPage, setCurrentDatas, countPage]);
+  const pageHandle = useCallback(
+    (data) => {
+      setCurrentPage(data.selected);
+      setCurrentDatas(
+        datas.slice(
+          data.selected * countPage,
+          data.selected * countPage + countPage
+        )
+      );
+    },
+    [datas, setCurrentPage, setCurrentDatas, countPage]
+  );
 
   return (
     <nav className="float-right">
       <ReactPaginate
-        previousLabel={"oldingi"}
-        nextLabel="keyingi"
+        previousLabel={"<<"}
+        nextLabel=">>"
         breakLabel={"..."}
         pageCount={pageNumbers.length}
         marginPagesDisplayed={2}
