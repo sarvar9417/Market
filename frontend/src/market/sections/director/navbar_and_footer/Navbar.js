@@ -23,7 +23,10 @@ export const Navbar = ({ baseUrl }) => {
     },
     [toast],
   )
+
+
   const [activePage, setActivePage] = useState(window.location.pathname)
+  const [submenu, setSubmenu] = useState()
   //====================================================================
   //====================================================================
 
@@ -125,7 +128,11 @@ export const Navbar = ({ baseUrl }) => {
                   className={`nav-link dropdown-toggle ${
                     activePage === '/alo24/category' ||
                     activePage === '/alo24/producttypes' ||
-                    activePage === '/alo24/product'
+                    activePage === '/alo24/product' ||
+                    activePage === '/alo24/brand' ||
+                    activePage === '/alo24/unit' ||
+                    activePage === '/alo24/supplier' ||
+                    activePage === '/alo24/incoming'
                       ? 'active-page'
                       : ''
                   }`}
