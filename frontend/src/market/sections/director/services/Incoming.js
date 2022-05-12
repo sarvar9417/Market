@@ -748,7 +748,7 @@ export const Incoming = () => {
               <div className="bg-primary py-1 rounded-t text-center text-white font-bold text-base">
                 Qabul qilingan mahsulotlar
               </div>
-              <ReportIncomings dailyConnectors={dailyConnectors} suppliers={suppliers} />
+              <ReportIncomings totalproducts={totalproducts} totalprice={totalprice} totalproducttypes={totalproducttypes} dailyConnectors={dailyConnectors} suppliers={suppliers} />
             </div>
             {/* <div className="d-none col-12">
               <TableIncoming

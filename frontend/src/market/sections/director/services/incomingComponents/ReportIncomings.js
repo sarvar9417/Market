@@ -5,8 +5,7 @@ import makeAnimated from "react-select/animated";
 
 const animatedComponents = makeAnimated();
 
-export const ReportIncomings = ({ dailyConnectors, suppliers }) => {
-
+export const ReportIncomings = ({ dailyConnectors, suppliers, totalproducts, totalprice, totalproducttypes }) => {
     return (
         <div className="py-3 w-full">
             <div className="grid grid-cols-12">
@@ -46,10 +45,13 @@ export const ReportIncomings = ({ dailyConnectors, suppliers }) => {
                                 />
                             </div>
                             <p className="font-bold text-base text-teal-700 ">
-                                Mahsulotlar: <span>{1231}</span>
+                                Mahsulotlar turlari: <span>{totalproducttypes}</span>
                             </p>
                             <p className="font-bold text-base text-teal-700 ">
-                                Summasi: <span>{99999999}$</span>
+                                Mahsulotlar: <span>{totalproducts}</span>
+                            </p>
+                            <p className="font-bold text-base text-teal-700 ">
+                                Summasi: <span>{totalprice}$</span>
                             </p>
                         </div>
                     </div>
@@ -72,8 +74,6 @@ export const ReportIncomings = ({ dailyConnectors, suppliers }) => {
                                             <span className="text-orange-400 font-bold">{connector.products}</span>
                                         </p>
                                     </button>
-
-
                                 </div>
                             })
                         }
