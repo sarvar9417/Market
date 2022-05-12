@@ -78,6 +78,18 @@ export const checkProduct = (product) => {
       status: "error",
     };
 
+  if (!product.producttype)
+    return {
+      title: "Diqqat! Mahsulot turini kiritilmagan.",
+      description: "Iltimos mahsulot turini kiriting.",
+      status: "error",
+    };
+  if (!product.code)
+    return {
+      title: "Diqqat! Mahsulot kodi kiritilmagan.",
+      description: "Iltimos kodini kiriting.",
+      status: "error",
+    };
   if (!product.name)
     return {
       title: "Diqqat! Mahsulot nomi kiritilmagan.",
@@ -85,31 +97,13 @@ export const checkProduct = (product) => {
       status: "error",
     };
 
-  if (!product.code)
-    return {
-      title: "Diqqat! Mahsulot kodi kiritilmagan.",
-      description: "Iltimos kodini kiriting.",
-      status: "error",
-    };
   if (!product.unit)
     return {
       title: "Diqqat! O'lchov birliki kiritilmagan.",
       description: "Iltimos o'lchov birlikini kiriting.",
       status: "error",
     };
-  if (!product.producttype)
-    return {
-      title: "Diqqat! Mahsulot turini kiritilmagan.",
-      description: "Iltimos mahsulot turini kiriting.",
-      status: "error",
-    };
 
-  if (!product.price)
-    return {
-      title: "Diqqat! Mahsulot narxi kiritilmagan.",
-      description: "Iltimos narxini kiriting.",
-      status: "error",
-    };
   return false;
 };
 
