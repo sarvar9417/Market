@@ -239,7 +239,7 @@ export const Brand = () => {
                 <table className="table m-0">
                   <thead>
                     <tr>
-                      <th className="w-25">Brand</th>
+                      <th className="border text-center">Brand</th>
                       <th className="w-25">Saqlash</th>
                     </tr>
                   </thead>
