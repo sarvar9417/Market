@@ -1,6 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { Datapicker } from "./Datepicker";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
 
+const animatedComponents = makeAnimated();
+
+export const ReportIncomings = ({ connectors, suppliers }) => {
+    const [totalprice, setTotalPrice] = useState(0)
+    const [totalproducts, setTotalProducts] = useState(0)
+
+    const [dailyConnectors, setDailyConnectors] = useState([])
+    
 export const ReportIncomings = () => {
   return (
     <div className="py-3 w-full">

@@ -6,6 +6,8 @@ import { AuthContext } from '../../../context/AuthContext'
 import { checkBrand } from './checkData'
 import { Modal } from './modal/Modal'
 import { Sort } from '../adver/Sort'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFloppyDisk, faPenAlt, faRepeat, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 
 export const Brand = () => {
   //====================================================================
@@ -239,26 +241,26 @@ export const Brand = () => {
                 <table className="table m-0">
                   <thead>
                     <tr>
-                      <th className="w-25">Brand</th>
-                      <th className="w-25">Saqlash</th>
+                      <th className="border text-center">Brand</th>
+                      <th className="border text-center">Saqlash</th>
+                      <th className="border text-center">Tozalash</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>
+                    <tr className='border text-center'>
+                      <td className='border text-center'>
                         <input
-                          style={{ minWidth: '70px' }}
                           name="name"
                           value={brand.name || ''}
                           onKeyUp={keyPressed}
                           onChange={inputHandler}
                           type="text"
-                          className="form-control w-75 py-0"
+                          className="focus: outline-none focus:ring focus:border-blue-500 rounded py-1 px-3"
                           id="name"
                           placeholder="Brand nomini kiriting"
                         />
                       </td>
-                      <td>
+                      <td className='border text-center'>
                         {loading ? (
                           <button className="btn btn-info" disabled>
                             <span className="spinner-border spinner-border-sm"></span>
@@ -267,9 +269,24 @@ export const Brand = () => {
                         ) : (
                           <button
                             onClick={saveHandler}
-                            className="btn btn-info py-1 px-4"
+                            className="btn btn-success py-1 px-4"
                           >
-                            Saqlash
+                            <FontAwesomeIcon className='text-base' icon={faFloppyDisk}/>
+                          </button>
+                        )}
+                      </td>
+                      <td className='border text-center'>
+                        {loading ? (
+                          <button className="btn btn-info" disabled>
+                            <span className="spinner-border spinner-border-sm"></span>
+                            Loading...
+                          </button>
+                        ) : (
+                          <button
+                            onClick={clearInputs}
+                            className="btn btn-secondary py-1 px-4"
+                          >
+                            <FontAwesomeIcon className='text-base' icon={faRepeat}/>
                           </button>
                         )}
                       </td>
@@ -282,9 +299,9 @@ export const Brand = () => {
               <div className="table-responsive">
                 <table className="table m-0">
                   <thead>
-                    <tr>
-                      <th>№</th>
-                      <th className="w-25">
+                    <tr className='border text-center'>
+                      <th className='border text-center'>№</th>
+                      <th className="border text-center">
                         Brand nomi{' '}
                         <Sort
                           data={brands}
@@ -292,38 +309,38 @@ export const Brand = () => {
                           property={'name'}
                         />
                       </th>
-                      <th className="w-25">Tahrirlash</th>
-                      <th className="w-25">O'chirish</th>
+                      <th className="border text-center">Tahrirlash</th>
+                      <th className="border text-center">O'chirish</th>
                     </tr>
                   </thead>
                   <tbody>
                     {brands &&
                       brands.map((s, key) => {
                         return (
-                          <tr key={key}>
-                            <td className="font-weight-bold">{key + 1}</td>
-                            <td>{s.name}</td>
-                            <td>
+                          <tr className='border text-center' key={key} c>
+                            <td className="border text-center font-bold text-bold text-black">{key + 1}</td>
+                            <td className="border text-center font-bold text-bold text-black">{s.name}</td>
+                            <td className='border text-center'>
                               <button
                                 onClick={() => {
                                   setBrand({ ...brand, ...s })
                                 }}
-                                className="btn btn-success py-1 px-2"
+                                className="btn btn-success py-1 px-4"
                                 style={{ fontSize: '75%' }}
                               >
-                                Tahrirlash
+                               <FontAwesomeIcon className='text-base' icon={faPenAlt}/>
                               </button>
                             </td>
-                            <td>
+                            <td className='border text-center'>
                               <button
                                 onClick={() => {
                                   setRemove({ ...remove, ...s })
                                   setModal(true)
                                 }}
-                                className="btn btn-secondary py-1 px-2"
-                                style={{ fontSize: '75%' }}
+                                className="btn btn-secondary py-1 px-4"
+                                
                               >
-                                O'chirish
+                                <FontAwesomeIcon className='text-base' icon={faTrashCan}/>
                               </button>
                             </td>
                           </tr>

@@ -10,13 +10,12 @@ const { Unit } = require('../../models/Products/Unit')
 const { Product } = require('../../models/Products//Product')
 const { Brand } = require('../../models/Products/Brand')
 const { IncomingConnector } = require('../../models/Products/IncomingConnector')
+const { ProductPrice } = require('../../models/Products/ProductPrice')
 
 //Incoming registerall
 module.exports.registerAll = async (req, res) => {
   try {
-    const products = req.body.products
-    const market = req.body.market
-    const user = req.body.user
+    const { market, beginDay, endDay, products, user } = req.body
     const all = []
 
     for (const newproduct of products) {
@@ -63,14 +62,6 @@ module.exports.registerAll = async (req, res) => {
         })
       }
 
-      const bran = await Brand.findById(brand._id)
-
-      if (!bran) {
-        return res.status(400).json({
-          message: `Diqqat! ${brand.name} nomli brand turi tizimda mavjud emas.`,
-        })
-      }
-
       const produc = await Product.findById(product._id)
 
       if (!produc) {
@@ -91,7 +82,6 @@ module.exports.registerAll = async (req, res) => {
         product: product._id,
         category: category._id,
         producttype: producttype._id,
-        brand: brand._id,
         supplier: supplier._id,
         unit: unit._id,
         pieces,
@@ -102,27 +92,51 @@ module.exports.registerAll = async (req, res) => {
         user,
       })
 
+      if (brand) {
+        const bran = await Brand.findById(brand._id)
+
+        if (!bran) {
+          return res.status(400).json({
+            message: `Diqqat! ${brand.name} nomli brand turi tizimda mavjud emas.`,
+          })
+        }
+        newProduct.brand = brand._id
+        await newProduct.save()
+      }
+
       all.push(newProduct)
     }
-
     let p = []
     let t = 0
 
-    all.map(async (product) => {
+    for (const product of all) {
       await product.save()
-
       const produc = await Product.findById(product.product)
       produc.total = produc.total + product.pieces
-      produc.incomingprice = product.unitprice
       await produc.save()
 
+      const productprice = await ProductPrice.find({
+        product: produc._id,
+      })
+      const newProductPrice = new ProductPrice({
+        procient: productprice.procient,
+        product: product.product,
+        incomingprice: product.unitprice,
+        sellingprice: productprice && productprice[productprice.length - 1].sellingprice ? productprice[productprice.length - 1].sellingprice : 0,
+        market
+      })
+
+      await newProductPrice.save()
+
+      produc.price = newProductPrice._id
+      await produc.save()
       p.push(product._id)
       t += product.totalprice
-    })
+    }
 
     const newIncomingConnector = new IncomingConnector({
       total: t,
-      incoming: [...p],
+      incoming: p,
       supplier: products[0].supplier._id,
       market,
       user,
@@ -130,9 +144,18 @@ module.exports.registerAll = async (req, res) => {
 
     await newIncomingConnector.save()
 
-    res.send(all)
+    const connectors = await IncomingConnector.find({
+      market,
+      createdAt: {
+        $gte: beginDay,
+        $lt: endDay,
+      },
+    }).sort({ _id: -1 })
+      .select("supplier incoming total createdAt")
+      .populate("supplier", "name")
+
+    res.send(connectors)
   } catch (error) {
-    console.log(error)
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
   }
 }
@@ -257,6 +280,28 @@ module.exports.get = async (req, res) => {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
   }
 }
+
+//Incoming registerall
+module.exports.getConnectors = async (req, res) => {
+  try {
+    const { market, beginDay, endDay } = req.body
+
+    const connectors = await IncomingConnector.find({
+      market,
+      createdAt: {
+        $gte: beginDay,
+        $lt: endDay,
+      },
+    }).sort({ _id: -1 })
+      .select("supplier incoming total createdAt")
+      .populate("supplier", "name")
+
+    res.send(connectors)
+  } catch (error) {
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
+  }
+}
+
 
 //Incoming delete
 // module.exports.delete = async (req, res) => {

@@ -5,9 +5,8 @@ const product = new Schema(
   {
     name: { type: String, required: true },
     unit: { type: Schema.Types.ObjectId, ref: "Unit" },
-    code: { type: Number, required: true },
-    sellingprice: { type: Number },
-    incomingprice: { type: Number },
+    code: { type: String, required: true },
+    price: { type: Schema.Types.ObjectId, ref: "ProductPrice" },
     total: { type: Number, default: 0 },
     category: { type: Schema.Types.ObjectId, ref: "Category" },
     producttype: { type: Schema.Types.ObjectId, ref: "ProductType" },
@@ -24,9 +23,8 @@ function validateProduct(product) {
   const schema = Joi.object({
     name: Joi.string().required(),
     unit: Joi.string(),
-    code: Joi.number(),
-    sellingprice: Joi.number(),
-    incomingprice: Joi.number(),
+    code: Joi.string(),
+    price: Joi.number(),
     total: Joi.number(),
     category: Joi.string(),
     producttype: Joi.string(),
@@ -41,10 +39,12 @@ function validateProductExcel(product) {
   const schema = Joi.object({
     name: Joi.string().required(),
     unit: Joi.string(),
-    producttype: Joi.string(),
-    code: Joi.number().required(),
+    producttype: Joi.string().required(),
+    code: Joi.string().required(),
     category: Joi.number(),
     brand: Joi.string(),
+    price: Joi.number(),
+    total: Joi.number(),
   });
 
   return schema.validate(product);

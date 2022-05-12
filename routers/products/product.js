@@ -8,6 +8,7 @@ const { Category } = require("../../models/Products/Category");
 const { ProductType } = require("../../models/Products/ProductType");
 const { Unit } = require("../../models/Products/Unit");
 const { Brand } = require("../../models/Products/Brand");
+const { ProductPrice } = require("../../models/Products/ProductPrice");
 const ObjectId = require("mongodb").ObjectId;
 
 //Product registerall
@@ -28,9 +29,10 @@ module.exports.registerAll = async (req, res) => {
         code,
         unit,
         category,
-        // categorycode,
         producttype,
         brand,
+        price,
+        total
       } = product;
 
       const marke = await Market.findById(market);
@@ -40,40 +42,38 @@ module.exports.registerAll = async (req, res) => {
           message: "Diqqat! Do'kon ma'lumotlari topilmadi.",
         });
       }
-      const categor = await Category.findOne({
+      let categor = await Category.findOne({
         code: category,
         market,
       });
 
       if (!categor) {
-        return res.status(400).json({
-          message: `Diqqat! ${category} kodli kategoriya mavjud emas.`,
-        });
+        const newcategory = new Category({
+          code: category,
+          market
+        })
+        await newcategory.save()
+        categor = newcategory
       }
 
-      const producttyp = await ProductType.findOne({
+      let producttyp = await ProductType.findOne({
         name: producttype,
         market,
       });
 
       if (!producttyp) {
-        return res.status(400).json({
-          message: `Diqqat! ${producttyp} mahsulot turi tizimda mavjud emas.`,
-        });
-      }
-
-      const bran = await Brand.findOne({
-        name: brand,
-        market,
-      });
-
-      if (!bran) {
-        return res.status(400).json({
-          message: `Diqqat! ${brand} brandi tizimda mavjud emas.`,
-        });
+        const newproducttype = new ProductType({
+          name: producttype,
+          category: categor._id,
+          market
+        })
+        await newproducttype.save()
+        producttyp = newproducttype
       }
 
       const produc = await Product.findOne({
+        category: categor._id,
+        producttype: producttyp._id,
         market,
         code,
       });
@@ -84,38 +84,73 @@ module.exports.registerAll = async (req, res) => {
         });
       }
 
-      let u = null;
-      if (unit) {
-        const unitt = await Unit.findOne({
-          market,
-          name: unit,
-        });
-
-        if (!unitt) {
-          return res.status(400).json({
-            message: `Diqqat! ${unit} o'lchov birligi tizimda mavjud emas.`,
-          });
-        }
-        u = unitt._id;
-      }
-
       const newProduct = new Product({
         name,
         code,
         category: categor._id,
         producttype: producttyp._id,
         market,
-        brand: bran._id,
-        unit: u,
       });
+
+      // Create Price
+
+      const newPrice = new ProductPrice({
+        sellingprice: price ? price : 0,
+        market
+      })
+
+      await newPrice.save()
+      newProduct.price = newPrice._id
+
+
+      // Create unit
+      const uni = await Unit.findOne({
+        name: unit,
+        market
+      })
+
+      if (uni) {
+        newProduct.unit = uni._id
+      } else {
+        const newUnit = new Unit({
+          name: unit,
+          market
+        })
+        await newUnit.save()
+        newProduct.unit = newUnit._id
+      }
+
+      // Total
+      if (total) {
+        newProduct.total = total
+      }
+
+      // Create brand
+      if (brand) {
+        const bran = await Brand.findOne({
+          name: brand,
+          market,
+        });
+
+        if (!bran) {
+          const newbrand = new Brand({
+            name: brand,
+            market
+          })
+          await newbrand.save()
+
+          newProduct.brand = newbrand._id
+        } else {
+          newProduct.brand = bran._id
+        }
+      }
 
       all.push(newProduct);
     }
 
-    all.map(async (product) => {
+    for (const product of all) {
       await product.save();
-
-      const updateCategory = await Category.findByIdAndUpdate(
+      await Category.findByIdAndUpdate(
         product.category,
         {
           $push: {
@@ -124,7 +159,7 @@ module.exports.registerAll = async (req, res) => {
         }
       );
 
-      const updateProducttype = await ProductType.findByIdAndUpdate(
+      await ProductType.findByIdAndUpdate(
         product.producttype,
         {
           $push: {
@@ -132,11 +167,25 @@ module.exports.registerAll = async (req, res) => {
           },
         }
       );
-    });
 
-    res.send(all);
+      await ProductPrice.findByIdAndUpdate(product.price, {
+        product: product._id
+      })
+    }
+
+    const productss = await Product.find({
+      market,
+    })
+      .sort({ _id: -1 })
+      .select("name code unit category producttype brand price total")
+      .populate("category", "name code")
+      .populate("producttype", "name")
+      .populate("unit", "name")
+      .populate("brand", "name")
+      .populate("price", "sellingprice")
+
+    res.send(productss);
   } catch (error) {
-    console.log(error);
     res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
   }
 };
@@ -151,7 +200,7 @@ module.exports.register = async (req, res) => {
       });
     }
 
-    const { name, producttype, code, category, market, unit, brand } = req.body;
+    const { name, producttype, code, category, market, unit, brand, total, price } = req.body;
 
     const product = await Product.findOne({
       market,
@@ -197,6 +246,8 @@ module.exports.register = async (req, res) => {
       });
     }
 
+
+
     const newProduct = new Product({
       name,
       code,
@@ -204,21 +255,29 @@ module.exports.register = async (req, res) => {
       market,
       brand,
       unit,
+      total,
+      producttype: Producttype._id
     });
 
-    if (Producttype) {
-      newProduct.producttype = Producttype._id;
-    }
+
+    const newPrice = new ProductPrice({
+      sellingprice: price ? price : 0,
+      market
+    })
+
+    await newPrice.save()
+    newProduct.price = newPrice._id
     await newProduct.save();
 
-    const updateCategory = await Category.findByIdAndUpdate(categor._id, {
+
+    await Category.findByIdAndUpdate(categor._id, {
       $push: {
         products: newProduct._id,
       },
     });
 
     if (Producttype) {
-      const updateProductType = await ProductType.findByIdAndUpdate(
+      await ProductType.findByIdAndUpdate(
         Producttype._id,
         {
           $push: {
@@ -421,11 +480,13 @@ module.exports.getAll = async (req, res) => {
     const products = await Product.find({
       market,
     })
-      .select("name code unit")
+      .sort({ _id: -1 })
+      .select("name code unit category producttype brand price total")
       .populate("category", "name code")
       .populate("producttype", "name")
       .populate("unit", "name")
-      .populate("brand", "name");
+      .populate("brand", "name")
+      .populate("price", "sellingprice")
 
     res.send(products);
   } catch (error) {

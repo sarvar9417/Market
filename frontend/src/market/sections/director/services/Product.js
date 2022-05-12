@@ -98,6 +98,7 @@ export const Product = () => {
     { name: "Mahsulot nomi", value: "name" },
     { name: "O'lchov birligi", value: "unit" },
     { name: "Narxi", value: "price" },
+    { name: "Soni", value: "total" },
   ];
 
   //====================================================================
@@ -423,7 +424,6 @@ export const Product = () => {
   const inputHandler = (e) => {
     setProduct({ ...product, [e.target.name]: e.target.value });
   };
-  console.log(changeImports);
   //====================================================================
   //====================================================================
 
@@ -437,13 +437,15 @@ export const Product = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      localStorage.setItem("data", data);
       notify({
         title: `Barcha mahsulolar yuklandi!`,
         description: "",
         status: "success",
       });
-      getProducts();
+      setProducts(data);
+      setSearchStrorage(data);
+      setCurrentProducts(data.slice(indexFirstProduct, indexLastProduct));
+      setTableExcel(data);
       setProduct({
         market: auth.market && auth.market._id,
       });
@@ -456,7 +458,7 @@ export const Product = () => {
         status: "error",
       });
     }
-  }, [auth, request, getProducts, notify, clearInputs, changeImports]);
+  }, [auth, request, notify, clearInputs, changeImports, indexFirstProduct, indexLastProduct]);
 
   const checkUploadData = () => {
     if (checkProducts(changeImports)) {

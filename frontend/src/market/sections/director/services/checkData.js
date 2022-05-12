@@ -350,14 +350,6 @@ export const checkProducts = (products) => {
       };
     }
 
-    if (typeof product.category !== "number") {
-      return {
-        title: `Diqqat! ${k}-qatorda kategoriya kodi to'g'ri kiritilmagan.`,
-        description: "Iltimos kategoriya kodini to'g'ri kiriting.",
-        status: "error",
-      };
-    }
-
     if (!product.code) {
       return {
         title: `Diqqat! ${k}-qatorda mahsulot kodi kiritilmagan.`,
@@ -366,26 +358,18 @@ export const checkProducts = (products) => {
       };
     }
 
-    if (typeof product.code !== "number") {
-      return {
-        title: `Diqqat! ${k}-qatorda mahsulot kodi to'g'ri kiritilmagan.`,
-        description: "Iltimos mahsulot kodi to'g'ri kiriting.",
-        status: "error",
-      };
-    }
-
     if (!product.name) {
       return {
-        title: `Diqqat! ${k}-qatorda mahsulot kodi kiritilmagan.`,
-        description: "Iltimos mahsulot kodini kiriting.",
+        title: `Diqqat! ${k}-qatorda mahsulot nomi kiritilmagan.`,
+        description: "Iltimos mahsulot nomini kiriting.",
         status: "error",
       };
     }
 
     if (!product.producttype) {
       return {
-        title: `Diqqat! ${k}-qatorda mahsulot kodi kiritilmagan.`,
-        description: "Iltimos mahsulot kodini kiriting.",
+        title: `Diqqat! ${k}-qatorda mahsulot turi kiritilmagan.`,
+        description: "Iltimos mahsulot turini kiriting.",
         status: "error",
       };
     }
@@ -398,18 +382,18 @@ export const checkProducts = (products) => {
       };
     }
 
-    if (!product.price) {
+    if (product.price && typeof product.price !== "number") {
       return {
         title: `Diqqat! ${k}-qatorda mahsulot narxi kiritilmagan.`,
-        description: "Iltimos mahsulot narhini kiriting.",
+        description: "Iltimos mahsulot narxini kiriting.",
         status: "error",
       };
     }
 
-    if (typeof product.price !== "number") {
+    if (product.total && typeof product.total !== "number") {
       return {
-        title: `Diqqat! ${k}-qatorda mahsulot narxi to'g'ri kiritilmagan.`,
-        description: "Iltimos mahsulot narxini to'g'ri kiriting.",
+        title: `Diqqat! ${k}-qatorda mahsulot soni to'g'ri kiritilmagan.`,
+        description: "Iltimos mahsulot sonini to'g'ri kiriting.",
         status: "error",
       };
     }
