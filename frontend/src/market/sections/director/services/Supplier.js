@@ -6,6 +6,8 @@ import { AuthContext } from "../../../context/AuthContext";
 import { checkSupplier } from "./checkData";
 import { Modal } from "./modal/Modal";
 import { Sort } from "../adver/Sort";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFloppyDisk, faPenAlt, faRepeat, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 export const Supplier = () => {
   //====================================================================
@@ -231,26 +233,26 @@ export const Supplier = () => {
                 <table className="table m-0">
                   <thead>
                     <tr>
-                      <th className="w-25">Yetkazib beruvchi</th>
-                      <th className="w-25">Saqlash</th>
+                      <th className="border text-center">Yetkazib beruvchi</th>
+                      <th className="border text-center">Saqlash</th>
+                      <th className="border text-center">Tozalash</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody className="border text-center">
                     <tr>
-                      <td>
+                      <td className="border text-center">
                         <input
-                          style={{ minWidth: "70px" }}
                           name="name"
                           value={supplier.name || ""}
                           onKeyUp={keyPressed}
                           onChange={inputHandler}
                           type="text"
-                          className="form-control w-75 py-0"
+                          className="focus: outline-none focus:ring focus: border-blue-500 rounded py-1 px-3"
                           id="name"
                           placeholder="Yetkazib beruvchi kiriting"
                         />
                       </td>
-                      <td>
+                      <td className="border text-center text-base">
                         {loading ? (
                           <button className="btn btn-info" disabled>
                             <span className="spinner-border spinner-border-sm"></span>
@@ -259,9 +261,24 @@ export const Supplier = () => {
                         ) : (
                           <button
                             onClick={saveHandler}
-                            className="btn btn-info py-1 px-4"
+                            className="btn btn-success py-1 px-4"
                           >
-                            Saqlash
+                            <FontAwesomeIcon icon={faFloppyDisk}/>
+                          </button>
+                        )}
+                      </td>
+                      <td className="border text-center text-base">
+                        {loading ? (
+                          <button className="btn btn-info" disabled>
+                            <span className="spinner-border spinner-border-sm"></span>
+                            Loading...
+                          </button>
+                        ) : (
+                          <button
+                            onClick={clearInputs}
+                            className="btn btn-secondary py-1 px-4"
+                          >
+                            <FontAwesomeIcon icon={faRepeat}/>
                           </button>
                         )}
                       </td>
@@ -273,10 +290,10 @@ export const Supplier = () => {
             <div className="table-container">
               <div className="table-responsive">
                 <table className="table m-0">
-                  <thead>
+                  <thead className="border text-center">
                     <tr>
-                      <th>№</th>
-                      <th className="w-25">
+                      <th className="border text-center text-bold max-w-[2rem]">№</th>
+                      <th className="border text-center">
                         Yetkazib beruvchi{" "}
                         <Sort
                           data={suppliers}
@@ -284,38 +301,38 @@ export const Supplier = () => {
                           property={"name"}
                         />
                       </th>
-                      <th className="w-25">Tahrirlash</th>
-                      <th className="w-25">O'chirish</th>
+                      <th className="border">Tahrirlash</th>
+                      <th className="border">O'chirish</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody className="text-center border">
                     {suppliers &&
                       suppliers.map((s, key) => {
                         return (
                           <tr key={key}>
-                            <td className="font-weight-bold">{key + 1}</td>
-                            <td>{s.name}</td>
-                            <td>
+                            <td className="font-bold text-black border">{key + 1}</td>
+                            <td className="font-bold text-black border">{s.name}</td>
+                            <td className="border text-base">
                               <button
                                 onClick={() => {
                                   setSupplier({ ...supplier, ...s });
                                 }}
-                                className="btn btn-success py-1 px-2"
-                                style={{ fontSize: "75%" }}
+                                className="btn btn-success py-1 px-4"
+                                
                               >
-                                Tahrirlash
+                                <FontAwesomeIcon icon={faPenAlt}/>
                               </button>
                             </td>
-                            <td>
+                            <td className="border text-base">
                               <button
                                 onClick={() => {
                                   setRemove({ ...remove, ...s });
                                   setModal(true);
                                 }}
-                                className="btn btn-secondary py-1 px-2"
-                                style={{ fontSize: "75%" }}
+                                className="btn btn-secondary py-1 px-4"
+                                
                               >
-                                O'chirish
+                                <FontAwesomeIcon icon={faTrashCan}/>
                               </button>
                             </td>
                           </tr>
