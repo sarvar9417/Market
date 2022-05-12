@@ -6,6 +6,8 @@ import { AuthContext } from "../../../context/AuthContext";
 import { checkUnit } from "./checkData";
 import { Modal } from "./modal/Modal";
 import { Sort } from "./productComponents/Sort";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFloppyDisk, faPenAlt, faRepeat, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 export const Unit = () => {
   //====================================================================
@@ -231,26 +233,26 @@ export const Unit = () => {
                 <table className="table m-0">
                   <thead>
                     <tr>
-                      <th className="w-25">O'lchov birliki</th>
-                      <th className="w-25">Saqlash</th>
+                      <th className="border text-center">O'lchov birliki</th>
+                      <th className="border text-center">Saqlash</th>
+                      <th className="border text-center">Tozalash</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>
+                    <tr className="border text-center">
+                      <td className="border text-center">
                         <input
-                          style={{ minWidth: "70px" }}
                           name="name"
                           value={unit.name || ""}
                           onKeyUp={keyPressed}
                           onChange={inputHandler}
                           type="text"
-                          className="form-control w-75 py-0"
+                          className="focus: outline-none focus:ring focus: border-blue-500 rounded py-1 px-3"
                           id="name"
                           placeholder="O'lchov birlikini kiriting"
                         />
                       </td>
-                      <td>
+                      <td className="border text-center">
                         {loading ? (
                           <button className="btn btn-info" disabled>
                             <span className="spinner-border spinner-border-sm"></span>
@@ -259,9 +261,24 @@ export const Unit = () => {
                         ) : (
                           <button
                             onClick={saveHandler}
-                            className="btn btn-info py-1 px-4"
+                            className="btn btn-success py-1 px-4"
                           >
-                            Saqlash
+                            <FontAwesomeIcon className="text-base" icon={faFloppyDisk}/>
+                          </button>
+                        )}
+                      </td>
+                      <td className="border text-center">
+                        {loading ? (
+                          <button className="btn btn-info" disabled>
+                            <span className="spinner-border spinner-border-sm"></span>
+                            Loading...
+                          </button>
+                        ) : (
+                          <button
+                            onClick={clearInputs}
+                            className="btn btn-secondary py-1 px-4"
+                          >
+                            <FontAwesomeIcon className="text-base" icon={faRepeat}/>
                           </button>
                         )}
                       </td>
@@ -273,10 +290,10 @@ export const Unit = () => {
             <div className="table-container">
               <div className="table-responsive">
                 <table className="table m-0">
-                  <thead>
+                  <thead className="border text-center">
                     <tr>
-                      <th>№</th>
-                      <th className="w-25">
+                      <th className="border">№</th>
+                      <th className="border">
                         O'lchov birliki{" "}
                         <Sort
                           data={units}
@@ -284,26 +301,26 @@ export const Unit = () => {
                           property={"name"}
                         />
                       </th>
-                      <th className="w-25">Tahrirlash</th>
-                      <th className="w-25">O'chirish</th>
+                      <th className="border">Tahrirlash</th>
+                      <th className="border">O'chirish</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody className="border text-center">
                     {units &&
                       units.map((s, key) => {
                         return (
-                          <tr key={key}>
-                            <td className="font-weight-bold">{key + 1}</td>
-                            <td>{s.name}</td>
-                            <td>
+                          <tr className="border" key={key}>
+                            <td className="font-bold text-black border">{key + 1}</td>
+                            <td className="font-bold text-black border">{s.name}</td>
+                            <td className="border">
                               <button
                                 onClick={() => {
                                   setUnit({ ...unit, ...s });
                                 }}
-                                className="btn btn-success py-1 px-2"
-                                style={{ fontSize: "75%" }}
+                                className="btn btn-success py-1 px-4 text-base"
+                                
                               >
-                                Tahrirlash
+                                <FontAwesomeIcon icon={faPenAlt}/>
                               </button>
                             </td>
                             <td>
@@ -312,10 +329,10 @@ export const Unit = () => {
                                   setRemove({ ...remove, ...s });
                                   setModal(true);
                                 }}
-                                className="btn btn-secondary py-1 px-2"
-                                style={{ fontSize: "75%" }}
+                                className="btn btn-secondary py-1 px-4 text-base"
+                                
                               >
-                                O'chirish
+                                <FontAwesomeIcon icon={faTrashCan}/>
                               </button>
                             </td>
                           </tr>
