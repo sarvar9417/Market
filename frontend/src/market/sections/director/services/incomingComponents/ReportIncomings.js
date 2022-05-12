@@ -1,7 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { Datapicker } from "./Datepicker";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
 
-export const ReportIncomings = () => {
+const animatedComponents = makeAnimated();
+
+export const ReportIncomings = ({ connectors, suppliers }) => {
+    const [totalprice, setTotalPrice] = useState(0)
+    const [totalproducts, setTotalProducts] = useState(0)
+
+    const [dailyConnectors, setDailyConnectors] = useState([])
+
+    
+
     return (
         <div className='py-3 w-full'>
             <div className='grid grid-cols-12'>
@@ -20,18 +31,26 @@ export const ReportIncomings = () => {
                 <div className='col-span-9'>
                     <div className='grid grid-12'>
                         <div className='flex justify-between'>
-                            <p className='font-bold text-base text-primary '>
-                                <select className='py-1 px-2 rounded text-base outline-none bg-slate-200 font-bold'>
-                                    <option> Yetkazib beruvchilar</option>
-                                    <option> Yetkazib beruvchilar</option>
-                                    <option> Yetkazib beruvchilar</option>
-                                </select>
+                            <div className='font-bold text-primary '>
+                                <Select
+                                    id="select"
+                                    placeholder="Yetkazib beruvchilar"
+                                    isClearable={true}
+                                    components={animatedComponents}
+                                    options={suppliers}
+                                    theme={(theme) => ({
+                                        ...theme,
+                                        borderRadius: 0,
+                                        padding: 0,
+                                        height: 0,
+                                    })}
+                                />
+                            </div>
+                            <p className='font-bold text-base text-teal-700 '>
+                                Mahsulotlar: <span>{totalproducts}</span>
                             </p>
                             <p className='font-bold text-base text-teal-700 '>
-                                Mahsulotlar: <span>{1231}</span>
-                            </p>
-                            <p className='font-bold text-base text-teal-700 '>
-                                Summasi: <span>{99999999}$</span>
+                                Summasi: <span>{totalprice}$</span>
                             </p>
                         </div>
                     </div>

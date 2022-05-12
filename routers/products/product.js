@@ -93,15 +93,15 @@ module.exports.registerAll = async (req, res) => {
       });
 
       // Create Price
-      if (price) {
-        const newPrice = new ProductPrice({
-          sellingprice: price,
-          market
-        })
 
-        await newPrice.save()
-        newProduct.price = newPrice._id
-      }
+      const newPrice = new ProductPrice({
+        sellingprice: price ? price : 0,
+        market
+      })
+
+      await newPrice.save()
+      newProduct.price = newPrice._id
+
 
       // Create unit
       const uni = await Unit.findOne({
@@ -148,10 +148,9 @@ module.exports.registerAll = async (req, res) => {
       all.push(newProduct);
     }
 
-    all.map(async (product) => {
+    for (const product of all) {
       await product.save();
-
-      const updateCategory = await Category.findByIdAndUpdate(
+      await Category.findByIdAndUpdate(
         product.category,
         {
           $push: {
@@ -160,7 +159,7 @@ module.exports.registerAll = async (req, res) => {
         }
       );
 
-      const updateProducttype = await ProductType.findByIdAndUpdate(
+      await ProductType.findByIdAndUpdate(
         product.producttype,
         {
           $push: {
@@ -168,10 +167,11 @@ module.exports.registerAll = async (req, res) => {
           },
         }
       );
-      const updatePrice = await ProductPrice.findByIdAndUpdate(product.price, {
+
+      await ProductPrice.findByIdAndUpdate(product.price, {
         product: product._id
       })
-    });
+    }
 
     const productss = await Product.find({
       market,
@@ -259,17 +259,16 @@ module.exports.register = async (req, res) => {
       producttype: Producttype._id
     });
 
-    // Create Price
-    if (price) {
-      const newPrice = new ProductPrice({
-        sellingprice: price,
-        market
-      })
 
-      await newPrice.save()
-      newProduct.price = newPrice._id
-      await newProduct.save();
-    }
+    const newPrice = new ProductPrice({
+      sellingprice: price ? price : 0,
+      market
+    })
+
+    await newPrice.save()
+    newProduct.price = newPrice._id
+    await newProduct.save();
+
 
     await Category.findByIdAndUpdate(categor._id, {
       $push: {

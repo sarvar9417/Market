@@ -126,6 +126,10 @@ router.delete('/incoming/delete', auth, (req, res) => {
   require('./incoming').delete(req, res)
 })
 
+router.post('/incoming/getconnectors', auth, (req, res) => {
+  require('./incoming').getConnectors(req, res)
+})
+
 //========================================================
 // BRAND
 // CRUD

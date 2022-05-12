@@ -442,8 +442,10 @@ export const Product = () => {
         description: "",
         status: "success",
       });
-      console.log(data);
-      setProducts(data)
+      setProducts(data);
+      setSearchStrorage(data);
+      setCurrentProducts(data.slice(indexFirstProduct, indexLastProduct));
+      setTableExcel(data);
       setProduct({
         market: auth.market && auth.market._id,
       });
@@ -456,7 +458,7 @@ export const Product = () => {
         status: "error",
       });
     }
-  }, [auth, request, notify, clearInputs, changeImports]);
+  }, [auth, request, notify, clearInputs, changeImports, indexFirstProduct, indexLastProduct]);
 
   const checkUploadData = () => {
     if (checkProducts(changeImports)) {
