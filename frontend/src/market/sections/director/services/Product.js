@@ -88,6 +88,8 @@ export const Product = () => {
 
   const [product, setProduct] = useState({
     market: auth.market && auth.market._id,
+    total: 0,
+    price: 0,
   });
 
   const sections = [
@@ -126,6 +128,7 @@ export const Product = () => {
       setSearchStrorage(data);
       setCurrentProducts(data.slice(indexFirstProduct, indexLastProduct));
       setTableExcel(data);
+      console.log(data);
     } catch (error) {
       notify({
         title: error,
@@ -279,7 +282,7 @@ export const Product = () => {
         }
       );
       notify({
-        title: `${data.name} xizmati yaratildi!`,
+        title: `${data.name} mahsuloti yaratildi!`,
         description: "",
         status: "success",
       });
@@ -321,7 +324,7 @@ export const Product = () => {
         }
       );
       notify({
-        title: `${data.name} xizmati yangilandi!`,
+        title: `${data.name} mahsuloti yangilandi!`,
         description: "",
         status: "success",
       });
@@ -381,7 +384,7 @@ export const Product = () => {
         }
       );
       notify({
-        title: `${data.name} xizmati o'chirildi!`,
+        title: `${data.name} mahsuloti o'chirildi!`,
         description: "",
         status: "success",
       });
@@ -458,7 +461,15 @@ export const Product = () => {
         status: "error",
       });
     }
-  }, [auth, request, notify, clearInputs, changeImports, indexFirstProduct, indexLastProduct]);
+  }, [
+    auth,
+    request,
+    notify,
+    clearInputs,
+    changeImports,
+    indexFirstProduct,
+    indexLastProduct,
+  ]);
 
   const checkUploadData = () => {
     if (checkProducts(changeImports)) {
@@ -475,10 +486,8 @@ export const Product = () => {
     (e) => {
       const searching = searchStorage.filter(
         (item) =>
-          item.category.name
-            .toLowerCase()
-            .includes(e.target.value.toLowerCase()) ||
-          String(item.category.code).includes(e.target.value)
+          item.category.code.includes(e.target.value) ||
+          item.code.includes(e.target.value)
       );
       setProducts(searching);
       setCurrentProducts(searching.slice(0, countPage));
@@ -499,12 +508,14 @@ export const Product = () => {
     [searchStorage, countPage]
   );
 
-  const searchProductType = useCallback(
+  const searchProductTypeAndProductName = useCallback(
     (e) => {
-      const searching = searchStorage.filter((item) =>
-        item.producttype.name
-          .toLowerCase()
-          .includes(e.target.value.toLowerCase())
+      const searching = searchStorage.filter(
+        (item) =>
+          item.producttype.name
+            .toLowerCase()
+            .includes(e.target.value.toLowerCase()) ||
+          item.name.toLowerCase().includes(e.target.value.toLowerCase())
       );
       setProducts(searching);
       setCurrentProducts(searching.slice(0, countPage));
@@ -513,14 +524,14 @@ export const Product = () => {
   );
   const searchBrand = useCallback(
     (e) => {
-      const searching = searchStorage.filter((item) => {
-        if (item.brand && item.brand) {
-          return item.brand.name
-            .toLowerCase()
-            .includes(e.target.value.toLowerCase());
-        }
-        return null;
-      });
+      const searching = searchStorage.filter(
+        (item) =>
+          (item.brand &&
+            item.brand.name
+              .toLowerCase()
+              .includes(e.target.value.toLowerCase())) ||
+          (e.target.value === "" && item)
+      );
       setProducts(searching);
       setCurrentProducts(searching.slice(0, countPage));
     },
@@ -577,7 +588,7 @@ export const Product = () => {
               setImports={setImports}
               product={product}
               searchName={searchName}
-              searchProductType={searchProductType}
+              searchProductTypeAndProductName={searchProductTypeAndProductName}
               searchBrand={searchBrand}
               searchCategory={searchCategory}
               categories={categories}

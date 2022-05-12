@@ -8,7 +8,7 @@ import { ExcelUpload } from "../productComponents/ExcelUpload";
 
 export const TableProduct = ({
   searchName,
-  searchProductType,
+  searchProductTypeAndProductName,
   searchCategory,
   products,
   setRemove,
@@ -63,6 +63,12 @@ export const TableProduct = ({
           option.selected = true;
         }
       }
+    } else {
+      for (let option of document.getElementsByTagName("select")[2].options) {
+        if (option.value === "delete") {
+          option.selected = true;
+        }
+      }
     }
   };
 
@@ -97,7 +103,7 @@ export const TableProduct = ({
                 </th>
                 <th>
                   <input
-                    onChange={searchProductType}
+                    onChange={searchProductTypeAndProductName}
                     style={{ maxWidth: "100px", minWidth: "100px" }}
                     type="search"
                     className="w-100 form-control form-control-sm selectpicker"
@@ -306,16 +312,17 @@ export const TableProduct = ({
                         {p.category.code} {p.code}
                       </td>
                       <td className="border-right">
-                        {p.producttype && p.producttype.name} {p.name}
+                        <strong>{p.producttype && p.producttype.name}</strong>{" "}
+                        {p.name}
                       </td>
                       <td className="border-right">
                         {p.brand && p.brand.name}
                       </td>
                       <td className="border-right mx-auto">
-                        {(p.price && p.price.sellingprice) || 0}
+                        {p.total} {p.unit.name}
                       </td>
                       <td className="border-right mx-auto">
-                        {p.total}
+                        {(p.price && p.price.sellingprice) || 0}
                       </td>
                       <td className="border-right text-center">
                         {loading ? (
