@@ -466,7 +466,7 @@ export const Brand = () => {
           <tbody>
             {tableExcel &&
               tableExcel.map((item, index) => (
-                <tr>
+                <tr key={index}>
                   <td>{index + 1}</td>
                   <td>{item.name}</td>
                 </tr>

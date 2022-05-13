@@ -596,7 +596,7 @@ export const ProductType = () => {
           <tbody>
             {tableExcel &&
               tableExcel.map((item, index) => (
-                <tr>
+                <tr key={index}>
                   <td>{index + 1}</td>
                   <td>{item.category.code}</td>
                   <td>{item.name}</td>
