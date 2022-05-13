@@ -14,6 +14,7 @@ import {
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import { Pagination } from "../components/Pagination";
+import ReactHtmlTableToExcel from "react-html-table-to-excel";
 
 export const Category = () => {
   //====================================================================
@@ -48,15 +49,30 @@ export const Category = () => {
   //====================================================================
   const { request, loading } = useHttp();
   const auth = useContext(AuthContext);
+  //====================================================================
+  //====================================================================
 
+  //====================================================================
+  //====================================================================
   const [currentPage, setCurrentPage] = useState(0);
   const [countPage, setCountPage] = useState(10);
+  const indexLastProduct = (currentPage + 1) * countPage;
+  const indexFirstProduct = indexLastProduct - countPage;
+  //====================================================================
+  //====================================================================
 
+  //====================================================================
+  //====================================================================
   const [category, setCategory] = useState({
     market: auth.market && auth.market._id,
     name: null,
     code: null,
   });
+  //====================================================================
+  //====================================================================
+
+  //====================================================================
+  //====================================================================
 
   const clearInputs = useCallback(() => {
     const inputs = document.getElementsByTagName("input");
@@ -76,6 +92,7 @@ export const Category = () => {
   const [categories, setCategories] = useState([]);
   const [currentCategories, setCurrentCategories] = useState([]);
   const [searchStorage, setSearchStorage] = useState([]);
+  const [tableExcel, setTableExcel] = useState([]);
 
   const getCategory = useCallback(async () => {
     try {
@@ -88,8 +105,9 @@ export const Category = () => {
         }
       );
       setCategories(data);
-      setCurrentCategories(data);
+      setCurrentCategories(data.slice(indexFirstProduct, indexLastProduct));
       setSearchStorage(data);
+      setTableExcel(data);
     } catch (error) {
       notify({
         title: error,
@@ -97,7 +115,7 @@ export const Category = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify]);
+  }, [request, auth, notify, indexFirstProduct, indexLastProduct]);
   //====================================================================
   //====================================================================
 
@@ -415,6 +433,17 @@ export const Category = () => {
                           totalDatas={categories.length}
                         />
                       </th>
+                      <th className="text-center">
+                        <div className="btn btn-primary">
+                          <ReactHtmlTableToExcel
+                            id="reacthtmltoexcel"
+                            table="category-excel-table"
+                            sheet="Sheet"
+                            buttonText="Excel"
+                            filename="Kategoriya"
+                          />
+                        </div>
+                      </th>
                     </tr>
                   </thead>
                   <thead>
@@ -492,6 +521,28 @@ export const Category = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="d-none">
+        <table className="table m-0" id="category-excel-table">
+          <thead>
+            <tr>
+              <th>№</th>
+              <th>Kategoriya kodi</th>
+              <th>Kategoriya nomi</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tableExcel &&
+              tableExcel.map((item, index) => (
+                <tr>
+                  <td>{index + 1}</td>
+                  <td>{item.code}</td>
+                  <td>{item.name}</td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
       </div>
 
       <Modal

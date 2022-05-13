@@ -16,6 +16,7 @@ import {
   faTrashAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { Pagination } from "../components/Pagination";
+import ReactHtmlTableToExcel from "react-html-table-to-excel";
 
 export const ProductType = () => {
   //====================================================================
@@ -52,6 +53,8 @@ export const ProductType = () => {
 
   const [currentPage, setCurrentPage] = useState(0);
   const [countPage, setCountPage] = useState(10);
+  const indexLastProduct = (currentPage + 1) * countPage;
+  const indexFirstProduct = indexLastProduct - countPage;
 
   const [remove, setRemove] = useState({
     market: auth.market && auth.market._id,
@@ -103,6 +106,7 @@ export const ProductType = () => {
   const [producttypes, setProductTypes] = useState([]);
   const [currentProductTypes, setCurrentProductTypes] = useState([]);
   const [searchStorage, setSearchStorage] = useState([]);
+  const [tableExcel, setTableExcel] = useState([]);
 
   const getProductTypes = useCallback(async () => {
     try {
@@ -115,8 +119,9 @@ export const ProductType = () => {
         }
       );
       setProductTypes(data);
-      setCurrentProductTypes(data);
+      setCurrentProductTypes(data.slice(indexFirstProduct, indexLastProduct));
       setSearchStorage(data);
+      setTableExcel(data);
       console.log(data);
     } catch (error) {
       notify({
@@ -125,7 +130,7 @@ export const ProductType = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify]);
+  }, [request, auth, notify, indexFirstProduct, indexLastProduct]);
   //====================================================================
   //====================================================================
 
@@ -464,6 +469,17 @@ export const ProductType = () => {
                           totalDatas={producttypes.length}
                         />
                       </th>
+                      <th className="text-center">
+                        <div className="btn btn-primary">
+                          <ReactHtmlTableToExcel
+                            id="reacthtmltoexcel"
+                            table="producttype-excel-table"
+                            sheet="Sheet"
+                            buttonText="Excel"
+                            filename="Mahsulot turi"
+                          />
+                        </div>
+                      </th>
                     </tr>
                   </thead>
                   <thead>
@@ -566,6 +582,28 @@ export const ProductType = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="d-none">
+        <table className="table m-0" id="producttype-excel-table">
+          <thead>
+            <tr>
+              <th>№</th>
+              <th>Kategoriya</th>
+              <th>Mahsulot turi</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tableExcel &&
+              tableExcel.map((item, index) => (
+                <tr>
+                  <td>{index + 1}</td>
+                  <td>{item.category.code}</td>
+                  <td>{item.name}</td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
       </div>
 
       <Modal
