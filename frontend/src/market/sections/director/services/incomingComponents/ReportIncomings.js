@@ -5,13 +5,13 @@ import makeAnimated from "react-select/animated";
 
 const animatedComponents = makeAnimated();
 
-export const ReportIncomings = ({ dailyConnectors, suppliers, totalproducts, totalprice, totalproducttypes }) => {
+export const ReportIncomings = ({ getImports, getIncomingConnectors, dailyConnectors, suppliers, totalproducts, totalprice, totalproducttypes }) => {
     return (
         <div className="py-3 w-full">
             <div className="grid grid-cols-12">
                 <div className="xsm:col-span-12 sm:col-sapn-12 md:col-span-4 lg:col-span-3">
                     <div className=" xsm:text-center sm:text-start">
-                        <Datapicker />
+                        <Datapicker getIncomingConnectors={getIncomingConnectors} />
                     </div>
                     <div className="font-bold flex justify-between pr-8 py-2">
                         <span>Yetkazib beruvchilar:</span>{" "}
@@ -59,11 +59,11 @@ export const ReportIncomings = ({ dailyConnectors, suppliers, totalproducts, tot
                         {
                             dailyConnectors.map((connector, index) => {
                                 return <div key={index}>
-                                    <button className="bg-[#216BA5] font-bold rounded text-white text-left py-2 px-3 inline-block w-100" >
+                                    <button onClick={() => getImports(connector.day)} className="bg-[#216BA5] font-bold rounded text-white text-left py-2 px-3 inline-block w-100" >
                                         <p className="font-bold  text-right  flex justify-between">
                                             <span className="font-bold text-orange-700">{connector.suppliers}</span>
                                             <span className="text-amber-100">
-                                                {new Date().toLocaleDateString()}
+                                                {new Date(connector.day).toLocaleDateString()}
                                             </span>
                                         </p>
                                         <p className="font-bold  flex justify-around text-2xl py-1">

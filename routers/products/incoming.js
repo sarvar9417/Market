@@ -11,6 +11,7 @@ const { Product } = require('../../models/Products//Product')
 const { Brand } = require('../../models/Products/Brand')
 const { IncomingConnector } = require('../../models/Products/IncomingConnector')
 const { ProductPrice } = require('../../models/Products/ProductPrice')
+const { Supplier } = require('../../models/Supplier/Supplier')
 
 //Incoming registerall
 module.exports.registerAll = async (req, res) => {
@@ -264,18 +265,20 @@ module.exports.get = async (req, res) => {
       })
     }
 
-    const incomings = await IncomingConnector.find({
+    const incomings = await Incoming.find({
       market,
       createdAt: {
         $gte: beginDay,
         $lt: endDay,
       },
     })
-      .select('-isArchive, -updatedAt, -market')
-      .populate('incoming', '-isArchive, -updatedAt, -market -user -supplier')
+      .select('-isArchive, -updatedAt, -market -user')
       .populate('supplier', 'name')
-      .populate('user', 'lastname firstname')
-
+      .populate('category', 'code')
+      .populate('producttype', 'name')
+      .populate('product', 'name code')
+      .populate('unit', 'name')
+    // .populate('user', 'lastname firstname')
     res.send(incomings)
   } catch (error) {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
