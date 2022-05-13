@@ -474,6 +474,9 @@ export const Product = () => {
     if (checkProducts(changeImports)) {
       return notify(checkProducts(changeImports));
     }
+    for (let product of changeImports) {
+      product.code = String(product.code);
+    }
     uploadAllProducts();
   };
 

@@ -7,7 +7,14 @@ import { checkSupplier } from "./checkData";
 import { Modal } from "./modal/Modal";
 import { Sort } from "../adver/Sort";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk, faPenAlt, faRepeat, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import {
+  faFloppyDisk,
+  faPenAlt,
+  faRepeat,
+  faTrashCan,
+} from "@fortawesome/free-solid-svg-icons";
+import { Pagination } from "../components/Pagination";
+import ReactHtmlTableToExcel from "react-html-table-to-excel";
 
 export const Supplier = () => {
   //====================================================================
@@ -42,6 +49,12 @@ export const Supplier = () => {
   const { request, loading } = useHttp();
   const auth = useContext(AuthContext);
 
+  const [currentPage, setCurrentPage] = useState(0);
+  const [countPage, setCountPage] = useState(10);
+
+  const indexLastProduct = (currentPage + 1) * countPage;
+  const indexFirstProduct = indexLastProduct - countPage;
+
   const [remove, setRemove] = useState({
     market: auth.market && auth.market._id,
   });
@@ -67,6 +80,9 @@ export const Supplier = () => {
   //====================================================================
   //====================================================================
   const [suppliers, setSuppliers] = useState([]);
+  const [currentSuppliers, setCurrentSuppliers] = useState([]);
+  const [searchStorage, setSearchStorage] = useState([]);
+  const [tableExcel, setTableExcel] = useState([]);
 
   const getSuppliers = useCallback(async () => {
     try {
@@ -79,6 +95,9 @@ export const Supplier = () => {
         }
       );
       setSuppliers(data);
+      setCurrentSuppliers(data.slice(indexFirstProduct, indexLastProduct));
+      setSearchStorage(data);
+      setTableExcel(data);
     } catch (error) {
       notify({
         title: error,
@@ -86,7 +105,7 @@ export const Supplier = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify]);
+  }, [request, auth, notify, indexFirstProduct, indexLastProduct]);
   //====================================================================
   //====================================================================
 
@@ -207,6 +226,21 @@ export const Supplier = () => {
     setSupplier({ ...supplier, name: e.target.value });
   };
 
+  const searchSupplier = (e) => {
+    const searching = searchStorage.filter((item) =>
+      item.name.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+
+    setSuppliers(searching);
+    setCurrentSuppliers(searching);
+  };
+
+  const setPageSize = (e) => {
+    setCurrentPage(0);
+    setCountPage(e.target.value);
+    setCurrentSuppliers(suppliers.slice(0, e.target.value));
+  };
+
   //====================================================================
   //====================================================================
 
@@ -263,7 +297,7 @@ export const Supplier = () => {
                             onClick={saveHandler}
                             className="btn btn-success py-1 px-4"
                           >
-                            <FontAwesomeIcon icon={faFloppyDisk}/>
+                            <FontAwesomeIcon icon={faFloppyDisk} />
                           </button>
                         )}
                       </td>
@@ -278,7 +312,7 @@ export const Supplier = () => {
                             onClick={clearInputs}
                             className="btn btn-secondary py-1 px-4"
                           >
-                            <FontAwesomeIcon icon={faRepeat}/>
+                            <FontAwesomeIcon icon={faRepeat} />
                           </button>
                         )}
                       </td>
@@ -290,9 +324,57 @@ export const Supplier = () => {
             <div className="table-container">
               <div className="table-responsive">
                 <table className="table m-0">
+                  <thead className="bg-white">
+                    <tr>
+                      <th>
+                        <select
+                          className="form-control form-control-sm selectpicker"
+                          placeholder="Bo'limni tanlang"
+                          onChange={setPageSize}
+                          style={{ minWidth: "50px" }}
+                        >
+                          <option value={10}>10</option>
+                          <option value={25}>25</option>
+                          <option value={50}>50</option>
+                          <option value={100}>100</option>
+                        </select>
+                      </th>
+                      <th>
+                        <input
+                          className="form-control"
+                          type="search"
+                          onChange={searchSupplier}
+                          style={{ maxWidth: "100px" }}
+                          placeholder="Brand"
+                        />
+                      </th>
+                      <th className="text-center">
+                        <Pagination
+                          setCurrentDatas={setCurrentSuppliers}
+                          datas={suppliers}
+                          setCurrentPage={setCurrentPage}
+                          countPage={countPage}
+                          totalDatas={suppliers.length}
+                        />
+                      </th>
+                      <th className="text-center">
+                        <div className="btn btn-primary">
+                          <ReactHtmlTableToExcel
+                            id="reacthtmltoexcel"
+                            table="supplier-excel-table"
+                            sheet="Sheet"
+                            buttonText="Excel"
+                            filename="Yetkazib beruvchilar"
+                          />
+                        </div>
+                      </th>
+                    </tr>
+                  </thead>
                   <thead className="border text-center">
                     <tr>
-                      <th className="border text-center text-bold max-w-[2rem]">№</th>
+                      <th className="border text-center text-bold max-w-[2rem]">
+                        №
+                      </th>
                       <th className="border text-center">
                         Yetkazib beruvchi{" "}
                         <Sort
@@ -306,21 +388,24 @@ export const Supplier = () => {
                     </tr>
                   </thead>
                   <tbody className="text-center border">
-                    {suppliers &&
-                      suppliers.map((s, key) => {
+                    {currentSuppliers &&
+                      currentSuppliers.map((s, key) => {
                         return (
                           <tr key={key}>
-                            <td className="font-bold text-black border">{key + 1}</td>
-                            <td className="font-bold text-black border">{s.name}</td>
+                            <td className="font-bold text-black border">
+                              {currentPage * countPage + key + 1}
+                            </td>
+                            <td className="font-bold text-black border">
+                              {s.name}
+                            </td>
                             <td className="border text-base">
                               <button
                                 onClick={() => {
                                   setSupplier({ ...supplier, ...s });
                                 }}
                                 className="btn btn-success py-1 px-4"
-                                
                               >
-                                <FontAwesomeIcon icon={faPenAlt}/>
+                                <FontAwesomeIcon icon={faPenAlt} />
                               </button>
                             </td>
                             <td className="border text-base">
@@ -330,9 +415,8 @@ export const Supplier = () => {
                                   setModal(true);
                                 }}
                                 className="btn btn-secondary py-1 px-4"
-                                
                               >
-                                <FontAwesomeIcon icon={faTrashCan}/>
+                                <FontAwesomeIcon icon={faTrashCan} />
                               </button>
                             </td>
                           </tr>
@@ -344,6 +428,26 @@ export const Supplier = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="d-none">
+        <table className="table m-0" id="supplier-excel-table">
+          <thead>
+            <tr>
+              <th>№</th>
+              <th>Yetkazib beruvchilar</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tableExcel &&
+              tableExcel.map((item, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{item.name}</td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
       </div>
 
       <Modal
