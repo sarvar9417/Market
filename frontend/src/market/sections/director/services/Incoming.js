@@ -325,7 +325,6 @@ export const Incoming = () => {
           return summ + produc.pieces
         }, 0)
         connector.suppliers = 1
-        console.log(connectors[key].createdAt);
         connector.day = connectors[key].createdAt
       } else {
         if (
@@ -417,7 +416,6 @@ export const Incoming = () => {
             Authorization: `Bearer ${auth.token}`,
           },
         )
-        console.log(data);
         setImports(data)
         setSearchStorage(data)
         setCurrentImports(data.slice(indexFirstImport, indexLastImport))
