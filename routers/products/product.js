@@ -24,17 +24,8 @@ module.exports.registerAll = async (req, res) => {
           error: error.message,
         });
       }
-      const {
-        name,
-        code,
-        unit,
-        category,
-        producttype,
-        brand,
-        price,
-        total
-      } = product;
-
+      const { name, code, unit, category, producttype, brand, price, total } =
+        product;
       const marke = await Market.findById(market);
 
       if (!marke) {
@@ -50,10 +41,10 @@ module.exports.registerAll = async (req, res) => {
       if (!categor) {
         const newcategory = new Category({
           code: category,
-          market
-        })
-        await newcategory.save()
-        categor = newcategory
+          market,
+        });
+        await newcategory.save();
+        categor = newcategory;
       }
 
       let producttyp = await ProductType.findOne({
@@ -65,10 +56,10 @@ module.exports.registerAll = async (req, res) => {
         const newproducttype = new ProductType({
           name: producttype,
           category: categor._id,
-          market
-        })
-        await newproducttype.save()
-        producttyp = newproducttype
+          market,
+        });
+        await newproducttype.save();
+        producttyp = newproducttype;
       }
 
       const produc = await Product.findOne({
@@ -96,33 +87,32 @@ module.exports.registerAll = async (req, res) => {
 
       const newPrice = new ProductPrice({
         sellingprice: price ? price : 0,
-        market
-      })
+        market,
+      });
 
-      await newPrice.save()
-      newProduct.price = newPrice._id
-
+      await newPrice.save();
+      newProduct.price = newPrice._id;
 
       // Create unit
       const uni = await Unit.findOne({
         name: unit,
-        market
-      })
+        market,
+      });
 
       if (uni) {
-        newProduct.unit = uni._id
+        newProduct.unit = uni._id;
       } else {
         const newUnit = new Unit({
           name: unit,
-          market
-        })
-        await newUnit.save()
-        newProduct.unit = newUnit._id
+          market,
+        });
+        await newUnit.save();
+        newProduct.unit = newUnit._id;
       }
 
       // Total
       if (total) {
-        newProduct.total = total
+        newProduct.total = total;
       }
 
       // Create brand
@@ -135,13 +125,13 @@ module.exports.registerAll = async (req, res) => {
         if (!bran) {
           const newbrand = new Brand({
             name: brand,
-            market
-          })
-          await newbrand.save()
+            market,
+          });
+          await newbrand.save();
 
-          newProduct.brand = newbrand._id
+          newProduct.brand = newbrand._id;
         } else {
-          newProduct.brand = bran._id
+          newProduct.brand = bran._id;
         }
       }
 
@@ -150,27 +140,21 @@ module.exports.registerAll = async (req, res) => {
 
     for (const product of all) {
       await product.save();
-      await Category.findByIdAndUpdate(
-        product.category,
-        {
-          $push: {
-            products: product._id,
-          },
-        }
-      );
+      await Category.findByIdAndUpdate(product.category, {
+        $push: {
+          products: product._id,
+        },
+      });
 
-      await ProductType.findByIdAndUpdate(
-        product.producttype,
-        {
-          $push: {
-            products: product._id,
-          },
-        }
-      );
+      await ProductType.findByIdAndUpdate(product.producttype, {
+        $push: {
+          products: product._id,
+        },
+      });
 
       await ProductPrice.findByIdAndUpdate(product.price, {
-        product: product._id
-      })
+        product: product._id,
+      });
     }
 
     const productss = await Product.find({
@@ -182,7 +166,7 @@ module.exports.registerAll = async (req, res) => {
       .populate("producttype", "name")
       .populate("unit", "name")
       .populate("brand", "name")
-      .populate("price", "sellingprice")
+      .populate("price", "sellingprice");
 
     res.send(productss);
   } catch (error) {
@@ -200,7 +184,17 @@ module.exports.register = async (req, res) => {
       });
     }
 
-    const { name, producttype, code, category, market, unit, brand, total, price } = req.body;
+    const {
+      name,
+      producttype,
+      code,
+      category,
+      market,
+      unit,
+      brand,
+      total,
+      price,
+    } = req.body;
 
     const product = await Product.findOne({
       market,
@@ -246,8 +240,6 @@ module.exports.register = async (req, res) => {
       });
     }
 
-
-
     const newProduct = new Product({
       name,
       code,
@@ -256,19 +248,17 @@ module.exports.register = async (req, res) => {
       brand,
       unit,
       total,
-      producttype: Producttype._id
+      producttype: Producttype._id,
     });
-
 
     const newPrice = new ProductPrice({
       sellingprice: price ? price : 0,
-      market
-    })
+      market,
+    });
 
-    await newPrice.save()
-    newProduct.price = newPrice._id
+    await newPrice.save();
+    newProduct.price = newPrice._id;
     await newProduct.save();
-
 
     await Category.findByIdAndUpdate(categor._id, {
       $push: {
@@ -277,14 +267,11 @@ module.exports.register = async (req, res) => {
     });
 
     if (Producttype) {
-      await ProductType.findByIdAndUpdate(
-        Producttype._id,
-        {
-          $push: {
-            products: newProduct._id,
-          },
-        }
-      );
+      await ProductType.findByIdAndUpdate(Producttype._id, {
+        $push: {
+          products: newProduct._id,
+        },
+      });
     }
 
     res.send(newProduct);
@@ -486,7 +473,7 @@ module.exports.getAll = async (req, res) => {
       .populate("producttype", "name")
       .populate("unit", "name")
       .populate("brand", "name")
-      .populate("price", "sellingprice")
+      .populate("price", "sellingprice");
 
     res.send(products);
   } catch (error) {
