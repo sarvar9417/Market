@@ -5,8 +5,8 @@ const market = new Schema(
   {
     name: { type: String, required: true },
     organitionName: { type: String },
-    image: { type: String, required: true },
-    phone1: { type: String, required: true },
+    image: { type: String },
+    phone1: { type: String },
     phone2: { type: String },
     phone3: { type: String },
     bank: { type: String },
@@ -16,6 +16,8 @@ const market = new Schema(
     address: { type: String },
     orientation: { type: String },
     isArchive: { type: Boolean, default: false },
+    market: { type: Schema.Types.ObjectId, ref: 'Market' },
+    filials: [{ type: Schema.Types.ObjectId, ref: 'Market' }],
   },
   {
     timestamps: true,
@@ -26,8 +28,8 @@ function validateMarket(market) {
   const schema = Joi.object({
     name: Joi.string().required(),
     organitionName: Joi.string(),
-    image: Joi.string().required(),
-    phone1: Joi.string().required(),
+    image: Joi.string(),
+    phone1: Joi.string(),
     phone2: Joi.string(),
     phone3: Joi.string(),
     bank: Joi.string(),
@@ -36,6 +38,7 @@ function validateMarket(market) {
     mfo: Joi.number(),
     address: Joi.string(),
     orientation: Joi.string(),
+    market: Joi.string()
   })
 
   return schema.validate(market)

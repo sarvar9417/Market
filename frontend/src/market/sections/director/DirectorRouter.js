@@ -1,17 +1,16 @@
 import React from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
-import { Advers } from './adver/Advers'
 import { EditDirector } from './editDirector/EditDirector'
 import { EditDirectorPassword } from './editDirector/EditDirectorPassword'
-import { Category } from './services/Categorys'
-import { ProductType } from './services/ProductType'
-import { Users } from './users/Users'
-import { Unit } from './services/Unit'
-import { Exchangerate } from './services/Exchangerate'
-import { Product } from './services/Product'
-import { Incoming } from './services/Incoming'
-import { Supplier } from './services/Supplier'
-import { Brand } from './services/Brand'
+import { Category } from './products/Categorys'
+import { ProductType } from './products/ProductType'
+import { Unit } from './products/Unit'
+import { Exchangerate } from './products/Exchangerate'
+import { Product } from './products/Product'
+import { Incoming } from './products/Incoming'
+import { Supplier } from './products/Supplier'
+import { Brand } from './products/Brand'
+import { Filials } from './filials/Filials'
 
 export const DirectorRouter = () => {
   return (
@@ -45,22 +44,16 @@ export const DirectorRouter = () => {
         <Route path="/alo24/brand">
           <Brand />
         </Route>
-
         <Route path="/alo24/exchangerate">
           <Exchangerate />
         </Route>
-
         <Route path="/alo24/incoming">
           <Incoming />
         </Route>
+        <Route path="/alo24/filials">
+          <Filials />
+        </Route>
 
-        {/* Users */}
-        <Route path="/alo24/users">
-          <Users />
-        </Route>
-        <Route path="/alo24/adver">
-          <Advers />
-        </Route>
         <Redirect to="/alo24" />
       </Switch>
     </div>

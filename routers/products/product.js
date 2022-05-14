@@ -9,6 +9,7 @@ const { ProductType } = require("../../models/Products/ProductType");
 const { Unit } = require("../../models/Products/Unit");
 const { Brand } = require("../../models/Products/Brand");
 const { ProductPrice } = require("../../models/Products/ProductPrice");
+const { FilialProduct, validateFilialProduct } = require("../../models/Products/FilialProduct");
 const ObjectId = require("mongodb").ObjectId;
 
 //Product registerall
@@ -155,6 +156,31 @@ module.exports.registerAll = async (req, res) => {
       await ProductPrice.findByIdAndUpdate(product.price, {
         product: product._id,
       });
+
+      // Create Product to filials
+      const marke = await Market.findById(market).select('filials')
+      for (const f of marke.filials) {
+        const filialproduct = new FilialProduct({
+          product: product._id,
+          producttype: product.producttype,
+          category: product.category,
+          unit: product.unit,
+          brand: product.brand,
+          market: f
+        })
+
+        const pric = await ProductPrice.findById(product.price)
+        const newPrice = new ProductPrice({
+          incomingprice: pric.sellingprice,
+          market: f,
+        });
+
+        await newPrice.save();
+        filialproduct.price = newPrice._id;
+
+        await filialproduct.save()
+      }
+
     }
 
     const productss = await Product.find({
@@ -274,8 +300,32 @@ module.exports.register = async (req, res) => {
       });
     }
 
+    console.log(newProduct);
+    for (const f of marke.filials) {
+      const filialproduct = new FilialProduct({
+        product: newProduct._id,
+        producttype: newProduct.producttype,
+        category: newProduct.category,
+        unit: newProduct.unit,
+        brand: newProduct.brand,
+        market: f
+      })
+      console.log(filialproduct);
+
+      const newPrice = new ProductPrice({
+        incomingprice: price,
+        market: f,
+      });
+
+      await newPrice.save();
+      filialproduct.price = newPrice._id;
+
+      await filialproduct.save()
+    }
+
     res.send(newProduct);
   } catch (error) {
+    console.log(error);
     res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
   }
 };
