@@ -35,7 +35,6 @@ export const Incoming = () => {
   //====================================================================
 
   const [visibleTable, setVisibleTable] = useState(false);
-  const changeVisibleTable = () => setVisibleTable(!visible);
 
   //====================================================================
   //====================================================================
@@ -305,8 +304,6 @@ export const Incoming = () => {
   //====================================================================
   // CONNECTORS
 
-  const [connectors, setConnectors] = useState([]);
-
   const [totalprice, setTotalPrice] = useState(0);
   const [totalproducts, setTotalProducts] = useState(0);
   const [totalproducttypes, setTotalProductTypes] = useState(0);
@@ -384,7 +381,6 @@ export const Incoming = () => {
             Authorization: `Bearer ${auth.token}`,
           }
         );
-        setConnectors(data);
         daily(data);
       } catch (error) {
         notify({
@@ -427,6 +423,7 @@ export const Incoming = () => {
         setSearchStorage(data)
         setCurrentImports(data.slice(indexFirstImport, indexLastImport))
         setDataExcel(data)
+        setVisibleTable(true)
       } catch (error) {
         notify({
           title: error,
@@ -435,7 +432,7 @@ export const Incoming = () => {
         });
       }
     },
-    [request, auth, notify, indexFirstImport, indexLastImport]
+    [request, auth, notify, indexFirstImport, indexLastImport, setVisibleTable]
   );
 
   //====================================================================
