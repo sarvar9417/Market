@@ -10,15 +10,6 @@ module.exports.routers = (app) => {
   //   app.use('/api/sections', require('./sectionAndBaseUrl/getSections'))
   app.use('/api/baseurl', require('./sectionAndBaseUrl/getBaseUrl'))
   app.use('/api/products', require('./products/category_products'))
-  app.use('/api/offlineclient', require('./offlineclient/offlineclient.route'))
-  app.use(
-    '/api/statsionarclient',
-    require('./statsionarclient/statsionarclient.route'),
-  )
-  app.use('/api/onlineclient', require('./onlineclient/onlineclient.route'))
-  app.use('/api/adver', require('./adver/adver.route'))
-  app.use('/api/cashier', require('./cashier/cashier.route'))
-  app.use('/api/doctor', require('./doctor/doctor.route'))
   app.use('/api/supplier', require('./supplier/supplier.route'))
   app.use('/api/exchangerate', require('./exchangerate/exchangerate.route'))
 }

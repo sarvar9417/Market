@@ -15,7 +15,6 @@ module.exports.register = async (req, res) => {
       })
     }
 
-    console.log(req.body)
 
     const {
       _id,
@@ -59,7 +58,7 @@ module.exports.register = async (req, res) => {
 
     if (olduser) {
       return res.status(400).json({
-        message: "Diqqat! Ushbu foydalanuvchi avval ro'yxatdan o'tkazilgan.",
+        message: "Diqqat! Ushbu nomdagi foydalanuvchi avval ro'yxatdan o'tkazilgan.",
       })
     }
 
