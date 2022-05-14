@@ -83,14 +83,15 @@ export const TableIncoming = ({
                   />
                 </th>
                 <th>
-                  <input
-                    onChange={searchProduct}
-                    style={{ maxWidth: "100px" }}
-                    type="search"
-                    className="form-control form-control-sm selectpicker"
-                    placeholder="Mahsulot"
-                    aria-controls="basicExample"
-                  />
+                  <div className="btn btn-primary">
+                    <ReactHTMLTableToExcel
+                      id="reacthtmltoexcel"
+                      table="products-table"
+                      sheet="Sheet"
+                      buttonText="Excel"
+                      filename="Mahsulotlar"
+                    />
+                  </div>
                 </th>
                 <th>
                   <Pagination
@@ -103,25 +104,14 @@ export const TableIncoming = ({
                 </th>
                 <th
                   className="text-center"
-                  style={{ maxWidth: "120px", overflow: "hidden" }}
+                  style={{ overflow: "hidden" }}
+                  colSpan={2}
                 >
-                  <DatePickers changeDate={changeStart} />
-                </th>
-                <th
-                  className="text-center"
-                  style={{ maxWidth: "120px", overflow: "hidden" }}
-                >
-                  <DatePickers changeDate={changeEnd} />
-                </th>
-                <th className="text-center">
-                  <div className="btn btn-primary">
-                    <ReactHTMLTableToExcel
-                      id="reacthtmltoexcel"
-                      table="products-table"
-                      sheet="Sheet"
-                      buttonText="Excel"
-                      filename="Mahsulotlar"
-                    />
+                  <div
+                    style={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <DatePickers changeDate={changeStart} />
+                    <DatePickers changeDate={changeEnd} />
                   </div>
                 </th>
               </tr>
@@ -129,8 +119,8 @@ export const TableIncoming = ({
             <thead>
               <tr>
                 <th className="border-right">№</th>
-                <th className="border-right">
-                  Yetkazib beruvchi
+                <th className="border-right d-flex">
+                  <div>Yetkazib beruvchi</div>
                   <div className="btn-group-vertical ml-2">
                     <FontAwesomeIcon
                       onClick={() =>
@@ -238,13 +228,13 @@ export const TableIncoming = ({
                   </div>
                 </th>
                 <th className="border-right">
-                  Mahsulot
+                  O'l.B.
                   <div className="btn-group-vertical ml-2">
                     <FontAwesomeIcon
                       onClick={() =>
                         setCurrentImports(
                           [...currentImports].sort((a, b) =>
-                            a.product.name > b.product.name ? 1 : -1
+                            a.unit.name > b.unit.name ? 1 : -1
                           )
                         )
                       }
@@ -257,7 +247,7 @@ export const TableIncoming = ({
                       onClick={() =>
                         setCurrentImports(
                           [...currentImports].sort((a, b) =>
-                            b.product.name > a.product.name ? 1 : -1
+                            b.unit.name > a.unit.name ? 1 : -1
                           )
                         )
                       }
@@ -345,33 +335,6 @@ export const TableIncoming = ({
                     />
                   </div>
                 </th>
-                <th className="border-right">
-                  Qabul qiluvchi
-                  <div className="btn-group-vertical ml-2">
-                    <FontAwesomeIcon
-                      onClick={() =>
-                        setCurrentImports(
-                          [...currentImports].sort((a, b) =>
-                            a.user.name > b.user.name ? 1 : -1
-                          )
-                        )
-                      }
-                      icon={faAngleUp}
-                      style={{ cursor: "pointer" }}
-                    />
-                    <FontAwesomeIcon
-                      icon={faAngleDown}
-                      style={{ cursor: "pointer" }}
-                      onClick={() =>
-                        setCurrentImports(
-                          [...currentImports].sort((a, b) =>
-                            b.user.name > a.user.name ? 1 : -1
-                          )
-                        )
-                      }
-                    />
-                  </div>
-                </th>
               </tr>
             </thead>
             <tbody>
@@ -386,16 +349,18 @@ export const TableIncoming = ({
                         {p.supplier.name}
                       </td>
                       <td className="border-right font-bold text-black">
-                        {p.category.code} {p.category.name}
+                        {p.category.code} {" | "} {p.product.code}
                       </td>
                       <td className="border-right font-bold text-black">
                         {p.producttype && p.producttype.name}
+                        {" | "}
+                        {p.product && p.product.name}
                       </td>
                       <td className="border-right font-bold text-black">
                         {p.brand && p.brand.name}
                       </td>
                       <td className="border-right font-bold text-black">
-                        {p.product.code} {p.product.name}
+                        {p.unit.name}
                       </td>
                       <td className="border-right font-bold text-black">
                         {p.pieces}
@@ -405,9 +370,6 @@ export const TableIncoming = ({
                       </td>
                       <td className="border-right font-bold text-black">
                         {p.totalprice}
-                      </td>
-                      <td className="border-right font-bold text-black">
-                        {p.user.firstname} {p.user.lastname}{" "}
                       </td>
                     </tr>
                   );
