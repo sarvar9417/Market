@@ -166,7 +166,6 @@ export const Category = () => {
         market: auth.market && auth.market._id,
       });
       clearInputs();
-      getCategory();
     } catch (error) {
       notify({
         title: error,
@@ -174,16 +173,7 @@ export const Category = () => {
         status: "error",
       });
     }
-  }, [
-    request,
-    auth,
-    notify,
-    setCategory,
-    category,
-    clearInputs,
-    categories,
-    getCategory,
-  ]);
+  }, [request, auth, notify, setCategory, category, clearInputs, categories]);
 
   const updateHandler = useCallback(async () => {
     try {
@@ -210,7 +200,6 @@ export const Category = () => {
         market: auth.market && auth.market._id,
       });
       clearInputs();
-      getCategory();
     } catch (error) {
       notify({
         title: error,
@@ -218,7 +207,7 @@ export const Category = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify, category, clearInputs, categories, getCategory]);
+  }, [request, auth, notify, category, clearInputs, categories]);
 
   const saveHandler = () => {
     if (checkCategory(category)) {
@@ -263,7 +252,6 @@ export const Category = () => {
         market: auth.market && auth.market._id,
       });
       clearInputs();
-      getCategory();
     } catch (error) {
       notify({
         title: error,
@@ -271,7 +259,7 @@ export const Category = () => {
         status: "error",
       });
     }
-  }, [auth, request, remove, notify, clearInputs, categories, getCategory]);
+  }, [auth, request, remove, notify, clearInputs, categories]);
 
   //====================================================================
   //====================================================================

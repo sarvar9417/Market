@@ -285,6 +285,7 @@ module.exports.get = async (req, res) => {
       .populate("product", "name code")
       .populate("unit", "name")
       .populate("brand", "name");
+
     res.send(incomings);
   } catch (error) {
     res.status(501).json({ error: "Serverda xatolik yuz berdi..." });

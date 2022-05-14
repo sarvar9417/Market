@@ -7,7 +7,12 @@ import { checkUnit } from "./checkData";
 import { Modal } from "./modal/Modal";
 import { Sort } from "./productComponents/Sort";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk, faPenAlt, faRepeat, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import {
+  faFloppyDisk,
+  faPenAlt,
+  faRepeat,
+  faTrashCan,
+} from "@fortawesome/free-solid-svg-icons";
 
 export const Unit = () => {
   //====================================================================
@@ -108,7 +113,6 @@ export const Unit = () => {
         description: "",
         status: "success",
       });
-      getUnits();
       setUnit({
         market: auth.market && auth.market._id,
       });
@@ -120,7 +124,7 @@ export const Unit = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify, getUnits, unit, clearInputs]);
+  }, [request, auth, notify, unit, clearInputs]);
 
   const updateHandler = useCallback(async () => {
     try {
@@ -137,7 +141,6 @@ export const Unit = () => {
         description: "",
         status: "success",
       });
-      getUnits();
       setUnit({
         market: auth.market && auth.market._id,
       });
@@ -149,7 +152,7 @@ export const Unit = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify, getUnits, unit, clearInputs]);
+  }, [request, auth, notify, unit, clearInputs]);
 
   const saveHandler = () => {
     if (checkUnit(unit)) {
@@ -183,7 +186,6 @@ export const Unit = () => {
         description: "",
         status: "success",
       });
-      getUnits();
       setModal(false);
       setUnit({
         market: auth.market && auth.market._id,
@@ -196,7 +198,7 @@ export const Unit = () => {
         status: "error",
       });
     }
-  }, [auth, request, remove, notify, getUnits, clearInputs]);
+  }, [auth, request, remove, notify, clearInputs]);
   //====================================================================
   //====================================================================
 
@@ -263,7 +265,10 @@ export const Unit = () => {
                             onClick={saveHandler}
                             className="btn btn-success py-1 px-4"
                           >
-                            <FontAwesomeIcon className="text-base" icon={faFloppyDisk}/>
+                            <FontAwesomeIcon
+                              className="text-base"
+                              icon={faFloppyDisk}
+                            />
                           </button>
                         )}
                       </td>
@@ -278,7 +283,10 @@ export const Unit = () => {
                             onClick={clearInputs}
                             className="btn btn-secondary py-1 px-4"
                           >
-                            <FontAwesomeIcon className="text-base" icon={faRepeat}/>
+                            <FontAwesomeIcon
+                              className="text-base"
+                              icon={faRepeat}
+                            />
                           </button>
                         )}
                       </td>
@@ -310,17 +318,20 @@ export const Unit = () => {
                       units.map((s, key) => {
                         return (
                           <tr className="border" key={key}>
-                            <td className="font-bold text-black border">{key + 1}</td>
-                            <td className="font-bold text-black border">{s.name}</td>
+                            <td className="font-bold text-black border">
+                              {key + 1}
+                            </td>
+                            <td className="font-bold text-black border">
+                              {s.name}
+                            </td>
                             <td className="border">
                               <button
                                 onClick={() => {
                                   setUnit({ ...unit, ...s });
                                 }}
                                 className="btn btn-success py-1 px-4 text-base"
-                                
                               >
-                                <FontAwesomeIcon icon={faPenAlt}/>
+                                <FontAwesomeIcon icon={faPenAlt} />
                               </button>
                             </td>
                             <td>
@@ -330,9 +341,8 @@ export const Unit = () => {
                                   setModal(true);
                                 }}
                                 className="btn btn-secondary py-1 px-4 text-base"
-                                
                               >
-                                <FontAwesomeIcon icon={faTrashCan}/>
+                                <FontAwesomeIcon icon={faTrashCan} />
                               </button>
                             </td>
                           </tr>
