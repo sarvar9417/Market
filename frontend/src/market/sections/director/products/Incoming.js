@@ -376,6 +376,7 @@ export const Incoming = () => {
   }, []);
 
   const [connectors, setConnectors] = useState([]);
+  const [supplierConnector, setSupplierConnector] = useState("all");
 
   const getIncomingConnectors = useCallback(
     async (beginDay, endDay) => {
@@ -404,13 +405,13 @@ export const Incoming = () => {
   const sortSuppliers = (e) => {
     if (e.value === "all") {
       daily(connectors);
+      setSupplierConnector("all");
     } else {
       const filter = connectors.filter((item) => item.supplier._id === e.value);
-      console.log(filter);
       daily(filter);
+      setSupplierConnector(`${e.value}`);
     }
   };
-
   //====================================================================
   //====================================================================
   // IMPORTS
@@ -437,10 +438,17 @@ export const Incoming = () => {
             Authorization: `Bearer ${auth.token}`,
           }
         );
-        setImports(data);
-        setSearchStorage(data);
-        setCurrentImports(data.slice(indexFirstImport, indexLastImport));
-        setDataExcel(data);
+        let data2 = data.filter((item) => {
+          if (supplierConnector === "all") {
+            return item;
+          } else {
+            return item.supplier._id === supplierConnector;
+          }
+        });
+        setImports(data2);
+        setSearchStorage(data2);
+        setCurrentImports(data2.slice(indexFirstImport, indexLastImport));
+        setDataExcel(data2);
         setVisibleReport(false);
         setVisibleTable(true);
       } catch (error) {
@@ -451,7 +459,15 @@ export const Incoming = () => {
         });
       }
     },
-    [request, auth, notify, indexFirstImport, indexLastImport, setVisibleTable]
+    [
+      request,
+      auth,
+      notify,
+      indexFirstImport,
+      indexLastImport,
+      setVisibleTable,
+      supplierConnector,
+    ]
   );
 
   //====================================================================

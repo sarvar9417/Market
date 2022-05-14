@@ -47,7 +47,6 @@ export const ReportIncomings = ({
                   options={suppliers}
                   onChange={(e) => {
                     sortSuppliers(e);
-                    console.log(e.value);
                   }}
                   theme={(theme) => ({
                     ...theme,
