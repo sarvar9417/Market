@@ -35,6 +35,7 @@ export const Incoming = () => {
   //====================================================================
 
   const [visibleTable, setVisibleTable] = useState(false);
+  const [visibleReport, setVisibleReport] = useState(true);
 
   //====================================================================
   //====================================================================
@@ -80,7 +81,12 @@ export const Incoming = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      let s = [];
+      let s = [
+        {
+          label: "Barcha kategriyalar",
+          value: "all",
+        },
+      ];
       data.map((supplier) => {
         return s.push({
           label: supplier.name,
@@ -235,10 +241,10 @@ export const Incoming = () => {
         return s.push({
           label: product.brand
             ? product.code +
-            " - " +
-            product.name +
-            ", " +
-            product.brand.name.toUpperCase()
+              " - " +
+              product.name +
+              ", " +
+              product.brand.name.toUpperCase()
             : product.code + " - " + product.name,
           value: product._id,
           category: product.category._id,
@@ -322,10 +328,10 @@ export const Incoming = () => {
         connector.total = connectors[key].total;
         connector.producttypes = connectors[key].incoming.length;
         connector.products = connectors[key].incoming.reduce((summ, produc) => {
-          return summ + produc.pieces
-        }, 0)
-        connector.suppliers = 1
-        connector.day = connectors[key].createdAt
+          return summ + produc.pieces;
+        }, 0);
+        connector.suppliers = 1;
+        connector.day = connectors[key].createdAt;
       } else {
         if (
           new Date(connectors[parseInt(key)].createdAt).toLocaleDateString() ===
@@ -361,7 +367,6 @@ export const Incoming = () => {
         return summ + produc.pieces;
       }, 0);
     }
-
     connectorss.push(connector);
     setTotalPrice(price);
     setTotalProducts(product);
@@ -369,6 +374,9 @@ export const Incoming = () => {
     setTotalProductTypes(producttype);
     setDailyConnectors(connectorss);
   }, []);
+
+  const [connectors, setConnectors] = useState([]);
+  const [supplierConnector, setSupplierConnector] = useState("all");
 
   const getIncomingConnectors = useCallback(
     async (beginDay, endDay) => {
@@ -381,6 +389,7 @@ export const Incoming = () => {
             Authorization: `Bearer ${auth.token}`,
           }
         );
+        setConnectors(data);
         daily(data);
       } catch (error) {
         notify({
@@ -393,6 +402,16 @@ export const Incoming = () => {
     [request, auth, notify, daily]
   );
 
+  const sortSuppliers = (e) => {
+    if (e.value === "all") {
+      daily(connectors);
+      setSupplierConnector("all");
+    } else {
+      const filter = connectors.filter((item) => item.supplier._id === e.value);
+      daily(filter);
+      setSupplierConnector(`${e.value}`);
+    }
+  };
   //====================================================================
   //====================================================================
   // IMPORTS
@@ -417,13 +436,21 @@ export const Incoming = () => {
           },
           {
             Authorization: `Bearer ${auth.token}`,
-          },
-        )
-        setImports(data)
-        setSearchStorage(data)
-        setCurrentImports(data.slice(indexFirstImport, indexLastImport))
-        setDataExcel(data)
-        setVisibleTable(true)
+          }
+        );
+        let data2 = data.filter((item) => {
+          if (supplierConnector === "all") {
+            return item;
+          } else {
+            return item.supplier._id === supplierConnector;
+          }
+        });
+        setImports(data2);
+        setSearchStorage(data2);
+        setCurrentImports(data2.slice(indexFirstImport, indexLastImport));
+        setDataExcel(data2);
+        setVisibleReport(false);
+        setVisibleTable(true);
       } catch (error) {
         notify({
           title: error,
@@ -432,7 +459,15 @@ export const Incoming = () => {
         });
       }
     },
-    [request, auth, notify, indexFirstImport, indexLastImport, setVisibleTable]
+    [
+      request,
+      auth,
+      notify,
+      indexFirstImport,
+      indexLastImport,
+      setVisibleTable,
+      supplierConnector,
+    ]
   );
 
   //====================================================================
@@ -475,10 +510,8 @@ export const Incoming = () => {
   const searchCategoryTable = (e) => {
     const searching = searchStorage.filter(
       (item) =>
-        item.category.name
-          .toLowerCase()
-          .includes(e.target.value.toLowerCase()) ||
-        String(item.category.code).includes(e.target.value)
+        String(item.category.code).includes(e.target.value) ||
+        String(item.product.code).includes(e.target.value)
     );
     setImports(searching);
     setCurrentImports(searching.slice(0, countPage));
@@ -487,18 +520,10 @@ export const Incoming = () => {
   const searchProduct = (e) => {
     const searching = searchStorage.filter(
       (item) =>
-        item.product.name
+        item.producttype.name
           .toLowerCase()
           .includes(e.target.value.toLowerCase()) ||
-        String(item.product.code).includes(e.target.value)
-    );
-    setImports(searching);
-    setCurrentImports(searching.slice(0, countPage));
-  };
-
-  const searchProductType = (e) => {
-    const searching = searchStorage.filter((item) =>
-      item.product.name.toLowerCase().includes(e.target.value.toLowerCase())
+        item.product.name.toLowerCase().includes(e.target.value.toLowerCase())
     );
     setImports(searching);
     setCurrentImports(searching.slice(0, countPage));
@@ -675,15 +700,17 @@ export const Incoming = () => {
               <div className="row">
                 <div className="col-12 text-right">
                   <button
-                    className={`btn btn-primary mb-2 ${visible ? "d-none" : ""
-                      }`}
+                    className={`btn btn-primary mb-2 ${
+                      visible ? "d-none" : ""
+                    }`}
                     onClick={changeVisible}
                   >
                     Qabul qilish
                   </button>
                   <button
-                    className={`btn btn-primary mb-2 ${visible ? "" : "d-none"
-                      }`}
+                    className={`btn btn-primary mb-2 ${
+                      visible ? "" : "d-none"
+                    }`}
                     onClick={changeVisible}
                   >
                     Qabul qilish
@@ -713,25 +740,31 @@ export const Incoming = () => {
                   supplier={supplier}
                   setSupplier={setSupplier}
                   setModal={setModal}
-                // productType={productType}
-                // setProductType={setProductType}
-                // changeProductType={changeProductType}
+                  // productType={productType}
+                  // setProductType={setProductType}
+                  // changeProductType={changeProductType}
                 />
               </div>
             </div>
             <div className="w-full mt-2">
-              <div className="bg-primary py-1 rounded-t text-center text-white font-bold text-base">
+              <button
+                className="w-full btn btn-primary py-1 rounded-t text-center text-white font-bold text-base"
+                onClick={() => setVisibleReport(!visibleReport)}
+              >
                 Qabul qilingan mahsulotlar
+              </button>
+              <div className={`${visibleReport ? "d-block" : "d-none"}`}>
+                <ReportIncomings
+                  getImports={getImports}
+                  getIncomingConnectors={getIncomingConnectors}
+                  totalproducts={totalproducts}
+                  totalprice={totalprice}
+                  totalproducttypes={totalproducttypes}
+                  dailyConnectors={dailyConnectors}
+                  suppliers={suppliers}
+                  sortSuppliers={sortSuppliers}
+                />
               </div>
-              <ReportIncomings
-                getImports={getImports}
-                getIncomingConnectors={getIncomingConnectors}
-                totalproducts={totalproducts}
-                totalprice={totalprice}
-                totalproducttypes={totalproducttypes}
-                dailyConnectors={dailyConnectors}
-                suppliers={suppliers}
-              />
             </div>
             <div className="w-full mt-2">
               <div className="bg-primary py-1 rounded-t text-center text-white font-bold text-base">
@@ -747,7 +780,6 @@ export const Incoming = () => {
                   searchSupplier={searchSupplier}
                   searchProduct={searchProduct}
                   searchBrand={searchBrand}
-                  searchProductType={searchProductType}
                   countPage={countPage}
                   setCountPage={setCountPage}
                   currentPage={currentPage}

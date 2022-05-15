@@ -127,7 +127,6 @@ export const Supplier = () => {
         description: "",
         status: "success",
       });
-      getSuppliers();
       setSupplier({
         market: auth.market && auth.market._id,
       });
@@ -139,7 +138,7 @@ export const Supplier = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify, getSuppliers, supplier, clearInputs]);
+  }, [request, auth, notify, supplier, clearInputs]);
 
   const updateHandler = useCallback(async () => {
     try {
@@ -156,7 +155,6 @@ export const Supplier = () => {
         description: "",
         status: "success",
       });
-      getSuppliers();
       setSupplier({
         market: auth.market && auth.market._id,
       });
@@ -168,7 +166,7 @@ export const Supplier = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify, getSuppliers, supplier, clearInputs]);
+  }, [request, auth, notify, supplier, clearInputs]);
 
   const saveHandler = () => {
     if (checkSupplier(supplier)) {
@@ -202,7 +200,6 @@ export const Supplier = () => {
         description: "",
         status: "success",
       });
-      getSuppliers();
       setModal(false);
       setSupplier({
         market: auth.market && auth.market._id,
@@ -215,7 +212,7 @@ export const Supplier = () => {
         status: "error",
       });
     }
-  }, [auth, request, remove, notify, getSuppliers, clearInputs]);
+  }, [auth, request, remove, notify, clearInputs]);
   //====================================================================
   //====================================================================
 

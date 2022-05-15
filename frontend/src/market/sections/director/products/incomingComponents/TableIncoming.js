@@ -21,7 +21,6 @@ export const TableIncoming = ({
   changeStart,
   changeEnd,
   searchBrand,
-  searchProductType,
 }) => {
   return (
     <div className="table-container">
@@ -64,11 +63,11 @@ export const TableIncoming = ({
                 </th>
                 <th>
                   <input
-                    onChange={searchProductType}
+                    onChange={searchProduct}
                     style={{ maxWidth: "100px" }}
                     type="search"
                     className="form-control form-control-sm selectpicker"
-                    placeholder="Mahsulot turi"
+                    placeholder="Mahsulot"
                     aria-controls="basicExample"
                   />
                 </th>
@@ -102,13 +101,13 @@ export const TableIncoming = ({
                     totalDatas={imports.length}
                   />
                 </th>
-                <th
-                  className="text-center"
-                  style={{ overflow: "hidden" }}
-                  colSpan={2}
-                >
+                <th className="text-center" style={{ overflow: "hidden" }}>
                   <div
-                    style={{ display: "flex", justifyContent: "space-between" }}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      maxWidth: "200px",
+                    }}
                   >
                     <DatePickers changeDate={changeStart} />
                     <DatePickers changeDate={changeEnd} />
@@ -227,14 +226,14 @@ export const TableIncoming = ({
                     />
                   </div>
                 </th>
-                <th className="border-right">
-                  O'l.B.
+                <th className="border-right d-flex">
+                  Soni - O'l.B.
                   <div className="btn-group-vertical ml-2">
                     <FontAwesomeIcon
                       onClick={() =>
                         setCurrentImports(
                           [...currentImports].sort((a, b) =>
-                            a.unit.name > b.unit.name ? 1 : -1
+                            a.pieces.name > b.pieces.name ? 1 : -1
                           )
                         )
                       }
@@ -247,34 +246,7 @@ export const TableIncoming = ({
                       onClick={() =>
                         setCurrentImports(
                           [...currentImports].sort((a, b) =>
-                            b.unit.name > a.unit.name ? 1 : -1
-                          )
-                        )
-                      }
-                    />
-                  </div>
-                </th>
-                <th className="border-right">
-                  Soni
-                  <div className="btn-group-vertical ml-2">
-                    <FontAwesomeIcon
-                      onClick={() =>
-                        setCurrentImports(
-                          [...currentImports].sort((a, b) =>
-                            a.pieces > b.pieces ? 1 : -1
-                          )
-                        )
-                      }
-                      icon={faAngleUp}
-                      style={{ cursor: "pointer" }}
-                    />
-                    <FontAwesomeIcon
-                      icon={faAngleDown}
-                      style={{ cursor: "pointer" }}
-                      onClick={() =>
-                        setCurrentImports(
-                          [...currentImports].sort((a, b) =>
-                            b.pieces > a.pieces ? 1 : -1
+                            b.pieces.name > a.pieces.name ? 1 : -1
                           )
                         )
                       }
@@ -360,10 +332,7 @@ export const TableIncoming = ({
                         {p.brand && p.brand.name}
                       </td>
                       <td className="border-right font-bold text-black">
-                        {p.unit.name}
-                      </td>
-                      <td className="border-right font-bold text-black">
-                        {p.pieces}
+                        {p.pieces} {p.unit.name}
                       </td>
                       <td className="border-right font-bold text-black">
                         {p.unitprice}
