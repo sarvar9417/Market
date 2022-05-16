@@ -104,8 +104,8 @@ export const Navbar = ({ baseUrl }) => {
               <li className="nav-item">
                 <Link
                   className={`nav-link ${activePage === '/alo24' || activePage === '/'
-                      ? 'active-page'
-                      : ''
+                    ? 'active-page'
+                    : ''
                     }`}
                   onClick={() => {
                     setActivePage('/alo24')
@@ -124,14 +124,14 @@ export const Navbar = ({ baseUrl }) => {
                   aria-haspopup="true"
                   aria-expanded="false"
                   className={`nav-link dropdown-toggle ${activePage === '/alo24/category' ||
-                      activePage === '/alo24/producttypes' ||
-                      activePage === '/alo24/product' ||
-                      activePage === '/alo24/brand' ||
-                      activePage === '/alo24/unit' ||
-                      activePage === '/alo24/supplier' ||
-                      activePage === '/alo24/incoming'
-                      ? 'active-page'
-                      : ''
+                    activePage === '/alo24/producttypes' ||
+                    activePage === '/alo24/product' ||
+                    activePage === '/alo24/brand' ||
+                    activePage === '/alo24/unit' ||
+                    activePage === '/alo24/supplier' ||
+                    activePage === '/alo24/incoming'
+                    ? 'active-page'
+                    : ''
                     }`}
                 >
                   <i className="icon-users nav-icon" />
@@ -139,26 +139,26 @@ export const Navbar = ({ baseUrl }) => {
                 </span>
                 <ul className="dropdown-menu" aria-labelledby="doctoRs">
                   <li>
-                    <span
+                    <Link
                       className="dropdown-toggle sub-nav-link"
                       to="#"
-                      id="buttonsDropdown"
+                      id="customDropdown"
                       role="button"
                       data-toggle="dropdown"
                       aria-haspopup="true"
                       aria-expanded="false"
                     >
                       Yaratish
-                    </span>
+                    </Link>
                     <ul
                       className="dropdown-menu dropdown-menu-right"
-                      aria-labelledby="buttonsDropdown"
+                      aria-labelledby="customDropdown"
                     >
                       <li>
                         <Link
                           className={`dropdown-item ${activePage === '/alo24/category'
-                              ? 'active-page'
-                              : ''
+                            ? 'active-page'
+                            : ''
                             }`}
                           onClick={() => {
                             setActivePage('/alo24/category')
@@ -171,8 +171,8 @@ export const Navbar = ({ baseUrl }) => {
                       <li>
                         <Link
                           className={`dropdown-item ${activePage === '/alo24/producttypes'
-                              ? 'active-page'
-                              : ''
+                            ? 'active-page'
+                            : ''
                             }`}
                           onClick={() => {
                             setActivePage('/alo24/producttypes')
@@ -243,8 +243,8 @@ export const Navbar = ({ baseUrl }) => {
               <li className="nav-item dropdown">
                 <Link
                   className={`nav-link ${window.location.pathname === '/alo24/users'
-                      ? 'active-page'
-                      : ''
+                    ? 'active-page'
+                    : ''
                     }`}
                   to="/alo24/users"
                   role="button"
@@ -256,8 +256,8 @@ export const Navbar = ({ baseUrl }) => {
               <li className="nav-item dropdown">
                 <Link
                   className={`nav-link ${activePage === '/alo24/exchangerate' || activePage === '/'
-                      ? 'active-page'
-                      : ''
+                    ? 'active-page'
+                    : ''
                     }`}
                   onClick={() => {
                     setActivePage('/alo24/exchangerate')

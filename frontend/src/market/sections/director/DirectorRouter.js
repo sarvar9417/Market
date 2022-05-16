@@ -11,6 +11,7 @@ import { Incoming } from './products/Incoming'
 import { Supplier } from './products/Supplier'
 import { Brand } from './products/Brand'
 import { Filials } from './filials/Filials'
+import { Sale } from './sale/Sale'
 
 export const DirectorRouter = () => {
   return (
@@ -52,6 +53,10 @@ export const DirectorRouter = () => {
         </Route>
         <Route path="/alo24/filials">
           <Filials />
+        </Route>
+
+        <Route path="/alo24/sales">
+          <Sale />
         </Route>
 
         <Redirect to="/alo24" />

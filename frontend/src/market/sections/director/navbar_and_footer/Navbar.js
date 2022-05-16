@@ -242,15 +242,15 @@ export const Navbar = ({ baseUrl }) => {
               </li>
               <li className="nav-item dropdown">
                 <Link
-                  className={`nav-link ${window.location.pathname === '/alo24/filials'
+                  className={`nav-link ${window.location.pathname === '/alo24/sales'
                     ? 'active-page'
                     : ''
                     }`}
-                  to="/alo24/filials"
+                  to="/alo24/sales"
                   role="button"
                 >
                   <i className="icon-book-open nav-icon" />
-                  Filiallar
+                  Sotuv
                 </Link>
               </li>
               <li className="nav-item dropdown">

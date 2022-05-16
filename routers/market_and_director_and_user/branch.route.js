@@ -1,3 +1,4 @@
+const { FilialProduct } = require('../../models/FilialProducts/FilialProduct')
 const {
   Market,
   validateMarket,
@@ -34,7 +35,7 @@ module.exports.register = async (req, res) => {
     if (branch.length > 0) {
       return res.status(400).json({
         message:
-          "Diqqat! Ushbu nomdagi filifal mavjud. Iltimos filial nomida biroz o'zgartirish qilib keyin kiriting.",
+          "Diqqat! Ushbu nomdagi filifal mavjud. Iltimos filial nomida o'zgartirish qilib keyin kiriting.",
       })
     }
 
@@ -62,6 +63,30 @@ module.exports.register = async (req, res) => {
         filials: newMarket._id,
       }
     })
+
+    // Create Product to filials
+    const marke = await Market.findById(market).select('filials')
+    for (const f of marke.filials) {
+      const filialproduct = new FilialProduct({
+        product: product._id,
+        producttype: product.producttype,
+        category: product.category,
+        unit: product.unit,
+        brand: product.brand,
+        market: f
+      })
+
+      const pric = await ProductPrice.findById(product.price)
+      const newPrice = new ProductPrice({
+        incomingprice: pric.sellingprice,
+        market: f,
+      });
+
+      await newPrice.save();
+      filialproduct.price = newPrice._id;
+
+      await filialproduct.save()
+    }
 
 
     res.status(201).send(newMarket)

@@ -9,7 +9,7 @@ const { ProductType } = require("../../models/Products/ProductType");
 const { Unit } = require("../../models/Products/Unit");
 const { Brand } = require("../../models/Products/Brand");
 const { ProductPrice } = require("../../models/Products/ProductPrice");
-const { FilialProduct, validateFilialProduct } = require("../../models/Products/FilialProduct");
+const { FilialProduct, validateFilialProduct } = require("../../models/FilialProducts/FilialProduct");
 const ObjectId = require("mongodb").ObjectId;
 
 //Product registerall
@@ -300,7 +300,6 @@ module.exports.register = async (req, res) => {
       });
     }
 
-    console.log(newProduct);
     for (const f of marke.filials) {
       const filialproduct = new FilialProduct({
         product: newProduct._id,
@@ -310,7 +309,6 @@ module.exports.register = async (req, res) => {
         brand: newProduct.brand,
         market: f
       })
-      console.log(filialproduct);
 
       const newPrice = new ProductPrice({
         incomingprice: price,
@@ -325,7 +323,6 @@ module.exports.register = async (req, res) => {
 
     res.send(newProduct);
   } catch (error) {
-    console.log(error);
     res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
   }
 };
