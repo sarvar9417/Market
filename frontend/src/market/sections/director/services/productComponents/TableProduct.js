@@ -1,6 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleUp, faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { faAngleUp, faAngleDown, faPenAlt, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { Pagination } from "../../components/Pagination";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import { ExcelTable } from "./ExcelTable";
@@ -80,12 +80,12 @@ export const TableProduct = ({
           <table className="table m-0">
             <thead className="bg-white">
               <tr>
-                <th>
+                <th className="">
                   <select
                     className="form-control form-control-sm selectpicker"
                     placeholder="Bo'limni tanlang"
                     onChange={setPageSize}
-                    style={{ minWidth: "50px" }}
+                    
                   >
                     <option value={10}>10</option>
                     <option value={25}>25</option>
@@ -96,16 +96,14 @@ export const TableProduct = ({
                 <th>
                   <input
                     onChange={searchCategory}
-                    style={{ maxWidth: "100px", minWidth: "100px" }}
                     type="search"
-                    className="w-100 form-control form-control-sm selectpicker"
+                    className="form-control form-control-sm selectpicker"
                     placeholder="Kategoriya"
                   />
                 </th>
                 <th>
                   <input
                     onChange={searchProductTypeAndProductName}
-                    style={{ maxWidth: "100px", minWidth: "100px" }}
                     type="search"
                     className="w-100 form-control form-control-sm selectpicker"
                     placeholder="Mahsulot turi"
@@ -114,7 +112,6 @@ export const TableProduct = ({
                 <th>
                   <input
                     onChange={searchBrand}
-                    style={{ maxWidth: "100px", minWidth: "100px" }}
                     type="search"
                     className="w-100 form-control form-control-sm selectpicker"
                     placeholder="Brand"
@@ -151,8 +148,8 @@ export const TableProduct = ({
             </thead>
             <thead>
               <tr>
-                <th className="border-right">№</th>
-                <th className="border-right" style={{ maxWidth: "200px" }}>
+                <th className="border text-center">№</th>
+                <th className="border text-center">
                   Kategoriya
                   <div className="btn-group-vertical ml-2">
                     <FontAwesomeIcon
@@ -179,7 +176,7 @@ export const TableProduct = ({
                     />
                   </div>
                 </th>
-                <th className="border-right" style={{ maxWidth: "200px" }}>
+                <th className="border text-center">
                   Mahsulot turi va mahsulot
                   <div className="btn-group-vertical ml-2">
                     <FontAwesomeIcon
@@ -206,7 +203,7 @@ export const TableProduct = ({
                     />
                   </div>
                 </th>
-                <th className="border-right" style={{ maxWidth: "200px" }}>
+                <th className="border text-center">
                   Brend
                   <div className="btn-group-vertical ml-2">
                     <FontAwesomeIcon
@@ -233,11 +230,10 @@ export const TableProduct = ({
                     />
                   </div>
                 </th>
-                <th className="border-right">
+                <th className="border text-center">
                   Soni - O'.B.
                   <div
                     className="btn-group-vertical ml-2"
-                    style={{ maxWidth: "30px" }}
                   >
                     <FontAwesomeIcon
                       onClick={() =>
@@ -263,11 +259,10 @@ export const TableProduct = ({
                     />
                   </div>
                 </th>
-                <th className="border-right">
+                <th className="border text-center">
                   Narxi
                   <div
                     className="btn-group-vertical ml-2"
-                    style={{ maxWidth: "30px" }}
                   >
                     <FontAwesomeIcon
                       onClick={() =>
@@ -293,8 +288,8 @@ export const TableProduct = ({
                     />
                   </div>
                 </th>
-                <th className="border-right text-center">Tahrirlash</th>
-                <th className="text-center">O'chirish</th>
+                <th className="border text-center">Tahrirlash</th>
+                <th className="border text-center">O'chirish</th>
               </tr>
             </thead>
             <tbody>
@@ -303,32 +298,29 @@ export const TableProduct = ({
                   return (
                     <tr key={key}>
                       <td
-                        className="border-right font-weight-bold"
-                        style={{ width: "10%" }}
+                        className="border font-bold text-center text-black"
                       >
                         {currentPage * countPage + key + 1}
                       </td>
-                      <td className="border-right">
+                      <td className="border text-center font-bold text-black">
                         {p.category.code} {p.code}
                       </td>
-                      <td className="border-right">
-                        <strong>{p.producttype && p.producttype.name}</strong>{" "}
-                        {p.name}
+                      <td className="border text-black px-5 font-bold ">
+                        <span className="uppercase ">{p.producttype && p.producttype.name}</span> -  {p.name}
                       </td>
-                      <td className="border-right">
+                      <td className="border text-center font-bold text-black">
                         {p.brand && p.brand.name}
                       </td>
-                      <td className="border-right mx-auto">
-                        {p.total} {p.unit.name}
+                      <td className="border text-center font-bold text-black">
+                        {p.total}  {p.unit.name}
                       </td>
-                      <td className="border-right mx-auto">
-                        {(p.price && p.price.sellingprice) || 0}
+                      <td className="border text-center font-bold text-black">
+                        {(p.price && p.price.sellingprice) || 0} $
                       </td>
-                      <td className="border-right text-center">
+                      <td className="border text-center text-base">
                         {loading ? (
                           <button
                             className="btn btn-success py-1 px-2"
-                            style={{ fontSize: "75%" }}
                           >
                             <span className="spinner-border spinner-border-sm"></span>
                             Loading...
@@ -339,18 +331,17 @@ export const TableProduct = ({
                             onClick={(e) => {
                               edit(e, p);
                             }}
-                            className="btn btn-success py-1 px-2"
-                            style={{ fontSize: "75%" }}
+                            className="btn btn-success py-1 px-4"
+                            
                           >
-                            Tahrirlash
+                            <FontAwesomeIcon className="text-base" icon={faPenAlt}/>
                           </button>
                         )}
                       </td>
-                      <td className="text-center">
+                      <td className="text-center border">
                         {loading ? (
                           <button
-                            className="btn btn-secondary py-1 px-2"
-                            style={{ fontSize: "75%" }}
+                            className="btn btn-secondary py-1 px-4"
                             disabled
                           >
                             <span className="spinner-border spinner-border-sm"></span>
@@ -362,10 +353,9 @@ export const TableProduct = ({
                               setRemove(p);
                               setModal(true);
                             }}
-                            className="btn btn-secondary py-1 px-2"
-                            style={{ fontSize: "75%" }}
+                            className="btn btn-secondary py-1 px-4"
                           >
-                            O'chirish
+                           <FontAwesomeIcon className="text-base" icon={faTrashCan}/>
                           </button>
                         )}
                       </td>
