@@ -1,11 +1,11 @@
 const {
-  Branch,
-  validateBranch,
-} = require('../../models/MarketAndBranch/Branch')
+  Market,
+  validateMarket,
+} = require('../../models/MarketAndBranch/Market')
 
 module.exports.register = async (req, res) => {
   try {
-    const { error } = validateBranch(req.body)
+    const { error } = validateMarket(req.body)
 
     if (error) {
       return res.status(400).json({
@@ -29,7 +29,7 @@ module.exports.register = async (req, res) => {
       market,
     } = req.body
 
-    const branch = await Branch.find({ name })
+    const branch = await Market.find({ name, market })
 
     if (branch.length > 0) {
       return res.status(400).json({
@@ -38,7 +38,7 @@ module.exports.register = async (req, res) => {
       })
     }
 
-    const newBranch = new Branch({
+    const newMarket = new Market({
       name,
       organitionName,
       image,
@@ -55,9 +55,16 @@ module.exports.register = async (req, res) => {
       market,
     })
 
-    await newBranch.save()
+    await newMarket.save()
 
-    res.status(201).send(newBranch)
+    await Market.findByIdAndUpdate(market, {
+      $push: {
+        filials: newMarket._id,
+      }
+    })
+
+
+    res.status(201).send(newMarket)
   } catch (error) {
     res.status(501).json({ message: error })
   }
@@ -69,18 +76,18 @@ module.exports.update = async (req, res) => {
 
     if (!branch.market) {
       return res.status(400).json({
-        message: "Do'kon asosiy do'kon m'alumotlari topilmadi",
+        message: "Do'kon asosiy do'kon ma'lumotlari topilmadi",
       })
     }
 
-    const update = await Branch.findByIdAndUpdate(branch._id, { ...branch })
+    const update = await Market.findByIdAndUpdate(branch._id, { ...branch })
     res.status(201).send(update)
   } catch (error) {
     res.status(501).json({ message: error })
   }
 }
 
-module.exports.getBranch = async (req, res) => {
+module.exports.getMarket = async (req, res) => {
   try {
     const { branchId } = req.body
     if (!branchId) {
@@ -89,7 +96,7 @@ module.exports.getBranch = async (req, res) => {
       })
     }
 
-    const branch = await Branch.findById(branchId)
+    const branch = await Market.findById(branchId)
 
     if (!branch) {
       return res.status(400).json({
@@ -105,14 +112,14 @@ module.exports.getBranch = async (req, res) => {
 
 module.exports.getAll = async (req, res) => {
   try {
-    const { marketId } = req.body
-    if (!marketId) {
+    const { market } = req.body
+    if (!market) {
       return res.status(400).json({
         message: "Diqqat! Do'kon ID si ko'rsatilmagan.",
       })
     }
 
-    const branchs = await Branch.find({ market: marketId, isArchive: false })
+    const branchs = await Market.find({ market, isArchive: false })
 
     res.status(200).send(branchs)
   } catch (error) {
@@ -120,12 +127,12 @@ module.exports.getAll = async (req, res) => {
   }
 }
 
-//Branch delete
+//Market delete
 module.exports.delete = async (req, res) => {
   try {
     const { branchId } = req.body
 
-    const branch = await Branch.findById(branchId)
+    const branch = await Market.findById(branchId)
     branch.isArchive = true
     await branch.save()
 

@@ -104,8 +104,8 @@ export const Navbar = ({ baseUrl }) => {
               <li className="nav-item">
                 <Link
                   className={`nav-link ${activePage === '/alo24' || activePage === '/'
-                    ? 'active-page'
-                    : ''
+                      ? 'active-page'
+                      : ''
                     }`}
                   onClick={() => {
                     setActivePage('/alo24')
@@ -124,14 +124,14 @@ export const Navbar = ({ baseUrl }) => {
                   aria-haspopup="true"
                   aria-expanded="false"
                   className={`nav-link dropdown-toggle ${activePage === '/alo24/category' ||
-                    activePage === '/alo24/producttypes' ||
-                    activePage === '/alo24/product' ||
-                    activePage === '/alo24/brand' ||
-                    activePage === '/alo24/unit' ||
-                    activePage === '/alo24/supplier' ||
-                    activePage === '/alo24/incoming'
-                    ? 'active-page'
-                    : ''
+                      activePage === '/alo24/producttypes' ||
+                      activePage === '/alo24/product' ||
+                      activePage === '/alo24/brand' ||
+                      activePage === '/alo24/unit' ||
+                      activePage === '/alo24/supplier' ||
+                      activePage === '/alo24/incoming'
+                      ? 'active-page'
+                      : ''
                     }`}
                 >
                   <i className="icon-users nav-icon" />
@@ -157,8 +157,8 @@ export const Navbar = ({ baseUrl }) => {
                       <li>
                         <Link
                           className={`dropdown-item ${activePage === '/alo24/category'
-                            ? 'active-page'
-                            : ''
+                              ? 'active-page'
+                              : ''
                             }`}
                           onClick={() => {
                             setActivePage('/alo24/category')
@@ -171,8 +171,8 @@ export const Navbar = ({ baseUrl }) => {
                       <li>
                         <Link
                           className={`dropdown-item ${activePage === '/alo24/producttypes'
-                            ? 'active-page'
-                            : ''
+                              ? 'active-page'
+                              : ''
                             }`}
                           onClick={() => {
                             setActivePage('/alo24/producttypes')
@@ -242,22 +242,22 @@ export const Navbar = ({ baseUrl }) => {
               </li>
               <li className="nav-item dropdown">
                 <Link
-                  className={`nav-link ${window.location.pathname === '/alo24/filials'
-                    ? 'active-page'
-                    : ''
+                  className={`nav-link ${window.location.pathname === '/alo24/users'
+                      ? 'active-page'
+                      : ''
                     }`}
-                  to="/alo24/filials"
+                  to="/alo24/users"
                   role="button"
                 >
                   <i className="icon-book-open nav-icon" />
-                  Filiallar
+                  Foydalanuvchilar
                 </Link>
               </li>
               <li className="nav-item dropdown">
                 <Link
                   className={`nav-link ${activePage === '/alo24/exchangerate' || activePage === '/'
-                    ? 'active-page'
-                    : ''
+                      ? 'active-page'
+                      : ''
                     }`}
                   onClick={() => {
                     setActivePage('/alo24/exchangerate')

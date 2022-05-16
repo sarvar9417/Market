@@ -9,12 +9,11 @@ const user = new Schema(
     fathername: { type: String },
     image: { type: String },
     phone: { type: String },
-    password: { type: String, min: 6 },
-    market: { type: Schema.Types.ObjectId, ref: 'Market' },
+    password: { type: String, min: 6, required: true },
+    market: { type: Schema.Types.ObjectId, ref: 'Market' }, // o'zini marketi
     type: { type: String, required: true },
-    specialty: { type: Schema.Types.ObjectId, ref: 'Department' }, // Doctorlarga ixtisosligi ID si yoziladi
-    users: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-    user: { type: Schema.Types.ObjectId, ref: 'User' },
+    users: [{ type: Schema.Types.ObjectId, ref: 'User' }], // Xodimlar
+    user: { type: Schema.Types.ObjectId, ref: 'User' }, // Director
     isArchive: { type: Boolean, default: false },
   },
   {
