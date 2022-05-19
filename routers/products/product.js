@@ -2,15 +2,18 @@ const {
   Product,
   validateProduct,
   validateProductExcel,
-} = require("../../models/Products/Product")
-const { Market } = require("../../models/MarketAndBranch/Market")
-const { Category } = require("../../models/Products/Category")
-const { ProductType } = require("../../models/Products/ProductType")
-const { Unit } = require("../../models/Products/Unit")
-const { Brand } = require("../../models/Products/Brand")
-const { ProductPrice } = require("../../models/Products/ProductPrice")
-const { FilialProduct, validateFilialProduct } = require("../../models/FilialProducts/FilialProduct")
-const ObjectId = require("mongodb").ObjectId
+} = require("../../models/Products/Product");
+const { Market } = require("../../models/MarketAndBranch/Market");
+const { Category } = require("../../models/Products/Category");
+const { ProductType } = require("../../models/Products/ProductType");
+const { Unit } = require("../../models/Products/Unit");
+const { Brand } = require("../../models/Products/Brand");
+const { ProductPrice } = require("../../models/Products/ProductPrice");
+const {
+  FilialProduct,
+  validateFilialProduct,
+} = require("../../models/FilialProducts/FilialProduct");
+const ObjectId = require("mongodb").ObjectId;
 
 //Product registerall
 module.exports.registerAll = async (req, res) => {
@@ -158,7 +161,7 @@ module.exports.registerAll = async (req, res) => {
       })
 
       // Create Product to filials
-      const marke = await Market.findById(market).select('filials')
+      const marke = await Market.findById(market).select("filials");
       for (const f of marke.filials) {
         const filialproduct = new FilialProduct({
           product: product._id,
@@ -166,10 +169,10 @@ module.exports.registerAll = async (req, res) => {
           category: product.category,
           unit: product.unit,
           brand: product.brand,
-          market: f
-        })
+          market: f,
+        });
 
-        const pric = await ProductPrice.findById(product.price)
+        const pric = await ProductPrice.findById(product.price);
         const newPrice = new ProductPrice({
           incomingprice: pric.sellingprice,
           market: f,
@@ -178,9 +181,8 @@ module.exports.registerAll = async (req, res) => {
         await newPrice.save()
         filialproduct.price = newPrice._id
 
-        await filialproduct.save()
+        await filialproduct.save();
       }
-
     }
 
     const productss = await Product.find({
@@ -202,6 +204,7 @@ module.exports.registerAll = async (req, res) => {
 
 //Product register
 module.exports.register = async (req, res) => {
+  console.log(req.headers.authorization.split(" ")[1]);
   try {
     const { error } = validateProduct(req.body)
     if (error) {
@@ -307,8 +310,8 @@ module.exports.register = async (req, res) => {
         category: newProduct.category,
         unit: newProduct.unit,
         brand: newProduct.brand,
-        market: f
-      })
+        market: f,
+      });
 
       const newPrice = new ProductPrice({
         incomingprice: price,
@@ -318,7 +321,7 @@ module.exports.register = async (req, res) => {
       await newPrice.save()
       filialproduct.price = newPrice._id
 
-      await filialproduct.save()
+      await filialproduct.save();
     }
 
     res.send(newProduct)
