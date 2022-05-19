@@ -72,7 +72,7 @@ export const Sale = () => {
                 status: "error",
             })
         }
-    }, [request, auth, notify, categories])
+    }, [request, auth, notify])
 
     const changeCategory = (e) => {
         const filter = allproducttypes.filter((producttype) => {
@@ -192,6 +192,75 @@ export const Sale = () => {
     //====================================================================
     //====================================================================
 
+    // ===================================================================
+    // ===================================================================
+    const [packman, setPackman] = useState ([])
+
+    const getPackman = useCallback(async (type) => {
+        try {
+            const data = await request (
+                `/api/sales/packman/getall`,
+                "POST",
+                { market: auth.market._id },
+                {
+                    Authorization: `Bearer ${auth.token}`,
+                } 
+            )
+            let v = []
+
+            data.map((type) =>{
+                return v.push({
+                    label: type.name,
+                    value: type._id
+                })
+            })
+            setPackman (v)
+        }   catch (error) {
+            notify({
+                title: error,
+                description: "",
+                status: "error",
+            })
+        }
+    }, [request, auth, notify])
+    //====================================================================
+    //====================================================================
+
+    
+    //====================================================================
+    //====================================================================
+
+    const [client, setClient] = useState ([])
+
+    const getClient = useCallback(async (type) => {
+        try {
+            const data = await request (
+                `/api/sales/client/getall`,
+                "POST",
+                { market: auth.market._id },
+                {
+                    Authorization: `Bearer ${auth.token}`,
+                } 
+            )
+            let v = []
+
+            data.map((type) =>{
+                return v.push({
+                    label: type.name,
+                    value: type._id
+                })
+            })
+            setClient (v)
+        }   catch (error) {
+            notify({
+                title: error,
+                description: "",
+                status: "error",
+            })
+        }
+    }, [request, auth, notify])
+    //====================================================================
+    //====================================================================
 
     //====================================================================
     //====================================================================
@@ -202,8 +271,11 @@ export const Sale = () => {
             getCategories()
             getProductTypes()
             getBrand()
+            getPackman()
+            getClient()
+            
         }
-    }, [getCategories, getProductTypes, getBrand, t])
+    }, [getCategories, getProductTypes, getBrand, getPackman, getClient, t])
     //====================================================================
     //====================================================================
 
@@ -220,7 +292,7 @@ export const Sale = () => {
                         brands={brands}
                         products={products}
                     /></div>
-                <div className='md:col-span-3 w-full'><Selling /></div>
+                <div className='md:col-span-3 w-full'><Selling packman={packman} client={client}/></div>
             </div>
         </div>
     )
