@@ -205,7 +205,7 @@ export const Sale = () => {
         <div className='p-3'>
             {/* <Payment /> */}
             <div className='grid grid-cols-1 gap-4 md:grid-cols-5'>
-                <div className='col-span-2 w-full'>
+                <div className='md:col-span-2 w-full'>
                     <Products
                         changeProductType={changeProductType}
                         changeCategory={changeCategory}
@@ -214,7 +214,7 @@ export const Sale = () => {
                         brands={brands}
                         products={products}
                     /></div>
-                <div className='col-span-3 w-full'><Selling /></div>
+                <div className='md:col-span-3 w-full'><Selling /></div>
             </div>
         </div>
     )
