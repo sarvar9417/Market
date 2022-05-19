@@ -50,7 +50,8 @@ export const Sale = () => {
                     Authorization: `Bearer ${auth.token}`,
                 }
             )
-            let c = [...categories]
+            console.log(data);
+            let c = []
             data.map((category) => {
                 return c.push({
                     label: category.code,
