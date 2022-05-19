@@ -1,9 +1,13 @@
 import React from 'react'
+import { Payment } from './Payment'
 
 export const Sale = () => {
+
+    
+
     return (
         <div>
-            Sotuv bo'limi
+            <Payment />
         </div>
     )
 }
