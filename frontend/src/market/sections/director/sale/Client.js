@@ -166,6 +166,7 @@ export const Client = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+      console.log(data);
       clearInputs();
       getClients();
       setClient({

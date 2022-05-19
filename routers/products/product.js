@@ -204,7 +204,6 @@ module.exports.registerAll = async (req, res) => {
 
 //Product register
 module.exports.register = async (req, res) => {
-  console.log(req.headers.authorization.split(" ")[1]);
   try {
     const { error } = validateProduct(req.body)
     if (error) {
@@ -562,10 +561,9 @@ module.exports.getCategory = async (req, res) => {
 //Product getall by type
 module.exports.getAllType = async (req, res) => {
   try {
-    const { market, producttype } = req.body
-
+    const { market, typeid } = req.body
     const marke = await Market.findById(market)
-    const type = await ProductType.findById(producttype)
+    const type = await ProductType.findById(typeid)
 
     if (!type || !marke) {
       return res.status(400).json({
@@ -575,13 +573,12 @@ module.exports.getAllType = async (req, res) => {
 
     const products = await Product.find({
       market,
-      producttype,
+      producttype: typeid,
     }).sort({ _id: -1 })
       .select("name code unit category price")
       .populate("category", "name code")
       .populate("unit", "name")
       .populate("price", "sellingprice")
-
     res.send(products)
   } catch (error) {
     res.status(501).json({ error: "Serverda xatolik yuz berdi..." })
@@ -590,11 +587,12 @@ module.exports.getAllType = async (req, res) => {
 
 //Product getall by brand
 module.exports.getAllBrand = async (req, res) => {
+  bm
   try {
-    const { market, brand } = req.body
+    const { market, typeid } = req.body
 
     const marke = await Market.findById(market)
-    const bran = await Brand.findById(brand)
+    const bran = await Brand.findById(typeid)
 
     if (!bran || !marke) {
       return res.status(400).json({
@@ -604,7 +602,7 @@ module.exports.getAllBrand = async (req, res) => {
 
     const products = await Product.find({
       market,
-      brand,
+      brand: typeid,
     }).select('name code category producttype price unit')
       .populate("category", "code")
       .populate("producttype", "name")
@@ -620,10 +618,9 @@ module.exports.getAllBrand = async (req, res) => {
 //Product getall by category
 module.exports.getAllCategory = async (req, res) => {
   try {
-    const { market, category } = req.body
-
+    const { market, typeid } = req.body
     const marke = await Market.findById(market)
-    const categor = await Category.findById(category)
+    const categor = await Category.findById(typeid)
 
     if (!categor || !marke) {
       return res.status(400).json({
@@ -633,13 +630,12 @@ module.exports.getAllCategory = async (req, res) => {
 
     const products = await Product.find({
       market,
-      category,
+      category: typeid,
     }).sort({ _id: -1 })
       .select("name code unit category price")
       .populate("category", "name code")
       .populate("unit", "name")
       .populate("price", "sellingprice")
-
     res.send(products)
   } catch (error) {
     res.status(501).json({ error: "Serverda xatolik yuz berdi..." })

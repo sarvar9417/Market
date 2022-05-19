@@ -102,11 +102,10 @@ export const Navbar = ({ baseUrl }) => {
               </li>
               <li className="nav-item">
                 <Link
-                  className={`nav-link ${
-                    activePage === "/alo24" || activePage === "/"
-                      ? "active-page"
-                      : ""
-                  }`}
+                  className={`nav-link ${activePage === "/alo24" || activePage === "/"
+                    ? "active-page"
+                    : ""
+                    }`}
                   onClick={() => {
                     setActivePage("/alo24");
                   }}
@@ -123,17 +122,16 @@ export const Navbar = ({ baseUrl }) => {
                   data-toggle="dropdown"
                   aria-haspopup="true"
                   aria-expanded="false"
-                  className={`nav-link dropdown-toggle ${
-                    activePage === "/alo24/category" ||
+                  className={`nav-link dropdown-toggle ${activePage === "/alo24/category" ||
                     activePage === "/alo24/producttypes" ||
                     activePage === "/alo24/product" ||
                     activePage === "/alo24/brand" ||
                     activePage === "/alo24/unit" ||
                     activePage === "/alo24/supplier" ||
                     activePage === "/alo24/incoming"
-                      ? "active-page"
-                      : ""
-                  }`}
+                    ? "active-page"
+                    : ""
+                    }`}
                 >
                   <i className="icon-users nav-icon" />
                   Mahsulotlar
@@ -157,11 +155,10 @@ export const Navbar = ({ baseUrl }) => {
                     >
                       <li>
                         <Link
-                          className={`dropdown-item ${
-                            activePage === "/alo24/category"
-                              ? "active-page"
-                              : ""
-                          }`}
+                          className={`dropdown-item ${activePage === "/alo24/category"
+                            ? "active-page"
+                            : ""
+                            }`}
                           onClick={() => {
                             setActivePage("/alo24/category");
                           }}
@@ -172,11 +169,10 @@ export const Navbar = ({ baseUrl }) => {
                       </li>
                       <li>
                         <Link
-                          className={`dropdown-item ${
-                            activePage === "/alo24/producttypes"
-                              ? "active-page"
-                              : ""
-                          }`}
+                          className={`dropdown-item ${activePage === "/alo24/producttypes"
+                            ? "active-page"
+                            : ""
+                            }`}
                           onClick={() => {
                             setActivePage("/alo24/producttypes");
                           }}
@@ -187,9 +183,8 @@ export const Navbar = ({ baseUrl }) => {
                       </li>
                       <li>
                         <Link
-                          className={`dropdown-item ${
-                            activePage === "/alo24/brand" ? "active-page" : ""
-                          }`}
+                          className={`dropdown-item ${activePage === "/alo24/brand" ? "active-page" : ""
+                            }`}
                           onClick={() => {
                             setActivePage("/alo24/brand");
                           }}
@@ -200,9 +195,8 @@ export const Navbar = ({ baseUrl }) => {
                       </li>
                       <li>
                         <Link
-                          className={`dropdown-item ${
-                            activePage === "/alo24/product" ? "active-page" : ""
-                          }`}
+                          className={`dropdown-item ${activePage === "/alo24/product" ? "active-page" : ""
+                            }`}
                           onClick={() => {
                             setActivePage("/alo24/product");
                           }}
@@ -213,9 +207,8 @@ export const Navbar = ({ baseUrl }) => {
                       </li>
                       <li>
                         <Link
-                          className={`dropdown-item ${
-                            activePage === "/alo24/unit" ? "active-page" : ""
-                          }`}
+                          className={`dropdown-item ${activePage === "/alo24/unit" ? "active-page" : ""
+                            }`}
                           onClick={() => {
                             setActivePage("/alo24/unit");
                           }}
@@ -234,9 +227,8 @@ export const Navbar = ({ baseUrl }) => {
 
                   <li>
                     <Link
-                      className={`dropdown-item ${
-                        activePage === "/alo24/incoming" ? "active-page" : ""
-                      }`}
+                      className={`dropdown-item ${activePage === "/alo24/incoming" ? "active-page" : ""
+                        }`}
                       onClick={() => {
                         setActivePage("/alo24/incoming");
                       }}
@@ -254,13 +246,12 @@ export const Navbar = ({ baseUrl }) => {
                   data-toggle="dropdown"
                   aria-haspopup="true"
                   aria-expanded="false"
-                  className={`nav-link dropdown-toggle ${
-                    activePage === "/alo24/sales" ||
+                  className={`nav-link dropdown-toggle ${activePage === "/alo24/sales" ||
                     activePage === "/alo24/sales/packman" ||
                     activePage === "/alo24/sales/client"
-                      ? "active-page"
-                      : ""
-                  }`}
+                    ? "active-page"
+                    : ""
+                    }`}
                 >
                   <i className="icon-users nav-icon" />
                   Sotuv
@@ -268,9 +259,8 @@ export const Navbar = ({ baseUrl }) => {
                 <ul className="dropdown-menu" aria-labelledby="doctoRs">
                   <li>
                     <Link
-                      className={`dropdown-item ${
-                        activePage === "/alo24/packman" ? "active-page" : ""
-                      }`}
+                      className={`dropdown-item ${activePage === "/alo24/packman" ? "active-page" : ""
+                        }`}
                       onClick={() => {
                         setActivePage("/alo24/packman");
                       }}
@@ -281,9 +271,8 @@ export const Navbar = ({ baseUrl }) => {
                   </li>
                   <li>
                     <Link
-                      className={`dropdown-item ${
-                        activePage === "/alo24/client" ? "active-page" : ""
-                      }`}
+                      className={`dropdown-item ${activePage === "/alo24/client" ? "active-page" : ""
+                        }`}
                       onClick={() => {
                         setActivePage("/alo24/client");
                       }}
@@ -292,15 +281,26 @@ export const Navbar = ({ baseUrl }) => {
                       Mijoz
                     </Link>
                   </li>
+                  <li>
+                    <Link
+                      className={`dropdown-item ${activePage === "/alo24/sales" ? "active-page" : ""
+                        }`}
+                      onClick={() => {
+                        setActivePage("/alo24/sales");
+                      }}
+                      to="/alo24/sales"
+                    >
+                      Sotuv
+                    </Link>
+                  </li>
                 </ul>
               </li>
               <li className="nav-item dropdown">
                 <Link
-                  className={`nav-link ${
-                    activePage === "/alo24/exchangerate" || activePage === "/"
-                      ? "active-page"
-                      : ""
-                  }`}
+                  className={`nav-link ${activePage === "/alo24/exchangerate" || activePage === "/"
+                    ? "active-page"
+                    : ""
+                    }`}
                   onClick={() => {
                     setActivePage("/alo24/exchangerate");
                   }}
