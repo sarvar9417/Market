@@ -1,7 +1,7 @@
 import React from 'react'
 import Select from 'react-select';
 
-export const Selling = () => {
+export const Selling = ({packman, client}) => {
   return (
     <div className=' bg-white'>
       <p className='bg-[#31C2A0] text-center text-5xl text-white py-2'>CHEK: № 00134</p>
@@ -17,7 +17,7 @@ export const Selling = () => {
             isClearable={true}
             // isLoading={loading}
             // components={}
-            // options={}
+            options={packman}
           />
           </div> 
           <div>
@@ -27,7 +27,7 @@ export const Selling = () => {
             isClearable={true}
             // isLoading={loading}
             // components={}
-            // options={}
+            options={client}
           />            
           </div>
           <div className='sm:col-span-2'>
