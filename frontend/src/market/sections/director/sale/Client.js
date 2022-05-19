@@ -180,7 +180,7 @@ export const Client = () => {
       notify({
         title: error,
         description: "",
-        status: "",
+        status: "error",
       });
     }
   };
