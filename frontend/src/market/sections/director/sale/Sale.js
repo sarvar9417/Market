@@ -201,9 +201,9 @@ export const Sale = () => {
 
     // ===================================================================
     // ===================================================================
-    const [packman, setPackman] = useState ([])
+    const [packmans, setPackmans] = useState ([])
 
-    const getPackman = useCallback(async (type) => {
+    const getPackmans = useCallback(async (type) => {
         try {
             const data = await request (
                 `/api/sales/packman/getall`,
@@ -221,7 +221,7 @@ export const Sale = () => {
                     value: type._id
                 })
             })
-            setPackman (v)
+            setPackmans (v)
         }   catch (error) {
             notify({
                 title: error,
@@ -237,9 +237,9 @@ export const Sale = () => {
     //====================================================================
     //====================================================================
 
-    const [client, setClient] = useState ([])
+    const [clients, setClients] = useState ([])
 
-    const getClient = useCallback(async (type) => {
+    const getClients = useCallback(async (type) => {
         try {
             const data = await request (
                 `/api/sales/client/getall`,
@@ -257,7 +257,7 @@ export const Sale = () => {
                     value: type._id
                 })
             })
-            setClient (v)
+            setClients (v)
         }   catch (error) {
             notify({
                 title: error,
@@ -271,6 +271,33 @@ export const Sale = () => {
 
     //====================================================================
     //====================================================================
+
+    const [packman, setPackman] = useState ({})
+
+    const changePackman = (e) => {
+        setPackman({
+        name: e.label,
+        _id:e.value
+        })
+    }
+    //====================================================================
+    //====================================================================
+
+    //====================================================================
+    //====================================================================
+    const [client, setClient] = useState ({})
+
+    const changeClient = (e) => {
+        setClient({
+        name: e.label,
+        _id:e.value
+        })
+    }
+    //====================================================================
+    //====================================================================
+    
+    //====================================================================
+    //====================================================================
     const [t, setT] = useState()
     useEffect(() => {
         if (!t) {
@@ -278,11 +305,11 @@ export const Sale = () => {
             getCategories()
             getProductTypes()
             getBrand()
-            getPackman()
-            getClient()
+            getPackmans()
+            getClients()
             
         }
-    }, [getCategories, getProductTypes, getBrand, getPackman, getClient, t])
+    }, [getCategories, getProductTypes, getBrand, getPackmans, getClients, t])
     //====================================================================
     //====================================================================
 
@@ -300,7 +327,7 @@ export const Sale = () => {
                         brands={brands}
                         products={products}
                     /></div>
-                <div className='md:col-span-3 w-full'><Selling packman={packman} client={client}/></div>
+                <div className='md:col-span-3 w-full'><Selling packmans={packmans} clients={clients} changePackman={changePackman} changeClient={changeClient}/></div>
             </div>
         </div>
     )
