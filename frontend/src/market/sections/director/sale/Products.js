@@ -4,7 +4,7 @@ import makeAnimated from "react-select/animated";
 
 const animatedComponents = makeAnimated();
 
-export const Products = ({ changeProductType, changeCategory, categories, producttypes, brands, products }) => {
+export const Products = ({ changeBrand, changeProductType, changeCategory, categories, producttypes, brands, products }) => {
     return (
         <div className='bg-white'>
             <p className='bg-[#31C2A0] text-center text-5xl text-white py-2 m-0'>Maxsulotlar</p>
@@ -43,6 +43,7 @@ export const Products = ({ changeProductType, changeCategory, categories, produc
                     </div>
                     <div className='w-full'>
                         <Select
+                            onChange={changeBrand}
                             // isDisabled={loading}
                             placeholder="Brandlar"
                             isClearable={true}

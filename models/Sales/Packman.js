@@ -7,7 +7,7 @@ const packman = new Schema(
     market: { type: Schema.Types.ObjectId, ref: "Market", required: true },
     isArchive: { type: Boolean, default: false },
     clients: [{
-      type: Schema.Types.ObjectId, ref: "Client", required: true
+      type: Schema.Types.ObjectId, ref: "Client"
     }]
   },
   {

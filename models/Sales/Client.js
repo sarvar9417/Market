@@ -6,6 +6,9 @@ const client = new Schema(
     name: { type: String, required: true },
     market: { type: Schema.Types.ObjectId, ref: "Market", required: true },
     isArchive: { type: Boolean, default: false },
+    packman: {
+      type: Schema.Types.ObjectId, ref: "Packman"
+    }
   },
   {
     timestamps: true,

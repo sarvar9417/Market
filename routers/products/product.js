@@ -285,6 +285,7 @@ module.exports.register = async (req, res) => {
     })
 
     await newPrice.save()
+
     newProduct.price = newPrice._id
     await newProduct.save()
 
@@ -587,7 +588,6 @@ module.exports.getAllType = async (req, res) => {
 
 //Product getall by brand
 module.exports.getAllBrand = async (req, res) => {
-  bm
   try {
     const { market, typeid } = req.body
 
@@ -608,7 +608,6 @@ module.exports.getAllBrand = async (req, res) => {
       .populate("producttype", "name")
       .populate("price", "sellingprice")
       .populate("unit", "name")
-
     res.send(products)
   } catch (error) {
     res.status(501).json({ error: "Serverda xatolik yuz berdi..." })

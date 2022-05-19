@@ -60,8 +60,8 @@ export const Sale = () => {
             data.map((category) => {
                 return c.push({
                     label: category.code,
-                    value: "Category",
-                    type: category
+                    type: "Category",
+                    value: category
                 })
             })
             setCategories(c)
@@ -72,11 +72,14 @@ export const Sale = () => {
                 status: "error",
             })
         }
-    }, [request, auth, notify, categories])
+    }, [request, auth, notify])
 
     const changeCategory = (e) => {
+        if (e.value === 'all') {
+            return setProductTypes(allproducttypes)
+        }
         const filter = allproducttypes.filter((producttype) => {
-            return producttype.type.category._id === e.type._id
+            return producttype.value.category._id === e.value._id
         })
         setProductTypes(filter)
         getProducts(e)
@@ -103,8 +106,8 @@ export const Sale = () => {
             data.map((type) => {
                 return c.push({
                     label: type.name,
-                    value: "ProductType",
-                    type
+                    type: "ProductType",
+                    value: type
                 })
             })
             setProductTypes(c)
@@ -138,12 +141,12 @@ export const Sale = () => {
                     Authorization: `Bearer ${auth.token}`,
                 }
             )
-            let c = [...brands]
+            let c = []
             data.map((type) => {
                 return c.push({
                     label: type.name,
-                    value: "Brand",
-                    _id: type._id
+                    type: "Brand",
+                    value: type
                 })
             })
             setBrands(c)
@@ -154,7 +157,11 @@ export const Sale = () => {
                 status: "error",
             })
         }
-    }, [request, auth, notify, brands])
+    }, [request, auth, notify])
+
+    const changeBrand = (e) => {
+        getProducts(e)
+    }
     //====================================================================
     //====================================================================
 
@@ -167,7 +174,7 @@ export const Sale = () => {
             const data = await request(
                 `/api/products/product/getsale`,
                 "POST",
-                { market: auth.market._id, type: type.value, typeid: type.type._id },
+                { market: auth.market._id, type: type.type, typeid: type.value._id },
                 {
                     Authorization: `Bearer ${auth.token}`,
                 }
@@ -176,8 +183,8 @@ export const Sale = () => {
             data.map((type) => {
                 return c.push({
                     label: type.code + " " + type.name,
-                    value: "product",
-                    product: { ...type }
+                    type: "product",
+                    value: type
                 })
             })
             setProducts(c)
@@ -213,6 +220,7 @@ export const Sale = () => {
             <div className='grid grid-cols-1 gap-4 md:grid-cols-5'>
                 <div className='md:col-span-2 w-full'>
                     <Products
+                        changeBrand={changeBrand}
                         changeProductType={changeProductType}
                         changeCategory={changeCategory}
                         categories={categories}
