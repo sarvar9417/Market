@@ -38,7 +38,10 @@ export const Sale = () => {
 
     //====================================================================
     //====================================================================
-    const [categories, setCategories] = useState([])
+    const [categories, setCategories] = useState([{
+        label: "Barcha kategoriyalar",
+        value: "all"
+    }])
 
     const getCategories = useCallback(async () => {
         try {
@@ -50,8 +53,10 @@ export const Sale = () => {
                     Authorization: `Bearer ${auth.token}`,
                 }
             )
-            console.log(data);
-            let c = []
+            let c = [{
+                label: "Barcha kategoriyalar",
+                value: "all"
+            }]
             data.map((category) => {
                 return c.push({
                     label: category.code,
