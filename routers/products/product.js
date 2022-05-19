@@ -517,7 +517,6 @@ module.exports.getAll = async (req, res) => {
       .sort({ _id: -1 })
       .select("name code unit category producttype brand price total")
       .populate("category", "name code")
-      .populate("producttype", "name")
       .populate("unit", "name")
       .populate("brand", "name")
       .populate("price", "sellingprice")
@@ -546,11 +545,9 @@ module.exports.getCategory = async (req, res) => {
       category
     })
       .sort({ _id: -1 })
-      .select("name code unit category producttype brand price")
+      .select("name code unit category price")
       .populate("category", "name code")
-      .populate("producttype", "name")
       .populate("unit", "name")
-      .populate("brand", "name")
       .populate("price", "sellingprice")
 
     res.send(products)
@@ -576,11 +573,11 @@ module.exports.getAllType = async (req, res) => {
     const products = await Product.find({
       market,
       producttype,
-    }).select('name code category producttype price unit')
-      .populate("category", "code")
-      .populate("producttype", "name")
-      .populate("price", "sellingprice")
+    }).sort({ _id: -1 })
+      .select("name code unit category price")
+      .populate("category", "name code")
       .populate("unit", "name")
+      .populate("price", "sellingprice")
 
     res.send(products)
   } catch (error) {
@@ -634,11 +631,11 @@ module.exports.getAllCategory = async (req, res) => {
     const products = await Product.find({
       market,
       category,
-    }).select('name code category producttype price unit')
-      .populate("category", "code")
-      .populate("producttype", "name")
-      .populate("price", "sellingprice")
+    }).sort({ _id: -1 })
+      .select("name code unit category price")
+      .populate("category", "name code")
       .populate("unit", "name")
+      .populate("price", "sellingprice")
 
     res.send(products)
   } catch (error) {
