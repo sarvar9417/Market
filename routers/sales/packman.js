@@ -3,6 +3,7 @@ const { Market } = require("../../models/MarketAndBranch/Market");
 
 module.exports.register = async (req, res) => {
   try {
+    const { name, market } = req.body;
     const { error } = validatePackman(req.body);
     if (error) {
       return res.status(400).json({
@@ -10,25 +11,20 @@ module.exports.register = async (req, res) => {
       });
     }
 
-    const { name, market } = req.body;
+    const marke = await Market.findById(market);
+    if (!marke) {
+      return res.status(400).json({
+        message: `Diqqat! Do'kon haqida malumotlar topilmadi.`,
+      });
+    }
 
     const packman = await Packman.findOne({
       name,
       market,
     });
-
     if (packman) {
       return res.status(400).json({
         message: `Diqqat! ${name} yetkazuvchi avval yaratilgan!`,
-      });
-    }
-
-    const marke = await Market.findOne({
-      market,
-    });
-    if (marke) {
-      return res.status(400).json({
-        message: `Diqqat! Do'kon haqida malumotlar topilmadi.`,
       });
     }
 
@@ -38,7 +34,7 @@ module.exports.register = async (req, res) => {
     });
 
     await newPackman.save();
-    res.send(newPackman);
+    res.status(201).send(newPackman);
   } catch (error) {
     res.status(400).json({ error: "Serverda xatolik yuz berdi..." });
   }
@@ -56,7 +52,7 @@ module.exports.getAll = async (req, res) => {
 
     const packman = await Packman.find({ market });
 
-    res.send(packman);
+    res.status(201).send(packman);
   } catch (error) {
     res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
   }
@@ -71,8 +67,8 @@ module.exports.updatePackman = async (req, res) => {
         .status(400)
         .json({ message: "Diqqat! Do'kon haqida malumot topilmadi!" });
     }
-    const packman = await Packman.findById({ _id });
-    if (!_id) {
+    const packman = await Packman.findById(_id);
+    if (!packman) {
       return res
         .status(400)
         .json({ message: `Diqqat! ${name} yetkazuvchi avval yaratilmagan` });
@@ -81,7 +77,7 @@ module.exports.updatePackman = async (req, res) => {
     await Packman.findByIdAndUpdate(_id, {
       name: name,
     });
-    res.send(packman);
+    res.status(201).send(packman);
   } catch (error) {
     res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
   }
@@ -106,7 +102,7 @@ module.exports.deletePackman = async (req, res) => {
 
     await Packman.findByIdAndDelete(_id);
 
-    res.send(packman);
+    res.status(201).send(packman);
   } catch (error) {
     res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
   }

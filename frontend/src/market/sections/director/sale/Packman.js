@@ -171,6 +171,7 @@ export const Packman = () => {
       setPackman({
         market: auth.market && auth.market._id,
       });
+      console.log(data);
       notify({
         title: `${data.name} degan yetkazuvchi yaratildi!`,
         description: "",
@@ -180,7 +181,7 @@ export const Packman = () => {
       notify({
         title: error,
         description: "",
-        status: "",
+        status: "error",
       });
     }
   };
