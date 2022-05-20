@@ -77,12 +77,49 @@ export const Client = () => {
     setClient({ ...client, name: e.target.value });
   };
 
+  const selectHandler = (e) => {
+    if (e.target.value === "delete") {
+      setClient({ ...client, packman: null });
+    } else {
+      setClient({ ...client, packman: e.target.value });
+    }
+  };
+
+  const updateInputs = (client) => {
+    setClient({
+      market: auth.market && auth.market._id,
+      ...client,
+    });
+    if (client.packman) {
+      for (const option of document.getElementsByTagName("select")[0]) {
+        if (option.value === client.packman._id) {
+          option.selected = true;
+        }
+      }
+    }
+  };
+
+  const deleteHandler = (client) => {
+    setRemove({
+      market: auth.market && auth.market._id,
+      name: client.name,
+      _id: client._id,
+      packman: client.packman ? client.packman._id : null,
+    });
+  };
+
   //====================================================================
 
   const clearInputs = useCallback(() => {
     setClient({
       market: auth.market && auth.market._id,
     });
+
+    for (let option of document.getElementsByTagName("select")[0].options) {
+      if (option.value === "delete") {
+        option.selected = true;
+      }
+    }
   }, [auth.market]);
 
   //====================================================================
@@ -91,6 +128,29 @@ export const Client = () => {
     if (e.key === "Enter") {
       return saveHandler();
     }
+  };
+
+  //====================================================================
+
+  const changeData = (method, data) => {
+    let arr = [];
+    if (method === "POST") {
+      arr = [{ ...data }, ...searchStorage];
+    }
+    if (method === "UPDATE") {
+      arr = searchStorage.map((item) => {
+        if (item._id === data._id) {
+          return (item = { ...data });
+        }
+        return item;
+      });
+    }
+    if (method === "DELETE") {
+      arr = searchStorage.filter((item) => item._id !== data._id);
+    }
+    setClients(arr);
+    setCurrentClients(arr);
+    setSearchStorage(arr);
   };
 
   //====================================================================
@@ -109,6 +169,16 @@ export const Client = () => {
     );
 
     setClients(searching);
+    setCurrentClients(searching);
+  };
+
+  const searchPackman = (e) => {
+    const searching = searchStorage.filter(
+      (item) =>
+        item.packman &&
+        item.packman.name.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    setClient(searching);
     setCurrentClients(searching);
   };
 
@@ -156,6 +226,27 @@ export const Client = () => {
     }
   }, [auth, notify, indexFirstClient, indexLastClient, request]);
 
+  const [packmans, setPackmans] = useState([]);
+
+  const getPackmans = useCallback(async () => {
+    try {
+      const data = await request(
+        "/api/sales/packman/getall",
+        "POST",
+        { market: auth.market && auth.market._id },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setPackmans(data);
+    } catch (error) {
+      notify({
+        title: error,
+        description: "",
+        status: "error",
+      });
+    }
+  }, [notify, auth, request]);
   const createClient = async () => {
     try {
       const data = await request(
@@ -166,8 +257,8 @@ export const Client = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+      changeData("POST", data);
       clearInputs();
-      getClients();
       setClient({
         market: auth.market && auth.market._id,
       });
@@ -195,8 +286,8 @@ export const Client = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+      changeData("UPDATE", data);
       clearInputs();
-      getClients();
       setClient({
         market: auth.market && auth.market._id,
       });
@@ -229,7 +320,7 @@ export const Client = () => {
         description: "",
         status: "success",
       });
-      getClients();
+      changeData("DELETE", data);
       setRemove({
         market: auth.market && auth.market._id,
       });
@@ -247,9 +338,10 @@ export const Client = () => {
   useEffect(() => {
     if (!t) {
       getClients();
+      getPackmans();
       setT(true);
     }
-  }, [getClients, t]);
+  }, [getClients, getPackmans, t]);
 
   //====================================================================
   //====================================================================
@@ -270,6 +362,7 @@ export const Client = () => {
                 <table className="table m-0">
                   <thead>
                     <tr>
+                      <th className="border text-center">Yetkazuvchilar</th>
                       <th className="border text-center">Mijoz</th>
                       <th className="border text-center">Saqlash</th>
                       <th className="border text-center">Tozalash</th>
@@ -277,6 +370,27 @@ export const Client = () => {
                   </thead>
                   <tbody>
                     <tr className="border text-center">
+                      <td className="border text-center">
+                        <div>
+                          <select
+                            onChange={(e) => {
+                              selectHandler(e);
+                            }}
+                            placeholder="yetkazuvchini tanlang"
+                            className="form-control form-control-sm selectpicker"
+                            style={{ minWidth: "50px" }}
+                          >
+                            <option value="delete">None</option>
+                            {packmans.map((item, index) => {
+                              return (
+                                <option key={index} value={item._id}>
+                                  {item.name}
+                                </option>
+                              );
+                            })}
+                          </select>
+                        </div>
+                      </td>
                       <td className="border text-center">
                         <input
                           name="name"
@@ -352,6 +466,15 @@ export const Client = () => {
                         <input
                           className="form-control"
                           type="search"
+                          onChange={searchPackman}
+                          style={{ maxWidth: "100px" }}
+                          placeholder="Yetkazuvchi"
+                        />
+                      </th>
+                      <th>
+                        <input
+                          className="form-control"
+                          type="search"
                           onChange={searchClient}
                           style={{ maxWidth: "100px" }}
                           placeholder="Mijozlar"
@@ -383,6 +506,14 @@ export const Client = () => {
                     <tr className="border text-center">
                       <th className="border text-center">№</th>
                       <th className="border text-center">
+                        Yetkazuvchi{" "}
+                        <Sort
+                          data={clients}
+                          setData={setClients}
+                          property={"name"}
+                        />
+                      </th>
+                      <th className="border text-center">
                         Mijoz{" "}
                         <Sort
                           data={clients}
@@ -403,12 +534,15 @@ export const Client = () => {
                               {currentPage * countPage + key + 1}
                             </td>
                             <td className="border text-center font-bold text-bold text-black">
+                              {(s.packman && s.packman.name) || ""}
+                            </td>
+                            <td className="border text-center font-bold text-bold text-black">
                               {s.name}
                             </td>
                             <td className="border text-center">
                               <button
                                 onClick={() => {
-                                  setClient({ ...s });
+                                  updateInputs(s);
                                 }}
                                 className="btn btn-success py-1 px-4"
                                 style={{ fontSize: "75%" }}
@@ -422,7 +556,7 @@ export const Client = () => {
                             <td className="border text-center">
                               <button
                                 onClick={() => {
-                                  setRemove({ ...s });
+                                  deleteHandler(s);
                                   setModal(true);
                                 }}
                                 className="btn btn-secondary py-1 px-4"
