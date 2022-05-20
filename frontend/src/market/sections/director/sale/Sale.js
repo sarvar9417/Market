@@ -7,6 +7,7 @@ import { InputProduct } from './components/InputProduct'
 // import { Payment } from './Payment'
 import { Products } from './Products'
 import { Selling } from './Selling'
+// import { Card } from './payment/Card'
 
 export const Sale = () => {
 
@@ -352,6 +353,7 @@ export const Sale = () => {
 
     return (
         <div className='p-3'>
+            {/* <Card/> */}
             {/* <Payment /> */}
             <div className='grid grid-cols-1 gap-4 md:grid-cols-5'>
                 <div className='md:col-span-2 w-full'>
