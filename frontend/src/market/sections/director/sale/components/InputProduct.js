@@ -1,7 +1,6 @@
 import React from 'react'
 
 export const InputProduct = ({ setCounts, product }) => {
-    console.log(product);
     return (
         <div>
             <p className='font-bold'> {product && product.category.code + " - " + product.code + " " + product.name} </p>
