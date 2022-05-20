@@ -173,6 +173,7 @@ export const Sale = () => {
     //====================================================================
     const [products, setProducts] = useState([])
     const [saleproduct, setSaleProduct] = useState()
+    const [saleproducts, setSaleProducts] = useState([])
 
     const getProducts = useCallback(async (type) => {
         try {
@@ -220,7 +221,7 @@ export const Sale = () => {
             totalprice = (!unitprice ? 0 : unitprice) * parseInt(e.target.value)
             setSaleProduct({
                 ...saleproduct,
-                pieces: parseInt(e.target.value),
+                pieces: e.target.value === '' ? '' : parseInt(e.target.value),
                 totalprice: e.target.value === '' ? 0 : totalprice
             })
         }
@@ -228,10 +229,28 @@ export const Sale = () => {
             totalprice = (!pieces ? 0 : pieces) * parseInt(e.target.value)
             setSaleProduct({
                 ...saleproduct,
-                unitprice: parseInt(e.target.value),
+                unitprice: e.target.value === '' ? '' : parseInt(e.target.value),
                 totalprice: e.target.value === '' ? 0 : totalprice
             })
         }
+    }
+
+    const pushSaleProduct = () => {
+        let sales = [...saleproducts]
+        sales.unshift(saleproduct)
+        setSaleProduct()
+        setModal(false)
+        setSaleProducts(sales)
+    }
+
+    const editProducts = (product, index, type) => {
+        let sales = [...saleproducts]
+        sales.splice(index, 1)
+        if (type === 'edit') {
+            setSaleProduct(product)
+            setModal(true)
+        }
+        setSaleProducts(sales)
     }
     //====================================================================
     //====================================================================
@@ -353,7 +372,7 @@ export const Sale = () => {
     return (
         <div className='p-3'>
             {/* <Payment /> */}
-            <div className='grid grid-cols-1 gap-4 md:grid-cols-5'>
+            <div className='grid grid-cols-1 gap-4 md:grid-cols-7'>
                 <div className='md:col-span-2 w-full'>
                     <Products
                         changeProduct={changeProduct}
@@ -365,15 +384,24 @@ export const Sale = () => {
                         brands={brands}
                         products={products}
                     /></div>
-                <div className='md:col-span-3 w-full'><Selling packmans={packmans} clients={clients} changePackman={changePackman} changeClient={changeClient} /></div>
+                <div className='md:col-span-5 w-full'>
+                    <Selling
+                        editProducts={editProducts}
+                        saleproducts={saleproducts}
+                        packmans={packmans}
+                        clients={clients}
+                        changePackman={changePackman}
+                        changeClient={changeClient}
+                    />
+                </div>
             </div>
 
             <Modal
                 modal={modal}
                 setModal={setModal}
                 basic={<InputProduct setCounts={setCounts} product={saleproduct} />}
-            // text={"mahsulotnti o'chirishni tasdiqlaysizmi?"}
-            // handler={deleteHandler}
+                // text={"mahsulotnti o'chirishni tasdiqlaysizmi?"}
+                handler={pushSaleProduct}
             />
         </div>
     )

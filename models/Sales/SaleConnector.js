@@ -3,13 +3,15 @@ const Joi = require('joi')
 
 const saleconnector = new Schema(
   {
-    payment: [{ type: Schema.Types.ObjectId, ref: 'Payment' }],
-    discount: [{ type: Schema.Types.ObjectId, ref: 'Discount' }],
-    debt: [{ type: Schema.Types.ObjectId, ref: 'Debt' }],
+    id: { type: String },
+    payments: [{ type: Schema.Types.ObjectId, ref: 'Payment' }],
+    discounts: [{ type: Schema.Types.ObjectId, ref: 'Discount' }],
+    debts: [{ type: Schema.Types.ObjectId, ref: 'Debt' }],
     packman: { type: Schema.Types.ObjectId, ref: 'Packman' },
     client: { type: Schema.Types.ObjectId, ref: 'Client' },
     products: [{ type: Schema.Types.ObjectId, ref: 'SaleProduct' }],
     market: { type: Schema.Types.ObjectId, ref: 'Market', required: true },
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     isArchive: { type: Boolean, default: false },
   },
   {
@@ -19,10 +21,14 @@ const saleconnector = new Schema(
 
 function validateSaleConnector(saleconnector) {
   const schema = Joi.object({
-    total: Joi.number(),
-    supplier: Joi.string(),
-    sale: Joi.array(),
+    id: Joi.string(),
+    payments: Joi.array(),
+    discounts: Joi.array(),
+    debts: Joi.string(),
+    packman: Joi.string(),
+    client: Joi.string(),
     user: Joi.string(),
+    products: Joi.array(),
     market: Joi.string(),
   })
 

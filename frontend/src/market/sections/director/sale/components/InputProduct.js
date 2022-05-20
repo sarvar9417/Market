@@ -15,10 +15,20 @@ export const InputProduct = ({ setCounts, product }) => {
                 <tbody>
                     <tr>
                         <td className='border text-base p-0 font-bold px-2'>
-                            <input type="number" onChange={setCounts} name='pieces' value={product && product.pieces} className='w-full outline-none text-right font-bold' />
+                            <input
+                                type="number"
+                                onChange={setCounts}
+                                name='pieces'
+                                value={product ? product.pieces : ''}
+                                className='w-full outline-none text-right font-bold' />
                         </td>
                         <td className='border text-base p-0 font-bold px-2'>
-                            <input type="number" onChange={setCounts} name='unitprice' value={product && product.unitprice} className='w-full outline-none text-right font-bold' />
+                            <input
+                                type="number"
+                                onChange={setCounts}
+                                name='unitprice'
+                                value={product ? product.unitprice : ''}
+                                className='w-full outline-none text-right font-bold' />
                         </td>
                         <td className='border text-base p-0 font-bold px-2 w-1/3'>
                             {product && product.totalprice}
