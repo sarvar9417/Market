@@ -2,6 +2,8 @@ import { useToast } from '@chakra-ui/react'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../../../context/AuthContext'
 import { useHttp } from '../../../hooks/http.hook'
+import { Modal } from '../components/Modal'
+import { InputProduct } from './components/InputProduct'
 // import { Payment } from './Payment'
 import { Products } from './Products'
 import { Selling } from './Selling'
@@ -33,6 +35,8 @@ export const Sale = () => {
     // AUTH
     const { request } = useHttp()
     const auth = useContext(AuthContext)
+
+    const [modal, setModal] = useState(false)
     //====================================================================
     //====================================================================
 
@@ -168,6 +172,7 @@ export const Sale = () => {
     //====================================================================
     //====================================================================
     const [products, setProducts] = useState([])
+    const [saleproduct, setSaleProduct] = useState()
 
     const getProducts = useCallback(async (type) => {
         try {
@@ -196,33 +201,65 @@ export const Sale = () => {
             })
         }
     }, [request, auth, notify])
+
+    const changeProduct = (e) => {
+        setModal(true)
+        setSaleProduct({
+            ...e.value,
+            totalprice: e.value.price.sellingprice,
+            pieces: 1,
+            unitprice: e.value.price.sellingprice
+        });
+    }
+
+    const setCounts = (e) => {
+        let pieces = saleproduct.pieces
+        let unitprice = saleproduct.unitprice
+        let totalprice = saleproduct.totalprice
+        if (e.target.name === 'pieces') {
+            totalprice = (!unitprice ? 0 : unitprice) * parseInt(e.target.value)
+            setSaleProduct({
+                ...saleproduct,
+                pieces: parseInt(e.target.value),
+                totalprice: e.target.value === '' ? 0 : totalprice
+            })
+        }
+        if (e.target.name === 'unitprice') {
+            totalprice = (!pieces ? 0 : pieces) * parseInt(e.target.value)
+            setSaleProduct({
+                ...saleproduct,
+                unitprice: parseInt(e.target.value),
+                totalprice: e.target.value === '' ? 0 : totalprice
+            })
+        }
+    }
     //====================================================================
     //====================================================================
 
     // ===================================================================
     // ===================================================================
-    const [packman, setPackman] = useState ([])
+    const [packman, setPackman] = useState([])
 
     const getPackman = useCallback(async (type) => {
         try {
-            const data = await request (
+            const data = await request(
                 `/api/sales/packman/getall`,
                 "POST",
                 { market: auth.market._id },
                 {
                     Authorization: `Bearer ${auth.token}`,
-                } 
+                }
             )
             let v = []
 
-            data.map((type) =>{
+            data.map((type) => {
                 return v.push({
                     label: type.name,
                     value: type._id
                 })
             })
-            setPackman (v)
-        }   catch (error) {
+            setPackman(v)
+        } catch (error) {
             notify({
                 title: error,
                 description: "",
@@ -233,32 +270,32 @@ export const Sale = () => {
     //====================================================================
     //====================================================================
 
-    
+
     //====================================================================
     //====================================================================
 
-    const [client, setClient] = useState ([])
+    const [client, setClient] = useState([])
 
     const getClient = useCallback(async (type) => {
         try {
-            const data = await request (
+            const data = await request(
                 `/api/sales/client/getall`,
                 "POST",
                 { market: auth.market._id },
                 {
                     Authorization: `Bearer ${auth.token}`,
-                } 
+                }
             )
             let v = []
 
-            data.map((type) =>{
+            data.map((type) => {
                 return v.push({
                     label: type.name,
                     value: type._id
                 })
             })
-            setClient (v)
-        }   catch (error) {
+            setClient(v)
+        } catch (error) {
             notify({
                 title: error,
                 description: "",
@@ -280,7 +317,7 @@ export const Sale = () => {
             getBrand()
             getPackman()
             getClient()
-            
+
         }
     }, [getCategories, getProductTypes, getBrand, getPackman, getClient, t])
     //====================================================================
@@ -292,6 +329,7 @@ export const Sale = () => {
             <div className='grid grid-cols-1 gap-4 md:grid-cols-5'>
                 <div className='md:col-span-2 w-full'>
                     <Products
+                        changeProduct={changeProduct}
                         changeBrand={changeBrand}
                         changeProductType={changeProductType}
                         changeCategory={changeCategory}
@@ -300,8 +338,16 @@ export const Sale = () => {
                         brands={brands}
                         products={products}
                     /></div>
-                <div className='md:col-span-3 w-full'><Selling packman={packman} client={client}/></div>
+                <div className='md:col-span-3 w-full'><Selling packman={packman} client={client} /></div>
             </div>
+
+            <Modal
+                modal={modal}
+                setModal={setModal}
+                basic={<InputProduct setCounts={setCounts} product={saleproduct} />}
+            // text={"mahsulotnti o'chirishni tasdiqlaysizmi?"}
+            // handler={deleteHandler}
+            />
         </div>
     )
 }
