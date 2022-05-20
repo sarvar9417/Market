@@ -1,7 +1,7 @@
 import React from 'react'
 import Select from 'react-select';
 
-export const Selling = ({packman, client}) => {
+export const Selling = ({packmans, clients, changePackman, changeClient}) => {
   return (
     <div className=' bg-white'>
       <p className='bg-[#31C2A0] text-center text-5xl text-white py-2'>CHEK: № 00134</p>
@@ -13,21 +13,23 @@ export const Selling = ({packman, client}) => {
         <div>
            <Select
             // isDisabled={loading}
+            onChange={changePackman}
             placeholder="Yetkazuvchi"
             isClearable={true}
             // isLoading={loading}
             // components={}
-            options={packman}
+            options={packmans}
           />
           </div> 
           <div>
           <Select
             // isDisabled={loading}
+            onChange={changeClient}
             placeholder="Xaridor"
             isClearable={true}
             // isLoading={loading}
             // components={}
-            options={client}
+            options={clients}
           />            
           </div>
           <div className='sm:col-span-2'>
