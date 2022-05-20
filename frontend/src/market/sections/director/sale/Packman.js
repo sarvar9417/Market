@@ -1,3 +1,4 @@
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useToast } from "@chakra-ui/react";
 import { Modal } from "../products/modal/Modal";
 import {
@@ -7,7 +8,6 @@ import {
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useCallback, useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../context/AuthContext";
 import { useHttp } from "../../../hooks/http.hook";
 import { Pagination } from "../components/Pagination";

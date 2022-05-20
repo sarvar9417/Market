@@ -43,7 +43,7 @@ router.post('/product/getallcategory', auth, (req, res) => {
 })
 
 router.post('/product/getsale', auth, (req, res) => {
-  switch (req.type) {
+  switch (req.body.type) {
     case 'Category':
       require('./product').getAllCategory(req, res)
       break;
