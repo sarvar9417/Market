@@ -1,18 +1,18 @@
-import React from 'react'
-import { Number } from './Number'
-import { useState } from 'react'
+import React from "react";
+import { Number } from "./Number";
+import { useState } from "react";
 
 export const LeftCard = () => {
   const [price, setPrice] = useState({
     price: 2470,
-  })
+  });
   const supPrice = () => {
     setPrice({
       price: price.price + 1,
-    })
-  }
+    });
+  };
   return (
-    <div className="w-full text-white pl-6 md:w-2/5 max-w-[400px] pt-4 m-auto">
+    <div className="w-full text-white px-4 lg:w-2/5 md:max-w-[400px] sm:max-w-[400px]  xsm:max-w-[400px] pt-4 m-auto">
       <h1 className=" pb-3 border-[#ddd] text-right text-5xl border-b-2 mb-1">
         {price.price} $
       </h1>
@@ -26,5 +26,5 @@ export const LeftCard = () => {
         <button className="px-7 py-3 bg-[#54B1EC] text-lg">5700 $</button>
       </div>
     </div>
-  )
-}
+  );
+};
