@@ -382,9 +382,9 @@ export const Sale = () => {
 
   return (
     <div className="">
-      <Card />
+      {/* <Card /> */}
       {/* <Payment /> */}
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-7">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-7 p-3">
         <div className="md:col-span-2 w-full">
           <Products
             changeProduct={changeProduct}
