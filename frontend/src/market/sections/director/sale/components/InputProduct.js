@@ -31,7 +31,7 @@ export const InputProduct = ({ setCounts, product }) => {
                                 className='w-full outline-none text-right font-bold' />
                         </td>
                         <td className='border text-base p-0 font-bold px-2 w-1/3'>
-                            {product && product.totalprice}
+                            {product && product.totalprice.toFixed(2)} $
                         </td>
                     </tr>
                 </tbody>

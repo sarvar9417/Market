@@ -1,9 +1,11 @@
-import { faPenAlt, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
-import Select from "react-select";
+import { faPenAlt, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React from 'react'
+import Select from 'react-select'
 
 export const Selling = ({
+  totalprice,
+  setVisible,
   editProducts,
   saleproducts,
   packmans,
@@ -13,13 +15,13 @@ export const Selling = ({
   inputClient,
 }) => {
   return (
-    <div className=" bg-white text ">
-      <p className="bg-[#31C2A0] text-center text-2xl text-white py-2 font-bold">
+    <div className=" bg-white text">
+      <p className="bg-teal-500 text-center text-2xl text-white py-2 font-bold">
         CHEK: № 00134
       </p>
       <div className="px-3 py-2">
         <div className="flex justify-end py-2 px-2 ">
-          <button className="btn bg-[#31C2A0] py-1 px-3 text-white text-base">
+          <button className="btn bg-teal-500 py-1 px-3 text-white text-base">
             Xaridor
           </button>
         </div>
@@ -58,18 +60,18 @@ export const Selling = ({
           </div>
         </div>
         <div className="max-h-96 overflow-y-scroll">
-          <table className="bg-white w-full text-base relative">
+          <table className="bg-white w-full text-base relative min-w-[700px]">
             <thead className="z-10 border text-center text-base  text-white py-4">
               <tr>
-                <th className="border sticky top-0 bg-[#31C2A0]">№</th>
-                <th className="border sticky top-0 bg-[#31C2A0]">
+                <th className="border sticky top-0 bg-teal-500">№</th>
+                <th className="border sticky top-0 bg-teal-500">
                   Kategoriyasi
                 </th>
-                <th className="border sticky top-0 bg-[#31C2A0]">Nomi</th>
-                <th className="border sticky top-0 bg-[#31C2A0]">Soni</th>
-                <th className="border sticky top-0 bg-[#31C2A0]">Narxi</th>
-                <th className="border sticky top-0 bg-[#31C2A0]">Edit</th>
-                <th className="border sticky top-0 bg-[#31C2A0]">Delete</th>
+                <th className="border sticky top-0 bg-teal-500">Nomi</th>
+                <th className="border sticky top-0 bg-teal-500">Soni</th>
+                <th className="border sticky top-0 bg-teal-500">Narxi</th>
+                <th className="border sticky top-0 bg-teal-500">Edit</th>
+                <th className="border sticky top-0 bg-teal-500">Delete</th>
               </tr>
             </thead>
             <tbody className="border text-black">
@@ -89,13 +91,13 @@ export const Selling = ({
                       {product.pieces}
                     </td>
                     <td className="border font-bold text-black text-right px-2 w-1/6">
-                      {product.totalprice} $
+                      {product.totalprice.toFixed(2)} $
                     </td>
                     <td className="border font-bold text-black text-right px-2">
                       <button
                         className="px-3 bg-teal-500 hover:bg-teal-600 text-white rounded my-1"
                         onClick={() => {
-                          editProducts(product, index, "edit");
+                          editProducts(product, index, 'edit')
                         }}
                       >
                         <FontAwesomeIcon icon={faPenAlt} />
@@ -105,38 +107,43 @@ export const Selling = ({
                       <button
                         className="px-3 bg-red-600 hover:bg-red-500 text-white rounded my-1"
                         onClick={() => {
-                          editProducts(product, index, "delete");
+                          editProducts(product, index, 'delete')
                         }}
                       >
                         <FontAwesomeIcon icon={faTrash} />
                       </button>
                     </td>
                   </tr>
-                );
+                )
               })}
             </tbody>
           </table>
         </div>
-        <div className="py-3 text-lg">
-          <div className="flex justify-between ">
-            <span className="text-black font-bold">Umumiy summa:</span>
-            <span className="text-black font-bold">
-              {saleproducts.reduce((summ, product) => {
-                return summ + product.totalprice;
-              }, 0)}{" "}
-              $
-            </span>
+        <div className="flex">
+          <div className="py-3 text-lg w-4/5">
+            <div className="flex justify-between ">
+              <span className="text-black font-bold">Umumiy summa:</span>
+              <span className="text-black font-bold">
+                {totalprice.toFixed(2)} $
+              </span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-black font-bold">Chegirma:</span>
+              <span className="text-yellow-500 font-bold">30.000</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-black font-bold">To'lanayotgsan:</span>
+              <span className="text-green-700 font-bold">340.000</span>
+            </div>
           </div>
-          <div className="flex justify-between">
-            <span className="text-black font-bold">Chegirma:</span>
-            <span className="text-yellow-500 font-bold">30.000</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-black font-bold">To'lanayotgan:</span>
-            <span className="text-green-700 font-bold">340.000</span>
-          </div>
+          <button
+            onClick={() => setVisible(true)}
+            className="w-1/5 my-4 ml-3 bg-teal-500 text-white rounded font-bold text-xl"
+          >
+            To'lov
+          </button>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

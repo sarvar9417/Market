@@ -41,6 +41,7 @@ export const Sale = () => {
   const auth = useContext(AuthContext)
 
   const [modal, setModal] = useState(false)
+  const [visible, setVisible] = useState(false)
 
   //====================================================================
   //====================================================================
@@ -191,6 +192,7 @@ export const Sale = () => {
   const [products, setProducts] = useState([])
   const [saleproduct, setSaleProduct] = useState()
   const [saleproducts, setSaleProducts] = useState([])
+  const [totalprice, setTotalPrice] = useState(0)
 
 
   const getProducts = useCallback(
@@ -239,18 +241,18 @@ export const Sale = () => {
     let unitprice = saleproduct.unitprice
     let totalprice = saleproduct.totalprice
     if (e.target.name === 'pieces') {
-      totalprice = (!unitprice ? 0 : unitprice) * parseInt(e.target.value)
+      totalprice = (!unitprice ? 0 : unitprice) * parseFloat(e.target.value)
       setSaleProduct({
         ...saleproduct,
-        pieces: e.target.value === '' ? '' : parseInt(e.target.value),
+        pieces: e.target.value === '' ? '' : parseFloat(e.target.value),
         totalprice: e.target.value === '' ? 0 : totalprice,
       })
     }
     if (e.target.name === 'unitprice') {
-      totalprice = (!pieces ? 0 : pieces) * parseInt(e.target.value)
+      totalprice = (!pieces ? 0 : pieces) * parseFloat(e.target.value)
       setSaleProduct({
         ...saleproduct,
-        unitprice: e.target.value === '' ? '' : parseInt(e.target.value),
+        unitprice: e.target.value === '' ? '' : parseFloat(e.target.value),
         totalprice: e.target.value === '' ? 0 : totalprice,
       })
     }
@@ -262,6 +264,7 @@ export const Sale = () => {
     setSaleProduct()
     setModal(false)
     setSaleProducts(sales)
+    setTotalPrice(sales.reduce((summ, sale) => { return sale.totalprice + summ }, 0))
   }
 
   const editProducts = (product, index, type) => {
@@ -272,6 +275,11 @@ export const Sale = () => {
       setModal(true)
     }
     setSaleProducts(sales)
+    setTotalPrice(sales.reduce((summ, sale) => { return sale.totalprice + summ }, 0))
+  }
+
+  const changeTotalPrice = (e) => {
+    setTotalPrice(e.target.value)
   }
   //====================================================================
   //====================================================================
@@ -405,6 +413,20 @@ export const Sale = () => {
 
   //====================================================================
   //====================================================================
+  // Discount and Payment
+  const [discount, setDiscount] = useState({
+    price: 0,
+    procient: 0
+  })
+
+  const changeDiscount = (e) => {
+
+  }
+
+  const [payment, setPayment]=useState(0)
+
+  //====================================================================
+  //====================================================================
   const [t, setT] = useState();
   useEffect(() => {
     if (!t) {
@@ -421,9 +443,15 @@ export const Sale = () => {
   //====================================================================
 
   return (
-
     <div className="">
-      {/* <Card /> */}
+      <Card
+        totalprice={totalprice}
+        saleproducts={saleproducts}
+        client={client}
+        visible={visible}
+        setVisible={setVisible}
+        changeTotalPrice={changeTotalPrice}
+      />
       {/* <Payment /> */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-7 p-3">
         <div className="md:col-span-2 w-full">
@@ -440,6 +468,8 @@ export const Sale = () => {
         </div>
         <div className="md:col-span-5 w-full">
           <Selling
+            totalprice={totalprice}
+            setVisible={setVisible}
             editProducts={editProducts}
             saleproducts={saleproducts}
             packmans={packmans}

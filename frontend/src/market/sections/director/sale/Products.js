@@ -7,7 +7,7 @@ const animatedComponents = makeAnimated();
 export const Products = ({ changeProduct, changeBrand, changeProductType, changeCategory, categories, producttypes, brands, products }) => {
     return (
         <div className='bg-white'>
-            <p className='bg-[#31C2A0] text-center text-2xl text-white py-2 m-0 font-bold'>Maxsulotlar</p>
+            <p className='bg-teal-500 text-center text-2xl text-white py-2 m-0 font-bold'>Maxsulotlar</p>
             <div className='px-3 py-2'>
                 <div className='grid grid-cols-1 gap-4 py-2'>
                     <div className='w-full'>
