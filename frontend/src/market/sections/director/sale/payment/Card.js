@@ -1,22 +1,23 @@
-import { faClose } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
-import { LeftCard } from './LeftCard'
-import { RightBody } from './RightBody'
+import { faClose } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from "react";
+import { LeftCard } from "./LeftCard";
+import { RightBody } from "./RightBody";
 
 export const Card = ({
   totalprice,
   visible,
   setVisible,
   payment,
-  setPayment,
   discount,
-  setDiscount,
+  inputHandler,
+  showInput,
+  debt,
 }) => {
   return (
     <div
       className={`w-screen h-full bg-[#3695D7] absolute top-0 overflow-y-scroll z-20 ${
-        visible ? 'visible' : 'invisible'
+        visible ? "visible" : "invisible"
       }`}
     >
       <div className="flex md:justify-end justify-center py-3">
@@ -41,10 +42,16 @@ export const Card = ({
           </div>
         </div>
       </div>
-      <div className="md:flex md:justify-between">
-        <LeftCard totalprice={totalprice} discount={discount}/>
-        <RightBody />
+      <div className="md:flex md:justify-between md:items-center">
+        <LeftCard
+          totalprice={totalprice}
+          discount={discount}
+          payment={payment}
+          debt={debt}
+          inputHandler={inputHandler}
+        />
+        <RightBody showInput={showInput} />
       </div>
     </div>
-  )
-}
+  );
+};
