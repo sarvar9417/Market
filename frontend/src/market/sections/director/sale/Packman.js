@@ -171,7 +171,6 @@ export const Packman = () => {
       setPackman({
         market: auth.market && auth.market._id,
       });
-      console.log(data);
       notify({
         title: `${data.name} degan yetkazuvchi yaratildi!`,
         description: "",
@@ -292,7 +291,7 @@ export const Packman = () => {
                       </td>
                       <td className="border text-center">
                         {loading ? (
-                          <button className="btn btn-info" disabled>
+                          <button className="btn btn-success" disabled>
                             <span className="spinner-border spinner-border-sm"></span>
                             Loading...
                           </button>
@@ -310,7 +309,7 @@ export const Packman = () => {
                       </td>
                       <td className="border text-center">
                         {loading ? (
-                          <button className="btn btn-info" disabled>
+                          <button className="btn btn-success" disabled>
                             <span className="spinner-border spinner-border-sm"></span>
                             Loading...
                           </button>

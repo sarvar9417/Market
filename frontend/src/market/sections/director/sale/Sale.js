@@ -1,17 +1,18 @@
-import { useToast } from '@chakra-ui/react'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { AuthContext } from '../../../context/AuthContext'
-import { useHttp } from '../../../hooks/http.hook'
-import { Modal } from '../components/Modal'
-import { InputProduct } from './components/InputProduct'
+import { useToast } from "@chakra-ui/react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../../context/AuthContext";
+import { useHttp } from "../../../hooks/http.hook";
+import { Modal } from "../components/Modal";
+import { InputProduct } from "./components/InputProduct";
 // import { Payment } from './Payment'
+
 import { Products } from './Products'
 import { Selling } from './Selling'
 import { Card } from './payment/Card'
-
 export const Sale = () => {
   //====================================================================
   //====================================================================
+
   const toast = useToast()
 
   const notify = useCallback(
@@ -22,21 +23,25 @@ export const Sale = () => {
         status: data.status && data.status,
         duration: 5000,
         isClosable: true,
+
         position: 'top-right',
       })
     },
     [toast],
   )
+
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
   // AUTH
+
   const { request } = useHttp()
   const auth = useContext(AuthContext)
 
   const [modal, setModal] = useState(false)
+
   //====================================================================
   //====================================================================
 
@@ -44,15 +49,18 @@ export const Sale = () => {
   //====================================================================
   const [categories, setCategories] = useState([
     {
+
       label: 'Barcha kategoriyalar',
       value: 'all',
     },
   ])
 
+
   const getCategories = useCallback(async () => {
     try {
       const data = await request(
         `/api/products/category/getall`,
+
         'POST',
         { market: auth.market._id },
         {
@@ -104,6 +112,7 @@ export const Sale = () => {
     try {
       const data = await request(
         `/api/products/producttype/getall`,
+
         'POST',
         { market: auth.market._id },
         {
@@ -137,12 +146,14 @@ export const Sale = () => {
 
   //====================================================================
   //====================================================================
+
   const [brands, setBrands] = useState([])
 
   const getBrand = useCallback(async () => {
     try {
       const data = await request(
         `/api/products/brand/getall`,
+
         'POST',
         { market: auth.market._id },
         {
@@ -170,14 +181,17 @@ export const Sale = () => {
   const changeBrand = (e) => {
     getProducts(e)
   }
+
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
+
   const [products, setProducts] = useState([])
   const [saleproduct, setSaleProduct] = useState()
   const [saleproducts, setSaleProducts] = useState([])
+
 
   const getProducts = useCallback(
     async (type) => {
@@ -302,38 +316,48 @@ export const Sale = () => {
   //====================================================================
   //====================================================================
 
-  const [clients, setClients] = useState([])
+  const [clients, setClients] = useState([]);
+  const [storageClients, setStorageClients] = useState([]);
+
 
   const getClients = useCallback(
     async (type) => {
       try {
         const data = await request(
           `/api/sales/client/getall`,
-          'POST',
+          "POST",
           { market: auth.market._id },
           {
             Authorization: `Bearer ${auth.token}`,
+          }
+        );
+        let v = [
+          {
+            label: "Barcha mijozlar",
+            value: "all",
           },
-        )
-        let v = []
+        ];
+
 
         data.map((type) => {
           return v.push({
             label: type.name,
             value: type._id,
-          })
-        })
-        setClients(v)
+            packman: type.packman && type.packman._id,
+          });
+        });
+        setStorageClients(v);
+        setClients(v);
       } catch (error) {
         notify({
           title: error,
-          description: '',
-          status: 'error',
-        })
+          description: "",
+          status: "error",
+        });
       }
     },
-    [request, auth, notify],
-  )
+    [request, auth, notify]
+  );
   //====================================================================
   //====================================================================
 
@@ -346,8 +370,15 @@ export const Sale = () => {
     setPackman({
       name: e.label,
       _id: e.value,
-    })
-  }
+    });
+    if (e.value === "all") {
+      setClients(storageClients);
+    } else {
+      const filter = storageClients.filter((item) => item.packman === e.value);
+      setClients(filter);
+    }
+  };
+
   //====================================================================
   //====================================================================
 
@@ -359,28 +390,38 @@ export const Sale = () => {
     setClient({
       name: e.label,
       _id: e.value,
-    })
-  }
+      packman: e.packman || null,
+    });
+  };
+
+  const inputClient = (e) => {
+    setClient({
+      name: e.target.value,
+    });
+  };
+
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
-  const [t, setT] = useState()
+  const [t, setT] = useState();
   useEffect(() => {
     if (!t) {
-      setT(1)
-      getCategories()
-      getProductTypes()
-      getBrand()
-      getPackmans()
-      getClients()
+      setT(1);
+      getCategories();
+      getProductTypes();
+      getBrand();
+      getPackmans();
+      getClients();
     }
-  }, [getCategories, getProductTypes, getBrand, getPackmans, getClients, t])
+  }, [getCategories, getProductTypes, getBrand, getPackmans, getClients, t]);
+
   //====================================================================
   //====================================================================
 
   return (
+
     <div className="">
       <Card />
       {/* <Payment /> */}
@@ -405,6 +446,8 @@ export const Sale = () => {
             clients={clients}
             changePackman={changePackman}
             changeClient={changeClient}
+            inputClient={inputClient}
+
           />
         </div>
       </div>
@@ -417,5 +460,6 @@ export const Sale = () => {
         handler={pushSaleProduct}
       />
     </div>
+
   )
 }

@@ -1,7 +1,7 @@
-import { faPenAlt, faTrash } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
-import Select from 'react-select'
+import { faPenAlt, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from "react";
+import Select from "react-select";
 
 export const Selling = ({
   editProducts,
@@ -10,6 +10,7 @@ export const Selling = ({
   clients,
   changePackman,
   changeClient,
+  inputClient,
 }) => {
   return (
     <div className=" bg-white text ">
@@ -52,6 +53,7 @@ export const Selling = ({
               className="form-control rounded px-3"
               id=""
               placeholder="Xaridor"
+              onChange={inputClient}
             />
           </div>
         </div>
@@ -93,7 +95,7 @@ export const Selling = ({
                       <button
                         className="px-3 bg-teal-500 hover:bg-teal-600 text-white rounded my-1"
                         onClick={() => {
-                          editProducts(product, index, 'edit')
+                          editProducts(product, index, "edit");
                         }}
                       >
                         <FontAwesomeIcon icon={faPenAlt} />
@@ -103,14 +105,14 @@ export const Selling = ({
                       <button
                         className="px-3 bg-red-600 hover:bg-red-500 text-white rounded my-1"
                         onClick={() => {
-                          editProducts(product, index, 'delete')
+                          editProducts(product, index, "delete");
                         }}
                       >
                         <FontAwesomeIcon icon={faTrash} />
                       </button>
                     </td>
                   </tr>
-                )
+                );
               })}
             </tbody>
           </table>
@@ -120,8 +122,8 @@ export const Selling = ({
             <span className="text-black font-bold">Umumiy summa:</span>
             <span className="text-black font-bold">
               {saleproducts.reduce((summ, product) => {
-                return summ + product.totalprice
-              }, 0)}{' '}
+                return summ + product.totalprice;
+              }, 0)}{" "}
               $
             </span>
           </div>
@@ -136,5 +138,5 @@ export const Selling = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

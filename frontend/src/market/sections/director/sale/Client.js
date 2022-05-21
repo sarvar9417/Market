@@ -405,7 +405,7 @@ export const Client = () => {
                       </td>
                       <td className="border text-center">
                         {loading ? (
-                          <button className="btn btn-info" disabled>
+                          <button className="btn btn-success" disabled>
                             <span className="spinner-border spinner-border-sm"></span>
                             Loading...
                           </button>
