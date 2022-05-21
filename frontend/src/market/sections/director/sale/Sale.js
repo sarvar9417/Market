@@ -6,14 +6,14 @@ import { Modal } from "../components/Modal";
 import { InputProduct } from "./components/InputProduct";
 // import { Payment } from './Payment'
 
-import { Products } from './Products'
-import { Selling } from './Selling'
-import { Card } from './payment/Card'
+import { Products } from "./Products";
+import { Selling } from "./Selling";
+import { Card } from "./payment/Card";
 export const Sale = () => {
   //====================================================================
   //====================================================================
 
-  const toast = useToast()
+  const toast = useToast();
 
   const notify = useCallback(
     (data) => {
@@ -24,11 +24,11 @@ export const Sale = () => {
         duration: 5000,
         isClosable: true,
 
-        position: 'top-right',
-      })
+        position: "top-right",
+      });
     },
-    [toast],
-  )
+    [toast]
+  );
 
   //====================================================================
   //====================================================================
@@ -37,11 +37,11 @@ export const Sale = () => {
   //====================================================================
   // AUTH
 
-  const { request } = useHttp()
-  const auth = useContext(AuthContext)
+  const { request } = useHttp();
+  const auth = useContext(AuthContext);
 
-  const [modal, setModal] = useState(false)
-  const [visible, setVisible] = useState(false)
+  const [modal, setModal] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   //====================================================================
   //====================================================================
@@ -50,138 +50,136 @@ export const Sale = () => {
   //====================================================================
   const [categories, setCategories] = useState([
     {
-
-      label: 'Barcha kategoriyalar',
-      value: 'all',
+      label: "Barcha kategoriyalar",
+      value: "all",
     },
-  ])
-
+  ]);
 
   const getCategories = useCallback(async () => {
     try {
       const data = await request(
         `/api/products/category/getall`,
 
-        'POST',
+        "POST",
         { market: auth.market._id },
         {
           Authorization: `Bearer ${auth.token}`,
-        },
-      )
+        }
+      );
       let c = [
         {
-          label: 'Barcha kategoriyalar',
-          value: 'all',
+          label: "Barcha kategoriyalar",
+          value: "all",
         },
-      ]
+      ];
       data.map((category) => {
         return c.push({
           label: category.code,
-          type: 'Category',
+          type: "Category",
           value: category,
-        })
-      })
-      setCategories(c)
+        });
+      });
+      setCategories(c);
     } catch (error) {
       notify({
         title: error,
-        description: '',
-        status: 'error',
-      })
+        description: "",
+        status: "error",
+      });
     }
-  }, [request, auth, notify])
+  }, [request, auth, notify]);
 
   const changeCategory = (e) => {
-    if (e.value === 'all') {
-      return setProductTypes(allproducttypes)
+    if (e.value === "all") {
+      return setProductTypes(allproducttypes);
     }
     const filter = allproducttypes.filter((producttype) => {
-      return producttype.value.category._id === e.value._id
-    })
-    setProductTypes(filter)
-    getProducts(e)
-  }
+      return producttype.value.category._id === e.value._id;
+    });
+    setProductTypes(filter);
+    getProducts(e);
+  };
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
-  const [allproducttypes, setAllProductTypes] = useState([])
-  const [producttypes, setProductTypes] = useState([])
+  const [allproducttypes, setAllProductTypes] = useState([]);
+  const [producttypes, setProductTypes] = useState([]);
 
   const getProductTypes = useCallback(async () => {
     try {
       const data = await request(
         `/api/products/producttype/getall`,
 
-        'POST',
+        "POST",
         { market: auth.market._id },
         {
           Authorization: `Bearer ${auth.token}`,
-        },
-      )
-      let c = []
+        }
+      );
+      let c = [];
       data.map((type) => {
         return c.push({
           label: type.name,
-          type: 'ProductType',
+          type: "ProductType",
           value: type,
-        })
-      })
-      setProductTypes(c)
-      setAllProductTypes(c)
+        });
+      });
+      setProductTypes(c);
+      setAllProductTypes(c);
     } catch (error) {
       notify({
         title: error,
-        description: '',
-        status: 'error',
-      })
+        description: "",
+        status: "error",
+      });
     }
-  }, [request, auth, notify])
+  }, [request, auth, notify]);
 
   const changeProductType = (e) => {
-    getProducts(e)
-  }
+    getProducts(e);
+  };
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
 
-  const [brands, setBrands] = useState([])
+  const [brands, setBrands] = useState([]);
 
   const getBrand = useCallback(async () => {
     try {
       const data = await request(
         `/api/products/brand/getall`,
 
-        'POST',
+        "POST",
         { market: auth.market._id },
         {
           Authorization: `Bearer ${auth.token}`,
-        },
-      )
-      let c = []
+        }
+      );
+      let c = [];
       data.map((type) => {
         return c.push({
           label: type.name,
-          type: 'Brand',
+          type: "Brand",
           value: type,
-        })
-      })
-      setBrands(c)
+        });
+      });
+      setBrands(c);
     } catch (error) {
       notify({
         title: error,
-        description: '',
-        status: 'error',
-      })
+        description: "",
+        status: "error",
+      });
     }
-  }, [request, auth, notify])
+  }, [request, auth, notify]);
 
   const changeBrand = (e) => {
-    getProducts(e)
-  }
+    getProducts(e);
+  };
 
   //====================================================================
   //====================================================================
@@ -189,135 +187,142 @@ export const Sale = () => {
   //====================================================================
   //====================================================================
 
-  const [products, setProducts] = useState([])
-  const [saleproduct, setSaleProduct] = useState()
-  const [saleproducts, setSaleProducts] = useState([])
-  const [totalprice, setTotalPrice] = useState(0)
-
+  const [products, setProducts] = useState([]);
+  const [saleproduct, setSaleProduct] = useState();
+  const [saleproducts, setSaleProducts] = useState([]);
+  const [totalprice, setTotalPrice] = useState(123);
 
   const getProducts = useCallback(
     async (type) => {
       try {
         const data = await request(
           `/api/products/product/getsale`,
-          'POST',
+          "POST",
           { market: auth.market._id, type: type.type, typeid: type.value._id },
           {
             Authorization: `Bearer ${auth.token}`,
-          },
-        )
-        let c = []
+          }
+        );
+        let c = [];
         data.map((type) => {
           return c.push({
-            label: type.code + ' ' + type.name,
-            type: 'product',
+            label: type.code + " " + type.name,
+            type: "product",
             value: type,
-          })
-        })
-        setProducts(c)
+          });
+        });
+        setProducts(c);
       } catch (error) {
         notify({
           title: error,
-          description: '',
-          status: 'error',
-        })
+          description: "",
+          status: "error",
+        });
       }
     },
-    [request, auth, notify],
-  )
+    [request, auth, notify]
+  );
 
   const changeProduct = (e) => {
-    setModal(true)
+    setModal(true);
     setSaleProduct({
       ...e.value,
       totalprice: e.value.price.sellingprice,
       pieces: 1,
       unitprice: e.value.price.sellingprice,
-    })
-  }
+    });
+  };
 
   const setCounts = (e) => {
-    let pieces = saleproduct.pieces
-    let unitprice = saleproduct.unitprice
-    let totalprice = saleproduct.totalprice
-    if (e.target.name === 'pieces') {
-      totalprice = (!unitprice ? 0 : unitprice) * parseFloat(e.target.value)
+    let pieces = saleproduct.pieces;
+    let unitprice = saleproduct.unitprice;
+    let totalprice = saleproduct.totalprice;
+    if (e.target.name === "pieces") {
+      totalprice = (!unitprice ? 0 : unitprice) * parseFloat(e.target.value);
       setSaleProduct({
         ...saleproduct,
-        pieces: e.target.value === '' ? '' : parseFloat(e.target.value),
-        totalprice: e.target.value === '' ? 0 : totalprice,
-      })
+        pieces: e.target.value === "" ? "" : parseFloat(e.target.value),
+        totalprice: e.target.value === "" ? 0 : totalprice,
+      });
     }
-    if (e.target.name === 'unitprice') {
-      totalprice = (!pieces ? 0 : pieces) * parseFloat(e.target.value)
+    if (e.target.name === "unitprice") {
+      totalprice = (!pieces ? 0 : pieces) * parseFloat(e.target.value);
       setSaleProduct({
         ...saleproduct,
-        unitprice: e.target.value === '' ? '' : parseFloat(e.target.value),
-        totalprice: e.target.value === '' ? 0 : totalprice,
-      })
+        unitprice: e.target.value === "" ? "" : parseFloat(e.target.value),
+        totalprice: e.target.value === "" ? 0 : totalprice,
+      });
     }
-  }
+  };
 
   const pushSaleProduct = () => {
-    let sales = [...saleproducts]
-    sales.unshift(saleproduct)
-    setSaleProduct()
-    setModal(false)
-    setSaleProducts(sales)
-    setTotalPrice(sales.reduce((summ, sale) => { return sale.totalprice + summ }, 0))
-  }
+    let sales = [...saleproducts];
+    sales.unshift(saleproduct);
+    setSaleProduct();
+    setModal(false);
+    setSaleProducts(sales);
+    setTotalPrice(
+      sales.reduce((summ, sale) => {
+        return sale.totalprice + summ;
+      }, 0)
+    );
+  };
 
   const editProducts = (product, index, type) => {
-    let sales = [...saleproducts]
-    sales.splice(index, 1)
-    if (type === 'edit') {
-      setSaleProduct(product)
-      setModal(true)
+    let sales = [...saleproducts];
+    sales.splice(index, 1);
+    if (type === "edit") {
+      setSaleProduct(product);
+      setModal(true);
     }
-    setSaleProducts(sales)
-    setTotalPrice(sales.reduce((summ, sale) => { return sale.totalprice + summ }, 0))
-  }
+    setSaleProducts(sales);
+    setTotalPrice(
+      sales.reduce((summ, sale) => {
+        return sale.totalprice + summ;
+      }, 0)
+    );
+  };
 
   const changeTotalPrice = (e) => {
-    setTotalPrice(e.target.value)
-  }
+    setTotalPrice(e.target.value);
+  };
   //====================================================================
   //====================================================================
 
   // ===================================================================
   // ===================================================================
-  const [packmans, setPackmans] = useState([])
+  const [packmans, setPackmans] = useState([]);
 
   const getPackmans = useCallback(
     async (type) => {
       try {
         const data = await request(
           `/api/sales/packman/getall`,
-          'POST',
+          "POST",
           { market: auth.market._id },
           {
             Authorization: `Bearer ${auth.token}`,
-          },
-        )
-        let v = []
+          }
+        );
+        let v = [];
 
         data.map((type) => {
           return v.push({
             label: type.name,
             value: type._id,
-          })
-        })
-        setPackmans(v)
+          });
+        });
+        setPackmans(v);
       } catch (error) {
         notify({
           title: error,
-          description: '',
-          status: 'error',
-        })
+          description: "",
+          status: "error",
+        });
       }
     },
-    [request, auth, notify],
-  )
+    [request, auth, notify]
+  );
   //====================================================================
   //====================================================================
 
@@ -326,7 +331,6 @@ export const Sale = () => {
 
   const [clients, setClients] = useState([]);
   const [storageClients, setStorageClients] = useState([]);
-
 
   const getClients = useCallback(
     async (type) => {
@@ -345,7 +349,6 @@ export const Sale = () => {
             value: "all",
           },
         ];
-
 
         data.map((type) => {
           return v.push({
@@ -372,7 +375,7 @@ export const Sale = () => {
   //====================================================================
   //====================================================================
 
-  const [packman, setPackman] = useState({})
+  const [packman, setPackman] = useState({});
 
   const changePackman = (e) => {
     setPackman({
@@ -392,7 +395,7 @@ export const Sale = () => {
 
   //====================================================================
   //====================================================================
-  const [client, setClient] = useState({})
+  const [client, setClient] = useState({});
 
   const changeClient = (e) => {
     setClient({
@@ -416,14 +419,25 @@ export const Sale = () => {
   // Discount and Payment
   const [discount, setDiscount] = useState({
     price: 0,
-    procient: 0
-  })
+    procient: 0,
+  });
+  const [debt, setDebt] = useState({
+    debt: 0,
+    comment: "",
+  });
+  const [payment, setPayment] = useState({
+    payment: 0,
+    type: 0,
+    cash: 0,
+    card: 0,
+    transfer: 0,
+  });
 
-  const changeDiscount = (e) => {
+  const [inputHandler, setInputHandler] = useState("");
 
-  }
-
-  const [payment, setPayment]=useState(0)
+  const showInput = (e) => {
+    setInputHandler(e.target.name);
+  };
 
   //====================================================================
   //====================================================================
@@ -451,6 +465,11 @@ export const Sale = () => {
         visible={visible}
         setVisible={setVisible}
         changeTotalPrice={changeTotalPrice}
+        discount={discount}
+        payment={payment}
+        debt={debt}
+        inputHandler={inputHandler}
+        showInput={showInput}
       />
       {/* <Payment /> */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-7 p-3">
@@ -477,7 +496,6 @@ export const Sale = () => {
             changePackman={changePackman}
             changeClient={changeClient}
             inputClient={inputClient}
-
           />
         </div>
       </div>
@@ -490,6 +508,5 @@ export const Sale = () => {
         handler={pushSaleProduct}
       />
     </div>
-
-  )
-}
+  );
+};
