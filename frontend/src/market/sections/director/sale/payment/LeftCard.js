@@ -72,7 +72,7 @@ export const LeftCard = ({
                 id="flexRadioDefault1"
                 onChange={(e) => setValueProperty(e.target.dataset.property)}
               />
-              <label class="form-check-label" for="flexRadioDefault1">
+              <label class="form-check-label" htmlFor="flexRadioDefault1">
                 Price
               </label>
             </div>
@@ -85,7 +85,7 @@ export const LeftCard = ({
                 id="flexRadioDefault2"
                 onChange={(e) => setValueProperty(e.target.dataset.property)}
               />
-              <label class="form-check-label" for="flexRadioDefault2">
+              <label class="form-check-label" htmlFor="flexRadioDefault2">
                 Procient
               </label>
             </div>
