@@ -1,20 +1,20 @@
-import { useToast } from '@chakra-ui/react'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { AuthContext } from '../../../context/AuthContext'
-import { useHttp } from '../../../hooks/http.hook'
-import { Modal } from '../components/Modal'
-import { InputProduct } from './components/InputProduct'
+import { useToast } from "@chakra-ui/react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../../context/AuthContext";
+import { useHttp } from "../../../hooks/http.hook";
+import { Modal } from "../components/Modal";
+import { InputProduct } from "./components/InputProduct";
 // import { Payment } from './Payment'
 
-import { Products } from './Products'
-import { Selling } from './Selling'
-import { Card } from './payment/Card'
-import { Cheque } from './payment/Cheque'
+import { Products } from "./Products";
+import { Selling } from "./Selling";
+import { Card } from "./payment/Card";
+import { Cheque } from "./payment/Cheque";
 export const Sale = () => {
   //====================================================================
   //====================================================================
 
-  const toast = useToast()
+  const toast = useToast();
 
   const notify = useCallback(
     (data) => {
@@ -25,11 +25,11 @@ export const Sale = () => {
         duration: 5000,
         isClosable: true,
 
-        position: 'top-right',
-      })
+        position: "top-right",
+      });
     },
-    [toast],
-  )
+    [toast]
+  );
 
   //====================================================================
   //====================================================================
@@ -38,11 +38,11 @@ export const Sale = () => {
   //====================================================================
   // AUTH
 
-  const { request } = useHttp()
-  const auth = useContext(AuthContext)
+  const { request } = useHttp();
+  const auth = useContext(AuthContext);
 
-  const [modal, setModal] = useState(false)
-  const [visible, setVisible] = useState(false)
+  const [modal, setModal] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   //====================================================================
   //====================================================================
@@ -51,155 +51,155 @@ export const Sale = () => {
   //====================================================================
   const [categories, setCategories] = useState([
     {
-      label: 'Barcha kategoriyalar',
-      value: 'all',
+      label: "Barcha kategoriyalar",
+      value: "all",
     },
-  ])
+  ]);
 
   const getCategories = useCallback(async () => {
     try {
       const data = await request(
         `/api/products/category/getall`,
 
-        'POST',
+        "POST",
         { market: auth.market._id },
         {
           Authorization: `Bearer ${auth.token}`,
-        },
-      )
+        }
+      );
       let c = [
         {
-          label: 'Barcha kategoriyalar',
-          value: 'all',
+          label: "Barcha kategoriyalar",
+          value: "all",
         },
-      ]
+      ];
       data.map((category) => {
         return c.push({
           label: category.code,
-          type: 'Category',
+          type: "Category",
           value: category,
-        })
-      })
-      setCategories(c)
+        });
+      });
+      setCategories(c);
     } catch (error) {
       notify({
         title: error,
-        description: '',
-        status: 'error',
-      })
+        description: "",
+        status: "error",
+      });
     }
-  }, [request, auth, notify])
+  }, [request, auth, notify]);
 
   const changeCategory = (e) => {
-    if (e.value === 'all') {
-      return setProductTypes(allproducttypes)
+    if (e.value === "all") {
+      return setProductTypes(allproducttypes);
     }
     const filter = allproducttypes.filter((producttype) => {
-      return producttype.value.category._id === e.value._id
-    })
-    setProductTypes(filter)
-    getProducts(e)
-  }
+      return producttype.value.category._id === e.value._id;
+    });
+    setProductTypes(filter);
+    getProducts(e);
+  };
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
-  const [baseUrl, setBaseUrl] = useState()
+  const [baseUrl, setBaseUrl] = useState();
 
   const getBaseUrl = useCallback(async () => {
     try {
-      const data = await request('/api/baseurl', 'GET', null)
-      setBaseUrl(data.baseUrl)
+      const data = await request("/api/baseurl", "GET", null);
+      setBaseUrl(data.baseUrl);
     } catch (error) {
       notify({
         title: error,
-        description: '',
-        status: 'error',
-      })
+        description: "",
+        status: "error",
+      });
     }
-  }, [request, notify])
+  }, [request, notify]);
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
-  const [allproducttypes, setAllProductTypes] = useState([])
-  const [producttypes, setProductTypes] = useState([])
+  const [allproducttypes, setAllProductTypes] = useState([]);
+  const [producttypes, setProductTypes] = useState([]);
 
   const getProductTypes = useCallback(async () => {
     try {
       const data = await request(
         `/api/products/producttype/getall`,
 
-        'POST',
+        "POST",
         { market: auth.market._id },
         {
           Authorization: `Bearer ${auth.token}`,
-        },
-      )
-      let c = []
+        }
+      );
+      let c = [];
       data.map((type) => {
         return c.push({
           label: type.name,
-          type: 'ProductType',
+          type: "ProductType",
           value: type,
-        })
-      })
-      setProductTypes(c)
-      setAllProductTypes(c)
+        });
+      });
+      setProductTypes(c);
+      setAllProductTypes(c);
     } catch (error) {
       notify({
         title: error,
-        description: '',
-        status: 'error',
-      })
+        description: "",
+        status: "error",
+      });
     }
-  }, [request, auth, notify])
+  }, [request, auth, notify]);
 
   const changeProductType = (e) => {
-    getProducts(e)
-  }
+    getProducts(e);
+  };
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
 
-  const [brands, setBrands] = useState([])
+  const [brands, setBrands] = useState([]);
 
   const getBrand = useCallback(async () => {
     try {
       const data = await request(
         `/api/products/brand/getall`,
 
-        'POST',
+        "POST",
         { market: auth.market._id },
         {
           Authorization: `Bearer ${auth.token}`,
-        },
-      )
-      let c = []
+        }
+      );
+      let c = [];
       data.map((type) => {
         return c.push({
           label: type.name,
-          type: 'Brand',
+          type: "Brand",
           value: type,
-        })
-      })
-      setBrands(c)
+        });
+      });
+      setBrands(c);
     } catch (error) {
       notify({
         title: error,
-        description: '',
-        status: 'error',
-      })
+        description: "",
+        status: "error",
+      });
     }
-  }, [request, auth, notify])
+  }, [request, auth, notify]);
 
   const changeBrand = (e) => {
-    getProducts(e)
-  }
+    getProducts(e);
+  };
 
   //====================================================================
   //====================================================================
@@ -207,229 +207,229 @@ export const Sale = () => {
   //====================================================================
   //====================================================================
 
-  const [products, setProducts] = useState([])
-  const [saleproduct, setSaleProduct] = useState()
-  const [saleproducts, setSaleProducts] = useState([])
-  const [totalprice, setTotalPrice] = useState(123)
+  const [products, setProducts] = useState([]);
+  const [saleproduct, setSaleProduct] = useState();
+  const [saleproducts, setSaleProducts] = useState([]);
+  const [totalprice, setTotalPrice] = useState(123);
 
   const getProducts = useCallback(
     async (type) => {
       try {
         const data = await request(
           `/api/products/product/getsale`,
-          'POST',
+          "POST",
           { market: auth.market._id, type: type.type, typeid: type.value._id },
           {
             Authorization: `Bearer ${auth.token}`,
-          },
-        )
-        let c = []
+          }
+        );
+        let c = [];
         data.map((type) => {
           return c.push({
-            label: type.code + ' ' + type.name,
-            type: 'product',
+            label: type.code + " " + type.name,
+            type: "product",
             value: type,
-          })
-        })
-        setProducts(c)
+          });
+        });
+        setProducts(c);
       } catch (error) {
         notify({
           title: error,
-          description: '',
-          status: 'error',
-        })
+          description: "",
+          status: "error",
+        });
       }
     },
-    [request, auth, notify],
-  )
+    [request, auth, notify]
+  );
 
   const changeProduct = (e) => {
-    setModal(true)
+    setModal(true);
     setSaleProduct({
       ...e.value,
       totalprice: e.value.price.sellingprice,
       pieces: 1,
       unitprice: e.value.price.sellingprice,
-    })
-  }
+    });
+  };
 
   const setCounts = (e) => {
-    let pieces = saleproduct.pieces
-    let unitprice = saleproduct.unitprice
-    let totalprice = saleproduct.totalprice
-    if (e.target.name === 'pieces') {
-      totalprice = (!unitprice ? 0 : unitprice) * parseFloat(e.target.value)
+    let pieces = saleproduct.pieces;
+    let unitprice = saleproduct.unitprice;
+    let totalprice = saleproduct.totalprice;
+    if (e.target.name === "pieces") {
+      totalprice = (!unitprice ? 0 : unitprice) * parseFloat(e.target.value);
       setSaleProduct({
         ...saleproduct,
-        pieces: e.target.value === '' ? '' : parseFloat(e.target.value),
-        totalprice: e.target.value === '' ? 0 : totalprice,
-      })
+        pieces: e.target.value === "" ? "" : parseFloat(e.target.value),
+        totalprice: e.target.value === "" ? 0 : totalprice,
+      });
     }
-    if (e.target.name === 'unitprice') {
-      totalprice = (!pieces ? 0 : pieces) * parseFloat(e.target.value)
+    if (e.target.name === "unitprice") {
+      totalprice = (!pieces ? 0 : pieces) * parseFloat(e.target.value);
       setSaleProduct({
         ...saleproduct,
-        unitprice: e.target.value === '' ? '' : parseFloat(e.target.value),
-        totalprice: e.target.value === '' ? 0 : totalprice,
-      })
+        unitprice: e.target.value === "" ? "" : parseFloat(e.target.value),
+        totalprice: e.target.value === "" ? 0 : totalprice,
+      });
     }
-  }
+  };
 
   const pushSaleProduct = () => {
-    let sales = [...saleproducts]
-    sales.unshift(saleproduct)
-    setSaleProduct()
-    setModal(false)
-    setSaleProducts(sales)
+    let sales = [...saleproducts];
+    sales.unshift(saleproduct);
+    setSaleProduct();
+    setModal(false);
+    setSaleProducts(sales);
     setTotalPrice(
       sales.reduce((summ, sale) => {
-        return sale.totalprice + summ
-      }, 0),
-    )
-  }
+        return sale.totalprice + summ;
+      }, 0)
+    );
+  };
 
   const editProducts = (product, index, type) => {
-    let sales = [...saleproducts]
-    sales.splice(index, 1)
-    if (type === 'edit') {
-      setSaleProduct(product)
-      setModal(true)
+    let sales = [...saleproducts];
+    sales.splice(index, 1);
+    if (type === "edit") {
+      setSaleProduct(product);
+      setModal(true);
     }
-    setSaleProducts(sales)
+    setSaleProducts(sales);
     setTotalPrice(
       sales.reduce((summ, sale) => {
-        return sale.totalprice + summ
-      }, 0),
-    )
-  }
+        return sale.totalprice + summ;
+      }, 0)
+    );
+  };
 
   const changeTotalPrice = (e) => {
-    setTotalPrice(e.target.value)
-  }
+    setTotalPrice(e.target.value);
+  };
   //====================================================================
   //====================================================================
 
   // ===================================================================
   // ===================================================================
-  const [packmans, setPackmans] = useState([])
+  const [packmans, setPackmans] = useState([]);
 
   const getPackmans = useCallback(
     async (type) => {
       try {
         const data = await request(
           `/api/sales/packman/getall`,
-          'POST',
+          "POST",
           { market: auth.market._id },
           {
             Authorization: `Bearer ${auth.token}`,
-          },
-        )
-        let v = []
+          }
+        );
+        let v = [];
 
         data.map((type) => {
           return v.push({
             label: type.name,
             value: type._id,
-          })
-        })
-        setPackmans(v)
+          });
+        });
+        setPackmans(v);
       } catch (error) {
         notify({
           title: error,
-          description: '',
-          status: 'error',
-        })
+          description: "",
+          status: "error",
+        });
       }
     },
-    [request, auth, notify],
-  )
+    [request, auth, notify]
+  );
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
 
-  const [clients, setClients] = useState([])
-  const [storageClients, setStorageClients] = useState([])
+  const [clients, setClients] = useState([]);
+  const [storageClients, setStorageClients] = useState([]);
 
   const getClients = useCallback(
     async (type) => {
       try {
         const data = await request(
           `/api/sales/client/getall`,
-          'POST',
+          "POST",
           { market: auth.market._id },
           {
             Authorization: `Bearer ${auth.token}`,
-          },
-        )
+          }
+        );
         let v = [
           {
-            label: 'Barcha mijozlar',
-            value: 'all',
+            label: "Barcha mijozlar",
+            value: "all",
           },
-        ]
+        ];
 
         data.map((type) => {
           return v.push({
             label: type.name,
             value: type._id,
             packman: type.packman && type.packman._id,
-          })
-        })
-        setStorageClients(v)
-        setClients(v)
+          });
+        });
+        setStorageClients(v);
+        setClients(v);
       } catch (error) {
         notify({
           title: error,
-          description: '',
-          status: 'error',
-        })
+          description: "",
+          status: "error",
+        });
       }
     },
-    [request, auth, notify],
-  )
+    [request, auth, notify]
+  );
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
 
-  const [packman, setPackman] = useState({})
+  const [packman, setPackman] = useState({});
 
   const changePackman = (e) => {
     setPackman({
       name: e.label,
       _id: e.value,
-    })
-    if (e.value === 'all') {
-      setClients(storageClients)
+    });
+    if (e.value === "all") {
+      setClients(storageClients);
     } else {
-      const filter = storageClients.filter((item) => item.packman === e.value)
-      setClients(filter)
+      const filter = storageClients.filter((item) => item.packman === e.value);
+      setClients(filter);
     }
-  }
+  };
 
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
-  const [client, setClient] = useState({})
+  const [client, setClient] = useState({});
 
   const changeClient = (e) => {
     setClient({
       name: e.label,
       _id: e.value,
       packman: e.packman || null,
-    })
-  }
+    });
+  };
 
   const inputClient = (e) => {
     setClient({
       name: e.target.value,
-    })
-  }
+    });
+  };
 
   //====================================================================
   //====================================================================
@@ -440,30 +440,30 @@ export const Sale = () => {
   const [discount, setDiscount] = useState({
     price: 0,
     procient: 0,
-  })
+  });
 
   const [debt, setDebt] = useState({
     debt: 0,
-    comment: '',
-  })
+    comment: "",
+  });
 
   const [payment, setPayment] = useState({
     payment: totalprice,
-    type: '',
+    type: "",
     cash: totalprice,
     card: 0,
     transfer: 0,
-  })
+  });
 
-  const [discountedPrice, setDiscountedPrice] = useState(totalprice)
+  const [discountedPrice, setDiscountedPrice] = useState(totalprice);
 
-  const [valueName, setValueName] = useState('payment')
-  const [valueProperty, setValueProperty] = useState('cash')
+  const [valueName, setValueName] = useState("payment");
+  const [valueProperty, setValueProperty] = useState("cash");
 
   const showInput = (e) => {
-    setValueName(e.target.name)
-    setValueProperty(e.target.dataset.property)
-    if (e.target.name === 'payment') {
+    setValueName(e.target.name);
+    setValueProperty(e.target.dataset.property);
+    if (e.target.name === "payment") {
       setPayment({
         type: e.target.dataset.property,
 
@@ -471,166 +471,164 @@ export const Sale = () => {
         cash: 0,
         card: 0,
         transfer: 0,
-      })
-    }
-    if (e.target.dataset.property === 'mixed') {
+      });
       setDebt({
         ...debt,
         debt: discountedPrice,
-      })
+      });
     }
-    if (valueProperty === 'mixed') {
+    if (e.target.dataset.property === "mixed") {
       setPayment({
-        type: 'mixed',
+        type: "mixed",
         payment: 0,
         cash: 0,
         card: 0,
         transfer: 0,
-      })
+      });
+      setDebt({
+        ...debt,
+        debt: discountedPrice,
+      });
     }
-    setDebt({
-      ...debt,
-      debt: discountedPrice,
-    })
 
-    if (e.target.name === 'discount') {
+    if (e.target.name === "discount") {
       setPayment({
         ...payment,
         payment: 0,
         cash: 0,
         card: 0,
         transfer: 0,
-      })
+      });
     }
-  }
-  console.log(valueProperty)
+  };
+  console.log(valueProperty);
   const changePay = (e) => {
-    let num = parseFloat(e.target.value)
+    let num = parseFloat(e.target.value);
 
-    if (valueName === 'discount') {
-      if (valueProperty === 'price') {
-        let priced = num
-        setDiscountedPrice(totalprice - num)
+    if (valueName === "discount") {
+      if (valueProperty === "price") {
+        let priced = num;
+        setDiscountedPrice(totalprice - num);
         setDiscount({
           price: num || 0,
           procient: parseFloat(num / (totalprice / 100)),
-        })
+        });
         setDebt({
           ...debt,
           debt: num > 0 ? totalprice - num : totalprice,
-        })
+        });
       }
-      if (valueProperty === 'procient') {
-        let discountedprice = totalprice - parseFloat(num * (totalprice / 100))
-        setDiscountedPrice(parseFloat(totalprice - discountedprice))
+      if (valueProperty === "procient") {
+        let discountedprice = parseFloat(num * (totalprice / 100));
+        setDiscountedPrice(parseFloat(totalprice - discountedprice));
         setDiscount({
           procient: num,
-          price: parseFloat(num * (totalprice / 100)),
-        })
+          price: discountedprice,
+        });
         setDebt({
           ...debt,
           debt:
             parseFloat(num * (totalprice / 100)) > 0
               ? parseFloat(totalprice - parseFloat(num * (totalprice / 100)))
               : totalprice,
-        })
+        });
       }
     }
 
-    if (valueName === 'payment') {
-      if (valueProperty === 'cash') {
+    if (valueName === "payment") {
+      if (valueProperty === "cash") {
         setPayment({
           ...payment,
           payment: num,
           cash: num,
           card: 0,
           transfer: 0,
-        })
+        });
         setDebt({
           ...debt,
           debt: num > 0 ? discountedPrice - num : discountedPrice,
-        })
+        });
       }
-      if (valueProperty === 'card') {
+      if (valueProperty === "card") {
         setPayment({
           ...payment,
           payment: num,
           card: num,
           cash: 0,
           transfer: 0,
-        })
+        });
         setDebt({
           ...debt,
           debt: num > 0 ? discountedPrice - num : discountedPrice,
-        })
+        });
       }
-      if (valueProperty === 'transfer') {
+      if (valueProperty === "transfer") {
         setPayment({
           ...payment,
           payment: num,
           transfer: num,
           cash: 0,
           card: 0,
-        })
+        });
       }
       setDebt({
         ...debt,
         debt: num > 0 ? discountedPrice - num : discountedPrice,
-      })
+      });
     }
 
-    if (valueProperty === 'mixed') {
-      if (e.target.name === 'cash') {
+    if (valueProperty === "mixed") {
+      if (e.target.name === "cash") {
         setPayment({
           ...payment,
           payment: num + payment.card + payment.transfer,
           cash: num,
-        })
+        });
         setDebt({
           ...debt,
           debt: discountedPrice - (num + payment.card + payment.transfer),
-        })
+        });
       }
-      if (e.target.name === 'card') {
+      if (e.target.name === "card") {
         setPayment({
           ...payment,
           payment: num + payment.cash + payment.transfer,
           card: num,
-        })
+        });
         setDebt({
           ...debt,
           debt: discountedPrice - (num + payment.cash + payment.transfer),
-        })
+        });
       }
-      if (e.target.name === 'transfer') {
+      if (e.target.name === "transfer") {
         setPayment({
           ...payment,
           payment: num + payment.cash + payment.card,
           transfer: num,
-        })
+        });
         setDebt({
           ...debt,
           debt: discountedPrice - (num + payment.cash + payment.card),
-        })
+        });
       }
     }
-  }
-  console.log(debt)
-  console.log(payment)
-  console.log(discount)
+  };
+  console.log(debt);
+  console.log(payment);
+  console.log(discount);
 
   //====================================================================
   //====================================================================
-  const [t, setT] = useState()
+  const [t, setT] = useState();
   useEffect(() => {
     if (!t) {
-      setT(1)
-      getCategories()
-      getProductTypes()
-      getBrand()
-      getPackmans()
-      getClients()
-      getBaseUrl()
+      setT(1);
+      getCategories();
+      getProductTypes();
+      getBrand();
+      getPackmans();
+      getClients();
+      getBaseUrl();
     }
   }, [
     getCategories,
@@ -640,7 +638,7 @@ export const Sale = () => {
     getClients,
     t,
     getBaseUrl,
-  ])
+  ]);
 
   //====================================================================
   //====================================================================
@@ -702,5 +700,5 @@ export const Sale = () => {
         handler={pushSaleProduct}
       />
     </div>
-  )
-}
+  );
+};
