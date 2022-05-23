@@ -10,9 +10,12 @@ export const Card = ({
   setVisible,
   payment,
   discount,
-  inputHandler,
+  valueName,
+  valueProperty,
   showInput,
   debt,
+  changePay,
+  discountedPrice,
 }) => {
   return (
     <div
@@ -45,13 +48,47 @@ export const Card = ({
       <div className="md:flex md:justify-between md:items-center">
         <LeftCard
           totalprice={totalprice}
+          discountedPrice={discountedPrice}
           discount={discount}
           payment={payment}
           debt={debt}
-          inputHandler={inputHandler}
+          valueName={valueName}
+          valueProperty={valueProperty}
+          changePay={changePay}
         />
-        <RightBody showInput={showInput} />
+        <RightBody
+          showInput={showInput}
+          payment={payment}
+          discount={discount}
+          debt={debt}
+          valueName={valueName}
+          valueProperty={valueProperty}
+        />
       </div>
     </div>
   );
 };
+
+// const changePayment = (e) => {
+//   let discounted = discount.price;
+
+//   if (valueName === "discount") {
+//     if (valueProperty === "price") {
+//       discounted = totalprice - e.target.value;
+//       setDiscount({
+//         ...discount,
+//         price: e.target.value,
+//       });
+//     }
+//     if (valueProperty === "procient") {
+//       discounted = e.target.value * parseFloat(totalprice / 100);
+//       setDiscount({
+//         ...discount,
+//         procient: e.target.value,
+//       });
+//     }
+//   }
+//   if (valueName === 'payment') {
+
+//   }
+// };

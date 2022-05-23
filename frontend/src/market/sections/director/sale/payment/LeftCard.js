@@ -4,36 +4,79 @@ import { Number } from "./Number";
 export const LeftCard = ({
   totalprice,
   payment,
-  inputHandler,
+  valueName,
+  valueProperty,
   discount,
   debt,
+  changePay,
+  discountedPrice,
 }) => {
   const number = [7, 8, 9, 4, 5, 6, 1, 2, 3, ",", 0, "x"];
   return (
     <div className="w-full text-white p-3 md:w-2/5 max-w-[400px] pt-4 m-auto">
-      <div className="flex text-5xl items-center font-bold border-white border-b-2">
-        <input className="bg-[#3695D7]  text-right font-bold  mb-1  w-full" />
-        <span className="pb-1">$</span>
-      </div>
-      <div className="flex text-5xl items-center font-bold border-white border-b-2">
-        <input
-          className="bg-[#3695D7]  text-right font-bold  mb-1  w-full"
-          value={() => {
-            if (Object.keys(payment).includes(inputHandler)) {
-              return payment[inputHandler];
-            }
-            if (Object.keys(discount).includes(inputHandler)) {
-              return discount[inputHandler];
-            }
-            if (Object.keys(debt).includes(inputHandler)) {
-            }
-          }}
-        />
-        <span className="pb-1">$</span>
-      </div>
-      <p className="text-base">
-        To'lov: {totalprice}$ dan {payment.payment} $
-      </p>
+      {valueName === "payment" ? (
+        <>
+          <div className="flex text-5xl items-center font-bold border-white border-b-2">
+            <input
+              className="bg-[#3695D7]  text-right font-bold  mb-1  w-full"
+              value={
+                (valueProperty === "cash" && payment.cash) ||
+                (valueProperty === "card" && payment.card) ||
+                (valueProperty === "transfer" && payment.transfer) ||
+                0
+              }
+              onChange={changePay}
+              type="number"
+            />
+            <span className="pb-1">$</span>
+          </div>
+          <p className="text-base">
+            {`Naqt to'lov: ${discountedPrice}$ dan ${
+              parseInt(payment.payment) || 0
+            } $`}
+          </p>
+        </>
+      ) : valueName === "discount" ? (
+        <>
+          <div className="flex text-5xl items-center font-bold border-white border-b-2">
+            <input
+              className="bg-[#3695D7]  text-right font-bold  mb-1  w-full"
+              value={
+                valueProperty === "price"
+                  ? discount.price
+                  : valueProperty === "procient"
+                  ? discount.procient
+                  : 0
+              }
+              onChange={changePay}
+              type="number"
+            />
+            <span className="pb-1">$</span>
+          </div>
+          <p className="text-base">
+            Chegirma:{" "}
+            {valueProperty === "price"
+              ? `${discount.price}$`
+              : `${discount.procient}%`}
+          </p>
+        </>
+      ) : valueName === "debt" ? (
+        <>
+          <div className="flex text-5xl items-center font-bold border-white border-b-2">
+            <input
+              className="bg-[#3695D7]  text-right font-bold  mb-1  w-full"
+              value={debt.debt || 0}
+              disabled
+              onChange={changePay}
+              type="number"
+            />
+            <span className="pb-1">$</span>
+          </div>
+          <p className="text-base">Qarz: {debt.debt}</p>
+        </>
+      ) : (
+        ""
+      )}
       <div className="grid grid-cols-3 gap-2 p-4">
         {number.map((num, index) => {
           return (
@@ -45,20 +88,6 @@ export const LeftCard = ({
             </button>
           );
         })}
-      </div>
-      <div className="flex justify-around mt-5 ">
-        <button className="py-1 w-1/3 bg-[#54B1EC] text-xl flex flex-col justify-center items-center">
-          <span className="text-sm">Jami</span>
-          <span className="font-bold text-center">{totalprice} $</span>
-        </button>
-        <button className="mx-2 py-1 w-1/3 bg-[#54B1EC] text-xl flex flex-col justify-center items-center">
-          <span className="text-sm">Chegirma</span>
-          <span className="font-bold text-center">{totalprice} $</span>
-        </button>
-        <button className="py-1 w-1/3 bg-[#54B1EC] text-xl flex flex-col justify-center items-center">
-          <span className="text-sm">Qarz</span>
-          <span className="font-bold text-center">{totalprice} $</span>
-        </button>
       </div>
     </div>
   );
