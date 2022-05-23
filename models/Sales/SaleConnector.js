@@ -5,11 +5,11 @@ const saleconnector = new Schema(
   {
     id: { type: String },
     payments: [{ type: Schema.Types.ObjectId, ref: 'Payment' }],
+    products: [{ type: Schema.Types.ObjectId, ref: 'SaleProduct' }],
     discounts: [{ type: Schema.Types.ObjectId, ref: 'Discount' }],
     debts: [{ type: Schema.Types.ObjectId, ref: 'Debt' }],
     packman: { type: Schema.Types.ObjectId, ref: 'Packman' },
     client: { type: Schema.Types.ObjectId, ref: 'Client' },
-    products: [{ type: Schema.Types.ObjectId, ref: 'SaleProduct' }],
     market: { type: Schema.Types.ObjectId, ref: 'Market', required: true },
     user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     isArchive: { type: Boolean, default: false },

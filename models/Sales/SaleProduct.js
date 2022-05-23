@@ -7,9 +7,6 @@ const saleproduct = new Schema(
     unitprice: { type: Number, required: true },
     pieces: { type: Number, required: true },
     product: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
-    client: { type: Schema.Types.ObjectId, ref: 'Client' },
-    packman: { type: Schema.Types.ObjectId, ref: 'Packman' },
-    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     market: { type: Schema.Types.ObjectId, ref: 'Market', required: true },
     isArchive: { type: Boolean, default: false },
   },
@@ -24,10 +21,7 @@ function validateSaleProduct(saleproduct) {
     unitprice: Joi.number().required(),
     pieces: Joi.number().required(),
     product: Joi.string().required(),
-    packman: Joi.string(),
-    client: Joi.string(),
-    user: Joi.string().required(),
-    market: Joi.string().required(),
+    market: Joi.string(),
   })
   return schema.validate(saleproduct)
 }

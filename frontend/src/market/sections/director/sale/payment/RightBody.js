@@ -1,3 +1,4 @@
+
 import React from "react";
 
 export const RightBody = ({
@@ -17,7 +18,14 @@ export const RightBody = ({
         onClick={showInput}
       >
         <div style={{ pointerEvents: "none" }}>
+
           <p className="text-4xl">{parseInt(payment.cash) || 0}</p>
+
+          <img
+            className="w-[75px] "
+            alt="#"
+            src="https://cdn-icons-png.flaticon.com/128/639/639365.png"
+          />
           <h1 className="mt-5">Оплата наличными</h1>
         </div>
       </button>
