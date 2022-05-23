@@ -74,6 +74,42 @@ export const LeftCard = ({
           </div>
           <p className="text-base">Qarz: {debt.debt}</p>
         </>
+      ) : valueProperty === "mixed" ? (
+        <>
+          <div className="flex text-5xl items-center font-bold border-white border-b-2">
+            <input
+              className="bg-[#3695D7]  text-right font-bold  mb-1  w-full"
+              value={payment.cash || 0}
+              onChange={changePay}
+              type="number"
+              name="cash"
+            />
+            <span className="pb-1">$</span>
+          </div>
+          <p className="text-base">Naqt: {payment.cash || 0}</p>
+          <div className="flex text-5xl items-center font-bold border-white border-b-2">
+            <input
+              className="bg-[#3695D7]  text-right font-bold  mb-1  w-full"
+              value={payment.card || 0}
+              onChange={changePay}
+              type="number"
+              name="card"
+            />
+            <span className="pb-1">$</span>
+          </div>
+          <p className="text-base">Plastik: {payment.card || 0}</p>
+          <div className="flex text-5xl items-center font-bold border-white border-b-2">
+            <input
+              className="bg-[#3695D7]  text-right font-bold  mb-1  w-full"
+              value={payment.transfer || 0}
+              onChange={changePay}
+              type="number"
+              name="transfer"
+            />
+            <span className="pb-1">$</span>
+          </div>
+          <p className="text-base">O'tkazma: {payment.transfer || 0}</p>
+        </>
       ) : (
         ""
       )}
