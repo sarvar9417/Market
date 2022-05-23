@@ -494,7 +494,7 @@ export const Sale = () => {
       }
       if (valueProperty === "procient") {
         let discountedprice = totalprice - parseFloat(num * (totalprice / 100));
-        setDiscountedPrice(totalprice - discountedprice);
+        setDiscountedPrice(parseFloat(totalprice - discountedprice));
         setDiscount({
           procient: num,
           price: parseFloat(num * (totalprice / 100)),
@@ -503,7 +503,7 @@ export const Sale = () => {
           ...debt,
           debt:
             parseFloat(num * (totalprice / 100)) > 0
-              ? totalprice - parseFloat(num * (totalprice / 100))
+              ? parseFloat(totalprice - parseFloat(num * (totalprice / 100)))
               : totalprice,
         });
       }
