@@ -4,11 +4,14 @@ const Joi = require('joi')
 const discount = new Schema(
   {
     totalprice: { type: Number, required: true },
-    product: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
-    client: { type: Schema.Types.ObjectId, ref: 'Client' },
-    packman: { type: Schema.Types.ObjectId, ref: 'Packman' },
+    products: [{ type: Schema.Types.ObjectId, ref: 'Product', required: true }],
     procient: { type: Number },
     discount: { type: Number },
+    comment: { type: String, min: 5 },
+    saleconnector: {
+      type: Schema.Types.ObjectId,
+      ref: 'SaleConnector',
+    },
     user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     market: { type: Schema.Types.ObjectId, ref: 'Market', required: true },
     isArchive: { type: Boolean, default: false },
@@ -21,11 +24,11 @@ const discount = new Schema(
 function validateDiscount(discount) {
   const schema = Joi.object({
     totalprice: Joi.number().required(),
-    product: Joi.string().required(),
-    packman: Joi.string(),
-    client: Joi.string(),
+    products: Joi.array().required(),
     discount: Joi.number(),
     procient: Joi.number(),
+    saleconnector: Joi.string(),
+    comment: Joi.string(),
     user: Joi.string().required(),
     market: Joi.string().required(),
   })

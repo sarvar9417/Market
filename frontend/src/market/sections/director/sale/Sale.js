@@ -1,9 +1,9 @@
-import { useToast } from "@chakra-ui/react";
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../../context/AuthContext";
-import { useHttp } from "../../../hooks/http.hook";
-import { Modal } from "../components/Modal";
-import { InputProduct } from "./components/InputProduct";
+import { useToast } from '@chakra-ui/react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { AuthContext } from '../../../context/AuthContext'
+import { useHttp } from '../../../hooks/http.hook'
+import { Modal } from '../components/Modal'
+import { InputProduct } from './components/InputProduct'
 // import { Payment } from './Payment'
 
 import { Products } from './Products'
@@ -50,12 +50,10 @@ export const Sale = () => {
   //====================================================================
   const [categories, setCategories] = useState([
     {
-
       label: 'Barcha kategoriyalar',
       value: 'all',
     },
   ])
-
 
   const getCategories = useCallback(async () => {
     try {
@@ -194,7 +192,6 @@ export const Sale = () => {
   const [saleproducts, setSaleProducts] = useState([])
   const [totalprice, setTotalPrice] = useState(0)
 
-
   const getProducts = useCallback(
     async (type) => {
       try {
@@ -264,7 +261,11 @@ export const Sale = () => {
     setSaleProduct()
     setModal(false)
     setSaleProducts(sales)
-    setTotalPrice(sales.reduce((summ, sale) => { return sale.totalprice + summ }, 0))
+    setTotalPrice(
+      sales.reduce((summ, sale) => {
+        return sale.totalprice + summ
+      }, 0),
+    )
   }
 
   const editProducts = (product, index, type) => {
@@ -275,7 +276,11 @@ export const Sale = () => {
       setModal(true)
     }
     setSaleProducts(sales)
-    setTotalPrice(sales.reduce((summ, sale) => { return sale.totalprice + summ }, 0))
+    setTotalPrice(
+      sales.reduce((summ, sale) => {
+        return sale.totalprice + summ
+      }, 0),
+    )
   }
 
   const changeTotalPrice = (e) => {
@@ -324,48 +329,46 @@ export const Sale = () => {
   //====================================================================
   //====================================================================
 
-  const [clients, setClients] = useState([]);
-  const [storageClients, setStorageClients] = useState([]);
-
+  const [clients, setClients] = useState([])
+  const [storageClients, setStorageClients] = useState([])
 
   const getClients = useCallback(
     async (type) => {
       try {
         const data = await request(
           `/api/sales/client/getall`,
-          "POST",
+          'POST',
           { market: auth.market._id },
           {
             Authorization: `Bearer ${auth.token}`,
-          }
-        );
+          },
+        )
         let v = [
           {
-            label: "Barcha mijozlar",
-            value: "all",
+            label: 'Barcha mijozlar',
+            value: 'all',
           },
-        ];
-
+        ]
 
         data.map((type) => {
           return v.push({
             label: type.name,
             value: type._id,
             packman: type.packman && type.packman._id,
-          });
-        });
-        setStorageClients(v);
-        setClients(v);
+          })
+        })
+        setStorageClients(v)
+        setClients(v)
       } catch (error) {
         notify({
           title: error,
-          description: "",
-          status: "error",
-        });
+          description: '',
+          status: 'error',
+        })
       }
     },
-    [request, auth, notify]
-  );
+    [request, auth, notify],
+  )
   //====================================================================
   //====================================================================
 
@@ -378,14 +381,14 @@ export const Sale = () => {
     setPackman({
       name: e.label,
       _id: e.value,
-    });
-    if (e.value === "all") {
-      setClients(storageClients);
+    })
+    if (e.value === 'all') {
+      setClients(storageClients)
     } else {
-      const filter = storageClients.filter((item) => item.packman === e.value);
-      setClients(filter);
+      const filter = storageClients.filter((item) => item.packman === e.value)
+      setClients(filter)
     }
-  };
+  }
 
   //====================================================================
   //====================================================================
@@ -399,14 +402,14 @@ export const Sale = () => {
       name: e.label,
       _id: e.value,
       packman: e.packman || null,
-    });
-  };
+    })
+  }
 
   const inputClient = (e) => {
     setClient({
       name: e.target.value,
-    });
-  };
+    })
+  }
 
   //====================================================================
   //====================================================================
@@ -416,28 +419,26 @@ export const Sale = () => {
   // Discount and Payment
   const [discount, setDiscount] = useState({
     price: 0,
-    procient: 0
+    procient: 0,
   })
 
-  const changeDiscount = (e) => {
+  const changeDiscount = (e) => {}
 
-  }
-
-  const [payment, setPayment]=useState(0)
+  const [payment, setPayment] = useState(0)
 
   //====================================================================
   //====================================================================
-  const [t, setT] = useState();
+  const [t, setT] = useState()
   useEffect(() => {
     if (!t) {
-      setT(1);
-      getCategories();
-      getProductTypes();
-      getBrand();
-      getPackmans();
-      getClients();
+      setT(1)
+      getCategories()
+      getProductTypes()
+      getBrand()
+      getPackmans()
+      getClients()
     }
-  }, [getCategories, getProductTypes, getBrand, getPackmans, getClients, t]);
+  }, [getCategories, getProductTypes, getBrand, getPackmans, getClients, t])
 
   //====================================================================
   //====================================================================
@@ -477,7 +478,6 @@ export const Sale = () => {
             changePackman={changePackman}
             changeClient={changeClient}
             inputClient={inputClient}
-
           />
         </div>
       </div>
@@ -490,6 +490,5 @@ export const Sale = () => {
         handler={pushSaleProduct}
       />
     </div>
-
   )
 }
