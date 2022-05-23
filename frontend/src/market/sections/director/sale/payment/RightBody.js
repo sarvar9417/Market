@@ -1,5 +1,4 @@
-
-import React from "react";
+import React from 'react'
 
 export const RightBody = ({
   showInput,
@@ -10,80 +9,89 @@ export const RightBody = ({
   valueProperty,
 }) => {
   return (
-    <div className="bg-cyan-100 text-[#333] mt-2 font-semibold text-lg rounded w-2/4 px-6 grid grid-cols-2 gap-y-6 justify-items-center">
-      <button
-        className="bg-white rounded col-span-2 w-full h-[150px] shadow-lg shadow-indigo-500/50 border-2 border-teal-600"
-        name="payment"
-        data-property="cash"
-        onClick={showInput}
-      >
-        <div style={{ pointerEvents: "none" }}>
-
-          <p className="text-4xl">{parseInt(payment.cash) || 0}</p>
-
-          <img
-            className="w-[75px] "
-            alt="#"
-            src="https://cdn-icons-png.flaticon.com/128/639/639365.png"
-          />
-          <h1 className="mt-5">Оплата наличными</h1>
+    <div className="bg-cyan-50 text-[#333] font-semibold text-lg rounded p-2 h-min">
+      <div className="grid grid-cols-3 gap-2">
+        <div className="col-span-2">
+          <div className="grid grid-rows-3 gap-2">
+            <button
+              className="bg-teal-400 hover:bg-teal-500 text-white w-full rounded font-bold py-3"
+              name="payment"
+              data-property="cash"
+              onClick={showInput}
+            >
+              <p className="text-4xl font-bold pointer-events-none">
+                {parseInt(payment.cash) || 0} $
+              </p>
+              <span className="pointer-events-none">Naqt</span>
+            </button>
+            <button
+              className="bg-teal-400 hover:bg-teal-500 text-white w-full rounded font-bold py-3"
+              name="payment"
+              data-property="card"
+              onClick={showInput}
+            >
+              <p className="text-4xl font-bold pointer-events-none">
+                {parseInt(payment.card) || 0} $
+              </p>
+              <span className="pointer-events-none">Plastik</span>
+            </button>
+            <button
+              className="bg-teal-400 hover:bg-teal-500 text-white w-full rounded font-bold py-3"
+              name="payment"
+              data-property="transfer"
+              onClick={showInput}
+            >
+              <div style={{ pointerEvents: 'none' }}>
+                <p className="text-4xl font-bold pointer-events-none">
+                  {parseInt(payment.transfer) || 0} $
+                </p>
+                <span className="pointer-events-none">O'tkazma</span>
+              </div>
+            </button>
+          </div>
         </div>
-      </button>
-      <button
-        className="bg-white rounded col-span-1 w-[250px] h-[150px] justify-self-start"
-        name="payment"
-        data-property="card"
-        onClick={showInput}
-      >
-        <div className="" style={{ pointerEvents: "none" }}>
-          <p className="text-4xl">{parseInt(payment.card) || 0}</p>
-          <h1>Банковская карта</h1>
+        <div className="grid grid-rows-3">
+          <div className=" row-span-3">
+            <button
+              className="bg-teal-400 hover:bg-teal-500 text-white w-full rounded font-bold py-3 h-full"
+              name="payment"
+              data-property="mixed"
+              onClick={showInput}
+            >
+              <p className="text-4xl font-bold pointer-events-none">
+                {parseInt(payment.card) || 0} $
+              </p>
+              <h1 className="pointer-events-none">Aralash</h1>
+            </button>
+          </div>
         </div>
-      </button>
-      <button
-        className="bg-white rounded col-span-1 w-[250px] h-[150px] justify-self-end"
-        name="payment"
-        data-property="transfer"
-        onClick={showInput}
-      >
-        <div style={{ pointerEvents: "none" }}>
-          <p className="text-4xl">{parseInt(payment.transfer) || 0}</p>
-          <h1 className="mt-5">O'tkazma</h1>
-        </div>
-      </button>
-      <button
-        className="bg-white rounded col-span-1 w-[200px] h-[150px]"
-        name="discount"
-        data-property="price"
-        onClick={showInput}
-      >
-        <div style={{ pointerEvents: "none" }}>
-          <p className="text-4xl">{parseInt(discount.price)}</p>
-          <h1 className="mt-5">Скидка</h1>
-        </div>
-      </button>
-      <button
-        className="bg-white rounded col-span-1 w-[200px] h-[150px]"
-        name="debt"
-        data-property="debt"
-        onClick={showInput}
-      >
-        <div style={{ pointerEvents: "none" }}>
-          <p className="text-4xl">{parseInt(debt.debt) || 0}</p>
-          <h1 className="mt-5">Долг</h1>
-        </div>
-      </button>
-      <button
-        className="bg-white rounded col-span-1 w-[250px] h-[150px] justify-self-start"
-        name="payment"
-        data-property="mixed"
-        onClick={showInput}
-      >
-        <div className="" style={{ pointerEvents: "none" }}>
-          <p className="text-4xl">{parseInt(payment.card) || 0}</p>
-          <h1>Aralash</h1>
-        </div>
-      </button>
+      </div>
+      <div className="grid grid-cols-2 gap-2 pt-2">
+        <button
+          className="bg-teal-400 hover:bg-teal-500 text-white w-full rounded font-bold py-3"
+          name="discount"
+          data-property="price"
+          onClick={showInput}
+        >
+          <p className="text-4xl font-bold pointer-events-none">
+            {parseInt(discount.price)}
+          </p>
+          <h1 className=" pointer-events-none">Chegirma</h1>
+        </button>
+        <button
+          className="bg-teal-400 hover:bg-teal-500 text-white w-full rounded font-bold py-3"
+          name="debt"
+          data-property="debt"
+          onClick={showInput}
+        >
+          <div style={{ pointerEvents: 'none' }}>
+            <p className="text-4xl font-bold pointer-events-none">
+              {parseInt(debt.debt) || 0} $
+            </p>
+            <h1 className=" pointer-events-none">Qarz</h1>
+          </div>
+        </button>
+      </div>
     </div>
-  );
-};
+  )
+}

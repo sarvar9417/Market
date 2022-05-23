@@ -1,5 +1,6 @@
-import React from "react";
-import { Number } from "./Number";
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React from 'react'
 
 export const LeftCard = ({
   totalprice,
@@ -11,18 +12,31 @@ export const LeftCard = ({
   changePay,
   discountedPrice,
 }) => {
-  const number = [7, 8, 9, 4, 5, 6, 1, 2, 3, ",", 0, "x"];
+  const number = [
+    7,
+    8,
+    9,
+    4,
+    5,
+    6,
+    1,
+    2,
+    3,
+    ',',
+    0,
+    <FontAwesomeIcon icon={faArrowLeft} />,
+  ]
   return (
-    <div className="w-full text-white p-3 md:w-2/5 max-w-[400px] pt-4 m-auto">
-      {valueName === "payment" ? (
+    <div className="w-full text-white max-w-[400px] m-auto">
+      {valueName === 'payment' ? (
         <>
           <div className="flex text-5xl items-center font-bold border-white border-b-2">
             <input
-              className="bg-[#3695D7]  text-right font-bold  mb-1  w-full"
+              className="bg-[#3695D7]  text-right font-bold  mb-1  w-full outline-none"
               value={
-                (valueProperty === "cash" && payment.cash) ||
-                (valueProperty === "card" && payment.card) ||
-                (valueProperty === "transfer" && payment.transfer) ||
+                (valueProperty === 'cash' && payment.cash) ||
+                (valueProperty === 'card' && payment.card) ||
+                (valueProperty === 'transfer' && payment.transfer) ||
                 0
               }
               onChange={changePay}
@@ -36,15 +50,15 @@ export const LeftCard = ({
             } $`}
           </p>
         </>
-      ) : valueName === "discount" ? (
+      ) : valueName === 'discount' ? (
         <>
           <div className="flex text-5xl items-center font-bold border-white border-b-2">
             <input
               className="bg-[#3695D7]  text-right font-bold  mb-1  w-full"
               value={
-                valueProperty === "price"
+                valueProperty === 'price'
                   ? discount.price
-                  : valueProperty === "procient"
+                  : valueProperty === 'procient'
                   ? discount.procient
                   : 0
               }
@@ -54,13 +68,13 @@ export const LeftCard = ({
             <span className="pb-1">$</span>
           </div>
           <p className="text-base">
-            Chegirma:{" "}
-            {valueProperty === "price"
+            Chegirma:{' '}
+            {valueProperty === 'price'
               ? `${discount.price}$`
               : `${discount.procient}%`}
           </p>
         </>
-      ) : valueName === "debt" ? (
+      ) : valueName === 'debt' ? (
         <>
           <div className="flex text-5xl items-center font-bold border-white border-b-2">
             <input
@@ -75,7 +89,7 @@ export const LeftCard = ({
           <p className="text-base">Qarz: {debt.debt}</p>
         </>
       ) : (
-        ""
+        ''
       )}
       <div className="grid grid-cols-3 gap-2 p-4">
         {number.map((num, index) => {
@@ -86,9 +100,9 @@ export const LeftCard = ({
             >
               {num}
             </button>
-          );
+          )
         })}
       </div>
     </div>
-  );
-};
+  )
+}
