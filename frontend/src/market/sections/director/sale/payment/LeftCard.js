@@ -1,6 +1,6 @@
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React from 'react'
 
 export const LeftCard = ({
   totalprice,
@@ -23,21 +23,27 @@ export const LeftCard = ({
     1,
     2,
     3,
-    ",",
+    ',',
     0,
     <FontAwesomeIcon icon={faArrowLeft} />,
-  ];
+  ]
   return (
     <div className="w-full text-white max-w-[400px] m-auto">
-      {valueName === "payment" ? (
+      {valueName === 'payment' ? (
         <>
-          <div className="flex text-5xl items-center font-bold border-white border-b-2">
+          <div className="flex text-3xl items-center font-bold border-white border-b-2">
+            <span className="text-xl opacity-60">
+              {(valueProperty === 'cash' && 'Naqt') ||
+                (valueProperty === 'card' && 'Plastik') ||
+                (valueProperty === 'transfer' && 'O`tkazma') ||
+                0}
+            </span>
             <input
               className="bg-[#3695D7]  text-right font-bold  mb-1  w-full outline-none"
               value={
-                (valueProperty === "cash" && payment.cash) ||
-                (valueProperty === "card" && payment.card) ||
-                (valueProperty === "transfer" && payment.transfer) ||
+                (valueProperty === 'cash' && payment.cash) ||
+                (valueProperty === 'card' && payment.card) ||
+                (valueProperty === 'transfer' && payment.transfer) ||
                 0
               }
               onChange={changePay}
@@ -46,26 +52,26 @@ export const LeftCard = ({
             <span className="pb-1">$</span>
           </div>
           <p className="text-base">
-            {(valueProperty === "cash" &&
+            {(valueProperty === 'cash' &&
               `Naqt to'lov: ${discountedPrice}$ dan ${
                 parseInt(payment.payment) || 0
               } $`) ||
-              (valueProperty === "card" &&
+              (valueProperty === 'card' &&
                 `Plastik: ${discountedPrice}$ dan ${
                   parseInt(payment.payment) || 0
                 } $`) ||
-              (valueProperty === "transfer" &&
+              (valueProperty === 'transfer' &&
                 `O'tkazma: ${discountedPrice}$ dan ${
                   parseInt(payment.payment) || 0
                 } $`)}
           </p>
         </>
-      ) : valueName === "discount" ? (
+      ) : valueName === 'discount' ? (
         <>
           <div className="flex gap-x-2">
             <div class="form-check">
               <input
-                class="form-check-input"
+                class="form-check-input outline-none"
                 type="radio"
                 name="discount"
                 data-property="price"
@@ -78,7 +84,7 @@ export const LeftCard = ({
             </div>
             <div class="form-check">
               <input
-                class="form-check-input"
+                class="form-check-input outline-none"
                 type="radio"
                 name="discount"
                 data-property="procient"
@@ -90,18 +96,18 @@ export const LeftCard = ({
               </label>
             </div>
           </div>
-          <div className="flex text-5xl items-center font-bold border-white border-b-2">
-            {(valueProperty === "price" && (
+          <div className="flex text-3xl items-center font-bold border-white border-b-2">
+            {(valueProperty === 'price' && (
               <input
-                className="bg-[#3695D7]  text-right font-bold  mb-1  w-full"
+                className="bg-[#3695D7]  text-right font-bold  mb-1  w-full outline-none"
                 value={discount.price || 0}
                 onChange={changePay}
                 type="number"
               />
             )) ||
-              (valueProperty === "procient" && (
+              (valueProperty === 'procient' && (
                 <input
-                  className="bg-[#3695D7]  text-right font-bold  mb-1  w-full"
+                  className="bg-[#3695D7]  text-right font-bold  mb-1  w-full outline-none"
                   value={discount.procient || 0}
                   onChange={changePay}
                   type="number"
@@ -110,17 +116,17 @@ export const LeftCard = ({
             <span className="pb-1">$</span>
           </div>
           <p className="text-base">
-            Chegirma:{" "}
-            {valueProperty === "price"
+            Chegirma:{' '}
+            {valueProperty === 'price'
               ? `${discount.price}$`
               : `${discount.procient}%`}
           </p>
         </>
-      ) : valueName === "debt" ? (
+      ) : valueName === 'debt' ? (
         <>
-          <div className="flex text-5xl items-center font-bold border-white border-b-2">
+          <div className="flex text-3xl items-center font-bold border-white border-b-2">
             <input
-              className="bg-[#3695D7]  text-right font-bold  mb-1  w-full"
+              className="bg-[#3695D7]  text-right font-bold  mb-1  w-ful outline-none"
               value={debt.debt || 0}
               disabled
               onChange={changePay}
@@ -130,12 +136,13 @@ export const LeftCard = ({
           </div>
           <p className="text-base">Qarz: {debt.debt}</p>
         </>
-      ) : valueProperty === "mixed" ? (
+      ) : valueProperty === 'mixed' ? (
         <>
           <div>
-            <div className="flex text-5xl items-center font-bold border-white border-b-2">
+            <div className="flex text-3xl items-center font-bold border-white border-b-2">
+              <span className="text-xl opacity-60">Naqt</span>
               <input
-                className="bg-[#3695D7]  text-right font-bold  mb-1  w-full"
+                className="bg-[#3695D7]  text-right font-bold  mb-1  w-full outline-none"
                 value={payment.cash || 0}
                 onChange={changePay}
                 type="number"
@@ -143,12 +150,13 @@ export const LeftCard = ({
               />
               <span className="pb-1">$</span>
             </div>
-            <p className="text-base">Naqt: {payment.cash || 0}</p>
+            {/* <p className="text-base">Naqt: {payment.cash || 0}</p> */}
           </div>
           <div>
-            <div className="flex text-5xl items-center font-bold border-white border-b-2">
+            <div className="flex text-3xl items-center font-bold border-white border-b-2">
+              <span className="text-xl opacity-60">Plastik</span>
               <input
-                className="bg-[#3695D7]  text-right font-bold  mb-1  w-full"
+                className="bg-[#3695D7]  text-right font-bold  mb-1  w-full outline-none"
                 value={payment.card || 0}
                 onChange={changePay}
                 type="number"
@@ -156,12 +164,13 @@ export const LeftCard = ({
               />
               <span className="pb-1">$</span>
             </div>
-            <p className="text-base">Plastik: {payment.card || 0}</p>
+            {/* <p className="text-base">Plastik: {payment.card || 0}</p> */}
           </div>
           <div>
-            <div className="flex text-5xl items-center font-bold border-white border-b-2">
+            <div className="flex text-3xl items-center font-bold border-white border-b-2">
+              <span className="text-xl opacity-60">O'tkazma</span>
               <input
-                className="bg-[#3695D7]  text-right font-bold  mb-1  w-full"
+                className="bg-[#3695D7]  text-right font-bold  mb-1  w-full outline-none"
                 value={payment.transfer || 0}
                 onChange={changePay}
                 type="number"
@@ -169,11 +178,11 @@ export const LeftCard = ({
               />
               <span className="pb-1">$</span>
             </div>
-            <p className="text-base">O'tkazma: {payment.transfer || 0}</p>
+            {/* <p className="text-base">O'tkazma: {payment.transfer || 0}</p> */}
           </div>
         </>
       ) : (
-        ""
+        ''
       )}
       <div className="grid grid-cols-3 gap-2 p-4">
         {number.map((num, index) => {
@@ -184,12 +193,12 @@ export const LeftCard = ({
             >
               {num}
             </button>
-          );
+          )
         })}
       </div>
       <button className="w-full py-2 bg-[#54B1EC] font-bold text-lg hover:bg-blue-400">
         To'lash
       </button>
     </div>
-  );
-};
+  )
+}
