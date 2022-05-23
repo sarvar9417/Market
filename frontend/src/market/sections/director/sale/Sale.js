@@ -461,14 +461,39 @@ export const Sale = () => {
   const [valueProperty, setValueProperty] = useState('cash')
 
   const showInput = (e) => {
-    console.log(e)
     setValueName(e.target.name)
     setValueProperty(e.target.dataset.property)
-    if (
-      valueProperty === 'cash' ||
-      valueProperty === 'card' ||
-      valueProperty === 'transfer'
-    ) {
+    if (e.target.name === 'payment') {
+      setPayment({
+        type: e.target.dataset.property,
+
+        payment: 0,
+        cash: 0,
+        card: 0,
+        transfer: 0,
+      })
+    }
+    if (e.target.dataset.property === 'mixed') {
+      setDebt({
+        ...debt,
+        debt: discountedPrice,
+      })
+    }
+    if (valueProperty === 'mixed') {
+      setPayment({
+        type: 'mixed',
+        payment: 0,
+        cash: 0,
+        card: 0,
+        transfer: 0,
+      })
+    }
+    setDebt({
+      ...debt,
+      debt: discountedPrice,
+    })
+
+    if (e.target.name === 'discount') {
       setPayment({
         ...payment,
         payment: 0,
@@ -478,37 +503,36 @@ export const Sale = () => {
       })
     }
   }
-
+  console.log(valueProperty)
   const changePay = (e) => {
-    let num = parseInt(e.target.value)
+    let num = parseFloat(e.target.value)
+
     if (valueName === 'discount') {
       if (valueProperty === 'price') {
         let priced = num
         setDiscountedPrice(totalprice - num)
         setDiscount({
-          price: num,
+          price: num || 0,
           procient: parseFloat(num / (totalprice / 100)),
         })
-        setPayment({
-          ...payment,
-          payment:
-            totalprice -
-            priced -
-            (payment.cash + payment.card + payment.transfer),
+        setDebt({
+          ...debt,
+          debt: num > 0 ? totalprice - num : totalprice,
         })
       }
       if (valueProperty === 'procient') {
         let discountedprice = totalprice - parseFloat(num * (totalprice / 100))
-        setDiscountedPrice(totalprice - discountedprice)
+        setDiscountedPrice(parseFloat(totalprice - discountedprice))
         setDiscount({
           procient: num,
           price: parseFloat(num * (totalprice / 100)),
         })
-
-        setPayment({
-          ...payment,
-          payment:
-            discountedprice - (payment.cash + payment.card + payment.transfer),
+        setDebt({
+          ...debt,
+          debt:
+            parseFloat(num * (totalprice / 100)) > 0
+              ? parseFloat(totalprice - parseFloat(num * (totalprice / 100)))
+              : totalprice,
         })
       }
     }
@@ -522,6 +546,10 @@ export const Sale = () => {
           card: 0,
           transfer: 0,
         })
+        setDebt({
+          ...debt,
+          debt: num > 0 ? discountedPrice - num : discountedPrice,
+        })
       }
       if (valueProperty === 'card') {
         setPayment({
@@ -530,6 +558,10 @@ export const Sale = () => {
           card: num,
           cash: 0,
           transfer: 0,
+        })
+        setDebt({
+          ...debt,
+          debt: num > 0 ? discountedPrice - num : discountedPrice,
         })
       }
       if (valueProperty === 'transfer') {
@@ -543,10 +575,49 @@ export const Sale = () => {
       }
       setDebt({
         ...debt,
-        debt: discountedPrice - num,
+        debt: num > 0 ? discountedPrice - num : discountedPrice,
       })
     }
+
+    if (valueProperty === 'mixed') {
+      if (e.target.name === 'cash') {
+        setPayment({
+          ...payment,
+          payment: num + payment.card + payment.transfer,
+          cash: num,
+        })
+        setDebt({
+          ...debt,
+          debt: discountedPrice - (num + payment.card + payment.transfer),
+        })
+      }
+      if (e.target.name === 'card') {
+        setPayment({
+          ...payment,
+          payment: num + payment.cash + payment.transfer,
+          card: num,
+        })
+        setDebt({
+          ...debt,
+          debt: discountedPrice - (num + payment.cash + payment.transfer),
+        })
+      }
+      if (e.target.name === 'transfer') {
+        setPayment({
+          ...payment,
+          payment: num + payment.cash + payment.card,
+          transfer: num,
+        })
+        setDebt({
+          ...debt,
+          debt: discountedPrice - (num + payment.cash + payment.card),
+        })
+      }
+    }
   }
+  console.log(debt)
+  console.log(payment)
+  console.log(discount)
 
   //====================================================================
   //====================================================================
@@ -592,6 +663,7 @@ export const Sale = () => {
         valueProperty={valueProperty}
         changePay={changePay}
         discountedPrice={discountedPrice}
+        setValueProperty={setValueProperty}
       />
       {/* <Payment /> */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-7 p-3">
