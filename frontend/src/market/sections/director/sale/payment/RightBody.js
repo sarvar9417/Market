@@ -9,7 +9,7 @@ export const RightBody = ({
   valueProperty,
 }) => {
   return (
-    <div className="bg-cyan-50 text-[#333] font-semibold text-lg rounded p-2 h-min">
+    <div className="bg-cyan-50 text-[#333] font-semibold text-lg rounded p-2 h-min mt-4">
       <div className="grid grid-cols-3 gap-2">
         <div className="col-span-2">
           <div className="grid grid-rows-3 gap-2">

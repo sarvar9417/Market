@@ -96,13 +96,16 @@ export const LeftCard = ({
           return (
             <button
               key={index}
-              className="bg-[#54B1EC] text-3xl rounded-full w-[80px] h-[80px] "
+              className="bg-[#54B1EC] text-3xl rounded-full w-[80px] h-[80px] hover:bg-blue-400 m-auto"
             >
               {num}
             </button>
           )
         })}
       </div>
+      <button className="w-full py-2 bg-[#54B1EC] font-bold text-lg hover:bg-blue-400">
+        To'lash
+      </button>
     </div>
   )
 }

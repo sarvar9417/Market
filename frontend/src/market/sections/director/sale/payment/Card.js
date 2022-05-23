@@ -33,7 +33,7 @@ export const Card = ({
               <div>
                 <h1 className="font-semibold text-2xl ">Заказ: PJ004</h1>
                 <p className="font-light">Константин Рублёв</p>
-                <p className="font-light"> Сумма {totalprice} $.</p>
+                <p className="font-light text-2xl"> Сумма {totalprice} $.</p>
               </div>
             </div>
             <button

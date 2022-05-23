@@ -11,6 +11,7 @@ const { Client } = require('../../models/Sales/Client')
 const { Packman } = require('../../models/Sales/Packman')
 const { Payment } = require('../../models/Sales/Payment')
 const { checkPayments } = require('./saleproduct/checkData')
+const { Product } = require('../../models/Products/Product')
 
 module.exports.register = async (req, res) => {
   try {
@@ -62,6 +63,12 @@ module.exports.register = async (req, res) => {
         product: _id,
       })
 
+      const product = await Product.findById(_id)
+      if (product.total < pieces) {
+        return res.status(400).json({
+          error: `Diqqat! ${product.name} mahsuloti onmborda yetarlicha mavjud emas. Qolgan mahsulot soni ${product.total} ta`,
+        })
+      }
       if (error) {
         return res.status(400).json({
           error: error.message,
@@ -92,6 +99,10 @@ module.exports.register = async (req, res) => {
     for (const saleproduct of all) {
       await saleproduct.save()
       products.push(saleproduct._id)
+
+      const updateproduct = await Product.findById(saleproduct.product)
+      updateproduct.total -= saleproduct.pieces
+      await updateproduct.save()
     }
 
     if (discount.discount > 0) {
@@ -167,7 +178,7 @@ module.exports.register = async (req, res) => {
     saleconnector.products = [...products]
     await saleconnector.save()
 
-    res.status(201).send('created')
+    res.status(201).send(saleproducts)
   } catch (error) {
     console.log(error)
     res.status(400).json({ error: 'Serverda xatolik yuz berdi...' })

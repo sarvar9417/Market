@@ -9,6 +9,7 @@ import { InputProduct } from './components/InputProduct'
 import { Products } from './Products'
 import { Selling } from './Selling'
 import { Card } from './payment/Card'
+import { Cheque } from './payment/Cheque'
 export const Sale = () => {
   //====================================================================
   //====================================================================
@@ -99,6 +100,25 @@ export const Sale = () => {
     setProductTypes(filter)
     getProducts(e)
   }
+  //====================================================================
+  //====================================================================
+
+  //====================================================================
+  //====================================================================
+  const [baseUrl, setBaseUrl] = useState()
+
+  const getBaseUrl = useCallback(async () => {
+    try {
+      const data = await request('/api/baseurl', 'GET', null)
+      setBaseUrl(data.baseUrl)
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      })
+    }
+  }, [request, notify])
   //====================================================================
   //====================================================================
 
@@ -539,14 +559,24 @@ export const Sale = () => {
       getBrand()
       getPackmans()
       getClients()
+      getBaseUrl()
     }
-  }, [getCategories, getProductTypes, getBrand, getPackmans, getClients, t])
+  }, [
+    getCategories,
+    getProductTypes,
+    getBrand,
+    getPackmans,
+    getClients,
+    t,
+    getBaseUrl,
+  ])
 
   //====================================================================
   //====================================================================
 
   return (
     <div className="">
+      {/* <Cheque /> */}
       <Card
         totalprice={totalprice}
         saleproducts={saleproducts}
