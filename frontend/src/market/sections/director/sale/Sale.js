@@ -420,30 +420,34 @@ export const Sale = () => {
   const [discount, setDiscount] = useState({
     price: 0,
     procient: 0,
+
   });
   const [debt, setDebt] = useState({
     debt: 0,
     comment: "",
   });
+
   const [payment, setPayment] = useState({
     payment: totalprice,
-    type: "",
+    type: '',
     cash: totalprice,
     card: 0,
     transfer: 0,
-  });
-  const [discountedPrice, setDiscountedPrice] = useState(totalprice);
+  })
 
-  const [valueName, setValueName] = useState("payment");
-  const [valueProperty, setValueProperty] = useState("cash");
+  const [discountedPrice, setDiscountedPrice] = useState(totalprice)
+
+  const [valueName, setValueName] = useState('payment')
+  const [valueProperty, setValueProperty] = useState('cash')
 
   const showInput = (e) => {
-    setValueName(e.target.name);
-    setValueProperty(e.target.dataset.property);
+    console.log(e)
+    setValueName(e.target.name)
+    setValueProperty(e.target.dataset.property)
     if (
-      valueProperty === "cash" ||
-      valueProperty === "card" ||
-      valueProperty === "transfer"
+      valueProperty === 'cash' ||
+      valueProperty === 'card' ||
+      valueProperty === 'transfer'
     ) {
       setPayment({
         type: valueProperty,
@@ -481,58 +485,58 @@ export const Sale = () => {
         setDiscount({
           price: num,
           procient: parseFloat(num / (totalprice / 100)),
-        });
+        })
         setPayment({
           ...payment,
           payment:
             totalprice -
             priced -
             (payment.cash + payment.card + payment.transfer),
-        });
+        })
       }
-      if (valueProperty === "procient") {
-        let discountedprice = totalprice - parseFloat(num * (totalprice / 100));
-        setDiscountedPrice(totalprice - discountedprice);
+      if (valueProperty === 'procient') {
+        let discountedprice = totalprice - parseFloat(num * (totalprice / 100))
+        setDiscountedPrice(totalprice - discountedprice)
         setDiscount({
           procient: num,
           price: parseFloat(num * (totalprice / 100)),
-        });
+        })
 
         setPayment({
           ...payment,
           payment:
             discountedprice - (payment.cash + payment.card + payment.transfer),
-        });
+        })
       }
     }
 
-    if (valueName === "payment") {
-      if (valueProperty === "cash") {
+    if (valueName === 'payment') {
+      if (valueProperty === 'cash') {
         setPayment({
           ...payment,
           payment: num,
           cash: num,
           card: 0,
           transfer: 0,
-        });
+        })
       }
-      if (valueProperty === "card") {
+      if (valueProperty === 'card') {
         setPayment({
           ...payment,
           payment: num,
           card: num,
           cash: 0,
           transfer: 0,
-        });
+        })
       }
-      if (valueProperty === "transfer") {
+      if (valueProperty === 'transfer') {
         setPayment({
           ...payment,
           payment: num,
           transfer: num,
           cash: 0,
           card: 0,
-        });
+        })
       }
       setDebt({
         ...debt,

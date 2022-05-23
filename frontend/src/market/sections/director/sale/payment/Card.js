@@ -1,8 +1,8 @@
-import { faClose } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
-import { LeftCard } from "./LeftCard";
-import { RightBody } from "./RightBody";
+import { faClose } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React from 'react'
+import { LeftCard } from './LeftCard'
+import { RightBody } from './RightBody'
 
 export const Card = ({
   totalprice,
@@ -19,8 +19,8 @@ export const Card = ({
 }) => {
   return (
     <div
-      className={`w-screen h-full bg-[#3695D7] absolute top-0 overflow-y-scroll z-20 ${
-        visible ? "visible" : "invisible"
+      className={`w-screen h-full bg-[#3695D7] absolute top-0 overflow-y-scroll z-20 p-3 ${
+        visible ? 'visible' : 'invisible'
       }`}
     >
       <div className="flex md:justify-end justify-center py-3">
@@ -45,7 +45,7 @@ export const Card = ({
           </div>
         </div>
       </div>
-      <div className="md:flex md:justify-between md:items-center">
+      <div className="grid grid-cols-1 md:grid-cols-2">
         <LeftCard
           totalprice={totalprice}
           discountedPrice={discountedPrice}
@@ -66,8 +66,8 @@ export const Card = ({
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
 // const changePayment = (e) => {
 //   let discounted = discount.price;
