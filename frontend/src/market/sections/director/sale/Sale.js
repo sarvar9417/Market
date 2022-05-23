@@ -190,7 +190,7 @@ export const Sale = () => {
   const [products, setProducts] = useState([])
   const [saleproduct, setSaleProduct] = useState()
   const [saleproducts, setSaleProducts] = useState([])
-  const [totalprice, setTotalPrice] = useState(0)
+  const [totalprice, setTotalPrice] = useState(123)
 
   const getProducts = useCallback(
     async (type) => {
@@ -421,10 +421,23 @@ export const Sale = () => {
     price: 0,
     procient: 0,
   })
+  const [debt, setDebt] = useState({
+    debt: 0,
+    comment: '',
+  })
+  const [payment, setPayment] = useState({
+    payment: 0,
+    type: 0,
+    cash: 0,
+    card: 0,
+    transfer: 0,
+  })
 
-  const changeDiscount = (e) => {}
+  const [inputHandler, setInputHandler] = useState('')
 
-  const [payment, setPayment] = useState(0)
+  const showInput = (e) => {
+    setInputHandler(e.target.name)
+  }
 
   //====================================================================
   //====================================================================
@@ -452,6 +465,11 @@ export const Sale = () => {
         visible={visible}
         setVisible={setVisible}
         changeTotalPrice={changeTotalPrice}
+        discount={discount}
+        payment={payment}
+        debt={debt}
+        inputHandler={inputHandler}
+        showInput={showInput}
       />
       {/* <Payment /> */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-7 p-3">
