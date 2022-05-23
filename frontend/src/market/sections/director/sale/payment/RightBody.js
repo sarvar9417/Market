@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 export const RightBody = ({
   showInput,
@@ -20,7 +20,7 @@ export const RightBody = ({
               onClick={showInput}
             >
               <p className="text-4xl font-bold pointer-events-none">
-                {parseInt(payment.cash) || 0} $
+                {parseFloat(payment.cash) || 0} $
               </p>
               <span className="pointer-events-none">Naqt</span>
             </button>
@@ -31,7 +31,7 @@ export const RightBody = ({
               onClick={showInput}
             >
               <p className="text-4xl font-bold pointer-events-none">
-                {parseInt(payment.card) || 0} $
+                {parseFloat(payment.card) || 0} $
               </p>
               <span className="pointer-events-none">Plastik</span>
             </button>
@@ -41,9 +41,9 @@ export const RightBody = ({
               data-property="transfer"
               onClick={showInput}
             >
-              <div style={{ pointerEvents: 'none' }}>
+              <div style={{ pointerEvents: "none" }}>
                 <p className="text-4xl font-bold pointer-events-none">
-                  {parseInt(payment.transfer) || 0} $
+                  {parseFloat(payment.transfer) || 0} $
                 </p>
                 <span className="pointer-events-none">O'tkazma</span>
               </div>
@@ -54,12 +54,14 @@ export const RightBody = ({
           <div className=" row-span-3">
             <button
               className="bg-teal-400 hover:bg-teal-500 text-white w-full rounded font-bold py-3 h-full"
-              name="payment"
+              name="mixed"
               data-property="mixed"
               onClick={showInput}
             >
               <p className="text-4xl font-bold pointer-events-none">
-                {parseInt(payment.card) || 0} $
+                {(valueProperty === "mixed" && parseFloat(payment.payment)) ||
+                  0}{" "}
+                $
               </p>
               <h1 className="pointer-events-none">Aralash</h1>
             </button>
@@ -74,7 +76,7 @@ export const RightBody = ({
           onClick={showInput}
         >
           <p className="text-4xl font-bold pointer-events-none">
-            {parseInt(discount.price)}
+            {parseFloat(discount.price)}
           </p>
           <h1 className=" pointer-events-none">Chegirma</h1>
         </button>
@@ -84,14 +86,14 @@ export const RightBody = ({
           data-property="debt"
           onClick={showInput}
         >
-          <div style={{ pointerEvents: 'none' }}>
+          <div style={{ pointerEvents: "none" }}>
             <p className="text-4xl font-bold pointer-events-none">
-              {parseInt(debt.debt) || 0} $
+              {parseFloat(debt.debt) || 0} $
             </p>
             <h1 className=" pointer-events-none">Qarz</h1>
           </div>
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
