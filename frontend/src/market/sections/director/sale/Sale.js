@@ -421,7 +421,6 @@ export const Sale = () => {
     price: 0,
     procient: 0,
   });
-
   const [debt, setDebt] = useState({
     debt: 0,
     comment: "",
@@ -446,13 +445,22 @@ export const Sale = () => {
     if (e.target.name === "payment") {
       setPayment({
         type: e.target.dataset.property,
+
         payment: 0,
         cash: 0,
         card: 0,
         transfer: 0,
       });
+
     }
     if (e.target.dataset.property === "mixed") {
+
+      setDebt({
+        ...debt,
+        debt: discountedPrice,
+      });
+    }
+    if (valueProperty === "mixed") {
       setPayment({
         type: "mixed",
         payment: 0,
@@ -465,6 +473,8 @@ export const Sale = () => {
       ...debt,
       debt: discountedPrice,
     });
+  };
+
 
     if (e.target.name === "discount") {
       setPayment({
@@ -478,7 +488,8 @@ export const Sale = () => {
   };
   console.log(valueProperty);
   const changePay = (e) => {
-    let num = parseInt(e.target.value);
+    let num = parseFloat(e.target.value);
+
     if (valueName === "discount") {
       if (valueProperty === "price") {
         let priced = num;
@@ -550,6 +561,7 @@ export const Sale = () => {
         debt: num > 0 ? discountedPrice - num : discountedPrice,
       });
     }
+    
     if (valueProperty === "mixed") {
       if (e.target.name === "cash") {
         setPayment({
@@ -589,6 +601,7 @@ export const Sale = () => {
   console.log(debt);
   console.log(payment);
   console.log(discount);
+
 
   //====================================================================
   //====================================================================
