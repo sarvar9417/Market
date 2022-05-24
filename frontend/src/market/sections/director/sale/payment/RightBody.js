@@ -88,7 +88,7 @@ export const RightBody = ({
         >
           <div style={{ pointerEvents: "none" }}>
             <p className="text-4xl font-bold pointer-events-none">
-              {parseFloat(debt.debt) || 0} $
+              {parseFloat(debt.debt.toFixed(1)) || 0} $
             </p>
             <h1 className=" pointer-events-none">Qarz</h1>
           </div>

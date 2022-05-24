@@ -474,7 +474,7 @@ export const Sale = () => {
       });
       setDebt({
         ...debt,
-        debt: discountedPrice,
+        debt: parseFloat(discountedPrice),
       });
     }
     if (e.target.dataset.property === "mixed") {
@@ -487,7 +487,7 @@ export const Sale = () => {
       });
       setDebt({
         ...debt,
-        debt: discountedPrice,
+        debt: parseFloat(discountedPrice),
       });
     }
 
@@ -501,121 +501,167 @@ export const Sale = () => {
       });
     }
   };
-  console.log(valueProperty);
+
   const changePay = (e) => {
     let num = parseFloat(e.target.value);
-
     if (valueName === "discount") {
       if (valueProperty === "price") {
-        let priced = num;
-        setDiscountedPrice(totalprice - num);
-        setDiscount({
-          price: num || 0,
-          procient: parseFloat(num / (totalprice / 100)),
-        });
-        setDebt({
-          ...debt,
-          debt: num > 0 ? totalprice - num : totalprice,
-        });
+        if (num > totalprice) {
+          return notify({
+            title: "Diqqat! Chegirma summasi qarz summasidan oshmaslik kerak!",
+            description: "",
+            status: "error",
+          });
+        } else {
+          setDiscountedPrice(parseFloat(totalprice - num));
+          setDiscount({
+            price: num || 0,
+            procient: parseFloat((num / (totalprice / 100)).toFixed(1)) || 0,
+          });
+          setDebt({
+            ...debt,
+            debt: num > 0 ? parseFloat(totalprice - num) : totalprice,
+          });
+        }
       }
       if (valueProperty === "procient") {
         let discountedprice = parseFloat(num * (totalprice / 100));
-        setDiscountedPrice(parseFloat(totalprice - discountedprice));
-        setDiscount({
-          procient: num,
-          price: discountedprice,
-        });
-        setDebt({
-          ...debt,
-          debt:
-            parseFloat(num * (totalprice / 100)) > 0
-              ? parseFloat(totalprice - parseFloat(num * (totalprice / 100)))
-              : totalprice,
-        });
+        if (discountedprice > totalprice) {
+          return notify({
+            title: "Diqqat! Chegirma summasi qarz summasidan oshmaslik kerak!",
+            description: "",
+            status: "error",
+          });
+        } else {
+          setDiscountedPrice(parseFloat(totalprice - discountedprice));
+          setDiscount({
+            procient: parseFloat(num),
+            price: discountedprice > 0 ? discountedprice : 0,
+          });
+          setDebt({
+            ...debt,
+            debt:
+              parseFloat(num * (totalprice / 100)) > 0
+                ? parseFloat(totalprice - parseFloat(num * (totalprice / 100)))
+                : totalprice,
+          });
+        }
       }
     }
 
     if (valueName === "payment") {
-      if (valueProperty === "cash") {
-        setPayment({
-          ...payment,
-          payment: num,
-          cash: num,
-          card: 0,
-          transfer: 0,
+      if (num > discountedPrice) {
+        return notify({
+          title: "Diqqat! To'lov summasi umumiy summasidan oshmaslik keraki!",
+          description: "",
+          status: "error",
         });
+      } else {
+        if (valueProperty === "cash") {
+          setPayment({
+            ...payment,
+            payment: num || 0,
+            cash: num || 0,
+            card: 0,
+            transfer: 0,
+          });
+          setDebt({
+            ...debt,
+            debt:
+              num > 0
+                ? parseFloat(discountedPrice - num)
+                : parseFloat(discountedPrice),
+          });
+        }
+        if (valueProperty === "card") {
+          setPayment({
+            ...payment,
+            payment: num,
+            card: num,
+            cash: 0,
+            transfer: 0,
+          });
+          setDebt({
+            ...debt,
+            debt: num > 0 ? parseFloat(discountedPrice) - num : discountedPrice,
+          });
+        }
+        if (valueProperty === "transfer") {
+          setPayment({
+            ...payment,
+            payment: num,
+            transfer: num,
+            cash: 0,
+            card: 0,
+          });
+        }
         setDebt({
           ...debt,
-          debt: num > 0 ? discountedPrice - num : discountedPrice,
+          debt: num > 0 ? parseFloat(discountedPrice) - num : discountedPrice,
         });
       }
-      if (valueProperty === "card") {
-        setPayment({
-          ...payment,
-          payment: num,
-          card: num,
-          cash: 0,
-          transfer: 0,
-        });
-        setDebt({
-          ...debt,
-          debt: num > 0 ? discountedPrice - num : discountedPrice,
-        });
-      }
-      if (valueProperty === "transfer") {
-        setPayment({
-          ...payment,
-          payment: num,
-          transfer: num,
-          cash: 0,
-          card: 0,
-        });
-      }
-      setDebt({
-        ...debt,
-        debt: num > 0 ? discountedPrice - num : discountedPrice,
-      });
     }
 
     if (valueProperty === "mixed") {
       if (e.target.name === "cash") {
-        setPayment({
-          ...payment,
-          payment: num + payment.card + payment.transfer,
-          cash: num,
-        });
-        setDebt({
-          ...debt,
-          debt: discountedPrice - (num + payment.card + payment.transfer),
-        });
+        if (num + payment.card + payment.transfer > discountedPrice) {
+          return notify({
+            title: "Diqqat! To'lov summasi umumiy summasidan oshmaslik keraki!",
+            description: "",
+            status: "error",
+          });
+        } else {
+          setPayment({
+            ...payment,
+            payment: num + payment.card + payment.transfer,
+            cash: num,
+          });
+          setDebt({
+            ...debt,
+            debt: discountedPrice - (num + payment.card + payment.transfer),
+          });
+        }
       }
       if (e.target.name === "card") {
-        setPayment({
-          ...payment,
-          payment: num + payment.cash + payment.transfer,
-          card: num,
-        });
-        setDebt({
-          ...debt,
-          debt: discountedPrice - (num + payment.cash + payment.transfer),
-        });
+        if (num + payment.cash + payment.transfer > discountedPrice) {
+          return notify({
+            title: "Diqqat! To'lov summasi umumiy summasidan oshmaslik keraki!",
+            description: "",
+            status: "error",
+          });
+        } else {
+          setPayment({
+            ...payment,
+            payment: num + payment.cash + payment.transfer,
+            card: num,
+          });
+          setDebt({
+            ...debt,
+            debt: discountedPrice - (num + payment.cash + payment.transfer),
+          });
+        }
       }
       if (e.target.name === "transfer") {
-        setPayment({
-          ...payment,
-          payment: num + payment.cash + payment.card,
-          transfer: num,
-        });
-        setDebt({
-          ...debt,
-          debt: discountedPrice - (num + payment.cash + payment.card),
-        });
+        if (num + payment.cash + payment.card > discountedPrice) {
+          return notify({
+            title: "Diqqat! To'lov summasi umumiy summasidan oshmaslik keraki!",
+            description: "",
+            status: "error",
+          });
+        } else {
+          setPayment({
+            ...payment,
+            payment: num + payment.cash + payment.card,
+            transfer: num,
+          });
+          setDebt({
+            ...debt,
+            debt: discountedPrice - (num + payment.cash + payment.card),
+          });
+        }
       }
     }
   };
-  console.log(debt);
-  console.log(payment);
-  console.log(discount);
 
   //====================================================================
   //====================================================================

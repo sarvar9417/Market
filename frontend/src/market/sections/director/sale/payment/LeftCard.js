@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
 export const LeftCard = ({
-  totalprice,
   payment,
   valueName,
   valueProperty,
@@ -13,20 +12,7 @@ export const LeftCard = ({
   discountedPrice,
   setValueProperty,
 }) => {
-  const number = [
-    7,
-    8,
-    9,
-    4,
-    5,
-    6,
-    1,
-    2,
-    3,
-    ",",
-    0,
-    <FontAwesomeIcon icon={faArrowLeft} />,
-  ];
+  const number = [7, 8, 9, 4, 5, 6, 1, 2, 3, ",", 0];
   return (
     <div className="w-full text-white max-w-[400px] m-auto">
       {valueName === "payment" ? (
@@ -41,7 +27,7 @@ export const LeftCard = ({
                 0
               }
               onChange={changePay}
-              type="number"
+              type="text"
             />
             <span className="pb-1">$</span>
           </div>
@@ -65,7 +51,7 @@ export const LeftCard = ({
           <div className="flex gap-x-2">
             <div class="form-check">
               <input
-                class="form-check-input"
+                className="form-check-input"
                 type="radio"
                 name="discount"
                 data-property="price"
@@ -78,7 +64,7 @@ export const LeftCard = ({
             </div>
             <div class="form-check">
               <input
-                class="form-check-input"
+                className="form-check-input"
                 type="radio"
                 name="discount"
                 data-property="procient"
@@ -92,22 +78,27 @@ export const LeftCard = ({
           </div>
           <div className="flex text-5xl items-center font-bold border-white border-b-2">
             {(valueProperty === "price" && (
-              <input
-                className="bg-[#3695D7]  text-right font-bold  mb-1  w-full"
-                value={discount.price || 0}
-                onChange={changePay}
-                type="number"
-              />
-            )) ||
-              (valueProperty === "procient" && (
+              <>
                 <input
                   className="bg-[#3695D7]  text-right font-bold  mb-1  w-full"
-                  value={discount.procient || 0}
+                  value={discount.price || 0}
                   onChange={changePay}
-                  type="number"
+                  type="text"
                 />
+                <span className="pb-1">$</span>
+              </>
+            )) ||
+              (valueProperty === "procient" && (
+                <>
+                  <input
+                    className="bg-[#3695D7]  text-right font-bold  mb-1  w-full"
+                    value={discount.procient || 0}
+                    onChange={changePay}
+                    type="text"
+                  />
+                  <span className="pb-1">%</span>
+                </>
               ))}
-            <span className="pb-1">$</span>
           </div>
           <p className="text-base">
             Chegirma:{" "}
@@ -124,7 +115,7 @@ export const LeftCard = ({
               value={debt.debt || 0}
               disabled
               onChange={changePay}
-              type="number"
+              type="text"
             />
             <span className="pb-1">$</span>
           </div>
@@ -138,7 +129,7 @@ export const LeftCard = ({
                 className="bg-[#3695D7]  text-right font-bold  mb-1  w-full"
                 value={payment.cash || 0}
                 onChange={changePay}
-                type="number"
+                type="text"
                 name="cash"
               />
               <span className="pb-1">$</span>
@@ -151,7 +142,7 @@ export const LeftCard = ({
                 className="bg-[#3695D7]  text-right font-bold  mb-1  w-full"
                 value={payment.card || 0}
                 onChange={changePay}
-                type="number"
+                type="text"
                 name="card"
               />
               <span className="pb-1">$</span>
@@ -164,7 +155,7 @@ export const LeftCard = ({
                 className="bg-[#3695D7]  text-right font-bold  mb-1  w-full"
                 value={payment.transfer || 0}
                 onChange={changePay}
-                type="number"
+                type="text"
                 name="transfer"
               />
               <span className="pb-1">$</span>
@@ -180,12 +171,21 @@ export const LeftCard = ({
           return (
             <button
               key={index}
+              name="btnNumber"
+              data-number={`${num}`}
               className="bg-[#54B1EC] text-3xl rounded-full w-[80px] h-[80px] hover:bg-blue-400 m-auto"
             >
               {num}
             </button>
           );
         })}
+        <button
+          name="btnNumber"
+          data-number="x"
+          className="bg-[#54B1EC] text-3xl rounded-full w-[80px] h-[80px] hover:bg-blue-400 m-auto"
+        >
+          <FontAwesomeIcon icon={faArrowLeft} />
+        </button>
       </div>
       <button className="w-full py-2 bg-[#54B1EC] font-bold text-lg hover:bg-blue-400">
         To'lash
