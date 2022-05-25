@@ -1,27 +1,29 @@
-import { faClose } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
-import { LeftCard } from "./LeftCard";
-import { RightBody } from "./RightBody";
+import { faClose } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React from 'react'
+import { LeftCard } from './LeftCard'
+import { RightBody } from './RightBody'
 
 export const Card = ({
+  client,
+  exchangerate,
+  checkNumber,
+  checkHandler,
+  discount,
+  changeProcient,
+  changeHandler,
+  paymentType,
+  typeHandler,
   totalprice,
   visible,
   setVisible,
   payment,
-  discount,
-  valueName,
-  valueProperty,
-  showInput,
   debt,
-  changePay,
-  setValueProperty,
-  discountedPrice,
 }) => {
   return (
     <div
       className={`w-screen h-full bg-[#3695D7] absolute top-0 overflow-y-scroll z-20 p-3 ${
-        visible ? "visible" : "invisible"
+        visible ? 'visible' : 'invisible'
       }`}
     >
       <div className="flex md:justify-end justify-center py-3">
@@ -32,9 +34,28 @@ export const Card = ({
                 KP
               </button>
               <div>
-                <h1 className="font-semibold text-2xl ">Заказ: PJ004</h1>
-                <p className="font-light">Константин Рублёв</p>
-                <p className="font-light text-2xl"> Сумма {totalprice} $.</p>
+                <h1 className="font-semibold text-xl  ">
+                  Buyurtma: A{1000000 + checkNumber.check}
+                </h1>
+                <p className="text-lg font-semibold flex flex-col  justify-between">
+                  <span className="flex justify-between">
+                    Jami: <span>{totalprice.toLocaleString('de-DE')} USD</span>{' '}
+                  </span>
+                  <span className="flex justify-between text-sm">
+                    <span></span>
+                    <span>
+                      {(totalprice * exchangerate.exchangerate).toLocaleString(
+                        'de-DE',
+                      )}
+                      &#177;
+                      {(exchangerate.exchangerate / 100).toLocaleString(
+                        'de-DE',
+                      )}{' '}
+                      UZS
+                    </span>{' '}
+                  </span>
+                </p>
+                <p className="font-light">Mijoz: {client.name}</p>
               </div>
             </div>
             <button
@@ -48,49 +69,23 @@ export const Card = ({
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2">
         <LeftCard
-          totalprice={totalprice}
-          discountedPrice={discountedPrice}
+          exchangerate={exchangerate}
+          checkHandler={checkHandler}
           discount={discount}
+          changeProcient={changeProcient}
+          changeHandler={changeHandler}
+          paymentType={paymentType}
+          totalprice={totalprice}
           payment={payment}
-          debt={debt}
-          valueName={valueName}
-          valueProperty={valueProperty}
-          changePay={changePay}
-          setValueProperty={setValueProperty}
         />
         <RightBody
-          showInput={showInput}
+          exchangerate={exchangerate}
+          typeHandler={typeHandler}
           payment={payment}
           discount={discount}
           debt={debt}
-          valueName={valueName}
-          valueProperty={valueProperty}
         />
       </div>
     </div>
-  );
-};
-
-// const changePayment = (e) => {
-//   let discounted = discount.price;
-
-//   if (valueName === "discount") {
-//     if (valueProperty === "price") {
-//       discounted = totalprice - e.target.value;
-//       setDiscount({
-//         ...discount,
-//         price: e.target.value,
-//       });
-//     }
-//     if (valueProperty === "procient") {
-//       discounted = e.target.value * parseFloat(totalprice / 100);
-//       setDiscount({
-//         ...discount,
-//         procient: e.target.value,
-//       });
-//     }
-//   }
-//   if (valueName === 'payment') {
-
-//   }
-// };
+  )
+}

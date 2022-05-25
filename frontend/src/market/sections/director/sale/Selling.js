@@ -1,9 +1,18 @@
-import { faPenAlt, faTrash } from '@fortawesome/free-solid-svg-icons'
+import {
+  faMoneyCheckDollar,
+  faPenAlt,
+  faTrash,
+  faUser,
+} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
+import React, { useState } from 'react'
 import Select from 'react-select'
 
 export const Selling = ({
+  checkNumber,
+  payment,
+  debt,
+  discount,
   totalprice,
   setVisible,
   editProducts,
@@ -14,18 +23,27 @@ export const Selling = ({
   changeClient,
   inputClient,
 }) => {
+  const [btn, setBtn] = useState(true)
+
   return (
     <div className=" bg-white text">
       <p className="bg-teal-500 text-center text-2xl text-white py-2 font-bold">
-        CHEK: № 00134
+        CHEK: № A{1000000 + checkNumber.check}
       </p>
       <div className="px-3 py-2">
         <div className="flex justify-end py-2 px-2 ">
-          <button className="btn bg-teal-500 py-1 px-3 text-white text-base">
-            Xaridor
+          <button
+            onClick={() => setBtn(!btn)}
+            className="btn bg-teal-500 py-1 px-3 text-white"
+          >
+            <FontAwesomeIcon icon={faUser} />
           </button>
         </div>
-        <div className="grid grid-cols-1 py-2 sm:grid-cols-2  gap-4">
+        <div
+          className={`grid grid-cols-1 py-2 sm:grid-cols-2  gap-4 ${
+            btn ? 'hidden' : ''
+          }`}
+        >
           <div>
             <Select
               // isDisabled={loading}
@@ -124,23 +142,38 @@ export const Selling = ({
             <div className="flex justify-between ">
               <span className="text-black font-bold">Umumiy summa:</span>
               <span className="text-black font-bold">
-                {totalprice.toFixed(2)} $
+                {totalprice.toLocaleString('de-DE')} $
               </span>
             </div>
             <div className="flex justify-between">
               <span className="text-black font-bold">Chegirma:</span>
-              <span className="text-yellow-500 font-bold">30.000</span>
+              <span className="text-yellow-500 font-bold">
+                {discount.discount.toLocaleString('de-DE')} $
+              </span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-black font-bold">Qarz:</span>
+              <span className="text-yellow-500 font-bold">
+                {Math.abs(debt.debt).toLocaleString('de-DE')} $
+              </span>
             </div>
             <div className="flex justify-between">
               <span className="text-black font-bold">To'lanayotgsan:</span>
-              <span className="text-green-700 font-bold">340.000</span>
+              <span className="text-green-700 font-bold">
+                {(
+                  payment.cash +
+                  payment.card +
+                  payment.transfer
+                ).toLocaleString('de-DE')}{' '}
+                $
+              </span>
             </div>
           </div>
           <button
             onClick={() => setVisible(true)}
-            className="w-1/5 my-4 ml-3 bg-teal-500 text-white rounded font-bold text-xl"
+            className="w-1/5 my-4 ml-3 bg-teal-500 text-white rounded font-bold text-4xl"
           >
-            To'lov
+            <FontAwesomeIcon icon={faMoneyCheckDollar} />
           </button>
         </div>
       </div>

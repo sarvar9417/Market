@@ -1,22 +1,21 @@
 module.exports.checkPayments = (totalprice, payment, discount, debt) => {
   if (
-    payment &&
-    payment.payment !== payment.cash + payment.card + payment.transfer
-  ) {
-    return true
-  }
-
-  if (
     discount &&
     discount.procient &&
-    (totalprice * discount.procient) / 100 !== discount.discount
+    ((totalprice * discount.procient) / 100).toLocaleString('de-DE') !==
+      discount.discount.toLocaleString('de-DE')
   ) {
     return true
   }
 
-  let prices = debt.debt + discount.discount + payment.payment
+  let prices =
+    debt.debt +
+    discount.discount +
+    payment.cash +
+    payment.card +
+    payment.transfer
 
-  if (totalprice !== prices) {
+  if (totalprice.toLocaleString('de-DE') !== prices.toLocaleString('de-DE')) {
     return true
   }
   return false

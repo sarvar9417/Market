@@ -110,13 +110,13 @@ module.exports.get = async (req, res) => {
       })
     }
 
-    const exchangerates = await Exchangerate.find({
+    const exchangerates = await Exchangerate.findOne({
       market,
     })
       .select('exchangerate')
       .sort({ _id: -1 })
 
-    res.send(exchangerates[0])
+    res.send(exchangerates)
   } catch (error) {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
   }

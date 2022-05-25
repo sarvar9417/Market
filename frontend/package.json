@@ -32,6 +32,7 @@
     "react-scripts": "^5.0.0",
     "react-select": "^5.2.2",
     "react-to-print": "^2.14.6",
+    "react-toggle-button": "^2.2.0",
     "tesseract.js": "^2.1.5",
     "web-vitals": "^2.1.4",
     "xlsx": "^0.18.5"

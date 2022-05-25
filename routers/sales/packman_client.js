@@ -40,4 +40,11 @@ router.post('/saleproducts/register', (req, res) => {
   require('./saleproduct').register(req, res)
 })
 
+router.post('/saleproducts/checknumber', (req, res) => {
+  require('./saleproduct').check(req, res)
+})
+
+router.post('/saleproducts/getconnectors', (req, res) => {
+  require('./saleproduct').getsaleconnectors(req, res)
+})
 module.exports = router

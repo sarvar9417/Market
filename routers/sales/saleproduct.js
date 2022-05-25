@@ -134,9 +134,9 @@ module.exports.register = async (req, res) => {
       saleconnector.debts.push(newDebt._id)
     }
 
-    if (payment.payment > 0) {
+    if (payment.totalprice > 0) {
       const newPayment = new Payment({
-        payment: payment.payment,
+        payment: payment.card + payment.cash + payment.transfer,
         card: payment.card,
         cash: payment.cash,
         transfer: payment.transfer,
@@ -155,7 +155,7 @@ module.exports.register = async (req, res) => {
       saleconnector.packman = packman._id
     }
 
-    if (client) {
+    if (client.name || client._id) {
       if (client._id) {
         saleconnector.client = client._id
       } else {
@@ -181,6 +181,49 @@ module.exports.register = async (req, res) => {
     res.status(201).send(saleproducts)
   } catch (error) {
     console.log(error)
+    res.status(400).json({ error: 'Serverda xatolik yuz berdi...' })
+  }
+}
+
+module.exports.check = async (req, res) => {
+  try {
+    const { market } = req.body
+
+    const marke = await Market.findById(market)
+    if (!marke) {
+      return res.status(400).json({
+        message: `Diqqat! Do'kon haqida malumotlar topilmadi!`,
+      })
+    }
+    const checknumber = await SaleConnector.find().count()
+    res.status(200).send({ check: checknumber + 1 })
+  } catch (error) {
+    res.status(400).json({ error: 'Serverda xatolik yuz berdi...' })
+  }
+}
+
+module.exports.getsaleconnectors = async (req, res) => {
+  try {
+    const { market } = req.body
+
+    const marke = await Market.findById(market)
+    if (!marke) {
+      return res.status(400).json({
+        message: `Diqqat! Do'kon haqida malumotlar topilmadi!`,
+      })
+    }
+    const saleconnectors = await SaleConnector.find()
+      .sort({ _id: -1 })
+      .populate({
+        path: 'products',
+        select: 'totalprice unitprice pieces',
+        populate: { path: 'product', select: 'category name' },
+      })
+      .populate('payments', 'payment')
+      .populate('discounts', 'discount')
+      .populate('debts', 'debt')
+    res.status(200).send(saleconnectors)
+  } catch (error) {
     res.status(400).json({ error: 'Serverda xatolik yuz berdi...' })
   }
 }
