@@ -35,6 +35,7 @@ export const TableProduct = ({
   product,
   searchBrand,
   selectRef,
+  market,
 }) => {
   const edit = (e, p) => {
     selectRef.category.current.selectOption({
@@ -54,7 +55,7 @@ export const TableProduct = ({
       value: p.unit._id,
     });
     setProduct({
-      ...product,
+      market: market && market._id,
       _id: p._id,
       name: p.name,
       code: p.code,
@@ -62,8 +63,10 @@ export const TableProduct = ({
       unit: p.unit._id,
       producttype: p.producttype._id,
       brand: p.brand ? p.brand._id : "",
-      price: (p.price && p.price.sellingprice) || 0,
       total: p.total || 0,
+      priceid: (p.price && p.price._id) || 0,
+      incomingprice: p.price.incomingprice || 0,
+      sellingprice: p.price.sellingprice || 0,
     });
   };
 
@@ -277,6 +280,33 @@ export const TableProduct = ({
                     />
                   </div>
                 </th>
+                <th className="border text-center">
+                  Narxi
+                  <div className="btn-group-vertical ml-2">
+                    <FontAwesomeIcon
+                      onClick={() =>
+                        setCurrentProducts(
+                          [...currentProducts].sort((a, b) =>
+                            a.unit.name > b.unit.name ? 1 : -1
+                          )
+                        )
+                      }
+                      icon={faAngleUp}
+                      style={{ cursor: "pointer" }}
+                    />
+                    <FontAwesomeIcon
+                      icon={faAngleDown}
+                      style={{ cursor: "pointer" }}
+                      onClick={() =>
+                        setCurrentProducts(
+                          [...currentProducts].sort((a, b) =>
+                            b.uni.name > a.unit.name ? 1 : -1
+                          )
+                        )
+                      }
+                    />
+                  </div>
+                </th>
                 <th className="border text-center">Tahrirlash</th>
                 <th className="border text-center">O'chirish</th>
               </tr>
@@ -303,6 +333,9 @@ export const TableProduct = ({
                       </td>
                       <td className="border text-center font-bold text-black">
                         {p.total} {p.unit.name}
+                      </td>
+                      <td className="border text-center font-bold text-black">
+                        {(p.price && p.price.incomingprice) || 0} $
                       </td>
                       <td className="border text-center font-bold text-black">
                         {(p.price && p.price.sellingprice) || 0} $

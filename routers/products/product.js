@@ -221,8 +221,14 @@ module.exports.register = async (req, res) => {
       unit,
       brand,
       total,
-      price,
+      incomingprice,
+      sellingprice,
     } = req.body;
+
+    const price = {
+      incomingprice,
+      sellingprice,
+    };
 
     const product = await Product.findOne({
       market,
@@ -280,7 +286,12 @@ module.exports.register = async (req, res) => {
     });
 
     const newPrice = new ProductPrice({
-      sellingprice: price ? Math.round(price * 100) / 100 : 0,
+      incomingprice: incomingprice
+        ? Math.round(price.incomingprice * 100) / 100
+        : 0,
+      sellingprice: sellingprice
+        ? Math.round(price.sellingprice * 100) / 100
+        : 0,
       market,
     });
 
@@ -331,7 +342,7 @@ module.exports.register = async (req, res) => {
       .populate("producttype", "name")
       .populate("unit", "name")
       .populate("brand", "name")
-      .populate("price", "sellingprice");
+      .populate("price", "incomingprice sellingprice");
 
     res.status(201).send(createdProduct);
   } catch (error) {
@@ -342,9 +353,19 @@ module.exports.register = async (req, res) => {
 //Product update
 module.exports.update = async (req, res) => {
   try {
-    const { _id, name, code, category, producttype, market, unit, brand } =
-      req.body;
-
+    const {
+      _id,
+      name,
+      code,
+      category,
+      producttype,
+      market,
+      unit,
+      brand,
+      priceid,
+      incomingprice,
+      sellingprice,
+    } = req.body;
     const marke = await Market.findById(market);
 
     if (!marke) {
@@ -369,6 +390,10 @@ module.exports.update = async (req, res) => {
       });
     }
 
+    await ProductPrice.findByIdAndUpdate(priceid, {
+      sellingprice: sellingprice ? sellingprice : 0,
+    });
+
     const c = await Product.findOne({ market, code });
 
     if (c && c._id.toString() !== _id) {
@@ -381,6 +406,7 @@ module.exports.update = async (req, res) => {
     product.code = code;
     product.unit = unit;
     product.brand = brand;
+    product.price = priceid;
 
     if (product.category !== category) {
       const removeCategory = await Category.findByIdAndUpdate(
@@ -443,6 +469,7 @@ module.exports.update = async (req, res) => {
     }
 
     await product.save();
+
     const updatedProduct = await Product.findById(_id)
       .sort({ _id: -1 })
       .select("name code unit category producttype brand price total")
@@ -450,7 +477,8 @@ module.exports.update = async (req, res) => {
       .populate("producttype", "name")
       .populate("unit", "name")
       .populate("brand", "name")
-      .populate("price", "sellingprice");
+      .populate("price", "incomingprice sellingprice");
+
     res.status(201).send(updatedProduct);
   } catch (error) {
     res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
@@ -543,7 +571,7 @@ module.exports.getAll = async (req, res) => {
       .populate("producttype", "name")
       .populate("unit", "name")
       .populate("brand", "name")
-      .populate("price", "sellingprice");
+      .populate("price", "incomingprice sellingprice");
 
     res.send(products);
   } catch (error) {
