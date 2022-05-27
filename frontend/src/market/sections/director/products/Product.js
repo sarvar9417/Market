@@ -144,7 +144,7 @@ export const Product = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      console.log(data);
+
       setProducts(data);
       setSearchStrorage(data);
       setCurrentProducts(data.slice(indexFirstProduct, indexLastProduct));
@@ -248,7 +248,7 @@ export const Product = () => {
   };
   //====================================================================
   //====================================================================
-  console.log(currentPage);
+
   //====================================================================
   //====================================================================
 
@@ -295,7 +295,7 @@ export const Product = () => {
 
   //====================================================================
   //====================================================================
-  console.log(product);
+
   //====================================================================
   //====================================================================
   const [producttypes, setProductTypes] = useState();
@@ -430,7 +430,7 @@ export const Product = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      console.log(data);
+
       notify({
         title: `${data.name} mahsuloti yangilandi!`,
         description: "",

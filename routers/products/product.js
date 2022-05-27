@@ -376,7 +376,7 @@ module.exports.update = async (req, res) => {
         message: `Diqqat! ${code} kodli mahsulot tizimda avval ro'yxatga olinmagan.`,
       });
     }
-    console.log(name);
+
     product.name = name;
     product.code = code;
     product.unit = unit;
