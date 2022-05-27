@@ -254,7 +254,7 @@ export const TableProduct = ({
                   </div>
                 </th>
                 <th className="border text-center">
-                  Narxi
+                  Olish
                   <div className="btn-group-vertical ml-2">
                     <FontAwesomeIcon
                       onClick={() =>
@@ -281,7 +281,7 @@ export const TableProduct = ({
                   </div>
                 </th>
                 <th className="border text-center">
-                  Narxi
+                  Sotish
                   <div className="btn-group-vertical ml-2">
                     <FontAwesomeIcon
                       onClick={() =>

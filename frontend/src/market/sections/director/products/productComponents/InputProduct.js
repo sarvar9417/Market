@@ -145,7 +145,7 @@ export const InputProduct = ({
         </div>
         <div className="p-1 flex">
           <div>
-            <p className="bg-zinc-50 p-2 font-bold text-base">Kiritish narxi</p>
+            <p className="bg-zinc-50 p-2 font-bold text-base">Olish narxi</p>
             <input
               name="incomingprice"
               value={product.incomingprice || ""}
