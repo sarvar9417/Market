@@ -104,6 +104,22 @@ export const checkProduct = (product) => {
       status: "error",
     };
 
+  if (!product.incomingprice) {
+    return {
+      title: "Diqqat! Olish narxi kiritilmagan.",
+      description: "Iltimos olish narxni kiriting.",
+      status: "error",
+    };
+  }
+
+  if (!product.sellingprice) {
+    return {
+      title: "Diqqat! Sotish narxi kiritilmagan.",
+      description: "Iltimos sotish narxni kiriting.",
+      status: "error",
+    };
+  }
+
   return false;
 };
 

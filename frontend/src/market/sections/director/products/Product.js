@@ -73,7 +73,8 @@ export const Product = () => {
   const [product, setProduct] = useState({
     market: auth.market && auth.market._id,
     total: 0,
-    price: 0,
+    incomingprice: 0,
+    sellingprice: 0,
   });
 
   const sections = [
@@ -94,7 +95,6 @@ export const Product = () => {
   //====================================================================
   const clearInputs = useCallback(() => {
     const inputs = document.getElementsByTagName("input");
-    document.getElementsByTagName("select")[0].selectedIndex = 0;
     for (const input of inputs) {
       input.value = "";
     }
@@ -117,7 +117,8 @@ export const Product = () => {
     setProduct({
       market: auth.market && auth.market._id,
       total: 0,
-      price: 0,
+      incomingprice: 0,
+      sellingprice: 0,
     });
   }, [
     auth,
@@ -689,6 +690,7 @@ export const Product = () => {
               loading={loading}
               setModal2={setModal2}
               selectRef={selectRef}
+              market={auth.market}
             />
           </div>
         </div>

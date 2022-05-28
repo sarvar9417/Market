@@ -143,18 +143,33 @@ export const InputProduct = ({
             placeholder="Sonini kiriting"
           />
         </div>
-        <div className="p-1">
-          <p className="bg-zinc-50 p-2 font-bold text-base">Maxsulot narxi</p>
-          <input
-            name="price"
-            value={product.price || ""}
-            onKeyUp={keyPressed}
-            onChange={inputHandler}
-            type="number"
-            className="form-control"
-            id="shortname"
-            placeholder="Narxini kiriting"
-          />
+        <div className="p-1 flex">
+          <div>
+            <p className="bg-zinc-50 p-2 font-bold text-base">Olish narxi</p>
+            <input
+              name="incomingprice"
+              value={product.incomingprice || ""}
+              onKeyUp={keyPressed}
+              onChange={inputHandler}
+              type="number"
+              className="form-control"
+              id="shortname"
+              placeholder="Narxini kiriting"
+            />
+          </div>
+          <div>
+            <p className="bg-zinc-50 p-2 font-bold text-base">Sotish narxi</p>
+            <input
+              name="sellingprice"
+              value={product.sellingprice || ""}
+              onKeyUp={keyPressed}
+              onChange={inputHandler}
+              type="number"
+              className="form-control"
+              id="shortname"
+              placeholder="Narxini kiriting"
+            />
+          </div>
         </div>
       </div>
       <div className="flex justify-end p-2">
