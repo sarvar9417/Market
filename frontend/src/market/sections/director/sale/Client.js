@@ -333,7 +333,6 @@ export const Client = () => {
       });
     }
   };
-
   const [t, setT] = useState(false);
   useEffect(() => {
     if (!t) {

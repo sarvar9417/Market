@@ -1,9 +1,14 @@
+import React, { useRef } from "react";
+import Select from "react-select";
 import { faFloppyDisk, faRepeat } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+
+import makeAnimated from "react-select/animated";
+const animatedComponents = makeAnimated();
 
 export const InputProduct = ({
   changeCategory,
+  changeProductType,
   categories,
   setProduct,
   product,
@@ -14,106 +19,87 @@ export const InputProduct = ({
   loading,
   units,
   brands,
+  clearInputs,
+  changeBrand,
+  changeUnit,
+  selectRef,
 }) => {
   return (
-
     <div className="table-container p-2">
       <div className="grid lg:grid-cols-4 grid-cols-1 md:grid-cols-2 p-2">
         <div className="p-1">
           <p className="bg-zinc-50 p-2 font-bold text-base">Kategoriya</p>
-          <select
-            className="form-control form-control-sm selectpicker"
+          <Select
             id="select"
-            onChange={changeCategory}
-            >
-            {categories &&
-            categories.map((category, index) => (
-            <option key={index} value={category._id}>
-            {category.code}
-            </option>
-            ))}
-            <option value="delete">Kategoriya</option>
-          </select>
+            ref={selectRef.category}
+            onChange={(e) => changeCategory(e)}
+            components={animatedComponents}
+            options={categories}
+            isLoading={loading}
+            theme={(theme) => ({
+              ...theme,
+              color: "black",
+              borderRadius: 0,
+              padding: 0,
+              height: 0,
+            })}
+          />
         </div>
         <div className="p-1">
           <p className="bg-zinc-50 p-2 font-bold text-base">Maxsulot turi</p>
-          <select
-                  className="form-control form-control-sm selectpicker"
-                  id="select"
-                  onChange={(e) => {
-                    if (e.target.value === "delete") {
-                      setProduct({ ...product, producttype: null });
-                    } else {
-                      setProduct({
-                        ...product,
-                        producttype: e.target.value,
-                      });
-                    }
-                  }}
-                  placeholder="Xizmat turini tanlang"
-                  
-                >
-                  {producttypes &&
-                    producttypes.map((producttype, ind) => (
-                      <option key={ind} value={producttype._id}>
-                        {producttype.name}
-                      </option>
-                    ))}
-                  <option value="delete">Mahsulot turi</option>
-                </select>
+          <Select
+            id="select"
+            ref={selectRef.producttype}
+            isClearable={true}
+            isLoading={loading}
+            onChange={(e) => changeProductType(e)}
+            components={animatedComponents}
+            options={producttypes}
+            theme={(theme) => ({
+              ...theme,
+              color: "black",
+              borderRadius: 0,
+              padding: 0,
+              height: 0,
+            })}
+          />
         </div>
         <div className="p-1">
           <p className="bg-zinc-50 p-2 font-bold text-base">Brend</p>
-          <select
-                  className="form-control form-control-sm selectpicker"
-                  id="select"
-                  onChange={(e) => {
-                    if (e.target.value === "delete") {
-                      setProduct({ ...product, brand: null });
-                    } else {
-                      setProduct({
-                        ...product,
-                        brand: e.target.value,
-                      });
-                    }
-                  }}
-                  placeholder="Mahsulot brendini tanlang"
-                  
-                >
-                  {brands &&
-                    brands.map((b, ind) => (
-                      <option key={ind} value={b._id}>
-                        {b.name}
-                      </option>
-                    ))}
-                  <option value="delete">Brend</option>
-                </select>
+          <Select
+            id="select"
+            ref={selectRef.brand}
+            onChange={(e) => changeBrand(e)}
+            components={animatedComponents}
+            options={brands}
+            isLoading={loading}
+            theme={(theme) => ({
+              ...theme,
+              color: "black",
+              borderRadius: 0,
+              padding: 0,
+              height: 0,
+            })}
+          />
         </div>
         <div className="p-1">
           <p className="bg-zinc-50 p-2 font-bold text-base">O'lchov birligi</p>
-          <select
-                  className="form-control form-control-sm selectpicker"
-                  id="select"
-                  onChange={(e) => {
-                    if (e.target.value === "delete") {
-                      setProduct({ ...product, unit: null });
-                    } else {
-                      setProduct({
-                        ...product,
-                        unit: e.target.value,
-                      });
-                    }
-                  }}
-                  placeholder="Xizmat turini tanlang"
-                >
-                  {units &&
-                    units.map((unit, ind) => (
-                      <option key={ind} value={unit._id}>
-                        {unit.name}
-                      </option>
-                    ))}
-                  <option value="delete">O'lchov birligini tanlang</option>
-                </select>
+          <Select
+            id="select"
+            isClearable={true}
+            ref={selectRef.unit}
+            isLoading={loading}
+            onChange={(e) => changeUnit(e)}
+            components={animatedComponents}
+            options={units}
+            theme={(theme) => ({
+              ...theme,
+              color: "black",
+              borderRadius: 0,
+              padding: 0,
+              height: 0,
+            })}
+          />
         </div>
       </div>
 
@@ -130,78 +116,89 @@ export const InputProduct = ({
             id="price"
             placeholder="Mahsulot kodini kiriting"
           />
-        </div>   
+        </div>
         <div className="p-1">
           <p className="bg-zinc-50 p-2 font-bold text-base">Maxsulot nomi</p>
           <input
-          name="name"
-          value={product.name || ""}
-          onKeyUp={keyPressed}
-          onChange={inputHandler}
-          type="text"
-          className="form-control"
-          id="shortname"
-          placeholder="Mahsulot nomini kiriting"
+            name="name"
+            value={product.name || ""}
+            onKeyUp={keyPressed}
+            onChange={inputHandler}
+            type="text"
+            className="form-control"
+            id="shortname"
+            placeholder="Mahsulot nomini kiriting"
           />
-        </div> 
+        </div>
         <div className="p-1">
           <p className="bg-zinc-50 p-2 font-bold text-base">Maxsulotlar soni</p>
           <input
-          name="total"
-          value={product.total || ""}
-          onKeyUp={keyPressed}
-          onChange={inputHandler}
-          type="number"
-          className="form-control"
-          id="shortname"
-          placeholder="Sonini kiriting"
+            name="total"
+            value={product.total || ""}
+            onKeyUp={keyPressed}
+            onChange={inputHandler}
+            type="number"
+            className="form-control"
+            id="shortname"
+            placeholder="Sonini kiriting"
           />
-        </div>   
-        <div className="p-1">
-          <p className="bg-zinc-50 p-2 font-bold text-base">Maxsulot narxi</p>
-          <input
-          name="price"
-          value={product.price || ""}
-          onKeyUp={keyPressed}
-          onChange={inputHandler}
-          type="number"
-          className="form-control"
-          id="shortname"
-          placeholder="Narxini kiriting"
-          />
-        </div>  
-             
+        </div>
+        <div className="p-1 flex">
+          <div>
+            <p className="bg-zinc-50 p-2 font-bold text-base">Olish narxi</p>
+            <input
+              name="incomingprice"
+              value={product.incomingprice || ""}
+              onKeyUp={keyPressed}
+              onChange={inputHandler}
+              type="number"
+              className="form-control"
+              id="shortname"
+              placeholder="Narxini kiriting"
+            />
+          </div>
+          <div>
+            <p className="bg-zinc-50 p-2 font-bold text-base">Sotish narxi</p>
+            <input
+              name="sellingprice"
+              value={product.sellingprice || ""}
+              onKeyUp={keyPressed}
+              onChange={inputHandler}
+              type="number"
+              className="form-control"
+              id="shortname"
+              placeholder="Narxini kiriting"
+            />
+          </div>
+        </div>
       </div>
       <div className="flex justify-end p-2">
         <div className="px-1 mx-2">
-        {loading ? (
-          <button className="btn btn-info" disabled>
-          <span className="spinner-border spinner-border-sm"></span>
-          Loading...
-          </button>
+          {loading ? (
+            <button className="btn btn-info" disabled>
+              <span className="spinner-border spinner-border-sm"></span>
+              Loading...
+            </button>
           ) : (
-          <button
-          onClick={saveHandler}
-          className="btn btn-success py-1 px-4"
-          >
-          <FontAwesomeIcon className="text-base" icon={faFloppyDisk}/>
-          </button>
-        )}
+            <button onClick={saveHandler} className="btn btn-success py-1 px-4">
+              <FontAwesomeIcon className="text-base" icon={faFloppyDisk} />
+            </button>
+          )}
         </div>
         <div>
-        {loading ? (
-          <button className="btn btn-info" disabled>
-          <span className="spinner-border spinner-border-sm"></span>
-          Loading...
-          </button>
+          {loading ? (
+            <button className="btn btn-info" disabled>
+              <span className="spinner-border spinner-border-sm"></span>
+              Loading...
+            </button>
           ) : (
-          <button
-          onClick={saveHandler}
-          className="btn btn-secondary py-1 px-4"
-          >
-          <FontAwesomeIcon className="text-base" icon={faRepeat}/>
-          </button>
-        )}
+            <button
+              onClick={() => clearInputs()}
+              className="btn btn-secondary py-1 px-4"
+            >
+              <FontAwesomeIcon className="text-base" icon={faRepeat} />
+            </button>
+          )}
         </div>
       </div>
     </div>

@@ -91,28 +91,26 @@ module.exports.updateClient = async (req, res) => {
         .status(400)
         .json({ message: `Diqqat! ${name} mijoz avval yaratilmagan` });
     }
-
     const updatedClient = {
       name: name,
     };
     const packMan = await Packman.findById(packman);
     if (packMan) {
-      await Packman.findByIdAndUpdate(client.packman._id, {
+      await Packman.findByIdAndUpdate(client.packman, {
         $pull: {
-          clients: client._id,
+          clients: _id,
         },
       });
-      console.log(packMan);
-      if (client.packman._id !== packMan._id) {
+      if (client.packman !== packMan._id) {
         await Packman.findByIdAndUpdate(packMan._id, {
           $push: {
-            clients: { _id, name },
+            clients: _id,
           },
         });
       } else {
-        await Packman.findByIdAndUpdate(client.packman._id, {
+        await Packman.findByIdAndUpdate(client.packman, {
           $push: {
-            clients: { _id, name },
+            clients: _id,
           },
         });
       }
@@ -123,7 +121,9 @@ module.exports.updateClient = async (req, res) => {
       ...updatedClient,
     });
 
-    const sendingClient = await Client.findById(_id);
+    const sendingClient = await Client.findById(_id)
+      .select("name")
+      .populate("packman name");
 
     res.status(201).send(sendingClient);
   } catch (error) {

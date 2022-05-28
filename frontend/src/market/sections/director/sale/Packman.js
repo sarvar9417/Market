@@ -115,6 +115,27 @@ export const Packman = () => {
   //====================================================================
   //====================================================================
 
+  const changeData = (method, data) => {
+    let arr = [];
+    if (method === "POST") {
+      arr = [{ ...data }, ...searchStorage];
+    }
+    if (method === "UPDATE") {
+      arr = searchStorage.map((item) => {
+        if (item._id === data._id) {
+          return (item = { ...data });
+        }
+        return item;
+      });
+    }
+    if (method === "DELETE") {
+      arr = searchStorage.filter((item) => item._id !== data._id);
+    }
+    setPackmans(arr);
+    setCurrentPackmans(arr);
+    setSearchStorage(arr);
+  };
+
   //====================================================================
   //====================================================================
 
@@ -166,8 +187,8 @@ export const Packman = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+      changeData("POST", data);
       clearInputs();
-      getPackmans();
       setPackman({
         market: auth.market && auth.market._id,
       });
@@ -195,8 +216,8 @@ export const Packman = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+      changeData("UPDATE", data);
       clearInputs();
-      getPackmans();
       setPackman({
         market: auth.market && auth.market._id,
       });
@@ -224,14 +245,14 @@ export const Packman = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+      changeData("DELETE", data);
+      setRemove({
+        market: auth.market && auth.market._id,
+      });
       notify({
         title: `${data.name} degan yetkazuvchi o'chirildi!`,
         description: "",
         status: "success",
-      });
-      getPackmans();
-      setRemove({
-        market: auth.market && auth.market._id,
       });
       setModal(false);
     } catch (error) {
