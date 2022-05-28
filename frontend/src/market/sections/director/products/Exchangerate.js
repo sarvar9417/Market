@@ -8,6 +8,7 @@ import { Modal } from './modal/Modal'
 import { Sort } from './productComponents/Sort'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleUp, faAngleDown, faFloppyDisk, faRepeat, faPenAlt, faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import { t } from 'i18next'
 
 export const Exchangerate = () => {
   //====================================================================
@@ -99,7 +100,7 @@ export const Exchangerate = () => {
       )
       localStorage.setItem('data', data)
       notify({
-        title: `Valyuta kursi yaratildi!`,
+        title: t("Valyuta kursi yaratildi!"),
         description: '',
         status: 'success',
       })
@@ -129,7 +130,7 @@ export const Exchangerate = () => {
       )
       localStorage.setItem('data', data)
       notify({
-        title: `Valyuta kursi yangilandi!`,
+        title: t("Valyuta kursi yangilandi!"),
         description: '',
         status: 'success',
       })
@@ -176,7 +177,7 @@ export const Exchangerate = () => {
       )
       localStorage.setItem('data', data)
       notify({
-        title: `Valyuta kursi o'chirildi!`,
+        title: t("Valyuta kursi o'chirildi!"),
         description: '',
         status: 'success',
       })
@@ -209,13 +210,13 @@ export const Exchangerate = () => {
 
   //====================================================================
   //====================================================================
-  const [t, setT] = useState()
+  const [n, setN] = useState()
   useEffect(() => {
-    if (!t) {
-      setT(1)
+    if (!n) {
+      setN(1)
       getExchangerates()
     }
-  }, [getExchangerates, t])
+  }, [getExchangerates, n])
   //====================================================================
   //====================================================================
 
@@ -230,9 +231,9 @@ export const Exchangerate = () => {
                 <table className="table m-0">
                   <thead className='border'>
                     <tr>
-                      <th className="border text-center">Kursni kiriting</th>
-                      <th className="border text-center">Saqlash</th>
-                      <th className="border text-center">Tozalash</th>
+                      <th className="border text-center">{t("Kursni kiriting")}</th>
+                      <th className="border text-center">{t("Saqlash")}</th>
+                      <th className="border text-center">{t("Tozalash")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -246,7 +247,7 @@ export const Exchangerate = () => {
                           type="number"
                           className="focus:outline-none focus:ring focus:border-blue-500 rounded py-1 px-3"
                           id="exchangerate"
-                          placeholder="Valyuta kursini kiriting"
+                          placeholder={t("Valyuta kursini kiriting")}
                         />
                       </td>
                       <td className="text-center border">
@@ -291,7 +292,7 @@ export const Exchangerate = () => {
                     <tr className='border text-center'>
                       <th className='border text-center'>№</th>
                       <th className="border text-center">
-                        Sana
+                        {t("Sana")}
                         <div className="btn-group-vertical ml-2">
                           <FontAwesomeIcon
                             onClick={() =>
@@ -318,15 +319,15 @@ export const Exchangerate = () => {
                         </div>
                       </th>
                       <th className="border text-center">
-                        Kurs{' '}
+                        {t("Kurs")}{' '}
                         <Sort
                           data={exchangerates}
                           setData={setExchangerates}
                           property={'exchangerate'}
                         />
                       </th>
-                      <th className="border text-center">Tahrirlash</th>
-                      <th className="border text-center">O'chirish</th>
+                      <th className="border text-center">{t("Tahrirlash")}</th>
+                      <th className="border text-center">{t("O'chirish")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -376,7 +377,7 @@ export const Exchangerate = () => {
         modal={modal}
         setModal={setModal}
         basic={remove && remove.name}
-        text={"valyuta kursini o'chirishni tasdiqlaysizmi?"}
+        text={t("valyuta kursini o'chirishni tasdiqlaysizmi?")}
         handler={deleteHandler}
       />
     </>

@@ -1,4 +1,5 @@
 import { faPenAlt, faPlus, faPrint } from "@fortawesome/free-solid-svg-icons";
+import { t } from "i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import ReactHtmlTableToExcel from "react-html-table-to-excel";
@@ -25,7 +26,7 @@ export const Sales = ({
                 <th className=''>
                   <select
                     className='form-control form-control-sm selectpicker'
-                    placeholder="Bo'limni tanlang"
+                    placeholder={t("Bo'limni tanlang")}
                     onChange={setPageSize}>
                     <option value={10}>10</option>
                     <option value={25}>25</option>
@@ -50,7 +51,7 @@ export const Sales = ({
                       table='products-table'
                       sheet='Sheet'
                       buttonText='Excel'
-                      filename='Mahsulotlar'
+                      filename={t("Mahsulotlar")}
                     />
                   </div>
                 </th>
@@ -58,15 +59,26 @@ export const Sales = ({
             </thead>
             <thead>
               <tr>
-                <th className='text-center font-bold border'>№</th>
-                <th className='text-center font-bold border'>Sana</th>
+                <th className='py-1 text-center font-bold border'>№</th>
                 <th className='text-center font-bold border'>Id</th>
-                <th className='text-center font-bold border'>Mahsulot turi</th>
-                <th className='text-center font-bold border'>Summasi</th>
-                <th className='text-center font-bold border'>Qarz</th>
-                <th className='text-center font-bold border'>Chek</th>
-                <th className='text-center font-bold border'>Qo'shish</th>
-                <th className='text-center font-bold border'>Tahrirlash</th>
+                <th className='py-1 text-center font-bold border'>
+                  {t("Sana")}
+                </th>
+                <th className='py-1 text-center font-bold border'>
+                  {t("Mahsulot turi")}
+                </th>
+                <th className='py-1 text-center font-bold border'>
+                  {t("Summasi")}
+                </th>
+                <th className='py-1 text-center font-bold border'>
+                  {t("Qarz")}
+                </th>
+                <th className='py-1 text-center font-bold border'>
+                  {t("Chek")}
+                </th>
+                <th className='py-1 text-center font-bold border'>
+                  {t("Tahrirlash")}
+                </th>
               </tr>
             </thead>
             <tbody>

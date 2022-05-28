@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import { faClose, faPrint } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useRef } from "react";
@@ -63,19 +64,19 @@ export const Cheque = ({ sales, setCheck }) => {
                 №
               </th>
               <th className='border py-1 bg-slate-200 text-black text-center'>
-                Kategoriya
+                {t("Kategoriya")}
               </th>
               <th className='border py-1 bg-slate-200 text-black text-center'>
-                Mahsulot
+                {t("Mahsulot")}
               </th>
               <th className='border py-1 bg-slate-200 text-black text-center'>
-                Soni
+                {t("Soni")}
               </th>
               <th className='border py-1 bg-slate-200 text-black text-center'>
-                Narxi (dona)
+                {t("Narxi (dona)")}
               </th>
               <th className='border py-1 bg-slate-200 text-black text-center'>
-                Jami
+                {t("Jami")}
               </th>
             </tr>
           </thead>
@@ -108,7 +109,7 @@ export const Cheque = ({ sales, setCheck }) => {
           <tfoot className='text-base'>
             <tr>
               <th colSpan={5} className='py-1'>
-                Jami:
+                {t("Jami")}:
               </th>
               <th className='text-right text-teal-900 py-1'>
                 {sales.products
@@ -121,18 +122,19 @@ export const Cheque = ({ sales, setCheck }) => {
             </tr>
             <tr>
               <th colSpan={5} className='py-1'>
-                To'langan:
+                {t("To'langan")}:
               </th>
               <th className='text-right text-teal-900 py-1'>
                 {(sales.payment &&
                   sales.payment.payment &&
-                  sales.payment.payment.toLocaleString("de-DE"))||0}{" "}
+                  sales.payment.payment.toLocaleString("de-DE")) ||
+                  0}{" "}
                 USD
               </th>
             </tr>
             <tr>
               <th colSpan={5} className='py-1'>
-                Chegirma:
+                {t("Chegirma")}:
               </th>
               <th className='text-right text-teal-900 py-1'>
                 {(sales.discount &&
@@ -144,7 +146,7 @@ export const Cheque = ({ sales, setCheck }) => {
             </tr>
             <tr>
               <th colSpan={5} className='py-1'>
-                Qarz:
+                {t("Qarz")}:
               </th>
               <th className='text-right text-teal-900 py-1'>
                 {(sales.debt &&

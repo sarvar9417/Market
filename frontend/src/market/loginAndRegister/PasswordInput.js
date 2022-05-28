@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { InputGroup, Input, Button, InputRightElement } from "@chakra-ui/react";
 import Iconeyeoff from "./image/iconeyeoff.png";
 import Iconeyeon from "./image/iconeyeon.png";
+import { t } from "i18next";
 
 function PasswordInput({ name, changeHandler, keyPressed }) {
   const [show, setShow] = useState(false);
@@ -11,7 +12,7 @@ function PasswordInput({ name, changeHandler, keyPressed }) {
       <Input
         pr="4.5rem"
         type={show ? "text" : "password"}
-        placeholder="Parolni kiriting"
+        placeholder={t("Parolni kiriting")}
         size="sm"
         style={{ borderColor: "#eee", boxShadow: "none", color: "#fff" }}
         name={name}

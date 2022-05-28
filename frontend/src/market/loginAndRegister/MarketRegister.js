@@ -15,6 +15,7 @@ import { useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouseMedical } from "@fortawesome/free-solid-svg-icons";
 import { Loader } from "../loader/Loader";
+import { t } from "i18next";
 const storageName = "marketData";
 
 const styleDefault = {
@@ -90,9 +91,9 @@ export const MarketRegister = () => {
   const handleImage = async (e) => {
     if (market.image) {
       return notify({
-        title: "Diqqat! Surat avval yuklangan",
+        title: t("Diqqat! Surat avval yuklangan"),
         description:
-          "Suratni qayta yulash uchun suratni ustiga bir marotaba bosib uni o'chiring!",
+          t("Suratni qayta yuklash uchun suratni ustiga bir marotaba bosib uni o'chiring!"),
         status: "error",
       });
     }
@@ -107,7 +108,7 @@ export const MarketRegister = () => {
     notify({
       status: "success",
       description: "",
-      title: "Surat muvaffaqqiyatli yuklandi",
+      title: t("Surat muvaffaqqiyatli yuklandi"),
     });
   };
 
@@ -154,7 +155,7 @@ export const MarketRegister = () => {
       );
       notify({
         title:
-          "Tabriklaymiz! Klinikangiz 'Alo24' dasturida muvaffaqqiyatli ro'yxatga olindi ",
+          t("Tabriklaymiz! Do'koningiz 'Alo24' dasturida muvaffaqqiyatli ro'yxatga olindi"),
         description: "",
         status: "success",
       });
@@ -207,7 +208,7 @@ export const MarketRegister = () => {
                     <FontAwesomeIcon icon={faHouseMedical} />
                   </div>
                   <h5 className="mb-0 fs-5 ml-2" style={{ fontWeight: "600" }}>
-                    Do'kon
+                    {t("Do'kon")}
                   </h5>
                 </div>
                 <hr />
@@ -218,12 +219,12 @@ export const MarketRegister = () => {
                         <FormLabel
                           style={{ color: "#38B2AC", marginTop: "1rem" }}
                         >
-                          Do'kon nomi
+                          {t("Do'kon nomi")}
                         </FormLabel>
                         <Input
                           onKeyUp={keyPressed}
                           className="is-valid"
-                          placeholder="Do'kon nomini kiriting"
+                          placeholder={t("Do'kon nomini kiriting")}
                           size="sm"
                           style={
                             market.name && market.name.length > 0
@@ -240,11 +241,11 @@ export const MarketRegister = () => {
                         <FormLabel
                           style={{ color: "#38B2AC", marginTop: "1rem" }}
                         >
-                          Tashkilot nomi
+                          {t("Tashkilot nomi")}
                         </FormLabel>
                         <Input
                           onKeyUp={keyPressed}
-                          placeholder="Tashkilot nomini kiriting"
+                          placeholder={t("Tashkilot nomini kiriting")}
                           size="sm"
                           style={
                             market.organitionName &&
@@ -262,11 +263,11 @@ export const MarketRegister = () => {
                         <FormLabel
                           style={{ color: "#38B2AC", marginTop: "1rem" }}
                         >
-                          Manzil
+                          {t("Manzil")}
                         </FormLabel>
                         <Input
                           onKeyUp={keyPressed}
-                          placeholder="Manzilni kiriting"
+                          placeholder={t("Manzilni kiriting")}
                           size="sm"
                           style={
                             market.address && market.address.length > 0
@@ -283,11 +284,11 @@ export const MarketRegister = () => {
                         <FormLabel
                           style={{ color: "#38B2AC", marginTop: "1rem" }}
                         >
-                          Mo'ljal
+                          {t("Mo'ljal")}
                         </FormLabel>
                         <Input
                           onKeyUp={keyPressed}
-                          placeholder="Mo'ljalni kiriting"
+                          placeholder={t("Mo'ljalni kiriting")}
                           size="sm"
                           style={
                             market.orientation && market.orientation.length > 0
@@ -304,7 +305,7 @@ export const MarketRegister = () => {
                         <FormLabel
                           style={{ color: "#38B2AC", marginTop: "1rem" }}
                         >
-                          Telefon raqam1
+                          {t("Telefon raqam1")}
                         </FormLabel>
                         <InputGroup>
                           <InputLeftAddon
@@ -318,7 +319,7 @@ export const MarketRegister = () => {
                           <Input
                             onKeyUp={keyPressed}
                             type="tel"
-                            placeholder="Telefon raqamni kiriting"
+                            placeholder={t("Telefon raqamni kiriting")}
                             size="sm"
                             style={
                               market.phone1 && market.phone1.length > 0
@@ -336,7 +337,7 @@ export const MarketRegister = () => {
                         <FormLabel
                           style={{ color: "#38B2AC", marginTop: "1rem" }}
                         >
-                          Telefon raqam2
+                          {t("Telefon raqam2")}
                         </FormLabel>
                         <InputGroup>
                           <InputLeftAddon
@@ -350,7 +351,7 @@ export const MarketRegister = () => {
                           <Input
                             onKeyUp={keyPressed}
                             type="tel"
-                            placeholder="Telefon raqamni kiriting"
+                            placeholder={t("Telefon raqamni kiriting")}
                             size="sm"
                             style={
                               market.phone2 && market.phone2.length > 0
@@ -368,7 +369,7 @@ export const MarketRegister = () => {
                         <FormLabel
                           style={{ color: "#38B2AC", marginTop: "1rem" }}
                         >
-                          Telefon raqam3
+                          {t("Telefon raqam3")}
                         </FormLabel>
                         <InputGroup>
                           <InputLeftAddon
@@ -382,7 +383,7 @@ export const MarketRegister = () => {
                           <Input
                             onKeyUp={keyPressed}
                             type="tel"
-                            placeholder="Telefon raqamni kiriting"
+                            placeholder={t("Telefon raqamni kiriting")}
                             size="sm"
                             style={
                               market.phone3 && market.phone3.length > 0
@@ -402,11 +403,11 @@ export const MarketRegister = () => {
                         <FormLabel
                           style={{ color: "#38B2AC", marginTop: "1rem" }}
                         >
-                          Bank nomi
+                          {t("Bank nomi")}
                         </FormLabel>
                         <Input
                           onKeyUp={keyPressed}
-                          placeholder="Bank nomini kiriting"
+                          placeholder={t("Bank nomini kiriting")}
                           size="sm"
                           style={
                             market.bank && market.bank.length > 0
@@ -423,12 +424,12 @@ export const MarketRegister = () => {
                         <FormLabel
                           style={{ color: "#38B2AC", marginTop: "1rem" }}
                         >
-                          INN
+                          {t("INN")}
                         </FormLabel>
                         <Input
                           onKeyUp={keyPressed}
                           type="number"
-                          placeholder="INN ni kiriting"
+                          placeholder={t("INN ni kiriting")}
                           size="sm"
                           style={
                             market.inn && market.inn.length > 0
@@ -445,12 +446,12 @@ export const MarketRegister = () => {
                         <FormLabel
                           style={{ color: "#38B2AC", marginTop: "1rem" }}
                         >
-                          Hisob raqam
+                          {t("Hisob raqam")}
                         </FormLabel>
                         <Input
                           onKeyUp={keyPressed}
                           type="number"
-                          placeholder="Hisob raqamni kiriting"
+                          placeholder={t("Hisob raqamni kiriting")}
                           size="sm"
                           style={
                             market.bankNumber && market.bankNumber.length > 0
@@ -490,7 +491,7 @@ export const MarketRegister = () => {
                         variant="solid"
                         onClick={createHandler}
                       >
-                        Registratsiya
+                        {t("Registratsiya")}
                       </Button>
                     )}
                   </div>

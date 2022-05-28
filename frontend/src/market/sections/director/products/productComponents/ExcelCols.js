@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import React, { useEffect, useState } from "react";
 
 export const ExcelCols = ({ sections, data, setData, createdData }) => {
@@ -45,7 +46,7 @@ export const ExcelCols = ({ sections, data, setData, createdData }) => {
                   changeHanler(section.value, e.target.value);
                 }}
               >
-                <option value="delete">Bo'limni belgilang</option>
+                <option value="delete">{t("Bo'limni belgilang")}</option>
                 {cols.map((col, index) => {
                   return (
                     <option key={index} value={col}>

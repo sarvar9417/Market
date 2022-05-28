@@ -5,6 +5,7 @@ import {
   faWallet,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { t } from 'i18next'
 import React from 'react'
 
 export const RightBody = ({
@@ -22,7 +23,7 @@ export const RightBody = ({
             <button
               onClick={typeHandler}
               className="bg-teal-400 hover:bg-teal-500 text-white w-full rounded font-bold flex justify-between items-center px-3 py-2"
-              name="Naqt"
+              name={t("Naqt")}
               data-type="cash"
             >
               <span className="text-4xl pointer-events-none">
@@ -58,7 +59,7 @@ export const RightBody = ({
             <button
               onClick={typeHandler}
               className="bg-teal-400 hover:bg-teal-500 text-white w-full rounded font-bold flex justify-between items-center px-3 py-3"
-              name="O'tkazma"
+              name={t("O'tkazma")}
               data-type="transfer"
             >
               <span className="text-4xl pointer-events-none">
@@ -103,7 +104,7 @@ export const RightBody = ({
           name="Chegirma"
           data-type="discount"
         >
-          <h1 className=" pointer-events-none text-yellow-600">Chegirma</h1>
+          <h1 className=" pointer-events-none text-yellow-600">{t("Chegirma")}</h1>
           <p className="text-3xl font-bold pointer-events-none flex flex-col">
             <span className="text-black">
               {discount.discount.toLocaleString('de-DE')} USD
@@ -119,7 +120,7 @@ export const RightBody = ({
           name="Qarz"
           data-type="debt"
         >
-          <h1 className=" pointer-events-none text-yellow-600">Qarz</h1>
+          <h1 className=" pointer-events-none text-yellow-600">{t("Qarz")}</h1>
           <p className="text-3xl font-bold pointer-events-none flex flex-col">
             <span className="text-black">
               {debt.debt.toLocaleString('de-DE')} USD

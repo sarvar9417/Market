@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import Select from "react-select";
 import { faFloppyDisk, faRepeat } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { t } from "i18next";
 
 import makeAnimated from "react-select/animated";
 const animatedComponents = makeAnimated();
@@ -105,7 +106,7 @@ export const InputProduct = ({
 
       <div className="grid lg:grid-cols-4 grid-cols-1 md:grid-cols-2 p-2">
         <div className="p-1">
-          <p className="bg-zinc-50 p-2 font-bold text-base">Maxsulot kodi</p>
+          <p className="bg-zinc-50 p-2 font-bold text-base">{t("Maxsulot kodi")}</p>
           <input
             name="code"
             value={product.code || ""}
@@ -114,11 +115,11 @@ export const InputProduct = ({
             type="number"
             className="form-control"
             id="price"
-            placeholder="Mahsulot kodini kiriting"
+            placeholder={t("Mahsulot kodini kiriting")}
           />
         </div>
         <div className="p-1">
-          <p className="bg-zinc-50 p-2 font-bold text-base">Maxsulot nomi</p>
+          <p className="bg-zinc-50 p-2 font-bold text-base">{t("Maxsulot nomi")}</p>
           <input
             name="name"
             value={product.name || ""}
@@ -127,11 +128,11 @@ export const InputProduct = ({
             type="text"
             className="form-control"
             id="shortname"
-            placeholder="Mahsulot nomini kiriting"
+            placeholder={t("Mahsulot nomini kiriting")}
           />
         </div>
         <div className="p-1">
-          <p className="bg-zinc-50 p-2 font-bold text-base">Maxsulotlar soni</p>
+          <p className="bg-zinc-50 p-2 font-bold text-base">{t("Maxsulotlar soni")}</p>
           <input
             name="total"
             value={product.total || ""}
@@ -140,7 +141,7 @@ export const InputProduct = ({
             type="number"
             className="form-control"
             id="shortname"
-            placeholder="Sonini kiriting"
+            placeholder={t("Sonini kiriting")}
           />
         </div>
         <div className="p-1 flex">

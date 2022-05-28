@@ -15,6 +15,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Pagination } from "../components/Pagination";
 import ReactHtmlTableToExcel from "react-html-table-to-excel";
+import { t } from "i18next";
 
 export const Supplier = () => {
   //====================================================================
@@ -123,7 +124,7 @@ export const Supplier = () => {
         }
       );
       notify({
-        title: `${data.name} o'lchov birliki yaratildi!`,
+        title: `${data.name} ${t("Yetkazib beruvchi yaratildi!")}`,
         description: "",
         status: "success",
       });
@@ -151,7 +152,7 @@ export const Supplier = () => {
         }
       );
       notify({
-        title: `${data.name} o'lchov birliki yangilandi!`,
+        title: `${data.name} ${t("Yetkazib beruvchi yangilandi!")}`,
         description: "",
         status: "success",
       });
@@ -196,7 +197,7 @@ export const Supplier = () => {
         }
       );
       notify({
-        title: `${data.name} nomli o'lchov birliki o'chirildi!`,
+        title: `${data.name} ${t("Yetkazib beruvchi o'chirildi!")}`,
         description: "",
         status: "success",
       });
@@ -243,13 +244,13 @@ export const Supplier = () => {
 
   //====================================================================
   //====================================================================
-  const [t, setT] = useState();
+  const [n, setN] = useState();
   useEffect(() => {
-    if (!t) {
-      setT(1);
+    if (!n) {
+      setN(1);
       getSuppliers();
     }
-  }, [getSuppliers, t]);
+  }, [getSuppliers, n]);
   //====================================================================
   //====================================================================
 
@@ -264,9 +265,9 @@ export const Supplier = () => {
                 <table className="table m-0">
                   <thead>
                     <tr>
-                      <th className="border text-center">Yetkazib beruvchi</th>
-                      <th className="border text-center">Saqlash</th>
-                      <th className="border text-center">Tozalash</th>
+                      <th className="border text-center">{t("Yetkazib beruvchi")}</th>
+                      <th className="border text-center">{t("Saqlash")}</th>
+                      <th className="border text-center">{t("Tozalash")}</th>
                     </tr>
                   </thead>
                   <tbody className="border text-center">
@@ -280,7 +281,7 @@ export const Supplier = () => {
                           type="text"
                           className="focus: outline-none focus:ring focus: border-blue-500 rounded py-1 px-3"
                           id="name"
-                          placeholder="Yetkazib beruvchi kiriting"
+                          placeholder={t("Yetkazib beruvchi kiriting")}
                         />
                       </td>
                       <td className="border text-center text-base">
@@ -326,7 +327,7 @@ export const Supplier = () => {
                       <th>
                         <select
                           className="form-control form-control-sm selectpicker"
-                          placeholder="Bo'limni tanlang"
+                          placeholder={t("Bo'limni tanlang")}
                           onChange={setPageSize}
                           style={{ minWidth: "50px" }}
                         >
@@ -342,7 +343,7 @@ export const Supplier = () => {
                           type="search"
                           onChange={searchSupplier}
                           style={{ maxWidth: "100px" }}
-                          placeholder="Brand"
+                          placeholder={t("Brend")}
                         />
                       </th>
                       <th className="text-center">
@@ -361,7 +362,7 @@ export const Supplier = () => {
                             table="supplier-excel-table"
                             sheet="Sheet"
                             buttonText="Excel"
-                            filename="Yetkazib beruvchilar"
+                            filename={t("Yetkazib beruvchilar")}
                           />
                         </div>
                       </th>
@@ -373,15 +374,15 @@ export const Supplier = () => {
                         №
                       </th>
                       <th className="border text-center">
-                        Yetkazib beruvchi{" "}
+                        {t("Yetkazib beruvchi")}{" "}
                         <Sort
                           data={suppliers}
                           setData={setSuppliers}
                           property={"name"}
                         />
                       </th>
-                      <th className="border">Tahrirlash</th>
-                      <th className="border">O'chirish</th>
+                      <th className="border">{t("Tahrirlash")}</th>
+                      <th className="border">{t("O'chirish")}</th>
                     </tr>
                   </thead>
                   <tbody className="text-center border">
@@ -432,7 +433,7 @@ export const Supplier = () => {
           <thead>
             <tr>
               <th>№</th>
-              <th>Yetkazib beruvchilar</th>
+              <th>{t("Yetkazib beruvchilar")}</th>
             </tr>
           </thead>
           <tbody>
@@ -451,7 +452,7 @@ export const Supplier = () => {
         modal={modal}
         setModal={setModal}
         basic={remove && remove.name}
-        text={"yetkazib beruvchi o'chirishni tasdiqlaysizmi?"}
+        text={t("yetkazib beruvchi o'chirishni tasdiqlaysizmi?")}
         handler={deleteHandler}
       />
     </>

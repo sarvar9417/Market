@@ -14,6 +14,7 @@ import { FileUpload } from "../../../loginAndRegister/fileUpLoad/FileUpload";
 import { useHttp } from "../../../hooks/http.hook";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { t } from "i18next";
 
 export const EditDirector = () => {
   //====================================================================
@@ -80,9 +81,9 @@ export const EditDirector = () => {
   const handleImage = async (e) => {
     if (director.image) {
       return notify({
-        title: "Diqqat! Surat avval yuklangan",
+        title: t("Diqqat! Surat avval yuklangan"),
         description:
-          "Suratni qayta yulash uchun suratni ustiga bir marotaba bosib uni o'chiring!",
+          t("Suratni qayta yuklash uchun suratni ustiga bir marotaba bosib uni o'chiring!"),
         status: "error",
       });
     }
@@ -97,7 +98,7 @@ export const EditDirector = () => {
     notify({
       status: "success",
       description: "",
-      title: "Surat muvaffaqqiyatli yuklandi",
+      title: t("Surat muvaffaqqiyatli yuklandi"),
     });
   };
 
@@ -132,9 +133,9 @@ export const EditDirector = () => {
         clinica: auth.clinica._id,
       });
       notify({
-        title: `Tabriklaymiz ${
+        title: `${t("Tabriklaymiz")} ${
           director.firstname + " " + director.lastname
-        }! Ma'lumotlaringiz yangilandi.`,
+        }! ${t("Ma'lumotlaringiz yangilandi.")}`,
         description: "",
         status: "success",
       });
@@ -214,7 +215,7 @@ export const EditDirector = () => {
                     <FontAwesomeIcon icon={faUser} />
                   </div>
                   <h5 className="mb-0 fs-5 ml-2" style={{ fontWeight: "600" }}>
-                    Direktor
+                    {t("Direktor")}
                   </h5>
                 </div>
                 <hr />
@@ -226,7 +227,7 @@ export const EditDirector = () => {
                           className="m-0 mt-3"
                           style={{ color: "#38B2AC", marginTop: "1rem" }}
                         >
-                          Ism
+                          {t("Ism")}
                         </FormLabel>
                         <Input
                           id="firstname"
@@ -235,7 +236,7 @@ export const EditDirector = () => {
                           }
                           onKeyUp={keyPressed}
                           className="is-valid"
-                          placeholder="Ismni kiriting"
+                          placeholder={t("Ismni kiriting")}
                           size="sm"
                           style={styled}
                           onChange={changeHandler}
@@ -248,7 +249,7 @@ export const EditDirector = () => {
                         <FormLabel
                           style={{ color: "#38B2AC", marginTop: "1rem" }}
                         >
-                          Familiya
+                          {t("Familiya")}
                         </FormLabel>
                         <Input
                           id="lastname"
@@ -256,7 +257,7 @@ export const EditDirector = () => {
                             director && director.lastname && director.lastname
                           }
                           onKeyUp={keyPressed}
-                          placeholder="Familiya kiriting"
+                          placeholder={t("Familiya kiriting")}
                           size="sm"
                           style={{ borderColor: "#eee", boxShadow: "none" }}
                           name="lastname"
@@ -269,7 +270,7 @@ export const EditDirector = () => {
                         <FormLabel
                           style={{ color: "#38B2AC", marginTop: "1rem" }}
                         >
-                          Otasining ismi
+                          {t("Otasining ismi")}
                         </FormLabel>
                         <Input
                           id="fathername"
@@ -279,7 +280,7 @@ export const EditDirector = () => {
                             director.fathername
                           }
                           onKeyUp={keyPressed}
-                          placeholder="Otasini ismini kiriting"
+                          placeholder={t("Otasini ismini kiriting")}
                           size="sm"
                           style={{ borderColor: "#eee", boxShadow: "none" }}
                           name="fathername"
@@ -292,7 +293,7 @@ export const EditDirector = () => {
                         <FormLabel
                           style={{ color: "#38B2AC", marginTop: "1rem" }}
                         >
-                          Phone
+                          {t("Telefon")}
                         </FormLabel>
                         <InputGroup>
                           <InputLeftAddon
@@ -308,7 +309,7 @@ export const EditDirector = () => {
                               director && director.phone && director.phone
                             }
                             onKeyUp={keyPressed}
-                            placeholder="Telefon nomerni kiriting"
+                            placeholder={t("Telefon nomerni kiriting")}
                             size="sm"
                             style={{ borderColor: "#eee", boxShadow: "none" }}
                             name="phone"
@@ -348,7 +349,7 @@ export const EditDirector = () => {
                         variant="solid"
                         onClick={updateHandler}
                       >
-                        Saqlash
+                        {t("Saqlash")}
                       </Button>
                     )}
                   </div>

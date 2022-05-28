@@ -16,6 +16,7 @@ import { useHistory } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { Loader } from '../loader/Loader'
+import { t } from 'i18next'
 
 export const DirectorRegistor = () => {
   //====================================================================
@@ -87,9 +88,9 @@ export const DirectorRegistor = () => {
   const handleImage = async (e) => {
     if (director.image) {
       return notify({
-        title: 'Diqqat! Surat avval yuklangan',
+        title: t('Diqqat! Surat avval yuklangan'),
         description:
-          "Suratni qayta yulash uchun suratni ustiga bir marotaba bosib uni o'chiring!",
+          t("Suratni qayta yuklash uchun suratni ustiga bir marotaba bosib uni o'chiring!"),
         status: 'error',
       })
     }
@@ -104,7 +105,7 @@ export const DirectorRegistor = () => {
     notify({
       status: 'success',
       description: '',
-      title: 'Surat muvaffaqqiyatli yuklandi',
+      title: t('Surat muvaffaqqiyatli yuklandi'),
     })
   }
 
@@ -154,7 +155,7 @@ export const DirectorRegistor = () => {
       notify({
         title: `Tabriklaymiz ${
           director.firstname + ' ' + director.lastname
-        }! Siz uchun direktor bo'limi ham muvaffaqqiyatli yaratildi.`,
+        } ${t("Siz uchun direktor bo'limi ham muvaffaqqiyatli yaratildi.")}`,
         description: '',
         status: 'success',
       })
@@ -205,7 +206,7 @@ export const DirectorRegistor = () => {
                   <FontAwesomeIcon icon={faUser} />
                 </div>
                 <h5 className="mb-0 fs-5 ml-2" style={{ fontWeight: '600' }}>
-                  Direktor
+                  {t("Direktor")}
                 </h5>
               </div>
               <hr />
@@ -216,12 +217,12 @@ export const DirectorRegistor = () => {
                       <FormLabel
                         style={{ color: '#38B2AC', marginTop: '1rem' }}
                       >
-                        Ism
+                        {t("Ism")}
                       </FormLabel>
                       <Input
                         onKeyUp={keyPressed}
                         className="is-valid"
-                        placeholder="Ismni kiriting"
+                        placeholder={t("Ismni kiriting")}
                         size="sm"
                         style={styled}
                         onChange={changeHandler}
@@ -234,11 +235,11 @@ export const DirectorRegistor = () => {
                       <FormLabel
                         style={{ color: '#38B2AC', marginTop: '1rem' }}
                       >
-                        Familiya
+                        {t("Familiya")}
                       </FormLabel>
                       <Input
                         onKeyUp={keyPressed}
-                        placeholder="Familiya kiriting"
+                        placeholder={t("Familiya kiriting")}
                         size="sm"
                         style={{ borderColor: '#eee', boxShadow: 'none' }}
                         name="lastname"
@@ -251,11 +252,11 @@ export const DirectorRegistor = () => {
                       <FormLabel
                         style={{ color: '#38B2AC', marginTop: '1rem' }}
                       >
-                        Otasining ismi
+                        {t("Otasining ismi")}
                       </FormLabel>
                       <Input
                         onKeyUp={keyPressed}
-                        placeholder="Otasini ismini kiriting"
+                        placeholder={t("Otasini ismini kiriting")}
                         size="sm"
                         style={{ borderColor: '#eee', boxShadow: 'none' }}
                         name="fathername"
@@ -268,7 +269,7 @@ export const DirectorRegistor = () => {
                       <FormLabel
                         style={{ color: '#38B2AC', marginTop: '1rem' }}
                       >
-                        Telefon
+                        {t("Telefon")}
                       </FormLabel>
                       <InputGroup>
                         <InputLeftAddon
@@ -277,7 +278,7 @@ export const DirectorRegistor = () => {
                         />
                         <Input
                           onKeyUp={keyPressed}
-                          placeholder="Telefon nomerni kiriting"
+                          placeholder={t("Telefon nomerni kiriting")}
                           size="sm"
                           type="number"
                           style={{ borderColor: '#eee', boxShadow: 'none' }}
@@ -293,10 +294,10 @@ export const DirectorRegistor = () => {
                         htmlFor="first-name"
                         style={{ color: '#38B2AC', marginTop: '1rem' }}
                       >
-                        Login
+                        {t("Login")}
                       </FormLabel>
                       <Input
-                        placeholder="Login kiriting"
+                        placeholder={t("Login kiriting")}
                         size="sm"
                         type="text"
                         style={{ borderColor: '#eee', boxShadow: 'none' }}
@@ -311,7 +312,7 @@ export const DirectorRegistor = () => {
                         htmlFor="first-name"
                         style={{ color: '#38B2AC', marginTop: '1rem' }}
                       >
-                        Parol
+                        {t("Parol")}
                       </FormLabel>
                       <PasswordInput
                         keyPressed={keyPressed}
@@ -326,7 +327,7 @@ export const DirectorRegistor = () => {
                         htmlFor="first-name"
                         style={{ color: '#38B2AC', marginTop: '1rem' }}
                       >
-                        Parol
+                        {t("Parol")}
                       </FormLabel>
                       <PasswordInput
                         keyPressed={keyPressed}
@@ -365,7 +366,7 @@ export const DirectorRegistor = () => {
                       variant="solid"
                       onClick={createHandler}
                     >
-                      Registratsiya
+                      {t("Registratsiya")}
                     </Button>
                   )}
                 </div>

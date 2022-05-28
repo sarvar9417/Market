@@ -78,8 +78,8 @@ export const Login = () => {
       const data = await request(`/api/user/login`, "POST", { ...user });
       auth.login(data.token, data.userId, data.user, data.market);
       notify({
-        title: `Xush kelibsiz!`,
-        description: "Kirish muvaffaqqiyatli amalga oshirildi",
+        title: t(`Xush kelibsiz!`),
+        description: t("Kirish muvaffaqqiyatli amalga oshirildi"),
         status: "success",
       });
     } catch (error) {
@@ -131,7 +131,7 @@ export const Login = () => {
                     <Input
                       pr="4.5rem"
                       type="text"
-                      placeholder="Loginni kiriting"
+                      placeholder={t("Loginni kiriting")}
                       size="sm"
                       style={{
                         borderColor: "#eee",
@@ -156,7 +156,7 @@ export const Login = () => {
                     onClick={loginHandler}
                     className="border-solid border-white border py-1 px-4"
                   >
-                    {t("login_button")}
+                    {t("Kirish")}
                   </button>
                 </div>
               </div>

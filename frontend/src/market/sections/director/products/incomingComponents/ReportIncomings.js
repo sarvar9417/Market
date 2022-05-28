@@ -2,6 +2,7 @@ import React from "react";
 import { Datapicker } from "./Datepicker";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import { t } from "i18next";
 
 const animatedComponents = makeAnimated();
 
@@ -23,15 +24,15 @@ export const ReportIncomings = ({
             <Datapicker getIncomingConnectors={getIncomingConnectors} />
           </div>
           <div className="font-bold flex justify-between pr-8 py-2">
-            <span>Yetkazib beruvchilar:</span>{" "}
+            <span>{t("Yetkazib beruvchilar:")}</span>{" "}
             <span className="py-1 px-3 bg-[#29245A]"></span>
           </div>
           <div className="font-bold flex justify-between pr-8 py-2">
-            <span>Mahsulotlar:</span>{" "}
+            <span>{t("Mahsulotlar:")}</span>{" "}
             <span className="py-1 px-3 bg-indigo-700"></span>
           </div>
           <div className="font-bold flex justify-between pr-8 py-2">
-            <span>Umumiy summasi:</span>{" "}
+            <span>{t("Umumiy summasi:")}</span>{" "}
             <span className="py-1 px-3 bg-amber-100"></span>
           </div>
         </div>
@@ -41,7 +42,7 @@ export const ReportIncomings = ({
               <div className="text-base text-primary ">
                 <Select
                   id="select"
-                  placeholder="Yetkazib beruvchilar"
+                  placeholder={t("Yetkazib beruvchilar")}
                   isClearable={true}
                   components={animatedComponents}
                   options={suppliers}
@@ -57,13 +58,13 @@ export const ReportIncomings = ({
                 />
               </div>
               <p className="font-bold text-base text-teal-700 ">
-                Mahsulotlar turlari: <span>{totalproducttypes}</span>
+                {t("Mahsulotlar turlari:")} <span>{totalproducttypes}</span>
               </p>
               <p className="font-bold text-base text-teal-700 ">
-                Mahsulotlar: <span>{totalproducts}</span>
+                {t("Mahsulotlar:")} <span>{totalproducts}</span>
               </p>
               <p className="font-bold text-base text-teal-700 ">
-                Summasi: <span>{totalprice}$</span>
+                {t("Summasi:")} <span>{totalprice}$</span>
               </p>
             </div>
           </div>
