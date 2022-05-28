@@ -1,16 +1,14 @@
 const { Schema, model, Types } = require("mongoose");
 const Joi = require("joi");
 
-const saleconnector = new Schema(
+const dailysaleconnector = new Schema(
   {
     id: { type: Number },
-    payments: [{ type: Schema.Types.ObjectId, ref: "Payment" }],
-    dailyconnectors: [
-      { type: Schema.Types.ObjectId, ref: "DailySaleConnector" },
-    ],
+    saleconnector: { type: Schema.Types.ObjectId, ref: "SaleConnector" },
+    payment: { type: Schema.Types.ObjectId, ref: "Payment" },
     products: [{ type: Schema.Types.ObjectId, ref: "SaleProduct" }],
-    discounts: [{ type: Schema.Types.ObjectId, ref: "Discount" }],
-    debts: [{ type: Schema.Types.ObjectId, ref: "Debt" }],
+    discount: { type: Schema.Types.ObjectId, ref: "Discount" },
+    debt: { type: Schema.Types.ObjectId, ref: "Debt" },
     packman: { type: Schema.Types.ObjectId, ref: "Packman" },
     client: { type: Schema.Types.ObjectId, ref: "Client" },
     market: { type: Schema.Types.ObjectId, ref: "Market", required: true },
@@ -22,7 +20,7 @@ const saleconnector = new Schema(
   }
 );
 
-function validateSaleConnector(saleconnector) {
+function validateDailySaleConnector(dailysaleconnector) {
   const schema = Joi.object({
     id: Joi.string(),
     payments: Joi.array(),
@@ -35,8 +33,11 @@ function validateSaleConnector(saleconnector) {
     market: Joi.string(),
   });
 
-  return schema.validate(saleconnector);
+  return schema.validate(dailysaleconnector);
 }
 
-module.exports.validateSaleConnector = validateSaleConnector;
-module.exports.SaleConnector = model("SaleConnector", saleconnector);
+module.exports.validateDailySaleConnector = validateDailySaleConnector;
+module.exports.DailySaleConnector = model(
+  "DailySaleConnector",
+  dailysaleconnector
+);
