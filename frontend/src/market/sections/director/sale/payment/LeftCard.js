@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import { InputPayment } from './InputPayment'
 import ToggleButton from 'react-toggle-button'
+import { t } from 'i18next'
 
 export const LeftCard = ({
   uzs,
@@ -99,7 +100,7 @@ export const LeftCard = ({
         onClick={checkHandler}
         className="w-full py-2 bg-[#54B1EC] font-bold text-lg hover:bg-blue-400"
       >
-        To'lash
+        {t("To'lash")}
       </button>
     </div>
   )

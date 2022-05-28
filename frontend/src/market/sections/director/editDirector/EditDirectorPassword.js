@@ -6,6 +6,7 @@ import {  checkDirectorUpdatePassword } from "../../../loginAndRegister/checkDat
 import { useHttp } from "../../../hooks/http.hook";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { t } from "i18next";
 
 export const EditDirectorPassword = () => {
   //====================================================================
@@ -67,9 +68,9 @@ export const EditDirectorPassword = () => {
         directorId: auth.userId,
       });
       notify({
-        title: `Tabriklaymiz ${
+        title: `${t("Tabriklaymiz")} ${
           auth.user.firstname + " " + auth.user.lastname
-        }! Parolingiz yangilandi.`,
+        }! ${t("Parolingiz yangilandi.")}`,
         description: "",
         status: "success",
       });
@@ -120,7 +121,7 @@ export const EditDirectorPassword = () => {
                     <FontAwesomeIcon icon={faUser} />
                   </div>
                   <h5 className="mb-0 fs-5 ml-2" style={{ fontWeight: "600" }}>
-                    Direktor
+                    {t("Direktor")}
                   </h5>
                 </div>
                 <hr />
@@ -132,7 +133,7 @@ export const EditDirectorPassword = () => {
                           className="m-0 mt-3"
                           style={{ color: "#38B2AC", marginTop: "1rem" }}
                         >
-                          Hozirgi parol
+                          {t("Hozirgi parol")}
                         </FormLabel>
                         <Input
                           id="password"
@@ -143,7 +144,7 @@ export const EditDirectorPassword = () => {
                           }
                           onKeyUp={keyPressed}
                           className="is-valid"
-                          placeholder="Hozirgi parolni kiriting"
+                          placeholder={t("Hozirgi parolni kiriting")}
                           size="sm"
                           style={styled}
                           onChange={changeHandler}
@@ -156,7 +157,7 @@ export const EditDirectorPassword = () => {
                         <FormLabel
                           style={{ color: "#38B2AC", marginTop: "1rem" }}
                         >
-                          Yangi parol
+                          {t("Yangi parol")}
                         </FormLabel>
                         <Input
                           id="newpassword"
@@ -166,7 +167,7 @@ export const EditDirectorPassword = () => {
                             director.newpassword
                           }
                           onKeyUp={keyPressed}
-                          placeholder="Yangi parolni kiriting"
+                          placeholder={t("Yangi parolni kiriting")}
                           size="sm"
                           style={{ borderColor: "#eee", boxShadow: "none" }}
                           name="newpassword"
@@ -179,7 +180,7 @@ export const EditDirectorPassword = () => {
                         <FormLabel
                           style={{ color: "#38B2AC", marginTop: "1rem" }}
                         >
-                          Yangi parolni qayta kiritish
+                          {t("Yangi parolni qayta kiritish")}
                         </FormLabel>
                         <Input
                           id="confirmpassword"
@@ -189,7 +190,7 @@ export const EditDirectorPassword = () => {
                             director.confirmpassword
                           }
                           onKeyUp={keyPressed}
-                          placeholder="Yangi parolni qayta kiriting"
+                          placeholder={t("Yangi parolni qayta kiriting")}
                           size="sm"
                           style={{ borderColor: "#eee", boxShadow: "none" }}
                           name="confirmpassword"
@@ -212,7 +213,7 @@ export const EditDirectorPassword = () => {
                         variant="solid"
                         onClick={updateHandler}
                       >
-                        Saqlash
+                        {t("Saqlash")}
                       </Button>
                     )}
                   </div>

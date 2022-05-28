@@ -1,3 +1,4 @@
+import { t } from 'i18next'
 import React from 'react'
 import Select from 'react-select'
 import makeAnimated from 'react-select/animated'
@@ -17,7 +18,7 @@ export const Products = ({
   return (
     <div className="bg-white">
       <p className="bg-teal-500 text-center text-2xl text-white py-2 m-0 font-bold">
-        Maxsulotlar
+        {t("Maxsulotlar")}
       </p>
       <div className="px-3 py-2">
         <div className="grid grid-cols-1 gap-4 py-2">
@@ -25,7 +26,7 @@ export const Products = ({
             <Select
               onChange={changeCategory}
               // isDisabled={loading}
-              placeholder="Kategoriyalar"
+              placeholder={t("Kategoriyalar")}
               // isLoading={loading}
               components={animatedComponents}
               options={categories}
@@ -34,7 +35,7 @@ export const Products = ({
           <div className="w-full">
             <Select
               onChange={changeProduct}
-              placeholder="Mahsulotlar"
+              placeholder={t("Mahsulotlar")}
               // isLoading={loading}
               components={animatedComponents}
               options={products}
@@ -43,7 +44,7 @@ export const Products = ({
           <div className="w-full">
             <Select
               onChange={changeProductType}
-              placeholder="Mahsulot turlari"
+              placeholder={t("Mahsulot turlari")}
               isClearable={true}
               // isLoading={loading}
               components={animatedComponents}
@@ -54,7 +55,7 @@ export const Products = ({
             <Select
               onChange={changeBrand}
               // isDisabled={loading}
-              placeholder="Brandlar"
+              placeholder={t("Brendlar")}
               isClearable={true}
               // isLoading={loading}
               components={animatedComponents}

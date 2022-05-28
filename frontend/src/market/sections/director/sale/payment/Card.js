@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import { LeftCard } from './LeftCard'
 import { RightBody } from './RightBody'
+import { t } from "i18next"
 
 export const Card = ({
   client,
@@ -19,6 +20,7 @@ export const Card = ({
   setVisible,
   payment,
   debt,
+  
 }) => {
   return (
     <div
@@ -35,11 +37,11 @@ export const Card = ({
               </button>
               <div>
                 <h1 className="font-semibold text-xl  ">
-                  Buyurtma: A{1000000 + checkNumber.check}
+                  {t("Buyurtma")}: A{1000000 + checkNumber.check}
                 </h1>
                 <p className="text-lg font-semibold flex flex-col  justify-between">
                   <span className="flex justify-between">
-                    Jami: <span>{totalprice.toLocaleString('de-DE')} USD</span>{' '}
+                    {t("Jami")}: <span>{totalprice.toLocaleString('de-DE')} USD</span>{' '}
                   </span>
                   <span className="flex justify-between text-sm">
                     <span></span>
@@ -55,7 +57,7 @@ export const Card = ({
                     </span>{' '}
                   </span>
                 </p>
-                <p className="font-light">Mijoz: {client.name}</p>
+                <p className="font-light">{t("Mijoz")}: {client.name}</p>
               </div>
             </div>
             <button

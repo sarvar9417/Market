@@ -1,5 +1,6 @@
 import { faFloppyDisk, faRepeat } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { t } from "i18next";
 import React from "react";
 
 export const InputProduct = ({
@@ -20,7 +21,7 @@ export const InputProduct = ({
     <div className="table-container p-2">
       <div className="grid lg:grid-cols-4 grid-cols-1 md:grid-cols-2 p-2">
         <div className="p-1">
-          <p className="bg-zinc-50 p-2 font-bold text-base">Kategoriya</p>
+          <p className="bg-zinc-50 p-2 font-bold text-base">{t("Kategoriya")}</p>
           <select
             className="form-control form-control-sm selectpicker"
             id="select"
@@ -32,11 +33,11 @@ export const InputProduct = ({
                   {category.code}
                 </option>
               ))}
-            <option value="delete">Kategoriya</option>
+            <option value="delete">{t("Kategoriya")}</option>
           </select>
         </div>
         <div className="p-1">
-          <p className="bg-zinc-50 p-2 font-bold text-base">Maxsulot turi</p>
+          <p className="bg-zinc-50 p-2 font-bold text-base">{t("Maxsulot turi")}</p>
           <select
             className="form-control form-control-sm selectpicker"
             id="select"
@@ -50,7 +51,7 @@ export const InputProduct = ({
                 });
               }
             }}
-            placeholder="Xizmat turini tanlang"
+            placeholder={t("Xizmat turini tanlang")}
           >
             {producttypes &&
               producttypes.map((producttype, ind) => (
@@ -58,11 +59,11 @@ export const InputProduct = ({
                   {producttype.name}
                 </option>
               ))}
-            <option value="delete">Mahsulot turi</option>
+            <option value="delete">{t("Mahsulot turi")}</option>
           </select>
         </div>
         <div className="p-1">
-          <p className="bg-zinc-50 p-2 font-bold text-base">Brend</p>
+          <p className="bg-zinc-50 p-2 font-bold text-base">{t("Brend")}</p>
           <select
             className="form-control form-control-sm selectpicker"
             id="select"
@@ -76,7 +77,7 @@ export const InputProduct = ({
                 });
               }
             }}
-            placeholder="Mahsulot brendini tanlang"
+            placeholder={t("Mahsulot brendini tanlang")}
           >
             {brands &&
               brands.map((b, ind) => (
@@ -84,11 +85,11 @@ export const InputProduct = ({
                   {b.name}
                 </option>
               ))}
-            <option value="delete">Brend</option>
+            <option value="delete">{t("Brend")}</option>
           </select>
         </div>
         <div className="p-1">
-          <p className="bg-zinc-50 p-2 font-bold text-base">O'lchov birligi</p>
+          <p className="bg-zinc-50 p-2 font-bold text-base">{t("O'lchov birligi")}</p>
           <select
             className="form-control form-control-sm selectpicker"
             id="select"
@@ -102,7 +103,7 @@ export const InputProduct = ({
                 });
               }
             }}
-            placeholder="Xizmat turini tanlang"
+            placeholder={t("Xizmat turini tanlang")}
           >
             {units &&
               units.map((unit, ind) => (
@@ -110,14 +111,14 @@ export const InputProduct = ({
                   {unit.name}
                 </option>
               ))}
-            <option value="delete">O'lchov birligini tanlang</option>
+            <option value="delete">{t("O'lchov birligini tanlang")}</option>
           </select>
         </div>
       </div>
 
       <div className="grid lg:grid-cols-4 grid-cols-1 md:grid-cols-2 p-2">
         <div className="p-1">
-          <p className="bg-zinc-50 p-2 font-bold text-base">Maxsulot kodi</p>
+          <p className="bg-zinc-50 p-2 font-bold text-base">{t("Maxsulot kodi")}</p>
           <input
             name="code"
             value={product.code || ""}
@@ -126,11 +127,11 @@ export const InputProduct = ({
             type="number"
             className="form-control"
             id="price"
-            placeholder="Mahsulot kodini kiriting"
+            placeholder={t("Mahsulot kodini kiriting")}
           />
         </div>
         <div className="p-1">
-          <p className="bg-zinc-50 p-2 font-bold text-base">Maxsulot nomi</p>
+          <p className="bg-zinc-50 p-2 font-bold text-base">{t("Maxsulot nomi")}</p>
           <input
             name="name"
             value={product.name || ""}
@@ -139,11 +140,11 @@ export const InputProduct = ({
             type="text"
             className="form-control"
             id="shortname"
-            placeholder="Mahsulot nomini kiriting"
+            placeholder={t("Mahsulot nomini kiriting")}
           />
         </div>
         <div className="p-1">
-          <p className="bg-zinc-50 p-2 font-bold text-base">Maxsulotlar soni</p>
+          <p className="bg-zinc-50 p-2 font-bold text-base">{t("Maxsulotlar soni")}</p>
           <input
             name="total"
             value={product.total || ""}
@@ -152,11 +153,11 @@ export const InputProduct = ({
             type="number"
             className="form-control"
             id="shortname"
-            placeholder="Sonini kiriting"
+            placeholder={t("Sonini kiriting")}
           />
         </div>
         <div className="p-1">
-          <p className="bg-zinc-50 p-2 font-bold text-base">Maxsulot narxi</p>
+          <p className="bg-zinc-50 p-2 font-bold text-base">{t("Maxsulot narxi")}</p>
           <input
             name="price"
             value={product.price || ""}
@@ -165,7 +166,7 @@ export const InputProduct = ({
             type="number"
             className="form-control"
             id="shortname"
-            placeholder="Narxini kiriting"
+            placeholder={t("Narxini kiriting")}
           />
         </div>
       </div>

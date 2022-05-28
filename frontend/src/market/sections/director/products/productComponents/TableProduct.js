@@ -5,6 +5,7 @@ import { Pagination } from "../../components/Pagination";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import { ExcelTable } from "./ExcelTable";
 import { ExcelUpload } from "./ExcelUpload";
+import { t } from "i18next";
 
 export const TableProduct = ({
   searchName,
@@ -83,7 +84,7 @@ export const TableProduct = ({
                 <th className="">
                   <select
                     className="form-control form-control-sm selectpicker"
-                    placeholder="Bo'limni tanlang"
+                    placeholder={t("Bo'limni tanlang")}
                     onChange={setPageSize}
                     
                   >
@@ -98,7 +99,7 @@ export const TableProduct = ({
                     onChange={searchCategory}
                     type="search"
                     className="form-control form-control-sm selectpicker"
-                    placeholder="Kategoriya"
+                    placeholder={t("Kategoriya")}
                   />
                 </th>
                 <th>
@@ -106,7 +107,7 @@ export const TableProduct = ({
                     onChange={searchProductTypeAndProductName}
                     type="search"
                     className="w-100 form-control form-control-sm selectpicker"
-                    placeholder="Mahsulot turi"
+                    placeholder={t("Mahsulot turi")}
                   />
                 </th>
                 <th>
@@ -114,7 +115,7 @@ export const TableProduct = ({
                     onChange={searchBrand}
                     type="search"
                     className="w-100 form-control form-control-sm selectpicker"
-                    placeholder="Brand"
+                    placeholder={t("Brend")}
                   />
                 </th>
                 <th className="text-center" colSpan={2}>
@@ -133,7 +134,7 @@ export const TableProduct = ({
                       table="products-table"
                       sheet="Sheet"
                       buttonText="Excel"
-                      filename="Mahsulotlar"
+                      filename={t("Mahsulotlar")}
                     />
                   </div>
                 </th>
@@ -150,7 +151,7 @@ export const TableProduct = ({
               <tr>
                 <th className="border text-center">№</th>
                 <th className="border text-center">
-                  Kategoriya
+                  {t("Kategoriya")}
                   <div className="btn-group-vertical ml-2">
                     <FontAwesomeIcon
                       onClick={() =>
@@ -177,7 +178,7 @@ export const TableProduct = ({
                   </div>
                 </th>
                 <th className="border text-center">
-                  Mahsulot turi va mahsulot
+                  {t("Mahsulot turi va mahsulot")}
                   <div className="btn-group-vertical ml-2">
                     <FontAwesomeIcon
                       onClick={() =>
@@ -204,7 +205,7 @@ export const TableProduct = ({
                   </div>
                 </th>
                 <th className="border text-center">
-                  Brend
+                  {t("Brend")}
                   <div className="btn-group-vertical ml-2">
                     <FontAwesomeIcon
                       onClick={() =>
@@ -231,7 +232,7 @@ export const TableProduct = ({
                   </div>
                 </th>
                 <th className="border text-center">
-                  Soni - O'.B.
+                  {t("Soni - O'.B.")}
                   <div
                     className="btn-group-vertical ml-2"
                   >
@@ -260,7 +261,7 @@ export const TableProduct = ({
                   </div>
                 </th>
                 <th className="border text-center">
-                  Narxi
+                  {t("Narxi")}
                   <div
                     className="btn-group-vertical ml-2"
                   >
@@ -288,8 +289,8 @@ export const TableProduct = ({
                     />
                   </div>
                 </th>
-                <th className="border text-center">Tahrirlash</th>
-                <th className="border text-center">O'chirish</th>
+                <th className="border text-center">{t("Tahrirlash")}</th>
+                <th className="border text-center">{t("O'chirish")}</th>
               </tr>
             </thead>
             <tbody>

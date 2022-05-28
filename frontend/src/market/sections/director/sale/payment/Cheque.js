@@ -1,5 +1,6 @@
 import { faPrint } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { t } from 'i18next'
 import React, { useContext, useRef } from 'react'
 import { useReactToPrint } from 'react-to-print'
 import { AuthContext } from '../../../../context/AuthContext'
@@ -20,22 +21,22 @@ export const Cheque = ({ sales, setCheck }) => {
         <div className="grid grid-cols-2 items-center">
           <div className="w-full text-xl font-bold">
             <p className="font-bold">{auth.market.name}</p>
-            <p className="text-sm font-bold">Mijoz: Sarvar Murodullayev</p>
+            <p className="text-sm font-bold">{t("Mijoz")}: Sarvar Murodullayev</p>
           </div>
           <div>
             <p className="text-right font-bold">
-              Tel: +998 {auth.market.phone1}
+              {t("Tel")}: +998 {auth.market.phone1}
             </p>
             {auth.market.phone2 && (
               <p className="text-right font-bold">
-                Tel: +998 {auth.market.phone2}
+                {t("Tel")}: +998 {auth.market.phone2}
               </p>
             )}
             <p className="text-right font-bold">
-              Manzil: {auth.market.address}
+              {t("Manzil")}: {auth.market.address}
             </p>
             <p className="text-sm text-right font-bold">
-              Sana: {new Date().toLocaleDateString()}
+              {t("Sana")}: {new Date().toLocaleDateString()}
             </p>
           </div>
         </div>
@@ -47,19 +48,19 @@ export const Cheque = ({ sales, setCheck }) => {
                 №
               </th>
               <th className="border py-1 bg-slate-200 text-black text-center">
-                Kategoriya
+                {t("Kategoriya")}
               </th>
               <th className="border py-1 bg-slate-200 text-black text-center">
-                Mahsulot
+                {t("Mahsulot")}
               </th>
               <th className="border py-1 bg-slate-200 text-black text-center">
-                Soni
+                {t("Soni")}
               </th>
               <th className="border py-1 bg-slate-200 text-black text-center">
-                Narxi (dona)
+                {t("Narxi (dona)")}
               </th>
               <th className="border py-1 bg-slate-200 text-black text-center">
-                Jami
+                {t("Jami")}
               </th>
             </tr>
           </thead>
@@ -92,7 +93,7 @@ export const Cheque = ({ sales, setCheck }) => {
           <tfoot className="text-base">
             <tr>
               <th colSpan={5} className="py-1">
-                Jami:
+                {t("Jami")}:
               </th>
               <th className="text-right text-teal-900 py-1">
                 {sales.payment.totalprice &&
@@ -102,7 +103,7 @@ export const Cheque = ({ sales, setCheck }) => {
             </tr>
             <tr>
               <th colSpan={5} className="py-1">
-                To'langan:
+                {t("To'langan")}:
               </th>
               <th className="text-right text-teal-900 py-1">
                 {(
@@ -115,7 +116,7 @@ export const Cheque = ({ sales, setCheck }) => {
             </tr>
             <tr>
               <th colSpan={5} className="py-1">
-                Chegirma:
+              {t("Chegirma")}:
               </th>
               <th className="text-right text-teal-900 py-1">
                 {sales.payment.discount &&
@@ -125,7 +126,7 @@ export const Cheque = ({ sales, setCheck }) => {
             </tr>
             <tr>
               <th colSpan={5} className="py-1">
-                Qarz:
+                {t("Qarz")}:
               </th>
               <th className="text-right text-teal-900 py-1">
                 {sales.payment.debt &&

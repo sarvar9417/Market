@@ -13,6 +13,7 @@ import {
   faRepeat,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
+import { t } from "i18next";
 
 export const Unit = () => {
   //====================================================================
@@ -109,7 +110,7 @@ export const Unit = () => {
         }
       );
       notify({
-        title: `${data.name} o'lchov birliki yaratildi!`,
+        title: `${data.name} ${t("o'lchov birliki yaratildi!")}`,
         description: "",
         status: "success",
       });
@@ -137,7 +138,7 @@ export const Unit = () => {
         }
       );
       notify({
-        title: `${data.name} o'lchov birliki yangilandi!`,
+        title: `${data.name} ${t("o'lchov birliki yangilandi!")}`,
         description: "",
         status: "success",
       });
@@ -182,7 +183,7 @@ export const Unit = () => {
         }
       );
       notify({
-        title: `${data.name} nomli o'lchov birliki o'chirildi!`,
+        title: `${data.name} ${t("o'lchov birliki o'chirildi!")}`,
         description: "",
         status: "success",
       });
@@ -214,13 +215,13 @@ export const Unit = () => {
 
   //====================================================================
   //====================================================================
-  const [t, setT] = useState();
+  const [n, setN] = useState();
   useEffect(() => {
-    if (!t) {
-      setT(1);
+    if (!n) {
+      setN(1);
       getUnits();
     }
-  }, [getUnits, t]);
+  }, [getUnits, n]);
   //====================================================================
   //====================================================================
 
@@ -235,9 +236,9 @@ export const Unit = () => {
                 <table className="table m-0">
                   <thead>
                     <tr>
-                      <th className="border text-center">O'lchov birliki</th>
-                      <th className="border text-center">Saqlash</th>
-                      <th className="border text-center">Tozalash</th>
+                      <th className="border text-center">{t("O'lchov birliki")}</th>
+                      <th className="border text-center">{t("Saqlash")}</th>
+                      <th className="border text-center">{t("Tozalash")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -251,7 +252,7 @@ export const Unit = () => {
                           type="text"
                           className="focus: outline-none focus:ring focus: border-blue-500 rounded py-1 px-3"
                           id="name"
-                          placeholder="O'lchov birlikini kiriting"
+                          placeholder={t("O'lchov birlikini kiriting")}
                         />
                       </td>
                       <td className="border text-center">
@@ -302,15 +303,15 @@ export const Unit = () => {
                     <tr>
                       <th className="border">№</th>
                       <th className="border">
-                        O'lchov birliki{" "}
+                        {t("O'lchov birliki")}{" "}
                         <Sort
                           data={units}
                           setData={setUnits}
                           property={"name"}
                         />
                       </th>
-                      <th className="border">Tahrirlash</th>
-                      <th className="border">O'chirish</th>
+                      <th className="border">{t("Tahrirlash")}</th>
+                      <th className="border">{t("O'chirish")}</th>
                     </tr>
                   </thead>
                   <tbody className="border text-center">
@@ -360,7 +361,7 @@ export const Unit = () => {
         modal={modal}
         setModal={setModal}
         basic={remove && remove.name}
-        text={"o'lchov birlikini o'chirishni tasdiqlaysizmi?"}
+        text={t("o'lchov birlikini o'chirishni tasdiqlaysizmi?")}
         handler={deleteHandler}
       />
     </>

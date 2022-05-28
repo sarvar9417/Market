@@ -3,8 +3,9 @@ import i18next from "i18next";
 import cookie from "js-cookie";
 
 const language = [
-  { code: "uz", name: "Uzbek", country_code: "uz" },
-  { code: "ru", name: "Russian", country_code: "ru" },
+  { code: "uz", name: "Ўзбек", country_code: "уз" },
+  { code: "ru", name: "Русский", country_code: "ru" },
+  { code: "uz", name: "Lotin", country_code: "uz" },
 ];
 
 const GlobeIcon = ({ width = 20, height = 20 }) => (
@@ -20,13 +21,13 @@ const GlobeIcon = ({ width = 20, height = 20 }) => (
   </svg>
 );
 function Translaste() {
-  const currentLanguageCode = cookie.get("i18next") || "en";
+  const currentLanguageCode = cookie.get("i18next") || "uz";
   return (
-    <div className="dropdown" style={{ position: "absolute", margin: "10px",right:"0" }}>
+    <div className="dropdown z-10" style={{ position: "absolute", margin: "10px", right: "0" }}>
       <button
         className="dropdown-toggle d-flex text-white"
         type="button"
-        id="dropdownMenuButton1"
+        id="dropdownMenuButton"
         data-bs-toggle="dropdown"
         aria-expanded="false"
         style={{ outline: "none" }}
@@ -34,27 +35,31 @@ function Translaste() {
         <GlobeIcon />
       </button>
       <ul
-        className="dropdown-menu"
-        aria-labelledby="dropdownMenuButton1"
+        className="dropdown-menu1"
+        aria-labelledby="dropdownMenuButton"
+        
       >
-        {language.map(({ code, name, country_code }) => (
-          <li key={country_code}>
-            <button
-              className="dropdown-item"
-              onClick={() => {
-                i18next.changeLanguage(code);
-              }}
-              disabled={code === currentLanguageCode}
-            >
-              <span
-                className={`flag-icon flag-icon-${country_code}`}
-                style={{ opacity: code === currentLanguageCode ? 0.5 : 1 }}
-              ></span>
-              &nbsp;
-              {name}
-            </button>
-          </li>
-        ))}
+        {language.map(({ code, name, country_code }, index) => {
+          return (
+            <li key={index}>
+              <button
+                className="dropdown-item text-white"
+                onClick={() => {
+                  i18next.changeLanguage(code);
+                }}
+                disabled={code === currentLanguageCode}
+              >
+                <span
+                  className={`fi fi-${code}`}
+                  style={{ opacity: code === currentLanguageCode ? 0.5 : 1 }}
+                ></span>&nbsp;
+                &nbsp;
+                {name}
+              </button>
+            </li>
+          );
+        })}
+
       </ul>
     </div>
   );

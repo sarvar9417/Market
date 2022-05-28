@@ -5,7 +5,7 @@ import { useHttp } from '../../../hooks/http.hook'
 import { Modal } from '../components/Modal'
 import { InputProduct } from './components/InputProduct'
 // import { Payment } from './Payment'
-
+import { t } from 'i18next'
 import { Products } from './Products'
 import { Selling } from './Selling'
 import { Card } from './payment/Card'
@@ -66,7 +66,7 @@ export const Sale = () => {
   //====================================================================
   const [categories, setCategories] = useState([
     {
-      label: 'Barcha kategoriyalar',
+      label: t('Barcha kategoriyalar'),
       value: 'all',
     },
   ])
@@ -84,7 +84,7 @@ export const Sale = () => {
       )
       let c = [
         {
-          label: 'Barcha kategoriyalar',
+          label: t('Barcha kategoriyalar'),
           value: 'all',
         },
       ]
@@ -488,7 +488,7 @@ export const Sale = () => {
         )
         let v = [
           {
-            label: 'Barcha mijozlar',
+            label: t('Barcha mijozlar'),
             value: 'all',
           },
         ]
@@ -621,14 +621,14 @@ export const Sale = () => {
   const changeDiscount = (e, p) => {
     if (discount.isProcient && e.target.value > 100) {
       return notify({
-        title: 'Diqqat! Umumiy summadan yuqori chegirma kiritish mumkin emas!',
+        title: t('Diqqat! Umumiy summadan yuqori chegirma kiritish mumkin emas!'),
         description: '',
         status: 'error',
       })
     }
     if (Math.round(e.target.value * 100) / 100 > totalprice) {
       return notify({
-        title: 'Diqqat! Umumiy summadan yuqori chegirma kiritish mumkin emas!',
+        title: t('Diqqat! Umumiy summadan yuqori chegirma kiritish mumkin emas!'),
         description: '',
         status: 'error',
       })
@@ -685,7 +685,7 @@ export const Sale = () => {
   const changeDiscountUzs = (e, p) => {
     if (discount.isProcient && e.target.value > 100) {
       return notify({
-        title: 'Diqqat! Umumiy summadan yuqori chegirma kiritish mumkin emas!',
+        title: t('Diqqat! Umumiy summadan yuqori chegirma kiritish mumkin emas!'),
         description: '',
         status: 'error',
       })
@@ -695,7 +695,7 @@ export const Sale = () => {
       totalprice
     ) {
       return notify({
-        title: 'Diqqat! Umumiy summadan yuqori chegirma kiritish mumkin emas!',
+        title: t('Diqqat! Umumiy summadan yuqori chegirma kiritish mumkin emas!'),
         description: '',
         status: 'error',
       })
@@ -771,7 +771,7 @@ export const Sale = () => {
 
     if (Math.round((total + discount.discount) * 100) / 100 > totalprice) {
       return notify({
-        title: 'Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!',
+        title: t('Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!'),
         description: '',
         status: 'error',
       })
@@ -812,7 +812,7 @@ export const Sale = () => {
 
     if (Math.round((total + discount.discount) * 100) / 100 > totalprice) {
       return notify({
-        title: 'Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!',
+        title: t('Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!'),
         description: '',
         status: 'error',
       })
@@ -848,7 +848,7 @@ export const Sale = () => {
 
   const [paymentType, setPaymentType] = useState({
     type: 'cash',
-    name: 'Naqt',
+    name: t('Naqt'),
   })
 
   const typeHandler = (e) => {
@@ -935,7 +935,7 @@ export const Sale = () => {
       debt.debt
     if (Math.round(total * 100) / 100 !== totalprice) {
       return notify({
-        title: "Diqqat! To'lov hisobida xatolik yuz bergan!",
+        title: t("Diqqat! To'lov hisobida xatolik yuz bergan!"),
         description: '',
         status: 'error',
       })
@@ -1005,10 +1005,10 @@ export const Sale = () => {
   ])
   //====================================================================
   //====================================================================
-  const [t, setT] = useState()
+  const [n, setN] = useState()
   useEffect(() => {
-    if (!t) {
-      setT(1)
+    if (!n) {
+      setN(1)
       getCategories()
       getProductTypes()
       getBrand()
@@ -1025,7 +1025,7 @@ export const Sale = () => {
     getBrand,
     getPackmans,
     getClients,
-    t,
+    n,
     getBaseUrl,
     getExchangerate,
     getCheckNumber,
@@ -1110,14 +1110,14 @@ export const Sale = () => {
       <Modal
         modal={modal2}
         setModal={setModal2}
-        basic={`Diqqat! Iltimos ${debt.debt.toLocaleString('de-DE')}$ (${(
+        basic={`${t("Diqqat! Iltimos")} ${debt.debt.toLocaleString('de-DE')}$ (${(
           debt.debt * exchangerate.exchangerate
-        ).toLocaleString('de-DE')} so'm)  qarzdorlik uchun izoh kiriting`}
+        ).toLocaleString('de-DE')} ${t("so'm)  qarzdorlik uchun izoh kiriting")}`}
         text={
           <input
             onChange={changeComment}
             className="block border w-full px-2 rounded"
-            placeholder="Izoh"
+            placeholder={t("Izoh")}
           />
         }
         handler={createHandler}
@@ -1126,7 +1126,7 @@ export const Sale = () => {
       <Modal
         modal={modal3}
         setModal={setModal3}
-        basic={`Mijozdan to'lov qabul qilishni tasdiqlaysizmi?`}
+        basic={t(`Mijozdan to'lov qabul qilishni tasdiqlaysizmi?`)}
         handler={createHandler}
       />
     </div>

@@ -3,6 +3,7 @@ import { Tooltip } from "@chakra-ui/react";
 import { faFileExcel } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as XLSX from "xlsx";
+import { t } from "i18next";
 
 export const ExcelUpload = ({ setData, setModal, loading }) => {
   const readExcel = (file) => {
@@ -46,7 +47,7 @@ export const ExcelUpload = ({ setData, setModal, loading }) => {
           readExcel(file);
         }}
       />
-      <Tooltip hasArrow label="Barcha xizmatlarni import qilish" bg="green.400">
+      <Tooltip hasArrow label={t("Barcha xizmatlarni import qilish")} bg="green.400">
         {loading ? (
           <button className="btn btn-success" disabled>
             <span className="spinner-border spinner-border-sm"></span>

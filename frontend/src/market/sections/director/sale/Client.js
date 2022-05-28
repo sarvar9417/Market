@@ -13,6 +13,7 @@ import { useHttp } from "../../../hooks/http.hook";
 import { Pagination } from "../components/Pagination";
 import { Sort } from "../components/Sort";
 import { checkClient } from "./checkData";
+import { t } from "i18next";
 
 export const Client = () => {
   //====================================================================
@@ -263,7 +264,7 @@ export const Client = () => {
         market: auth.market && auth.market._id,
       });
       notify({
-        title: `${data.name} degan mijoz yaratildi!`,
+        title: `${data.name} ${t("nomli mijoz yaratildi!")}`,
         description: "",
         status: "success",
       });
@@ -292,7 +293,7 @@ export const Client = () => {
         market: auth.market && auth.market._id,
       });
       notify({
-        title: `${data.name} degan mijoz yangilandi!`,
+        title: `${data.name} ${t("nomli mijoz yangilandi!")}`,
         description: "",
         status: "success",
       });
@@ -316,7 +317,7 @@ export const Client = () => {
         }
       );
       notify({
-        title: `${data.name} degan mijoz o'chirildi!`,
+        title: `${data.name} ${t("nomli mijoz o'chirildi!")}`,
         description: "",
         status: "success",
       });
@@ -334,14 +335,14 @@ export const Client = () => {
     }
   };
 
-  const [t, setT] = useState(false);
+  const [n, setN] = useState(false);
   useEffect(() => {
-    if (!t) {
+    if (!n) {
       getClients();
       getPackmans();
-      setT(true);
+      setN(true);
     }
-  }, [getClients, getPackmans, t]);
+  }, [getClients, getPackmans, n]);
 
   //====================================================================
   //====================================================================
@@ -362,10 +363,10 @@ export const Client = () => {
                 <table className="table m-0">
                   <thead>
                     <tr>
-                      <th className="border text-center">Yetkazuvchilar</th>
-                      <th className="border text-center">Mijoz</th>
-                      <th className="border text-center">Saqlash</th>
-                      <th className="border text-center">Tozalash</th>
+                      <th className="border text-center">{t("Yetkazuvchilar")}</th>
+                      <th className="border text-center">{t("Mijoz")}</th>
+                      <th className="border text-center">{t("Saqlash")}</th>
+                      <th className="border text-center">{t("Tozalash")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -376,7 +377,7 @@ export const Client = () => {
                             onChange={(e) => {
                               selectHandler(e);
                             }}
-                            placeholder="yetkazuvchini tanlang"
+                            placeholder={t("yetkazuvchini tanlang")}
                             className="form-control form-control-sm selectpicker"
                             style={{ minWidth: "50px" }}
                           >
@@ -400,7 +401,7 @@ export const Client = () => {
                           type="text"
                           className="focus: outline-none focus:ring focus:border-blue-500 rounded py-1 px-3"
                           id="name"
-                          placeholder="Mijozni kiriting"
+                          placeholder={t("Mijozni kiriting")}
                         />
                       </td>
                       <td className="border text-center">
@@ -452,7 +453,7 @@ export const Client = () => {
                       <th>
                         <select
                           className="form-control form-control-sm selectpicker"
-                          placeholder="Bo'limni tanlang"
+                          placeholder={t("Bo'limni tanlang")}
                           onChange={setPageSize}
                           style={{ minWidth: "50px" }}
                         >
@@ -468,7 +469,7 @@ export const Client = () => {
                           type="search"
                           onChange={searchPackman}
                           style={{ maxWidth: "100px" }}
-                          placeholder="Yetkazuvchi"
+                          placeholder={t("Yetkazuvchi")}
                         />
                       </th>
                       <th>
@@ -477,7 +478,7 @@ export const Client = () => {
                           type="search"
                           onChange={searchClient}
                           style={{ maxWidth: "100px" }}
-                          placeholder="Mijozlar"
+                          placeholder={t("Mijozlar")}
                         />
                       </th>
                       <th className="text-center">
@@ -506,7 +507,7 @@ export const Client = () => {
                     <tr className="border text-center">
                       <th className="border text-center">№</th>
                       <th className="border text-center">
-                        Yetkazuvchi{" "}
+                       {t("Yetkazuvchi")}{" "}
                         <Sort
                           data={clients}
                           setData={setClients}
@@ -514,15 +515,15 @@ export const Client = () => {
                         />
                       </th>
                       <th className="border text-center">
-                        Mijoz{" "}
+                        {t("Mijoz")}{" "}
                         <Sort
                           data={clients}
                           setData={setClients}
                           property={"name"}
                         />
                       </th>
-                      <th className="border text-center">Tahrirlash</th>
-                      <th className="border text-center">O'chirish</th>
+                      <th className="border text-center">{t("Tahrirlash")}</th>
+                      <th className="border text-center">{t("O'chirish")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -582,7 +583,7 @@ export const Client = () => {
         modal={modal}
         setModal={setModal}
         basic={remove && remove.name}
-        text={"yetkazuvchini o'chirishni tasdiqlaysizmi?"}
+        text={t("yetkazuvchini o'chirishni tasdiqlaysizmi?")}
         handler={deleteClient}
       />
     </>

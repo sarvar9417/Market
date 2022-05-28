@@ -1,5 +1,6 @@
 import { faPenAlt, faPrint } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { t } from 'i18next'
 import React from 'react'
 import ReactHtmlTableToExcel from 'react-html-table-to-excel'
 import { Pagination } from '../../components/Pagination'
@@ -23,7 +24,7 @@ export const Sales = ({
                 <th className="">
                   <select
                     className="form-control form-control-sm selectpicker"
-                    placeholder="Bo'limni tanlang"
+                    placeholder={t("Bo'limni tanlang")}
                     onChange={setPageSize}
                   >
                     <option value={10}>10</option>
@@ -51,7 +52,7 @@ export const Sales = ({
                       table="products-table"
                       sheet="Sheet"
                       buttonText="Excel"
-                      filename="Mahsulotlar"
+                      filename={t("Mahsulotlar")}
                     />
                   </div>
                 </th>
@@ -60,15 +61,15 @@ export const Sales = ({
             <thead>
               <tr>
                 <th className="py-1 text-center font-bold border">№</th>
-                <th className="py-1 text-center font-bold border">Sana</th>
+                <th className="py-1 text-center font-bold border">{t("Sana")}</th>
                 <th className="py-1 text-center font-bold border">
-                  Mahsulot turi
+                  {t("Mahsulot turi")}
                 </th>
-                <th className="py-1 text-center font-bold border">Summasi</th>
-                <th className="py-1 text-center font-bold border">Qarz</th>
-                <th className="py-1 text-center font-bold border">Chek</th>
+                <th className="py-1 text-center font-bold border">{t("Summasi")}</th>
+                <th className="py-1 text-center font-bold border">{t("Qarz")}</th>
+                <th className="py-1 text-center font-bold border">{t("Chek")}</th>
                 <th className="py-1 text-center font-bold border">
-                  Tahrirlash
+                  {t("Tahrirlash")}
                 </th>
               </tr>
             </thead>

@@ -17,6 +17,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Pagination } from "../components/Pagination";
 import ReactHtmlTableToExcel from "react-html-table-to-excel";
+import { t } from "i18next";
 
 export const ProductType = () => {
   //====================================================================
@@ -319,14 +320,14 @@ export const ProductType = () => {
 
   //====================================================================
   //====================================================================
-  const [t, setT] = useState();
+  const [n, setN] = useState();
   useEffect(() => {
-    if (!t) {
-      setT(1);
+    if (!n) {
+      setN(1);
       getCategories();
       getProductTypes();
     }
-  }, [getCategories, getProductTypes, t]);
+  }, [getCategories, getProductTypes, n]);
   //====================================================================
   //====================================================================
 
@@ -342,11 +343,11 @@ export const ProductType = () => {
                   <thead>
                     <tr>
                       <th className="w-25 border text-center">
-                        Kategoriya nomi
+                        {t("Kategoriya nomi")}
                       </th>
-                      <th className="w-25 border text-center">Mahsulot turi</th>
-                      <th className="w-25 border text-center">Saqlash</th>
-                      <th className="w-25 border text-center">Tozalash</th>
+                      <th className="w-25 border text-center">{t("Mahsulot turi")}</th>
+                      <th className="w-25 border text-center">{t("Saqlash")}</th>
+                      <th className="w-25 border text-center">{t("Tozalash")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -355,7 +356,7 @@ export const ProductType = () => {
                         <select
                           style={{ minWidth: "70px", maxWidth: "200px" }}
                           className="text-center py-1 px-3 focus: outline-none focus:ring focus: border-blue-500 rounded"
-                          placeholder="Kategoriyani tanlang"
+                          placeholder={t("Kategoriyani tanlang")}
                           onChange={checkHandler}
                         >
                           <option value="all">Kategoriya tanlang</option>
@@ -379,7 +380,7 @@ export const ProductType = () => {
                           type="text"
                           className="text-center py-1 px-3 focus: outline-none focus:ring focus: border-blue-500 rounded"
                           id="name"
-                          placeholder="Mahsulot turi nomi"
+                          placeholder={t("Mahsulot turi nomi")}
                         />
                       </td>
                       <td className="border text-center">
@@ -447,7 +448,7 @@ export const ProductType = () => {
                           style={{ maxWidth: "120px", minWidth: "100px" }}
                           type="search"
                           className="w-100 form-control form-control-sm selectpicker"
-                          placeholder="Kategoriya"
+                          placeholder={t("Kategoriya")}
                           onChange={searchCategory}
                         />
                       </th>
@@ -456,7 +457,7 @@ export const ProductType = () => {
                           style={{ maxWidth: "120px", minWidth: "100px" }}
                           type="search"
                           className="w-100 form-control form-control-sm selectpicker"
-                          placeholder="Mahsulot turi"
+                          placeholder={t("Mahsulot turi")}
                           onChange={searchProductType}
                         />
                       </th>
@@ -476,7 +477,7 @@ export const ProductType = () => {
                             table="producttype-excel-table"
                             sheet="Sheet"
                             buttonText="Excel"
-                            filename="Mahsulot turi"
+                            filename={t("Mahsulot turi")}
                           />
                         </div>
                       </th>
@@ -486,7 +487,7 @@ export const ProductType = () => {
                     <tr>
                       <th className="border text-center">№</th>
                       <th className="w-25 border text-center">
-                        Kategoriya{"  "}
+                        {t("Kategoriya")}{"  "}
                         <div className="btn-group-vertical ml-2">
                           <FontAwesomeIcon
                             onClick={() =>
@@ -513,15 +514,15 @@ export const ProductType = () => {
                         </div>
                       </th>
                       <th className="w-25 border text-center">
-                        Mahsulot turi{" "}
+                        {t("Mahsulot turi")}{" "}
                         <Sort
                           data={producttypes}
                           setData={setProductTypes}
                           property={"name"}
                         />
                       </th>
-                      <th className="w-25 border text-center">Tahrirlash</th>
-                      <th className="w-25 border text-center">O'chirish</th>
+                      <th className="w-25 border text-center">{t("Tahrirlash")}</th>
+                      <th className="w-25 border text-center">{t("O'chirish")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -589,8 +590,8 @@ export const ProductType = () => {
           <thead>
             <tr>
               <th>№</th>
-              <th>Kategoriya</th>
-              <th>Mahsulot turi</th>
+              <th>{t("Kategoriya")}</th>
+              <th>{t("Mahsulot turi")}</th>
             </tr>
           </thead>
           <tbody>
@@ -610,7 +611,7 @@ export const ProductType = () => {
         modal={modal}
         setModal={setModal}
         basic={remove && remove.name}
-        text={"mahsulot turini o'chirishni tasdiqlaysizmi?"}
+        text={t("mahsulot turini o'chirishni tasdiqlaysizmi?")}
         handler={deleteHandler}
       />
     </>

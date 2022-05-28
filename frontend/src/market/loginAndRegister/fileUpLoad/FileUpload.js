@@ -2,6 +2,7 @@ import React from "react";
 import cloudUpLoad from "./image/cloudUpLoad.png";
 import { SmallCloseIcon } from "@chakra-ui/icons";
 import { Button, useToast } from "@chakra-ui/react";
+import { t } from "i18next";
 
 export const FileUpload = ({ imgUrl, img, handleImage, removeImage, load }) => {
   const toast = useToast();
@@ -13,7 +14,7 @@ export const FileUpload = ({ imgUrl, img, handleImage, removeImage, load }) => {
             <img
               id="clinicaimg"
               src={imgUrl}
-              alt="Fayl topilmadi"
+              alt={t("Fayl topilmadi")}
               className="rounded-3"
             />
             <button id="cancel-btn" onClick={() => removeImage(img)}>
@@ -26,10 +27,10 @@ export const FileUpload = ({ imgUrl, img, handleImage, removeImage, load }) => {
               <img
                 src={imgUrl ? imgUrl : cloudUpLoad}
                 style={{ width: "100px", margin: "auto" }}
-                alt="Klinika logotipi yoki suratini yuklang"
+                alt={t("Do'kon logotipi yoki suratini yuklang")}
               />
             </div>
-            <div className="text">Surat yuklanmagan!</div>
+            <div className="text">{t("Surat yuklanmagan!")}</div>
           </div>
         )}
       </div>
@@ -55,9 +56,9 @@ export const FileUpload = ({ imgUrl, img, handleImage, removeImage, load }) => {
               document.getElementById("default-btn").click();
             } else {
               toast({
-                title: "Diqqat! Surat avval yuklangan",
+                title: t("Diqqat! Surat avval yuklangan"),
                 description:
-                  "Suratni qayta yulash uchun suratni ustiga bir marotaba bosib uni o'chiring!",
+                  t("Suratni qayta yulash uchun suratni ustiga bir marotaba bosib uni o'chiring!"),
                 status: "error",
                 duration: 5000,
                 isClosable: true,
@@ -66,7 +67,7 @@ export const FileUpload = ({ imgUrl, img, handleImage, removeImage, load }) => {
             }
           }}
         >
-          Suratni yuklash
+          {t("Suratni yuklash")}
         </Button>
       )}
     </div>

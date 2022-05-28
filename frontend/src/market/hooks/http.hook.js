@@ -1,3 +1,4 @@
+import { t } from 'i18next'
 import { useCallback, useContext, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { AuthContext } from './../context/AuthContext'
@@ -18,13 +19,13 @@ export const useHttp = () => {
         const response = await fetch(url, { method, body, headers })
         const data = await response.json()
         if (!response.ok) {
-          if (data.message === "Avtorizatsiyadan o'tilmagan") {
+          if (data.message === t("Avtorizatsiyadan o'tilmagan")) {
             auth.logout()
             history.push('/')
           }
 
           throw new Error(
-            data.message || data.error || 'Ko`zda tutilmagan xatolik yuzberdi',
+            data.message || data.error || t("Ko`zda tutilmagan xatolik yuzberdi"),
           )
         }
         setLoading(false)

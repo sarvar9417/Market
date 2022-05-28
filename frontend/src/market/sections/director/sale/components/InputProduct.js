@@ -1,3 +1,4 @@
+import { t } from 'i18next'
 import React from 'react'
 
 export const InputProduct = ({ setCounts, product }) => {
@@ -7,9 +8,9 @@ export const InputProduct = ({ setCounts, product }) => {
             <table className='table'>
                 <thead>
                     <tr>
-                        <th className='border text-base p-0 font-bold'>Soni</th>
-                        <th className='border text-base p-0 font-bold'>Narxi</th>
-                        <th className='border text-base p-0 font-bold'>Jami</th>
+                        <th className='border text-base p-0 font-bold'>{t("Soni")}</th>
+                        <th className='border text-base p-0 font-bold'>{t("Narxi")}</th>
+                        <th className='border text-base p-0 font-bold'>{t("Jami")}</th>
                     </tr>
                 </thead>
                 <tbody>

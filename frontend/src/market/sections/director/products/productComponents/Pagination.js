@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import React, { useCallback } from "react";
 import ReactPaginate from "react-paginate";
 
@@ -27,8 +28,8 @@ export const Pagination = ({
   return (
     <nav className="float-right">
       <ReactPaginate
-        previousLabel={"oldingi"}
-        nextLabel="keyingi"
+        previousLabel={t("oldingi")}
+        nextLabel={t("keyingi")}
         breakLabel={"..."}
         pageCount={pageNumbers.length}
         marginPagesDisplayed={2}
