@@ -1,13 +1,12 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import i18n from 'i18next'
-import {initReactI18next} from 'react-i18next'
-import LanguageDetector from 'i18next-browser-languagedetector'
-import HttpApi from 'i18next-http-backend'
-import 'flag-icons'
-
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+import LanguageDetector from "i18next-browser-languagedetector";
+import HttpApi from "i18next-http-backend";
+import "flag-icons";
 
 i18n
   .use(initReactI18next)
@@ -30,5 +29,5 @@ ReactDOM.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );

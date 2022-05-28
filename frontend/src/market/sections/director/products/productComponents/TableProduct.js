@@ -1,6 +1,11 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleUp, faAngleDown, faPenAlt, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAngleUp,
+  faAngleDown,
+  faPenAlt,
+  faTrashCan,
+} from "@fortawesome/free-solid-svg-icons";
 import { Pagination } from "../../components/Pagination";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import { ExcelTable } from "./ExcelTable";
@@ -30,10 +35,28 @@ export const TableProduct = ({
   producttypes,
   product,
   searchBrand,
+  selectRef,
+  market,
 }) => {
   const edit = (e, p) => {
+    selectRef.category.current.selectOption({
+      label: p.category.code,
+      value: p.category._id,
+    });
+    selectRef.producttype.current.selectOption({
+      label: p.producttype.name,
+      value: p.producttype._id,
+    });
+    selectRef.brand.current.selectOption({
+      label: p.brand.name,
+      value: p.brand._id,
+    });
+    selectRef.unit.current.selectOption({
+      label: p.unit.name,
+      value: p.unit._id,
+    });
     setProduct({
-      ...product,
+      market: market && market._id,
       _id: p._id,
       name: p.name,
       code: p.code,
@@ -41,37 +64,11 @@ export const TableProduct = ({
       unit: p.unit._id,
       producttype: p.producttype._id,
       brand: p.brand ? p.brand._id : "",
-      price: p.price.sellingprice || 0,
       total: p.total || 0,
+      priceid: (p.price && p.price._id) || 0,
+      incomingprice: p.price.incomingprice || 0,
+      sellingprice: p.price.sellingprice || 0,
     });
-    for (let option of document.getElementsByTagName("select")[0].options) {
-      if (option.value === p.category._id) {
-        option.selected = true;
-      }
-    }
-    for (let option of document.getElementsByTagName("select")[3].options) {
-      if (option.value === p.unit._id) {
-        option.selected = true;
-      }
-    }
-    for (let option of document.getElementsByTagName("select")[1].options) {
-      if (option.value === p.producttype._id) {
-        option.selected = true;
-      }
-    }
-    if (p.brand) {
-      for (let option of document.getElementsByTagName("select")[2].options) {
-        if (option.value === p.brand._id) {
-          option.selected = true;
-        }
-      }
-    } else {
-      for (let option of document.getElementsByTagName("select")[2].options) {
-        if (option.value === "delete") {
-          option.selected = true;
-        }
-      }
-    }
   };
 
   return (
@@ -86,7 +83,6 @@ export const TableProduct = ({
                     className="form-control form-control-sm selectpicker"
                     placeholder={t("Bo'limni tanlang")}
                     onChange={setPageSize}
-                    
                   >
                     <option value={10}>10</option>
                     <option value={25}>25</option>
@@ -261,10 +257,35 @@ export const TableProduct = ({
                   </div>
                 </th>
                 <th className="border text-center">
-                  {t("Narxi")}
-                  <div
-                    className="btn-group-vertical ml-2"
-                  >
+                  Olish
+                  <div className="btn-group-vertical ml-2">
+                    <FontAwesomeIcon
+                      onClick={() =>
+                        setCurrentProducts(
+                          [...currentProducts].sort((a, b) =>
+                            a.unit.name > b.unit.name ? 1 : -1
+                          )
+                        )
+                      }
+                      icon={faAngleUp}
+                      style={{ cursor: "pointer" }}
+                    />
+                    <FontAwesomeIcon
+                      icon={faAngleDown}
+                      style={{ cursor: "pointer" }}
+                      onClick={() =>
+                        setCurrentProducts(
+                          [...currentProducts].sort((a, b) =>
+                            b.uni.name > a.unit.name ? 1 : -1
+                          )
+                        )
+                      }
+                    />
+                  </div>
+                </th>
+                <th className="border text-center">
+                  Sotish
+                  <div className="btn-group-vertical ml-2">
                     <FontAwesomeIcon
                       onClick={() =>
                         setCurrentProducts(
@@ -298,31 +319,33 @@ export const TableProduct = ({
                 currentProducts.map((p, key) => {
                   return (
                     <tr key={key}>
-                      <td
-                        className="border font-bold text-center text-black"
-                      >
+                      <td className="border font-bold text-center text-black">
                         {currentPage * countPage + key + 1}
                       </td>
                       <td className="border text-center font-bold text-black">
                         {p.category.code} {p.code}
                       </td>
                       <td className="border text-black px-5 font-bold ">
-                        <span className="uppercase ">{p.producttype && p.producttype.name}</span> -  {p.name}
+                        <span className="uppercase ">
+                          {p.producttype && p.producttype.name}
+                        </span>{" "}
+                        - {p.name}
                       </td>
                       <td className="border text-center font-bold text-black">
                         {p.brand && p.brand.name}
                       </td>
                       <td className="border text-center font-bold text-black">
-                        {p.total}  {p.unit.name}
+                        {p.total} {p.unit.name}
+                      </td>
+                      <td className="border text-center font-bold text-black">
+                        {(p.price && p.price.incomingprice) || 0} $
                       </td>
                       <td className="border text-center font-bold text-black">
                         {(p.price && p.price.sellingprice) || 0} $
                       </td>
                       <td className="border text-center text-base">
                         {loading ? (
-                          <button
-                            className="btn btn-success py-1 px-2"
-                          >
+                          <button className="btn btn-success py-1 px-2">
                             <span className="spinner-border spinner-border-sm"></span>
                             Loading...
                           </button>
@@ -333,9 +356,11 @@ export const TableProduct = ({
                               edit(e, p);
                             }}
                             className="btn btn-success py-1 px-4"
-                            
                           >
-                            <FontAwesomeIcon className="text-base" icon={faPenAlt}/>
+                            <FontAwesomeIcon
+                              className="text-base"
+                              icon={faPenAlt}
+                            />
                           </button>
                         )}
                       </td>
@@ -356,7 +381,10 @@ export const TableProduct = ({
                             }}
                             className="btn btn-secondary py-1 px-4"
                           >
-                           <FontAwesomeIcon className="text-base" icon={faTrashCan}/>
+                            <FontAwesomeIcon
+                              className="text-base"
+                              icon={faTrashCan}
+                            />
                           </button>
                         )}
                       </td>

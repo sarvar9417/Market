@@ -2,10 +2,10 @@ module.exports.checkPayments = (totalprice, payment, discount, debt) => {
   if (
     discount &&
     discount.procient &&
-    ((totalprice * discount.procient) / 100).toLocaleString('de-DE') !==
-      discount.discount.toLocaleString('de-DE')
+    Math.round(((totalprice * discount.procient) / 100) * 100) / 100 !==
+      discount.discount
   ) {
-    return true
+    return true;
   }
 
   let prices =
@@ -13,10 +13,9 @@ module.exports.checkPayments = (totalprice, payment, discount, debt) => {
     discount.discount +
     payment.cash +
     payment.card +
-    payment.transfer
-
-  if (totalprice.toLocaleString('de-DE') !== prices.toLocaleString('de-DE')) {
-    return true
+    payment.transfer;
+  if (totalprice !== Math.round(prices * 100) / 100) {
+    return true;
   }
-  return false
-}
+  return false;
+};
