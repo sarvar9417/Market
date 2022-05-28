@@ -10,7 +10,7 @@ import { Card } from "./payment/Card";
 import { Sales } from "./payment/Sales";
 import { Cheque } from "./payment/Cheque";
 import { ChequeConnectors } from "./payment/ChequeConnectors";
-import { EditSaleProducts } from "./EditSaleProducts";
+import { EditSelling } from "./EditSelling";
 export const Sale = () => {
   //====================================================================
   //====================================================================
@@ -1095,15 +1095,57 @@ export const Sale = () => {
 
   const [editSaleProducts, setEditSaleProducts] = useState([]);
   const [editSaleConnectorId, setEditSaleConnectorId] = useState({ _id: 0 });
+  const [editSaleConnector, setEditSaleConnector] = useState({});
   const [editPayments, setEditPayments] = useState([]);
   const [editDiscounts, setEditDiscounts] = useState({ _id: 0 });
   const editHandler = (e) => {
-    setEditSaleProducts([...e.products]);
+    setTotalPrice(
+      e.products.reduce((summ, product) => {
+        return summ + product.totalprice;
+      }, 0)
+    );
+    setEditSaleConnector(e);
+    let products = [];
+    e.products.forEach((product) => {
+      products.push({ ...product, pieces: 0, totalprice: 0, totalpriceuzs: 0 });
+    });
+    setEditSaleProducts(products);
     setEditSaleConnectorId(e._id);
     setEditPayments([...e.payments]);
     setEditDiscounts([...e.discounts]);
+    setSaleProducts([...e.products]);
     window.scroll({ top: 0 });
   };
+
+  const changeBack = (e) => {
+    let products = [...editSaleProducts];
+    if (
+      parseFloat(e.target.value) >
+      editSaleConnector.products[parseInt(e.target.id)].pieces
+    ) {
+      return notify({
+        title:
+          "Diqqat! Xarid qilingan mahsulotdan ortiq mahsulot qaytarishning imkoni mavjud emas!",
+        description: "",
+        status: "warning",
+      });
+    }
+    products[parseInt(e.target.id)].pieces = e.target.value;
+    products[parseInt(e.target.id)].totalprice =
+      e.target.value === ""
+        ? 0
+        : products[parseInt(e.target.id)].unitprice *
+          parseFloat(e.target.value);
+    products[parseInt(e.target.id)].totalpriceuzs =
+      e.target.value === ""
+        ? 0
+        : products[parseInt(e.target.id)].unitpriceuzs *
+          parseFloat(e.target.value);
+    setEditSaleProducts(products);
+  };
+
+  //====================================================================
+  //====================================================================
 
   //====================================================================
   //====================================================================
@@ -1172,37 +1214,57 @@ export const Sale = () => {
       {/* <Payment /> */}
       <div
         className={visible || checkConnectors || check ? "invisible" : "m-3 "}>
-        <div className='grid grid-cols-1 gap-4 md:grid-cols-7 pb-3'>
-          <div className='md:col-span-2 w-full'>
-            <Products
-              changeProduct={changeProduct}
-              changeBrand={changeBrand}
-              changeProductType={changeProductType}
-              changeCategory={changeCategory}
-              categories={categories}
-              producttypes={producttypes}
-              brands={brands}
-              products={products}
-            />
+        {editSaleConnectorId._id !== 0 ? (
+          <EditSelling
+            changeBack={changeBack}
+            editSaleConnector={editSaleConnector}
+            checkNumber={saleCounts}
+            payment={payment}
+            discount={discount}
+            debt={debt}
+            totalprice={totalprice}
+            setVisible={setVisible}
+            editProducts={editProducts}
+            saleproducts={editSaleProducts}
+            packmans={packmans}
+            clients={clients}
+            changePackman={changePackman}
+            changeClient={changeClient}
+            inputClient={inputClient}
+          />
+        ) : (
+          <div className='grid grid-cols-1 gap-4 md:grid-cols-7 pb-3'>
+            <div className='md:col-span-2 w-full'>
+              <Products
+                changeProduct={changeProduct}
+                changeBrand={changeBrand}
+                changeProductType={changeProductType}
+                changeCategory={changeCategory}
+                categories={categories}
+                producttypes={producttypes}
+                brands={brands}
+                products={products}
+              />
+            </div>
+            <div className='md:col-span-5 w-full'>
+              <Selling
+                checkNumber={saleCounts}
+                payment={payment}
+                discount={discount}
+                debt={debt}
+                totalprice={totalprice}
+                setVisible={setVisible}
+                editProducts={editProducts}
+                saleproducts={saleproducts}
+                packmans={packmans}
+                clients={clients}
+                changePackman={changePackman}
+                changeClient={changeClient}
+                inputClient={inputClient}
+              />
+            </div>
           </div>
-          <div className='md:col-span-5 w-full'>
-            <Selling
-              checkNumber={saleCounts}
-              payment={payment}
-              discount={discount}
-              debt={debt}
-              totalprice={totalprice}
-              setVisible={setVisible}
-              editProducts={editProducts}
-              saleproducts={saleproducts}
-              packmans={packmans}
-              clients={clients}
-              changePackman={changePackman}
-              changeClient={changeClient}
-              inputClient={inputClient}
-            />
-          </div>
-        </div>
+        )}
         <Sales
           editHandler={editHandler}
           currentPage={currentPage}

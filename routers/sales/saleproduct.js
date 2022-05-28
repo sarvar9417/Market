@@ -527,7 +527,7 @@ module.exports.getsaleconnectors = async (req, res) => {
         },
       })
       .populate("payments", "payment paymentuzs")
-      .populate("discounts", "discount discountuzs")
+      .populate("discounts", "discount discountuzs procient")
       .populate("debts", "debt debtuzs")
       .populate("client", "name")
       .populate("packman", "name");
