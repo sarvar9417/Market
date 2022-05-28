@@ -77,7 +77,8 @@ module.exports.updatePackman = async (req, res) => {
     await Packman.findByIdAndUpdate(_id, {
       name: name,
     });
-    res.status(201).send(packman);
+    const updatePackman = await Packman.findById(_id).select("name market");
+    res.status(201).send(updatePackman);
   } catch (error) {
     res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
   }
@@ -86,7 +87,6 @@ module.exports.updatePackman = async (req, res) => {
 module.exports.deletePackman = async (req, res) => {
   try {
     const { _id, market, name } = req.body;
-
     const marke = await Market.findById(market);
     if (!marke) {
       return res

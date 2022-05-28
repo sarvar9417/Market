@@ -1,4 +1,10 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Loader } from "../../../loader/Loader";
 import { useToast } from "@chakra-ui/react";
 import { useHttp } from "../../../hooks/http.hook";
@@ -29,34 +35,12 @@ export const Product = () => {
   const [modal2, setModal2] = useState(false);
   const [remove, setRemove] = useState();
 
-  const clearInputs = useCallback(() => {
-    const inputs = document.getElementsByTagName("input");
-    document.getElementsByTagName("select")[0].selectedIndex = 0;
-    for (const input of inputs) {
-      input.value = "";
-    }
-
-    for (let option of document.getElementsByTagName("select")[0].options) {
-      if (option.value === "delete") {
-        option.selected = true;
-      }
-    }
-    for (let option of document.getElementsByTagName("select")[1].options) {
-      if (option.value === "delete") {
-        option.selected = true;
-      }
-    }
-    for (let option of document.getElementsByTagName("select")[2].options) {
-      if (option.value === "delete") {
-        option.selected = true;
-      }
-    }
-    for (let option of document.getElementsByTagName("select")[3].options) {
-      if (option.value === "delete") {
-        option.selected = true;
-      }
-    }
-  }, []);
+  const selectRef = {
+    category: useRef(),
+    producttype: useRef(),
+    brand: useRef(),
+    unit: useRef(),
+  };
 
   //====================================================================
   //====================================================================
@@ -108,8 +92,44 @@ export const Product = () => {
 
   //====================================================================
   //====================================================================
+  const clearInputs = useCallback(() => {
+    const inputs = document.getElementsByTagName("input");
+    document.getElementsByTagName("select")[0].selectedIndex = 0;
+    for (const input of inputs) {
+      input.value = "";
+    }
+    selectRef.category.current.selectOption({
+      label: "Kategoriya",
+      value: "delete",
+    });
+    selectRef.producttype.current.selectOption({
+      label: "Mahsulot",
+      value: "delete",
+    });
+    selectRef.brand.current.selectOption({
+      label: "Brand",
+      value: "delete",
+    });
+    selectRef.unit.current.selectOption({
+      label: "O'lchov birligi",
+      value: "delete",
+    });
+    setProduct({
+      market: auth.market && auth.market._id,
+      total: 0,
+      price: 0,
+    });
+  }, [
+    auth,
+    selectRef.category,
+    selectRef.producttype,
+    selectRef.brand,
+    selectRef.unit,
+  ]);
+  //====================================================================
+  //====================================================================
   const [products, setProducts] = useState([]);
-  const [searchStorage, setSearchStrorage] = useState();
+  const [searchStorage, setSearchStrorage] = useState([]);
   const [tableExcel, setTableExcel] = useState([]);
   const [changeImports, setChangeImports] = useState([]);
   const [imports, setImports] = useState([]);
@@ -124,6 +144,7 @@ export const Product = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+
       setProducts(data);
       setSearchStrorage(data);
       setCurrentProducts(data.slice(indexFirstProduct, indexLastProduct));
@@ -147,6 +168,37 @@ export const Product = () => {
   //====================================================================
   //====================================================================
 
+  const changeData = useCallback(
+    (method, data) => {
+      let arr = [];
+      if (method === "POST") {
+        arr = [{ ...data }, ...searchStorage];
+      }
+      if (method === "UPDATE") {
+        arr = searchStorage.map((item) => {
+          if (item._id === data._id) {
+            return (item = { ...data });
+          }
+          return item;
+        });
+      }
+      if (method === "DELETE") {
+        arr = searchStorage.filter((item) => item._id !== data._id);
+      }
+      setProducts(arr);
+      setCurrentProducts(arr.slice(indexFirstProduct, indexLastProduct));
+      setSearchStrorage(arr);
+    },
+    [
+      searchStorage,
+      setProducts,
+      setCurrentProducts,
+      setSearchStrorage,
+      indexFirstProduct,
+      indexLastProduct,
+    ]
+  );
+
   //====================================================================
   //====================================================================
   const [categories, setCategories] = useState([]);
@@ -161,7 +213,19 @@ export const Product = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      setCategories(data);
+      let s = [
+        {
+          label: "Kategoriya",
+          value: "delete",
+        },
+      ];
+      data.map((category) => {
+        return s.push({
+          label: category.code,
+          value: category._id,
+        });
+      });
+      setCategories(s);
     } catch (error) {
       notify({
         title: error,
@@ -172,13 +236,13 @@ export const Product = () => {
   }, [request, auth, notify]);
 
   const changeCategory = (e) => {
-    if (e.target.value === "delete") {
+    if (e.value === "delete") {
       setProductTypes(allproducttypes);
       setProduct({ ...product, category: null });
     }
-    setProduct({ ...product, category: e.target.value });
-    const filter = allproducttypes.filter((producttype) => {
-      return producttype.category._id === e.target.value;
+    setProduct({ ...product, category: e.value });
+    const filter = allproducttypes.filter((item) => {
+      return item.producttype && item.producttype.category._id === e.value;
     });
     setProductTypes(filter);
   };
@@ -200,7 +264,19 @@ export const Product = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      setUnits(data);
+      let s = [
+        {
+          label: "O'lchov birligi",
+          value: "delete",
+        },
+      ];
+      data.map((unit) => {
+        return s.push({
+          label: unit.name,
+          value: unit._id,
+        });
+      });
+      setUnits(s);
     } catch (error) {
       notify({
         title: error,
@@ -209,6 +285,13 @@ export const Product = () => {
       });
     }
   }, [request, notify, auth]);
+
+  const changeUnit = (e) => {
+    if (e.value === "delete") {
+      setProduct({ ...product, unit: null });
+    }
+    setProduct({ ...product, unit: e.value });
+  };
 
   //====================================================================
   //====================================================================
@@ -228,8 +311,21 @@ export const Product = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      setProductTypes(data);
-      setAllProductTypes(data);
+      let s = [
+        {
+          label: "Mahsulot turi",
+          value: "delete",
+        },
+      ];
+      data.map((producttype) => {
+        return s.push({
+          label: producttype.name,
+          value: producttype._id,
+          producttype: { ...producttype },
+        });
+      });
+      setProductTypes(s);
+      setAllProductTypes(s);
     } catch (error) {
       notify({
         title: error,
@@ -238,6 +334,14 @@ export const Product = () => {
       });
     }
   }, [request, auth, notify]);
+
+  const changeProductType = (e) => {
+    if (e.value === "delete") {
+      setProduct({ ...product, producttype: null });
+    }
+    setProduct({ ...product, producttype: e.value });
+  };
+
   //====================================================================
   //====================================================================
 
@@ -255,7 +359,19 @@ export const Product = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      setBrands(data);
+      let s = [
+        {
+          label: "Brend",
+          value: "delete",
+        },
+      ];
+      data.map((brand) => {
+        return s.push({
+          label: brand.name,
+          value: brand._id,
+        });
+      });
+      setBrands(s);
     } catch (error) {
       notify({
         title: error,
@@ -264,6 +380,13 @@ export const Product = () => {
       });
     }
   }, [request, auth, notify]);
+
+  const changeBrand = (e) => {
+    if (e.value === "delete") {
+      setProduct({ ...product, brand: null });
+    }
+    setProduct({ ...product, brand: e.value });
+  };
   //====================================================================
   //====================================================================
 
@@ -285,12 +408,7 @@ export const Product = () => {
         description: "",
         status: "success",
       });
-      let c = [...products];
-      c.unshift({ ...data });
-      setProducts([...c]);
-      setProduct({
-        market: auth.market && auth.market._id,
-      });
+      changeData("POST", data);
       clearInputs();
     } catch (error) {
       notify({
@@ -299,7 +417,7 @@ export const Product = () => {
         status: "error",
       });
     }
-  }, [auth, request, setProducts, product, notify, clearInputs, products]);
+  }, [auth, request, product, notify, clearInputs, changeData]);
 
   const updateHandler = useCallback(async () => {
     try {
@@ -312,20 +430,13 @@ export const Product = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+
       notify({
         title: `${data.name} mahsuloti yangilandi!`,
         description: "",
         status: "success",
       });
-      let index = products.findIndex((produc) => {
-        return product._id === produc._id;
-      });
-      let c = [...products];
-      c.splice(index, 1, { ...data });
-      setProducts([...c]);
-      setProduct({
-        market: auth.market && auth.market._id,
-      });
+      changeData("UPDATE", data);
       clearInputs();
     } catch (error) {
       notify({
@@ -334,7 +445,7 @@ export const Product = () => {
         status: "error",
       });
     }
-  }, [auth, request, setProducts, product, notify, clearInputs, products]);
+  }, [auth, request, product, notify, clearInputs, changeData]);
 
   const saveHandler = () => {
     if (checkProduct(product)) {
@@ -367,15 +478,7 @@ export const Product = () => {
         description: "",
         status: "success",
       });
-      let index = products.findIndex((produc) => {
-        return remove._id === produc._id;
-      });
-      let c = [...products];
-      c.splice(index, 1);
-      setProducts([...c]);
-      setProduct({
-        market: auth.market && auth.market._id,
-      });
+      changeData("DELETE", data);
       clearInputs();
       setModal(false);
     } catch (error) {
@@ -385,7 +488,7 @@ export const Product = () => {
         status: "error",
       });
     }
-  }, [auth, request, remove, notify, setProducts, clearInputs, products]);
+  }, [auth, request, remove, notify, clearInputs, changeData]);
 
   //====================================================================
   //====================================================================
@@ -546,6 +649,7 @@ export const Product = () => {
             <InputProduct
               changeCategory={changeCategory}
               producttypes={producttypes}
+              changeProductType={changeProductType}
               categories={categories}
               setProduct={setProduct}
               product={product}
@@ -556,6 +660,9 @@ export const Product = () => {
               units={units}
               brands={brands}
               clearInputs={clearInputs}
+              changeBrand={changeBrand}
+              changeUnit={changeUnit}
+              selectRef={selectRef}
             />
             <TableProduct
               producttypes={producttypes}
@@ -581,6 +688,7 @@ export const Product = () => {
               setPageSize={setPageSize}
               loading={loading}
               setModal2={setModal2}
+              selectRef={selectRef}
             />
           </div>
         </div>
