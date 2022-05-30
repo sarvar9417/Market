@@ -54,6 +54,8 @@ export const Sale = () => {
   const [modal, setModal] = useState(false);
   const [modal2, setModal2] = useState(false);
   const [modal3, setModal3] = useState(false);
+  const [modal4, setModal4] = useState(false);
+  const [modal5, setModal5] = useState(false);
   const [visible, setVisible] = useState(false);
   const [visibleEdit, setVisibleEdit] = useState(false);
   const [check, setCheck] = useState(false);
@@ -1238,10 +1240,10 @@ export const Sale = () => {
     const pays = editPayments.reduce((summ, payment) => {
       return summ + payment.payment;
     }, 0);
-
+    const val = Math.round(e.target.value * 100) / 100;
     if (
-      (totalprice - pays - disc > 0 && Math.round(total * 100) / 100) < 0 ||
-      (totalprice - pays - disc < 0 && Math.round(total * 100) / 100) > 0 ||
+      (totalprice - pays - disc > 0 && val < 0) ||
+      (totalprice - pays - disc < 0 && val > 0) ||
       (totalprice - pays - disc < 0 &&
         Math.round(total * 100) / 100 < totalprice - pays - disc) ||
       (totalprice - pays - disc > 0 &&
@@ -1311,10 +1313,10 @@ export const Sale = () => {
     const pays = editPayments.reduce((summ, payment) => {
       return summ + payment.payment;
     }, 0);
-
+    const val = Math.round(e.target.value * 100) / 100;
     if (
-      (totalprice - pays - disc > 0 && Math.round(total * 100) / 100) < 0 ||
-      (totalprice - pays - disc < 0 && Math.round(total * 100) / 100) > 0 ||
+      (totalprice - pays - disc > 0 && val < 0) ||
+      (totalprice - pays - disc < 0 && val > 0) ||
       (totalprice - pays - disc < 0 &&
         Math.round(total * 100) / 100 < totalprice - pays - disc) ||
       (totalprice - pays - disc > 0 &&
@@ -1473,6 +1475,78 @@ export const Sale = () => {
     });
   };
 
+  const checkHandlerEdit = () => {
+    const disc = editDiscounts.reduce((summ, discount) => {
+      return summ + discount.discount;
+    }, 0);
+    const pays = editPayments.reduce((summ, payment) => {
+      return summ + payment.payment;
+    }, 0);
+    let total =
+      disc +
+      pays +
+      paymentEdit.card +
+      paymentEdit.cash +
+      payment.transfer +
+      debt.debt;
+    if (Math.round(total * 100) / 100 !== totalprice) {
+      return notify({
+        title: t("Diqqat! To'lov hisobida xatolik yuz bergan!"),
+        description: "",
+        status: "error",
+      });
+    }
+
+    if (debt.debt > 0) {
+      return setModal4(true);
+    }
+
+    return setModal5(true);
+  };
+
+  const createHandlerEdit = useCallback(async () => {
+    try {
+      setModal2(false);
+      setModal3(false);
+      const data = await request(
+        `/api/sales/saleproducts/registeredit`,
+        "POST",
+        {
+          market: auth.market._id,
+          saleproducts: editSaleProducts,
+          discount: editDiscounts,
+          payment: paymentEdit,
+          debt,
+          user: auth.userId,
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      console.log(data);
+      // setCheck(true);
+      // setSales(data);
+      // clearDatas();
+      // setVisible(false);
+      // getSaleConnectors();
+    } catch (error) {
+      notify({
+        title: error,
+        description: "",
+        status: "error",
+      });
+    }
+  }, [
+    request,
+    notify,
+    auth,
+    debt,
+    // clearDatas,
+    // getSaleConnectors,
+    editDiscounts,
+    editSaleProducts,
+    paymentEdit,
+  ]);
   //====================================================================
   //====================================================================
 
@@ -1546,13 +1620,13 @@ export const Sale = () => {
           client={client}
           exchangerate={exchangerate}
           checkNumber={saleCounts}
-          checkHandler={checkHandler}
+          checkHandler={checkHandlerEdit}
           discount={editDiscounts}
           changeHandler={changeHandlerEdit}
           paymentType={paymentTypeEdit}
           typeHandler={typeHandlerEdit}
           totalprice={totalprice}
-          visible={visible}
+          visible={visibleEdit}
           setVisible={setVisibleEdit}
           payment={paymentEdit}
           debt={debt}
@@ -1659,6 +1733,31 @@ export const Sale = () => {
         setModal={setModal3}
         basic={t(`Mijozdan to'lov qabul qilishni tasdiqlaysizmi?`)}
         handler={saleconnectorid ? addHandler : createHandler}
+      />
+
+      <Modal
+        modal={modal4}
+        setModal={setModal4}
+        basic={`${t("Diqqat! Iltimos")} ${debt.debt.toLocaleString(
+          "de-DE"
+        )}$ (${(debt.debt * editExchanrate.exchangerate).toLocaleString(
+          "de-DE"
+        )} ${t("so'm)  qarzdorlik uchun izoh kiriting")}`}
+        text={
+          <input
+            onChange={changeComment}
+            className='block border w-full px-2 rounded'
+            placeholder={t("Izoh")}
+          />
+        }
+        handler={createHandlerEdit}
+      />
+
+      <Modal
+        modal={modal5}
+        setModal={setModal5}
+        basic={t(`Mijozdan to'lov qabul qilishni tasdiqlaysizmi?`)}
+        handler={createHandlerEdit}
       />
     </div>
   );
