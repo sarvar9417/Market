@@ -1141,15 +1141,9 @@ export const Sale = () => {
 
   const typeHandlerEdit = (e) => {
     if (e.target.dataset.type === "debt") return;
-    // const payment = editPayments.reduce((summ, payment) => {
-    //   return summ + payment.payment;
-    // }, 0);
-
-    // const paymentuzs = editPayments.reduce((summ, payment) => {
-    //   return summ + payment.payment.uzs;
-    // }, 0);
 
     let p = { ...paymentEdit };
+    p.type = e.target.dataset.type;
     if (e.target.dataset.type === "mixed") {
       setDebt({
         ...debt,
@@ -1214,6 +1208,7 @@ export const Sale = () => {
       type: e.target.dataset.type,
       name: e.target.name,
     });
+    console.log(p);
   };
 
   const changeTypeEdit = (e, p) => {
@@ -1241,13 +1236,13 @@ export const Sale = () => {
       return summ + payment.payment;
     }, 0);
     const val = Math.round(e.target.value * 100) / 100;
+
+    const totals = Math.round((totalprice - pays - disc) * 100) / 100;
     if (
-      (totalprice - pays - disc > 0 && val < 0) ||
-      (totalprice - pays - disc < 0 && val > 0) ||
-      (totalprice - pays - disc < 0 &&
-        Math.round(total * 100) / 100 < totalprice - pays - disc) ||
-      (totalprice - pays - disc > 0 &&
-        Math.round(total * 100) / 100 > totalprice - pays - disc)
+      (totals > 0 && val < 0) ||
+      (totals < 0 && val > 0) ||
+      (totals < 0 && Math.round(total * 100) / 100 < totals) ||
+      (totals > 0 && Math.round(total * 100) / 100 > totals)
     ) {
       return notify({
         title: t("Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!"),
@@ -1262,27 +1257,33 @@ export const Sale = () => {
     setDebt({
       ...debt,
       debt:
-        totalprice -
-        editDiscounts.reduce((summ, discount) => {
-          return summ + discount.discount;
-        }, 0) -
-        editPayments.reduce((summ, payment) => {
-          return summ + payment.payment;
-        }, 0) -
-        p.cash -
-        p.card -
-        p.transfer,
+        Math.round(
+          (totalprice -
+            editDiscounts.reduce((summ, discount) => {
+              return summ + discount.discount;
+            }, 0) -
+            editPayments.reduce((summ, payment) => {
+              return summ + payment.payment;
+            }, 0) -
+            p.cash -
+            p.card -
+            p.transfer) *
+            100
+        ) / 100,
       debtuzs:
-        totalpriceuzs -
-        editDiscounts.reduce((summ, discount) => {
-          return summ + discount.discountuzs;
-        }, 0) -
-        editPayments.reduce((summ, payment) => {
-          return summ + payment.paymentuzs;
-        }, 0) -
-        p.cashuzs -
-        p.carduzs -
-        p.transferuzs,
+        Math.round(
+          (totalpriceuzs -
+            editDiscounts.reduce((summ, discount) => {
+              return summ + discount.discountuzs;
+            }, 0) -
+            editPayments.reduce((summ, payment) => {
+              return summ + payment.paymentuzs;
+            }, 0) -
+            p.cashuzs -
+            p.carduzs -
+            p.transferuzs) *
+            100
+        ) / 100,
     });
   };
 
@@ -1314,13 +1315,13 @@ export const Sale = () => {
       return summ + payment.payment;
     }, 0);
     const val = Math.round(e.target.value * 100) / 100;
+
+    const totals = Math.round((totalprice - pays - disc) * 100) / 100;
     if (
-      (totalprice - pays - disc > 0 && val < 0) ||
-      (totalprice - pays - disc < 0 && val > 0) ||
-      (totalprice - pays - disc < 0 &&
-        Math.round(total * 100) / 100 < totalprice - pays - disc) ||
-      (totalprice - pays - disc > 0 &&
-        Math.round(total * 100) / 100 > totalprice - pays - disc)
+      (totals > 0 && val < 0) ||
+      (totals < 0 && val > 0) ||
+      (totals < 0 && Math.round(total * 100) / 100 < totals) ||
+      (totals > 0 && Math.round(total * 100) / 100 > totals)
     ) {
       return notify({
         title: t("Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!"),
@@ -1335,27 +1336,33 @@ export const Sale = () => {
     setDebt({
       ...debt,
       debt:
-        totalprice -
-        editDiscounts.reduce((summ, discount) => {
-          return summ + discount.discount;
-        }, 0) -
-        editPayments.reduce((summ, payment) => {
-          return summ + payment.payment;
-        }, 0) -
-        p.cash -
-        p.card -
-        p.transfer,
+        Math.round(
+          (totalprice -
+            editDiscounts.reduce((summ, discount) => {
+              return summ + discount.discount;
+            }, 0) -
+            editPayments.reduce((summ, payment) => {
+              return summ + payment.payment;
+            }, 0) -
+            p.cash -
+            p.card -
+            p.transfer) *
+            100
+        ) / 100,
       debtuzs:
-        totalpriceuzs -
-        editDiscounts.reduce((summ, discount) => {
-          return summ + discount.discountuzs;
-        }, 0) -
-        editPayments.reduce((summ, payment) => {
-          return summ + payment.paymentuzs;
-        }, 0) -
-        p.cashuzs -
-        p.carduzs -
-        p.transferuzs,
+        Math.round(
+          (totalpriceuzs -
+            editDiscounts.reduce((summ, discount) => {
+              return summ + discount.discountuzs;
+            }, 0) -
+            editPayments.reduce((summ, payment) => {
+              return summ + payment.paymentuzs;
+            }, 0) -
+            p.cashuzs -
+            p.carduzs -
+            p.transferuzs) *
+            100
+        ) / 100,
     });
   };
 
@@ -1482,21 +1489,23 @@ export const Sale = () => {
     const pays = editPayments.reduce((summ, payment) => {
       return summ + payment.payment;
     }, 0);
+
     let total =
       disc +
       pays +
       paymentEdit.card +
       paymentEdit.cash +
-      payment.transfer +
+      paymentEdit.transfer +
       debt.debt;
-    if (Math.round(total * 100) / 100 !== totalprice) {
+
+    if (Math.round(total * 100) / 100 !== Math.round(totalprice * 100) / 100) {
       return notify({
         title: t("Diqqat! To'lov hisobida xatolik yuz bergan!"),
         description: "",
         status: "error",
       });
     }
-
+    console.log("salom");
     if (debt.debt > 0) {
       return setModal4(true);
     }
@@ -1506,29 +1515,29 @@ export const Sale = () => {
 
   const createHandlerEdit = useCallback(async () => {
     try {
-      setModal2(false);
-      setModal3(false);
       const data = await request(
         `/api/sales/saleproducts/registeredit`,
         "POST",
         {
           market: auth.market._id,
           saleproducts: editSaleProducts,
-          discount: editDiscounts,
+          discounts: editDiscounts,
           payment: paymentEdit,
           debt,
+          saleconnectorid: editSaleConnectorId,
           user: auth.userId,
         },
         {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      console.log(data);
-      // setCheck(true);
-      // setSales(data);
-      // clearDatas();
-      // setVisible(false);
-      // getSaleConnectors();
+      setModal4(false);
+      setModal5(false);
+      setCheck(true);
+      setSales(data);
+      clearDatas();
+      setVisibleEdit(false);
+      getSaleConnectors();
     } catch (error) {
       notify({
         title: error,
@@ -1546,6 +1555,9 @@ export const Sale = () => {
     editDiscounts,
     editSaleProducts,
     paymentEdit,
+    editSaleConnectorId,
+    getSaleConnectors,
+    clearDatas,
   ]);
   //====================================================================
   //====================================================================

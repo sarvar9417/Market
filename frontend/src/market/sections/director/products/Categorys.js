@@ -299,23 +299,27 @@ export const Category = () => {
   return (
     <>
       {loading ? <Loader /> : ""}
-      <div className="content-wrapper px-lg-5 px-3">
-        <div className="row gutters">
-          <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <div className="table-container">
-              <div className="table-responsive">
-                <table className="table m-0">
+      <div className='content-wrapper px-lg-5 px-3'>
+        <div className='row gutters'>
+          <div className='col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12'>
+            <div className='table-container'>
+              <div className='table-responsive'>
+                <table className='table m-0'>
                   <thead>
                     <tr>
-                      <th className="border text-center">{t("Kategoriya kodi")}</th>
-                      <th className="border text-center">{t("Kategoriya nomi")}</th>
-                      <th className="border text-center">{t("Saqlash")}</th>
-                      <th className="border text-center">{t("Tozalash")}</th>
+                      <th className='border text-center'>
+                        {t("Kategoriya kodi")}
+                      </th>
+                      <th className='border text-center'>
+                        {t("Kategoriya nomi")}
+                      </th>
+                      <th className='border text-center'>{t("Saqlash")}</th>
+                      <th className='border text-center'>{t("Tozalash")}</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td className=" text-center border">
+                      <td className=' text-center border'>
                         <input
                           style={{ minWidth: "70px" }}
                           value={category.code ? category.code : ""}
@@ -326,57 +330,55 @@ export const Category = () => {
                               [e.target.name]: parseInt(e.target.value),
                             })
                           }
-                          type="text"
-                          className="focus: outline-none focus:ring focus: border-blue-500 py-2 px-3 rounded"
-                          id="inputName"
-                          name="code"
+                          type='text'
+                          className='focus: outline-none focus:ring focus: border-blue-500 py-2 px-3 rounded'
+                          id='inputName'
+                          name='code'
                           placeholder={t("Kategoriya kodini kiriting")}
                         />
                       </td>
-                      <td className=" text-center border">
+                      <td className=' text-center border'>
                         <input
                           style={{ minWidth: "70px" }}
                           value={category.name ? category.name : ""}
                           onKeyUp={keyPressed}
                           onChange={inputHandler}
-                          type="text"
-                          className="focus: outline-none focus:ring focus: border-blue-500 py-2 px-3 rounded"
-                          id="inputName"
-                          name="name"
+                          type='text'
+                          className='focus: outline-none focus:ring focus: border-blue-500 py-2 px-3 rounded'
+                          id='inputName'
+                          name='name'
                           placeholder={t("Kategotiya nomini kiriting")}
                         />
                       </td>
-                      <td className="text-center border">
+                      <td className='text-center border'>
                         {loading ? (
-                          <button className="btn btn-info" disabled>
-                            <span className="spinner-border spinner-border-sm"></span>
+                          <button className='btn btn-info' disabled>
+                            <span className='spinner-border spinner-border-sm'></span>
                             Loading...
                           </button>
                         ) : (
                           <button
                             onClick={saveHandler}
-                            className="btn btn-success py-1 px-4"
-                          >
+                            className='btn btn-success py-1 px-4'>
                             <FontAwesomeIcon
-                              className="text-base"
+                              className='text-base'
                               icon={faFloppyDisk}
                             />
                           </button>
                         )}
                       </td>
-                      <td className="text-center border">
+                      <td className='text-center border'>
                         {loading ? (
-                          <button className="btn btn-info" disabled>
-                            <span className="spinner-border spinner-border-sm"></span>
+                          <button className='btn btn-info' disabled>
+                            <span className='spinner-border spinner-border-sm'></span>
                             Loading...
                           </button>
                         ) : (
                           <button
                             onClick={clearInputs}
-                            className="btn btn-secondary py-1 px-4"
-                          >
+                            className='btn btn-secondary py-1 px-4'>
                             <FontAwesomeIcon
-                              className="text-base"
+                              className='text-base'
                               icon={faRepeat}
                             />
                           </button>
@@ -387,34 +389,33 @@ export const Category = () => {
                 </table>
               </div>
             </div>
-            <div className="table-container">
-              <div className="table-responsive">
-                <table className="table m-0">
-                  <thead className="bg-white">
+            <div className='table-container'>
+              <div className='table-responsive'>
+                <table className='table m-0'>
+                  <thead className='bg-white'>
                     <tr>
                       <th>
                         <select
-                          className="form-control form-control-sm selectpicker"
+                          className='form-control form-control-sm selectpicker'
                           placeholder={t("Bo'limni tanlang")}
                           onChange={setPageSize}
-                          style={{ minWidth: "50px" }}
-                        >
+                          style={{ minWidth: "50px" }}>
                           <option value={10}>10</option>
                           <option value={25}>25</option>
                           <option value={50}>50</option>
                           <option value={100}>100</option>
                         </select>
                       </th>
-                      <th className="text-center">
+                      <th className='text-center'>
                         <input
                           style={{ maxWidth: "120px", minWidth: "100px" }}
-                          type="search"
-                          className="w-100 form-control form-control-sm selectpicker"
+                          type='search'
+                          className='w-100 form-control form-control-sm selectpicker'
                           placeholder={t("Kategoriya")}
                           onChange={searchCategory}
                         />
                       </th>
-                      <th className="text-center">
+                      <th className='text-center'>
                         <Pagination
                           setCurrentDatas={setCurrentCategories}
                           datas={categories}
@@ -423,13 +424,13 @@ export const Category = () => {
                           totalDatas={categories.length}
                         />
                       </th>
-                      <th className="text-center">
-                        <div className="btn btn-primary">
+                      <th className='text-center'>
+                        <div className='btn btn-primary'>
                           <ReactHtmlTableToExcel
-                            id="reacthtmltoexcel"
-                            table="category-excel-table"
-                            sheet="Sheet"
-                            buttonText="Excel"
+                            id='reacthtmltoexcel'
+                            table='category-excel-table'
+                            sheet='Sheet'
+                            buttonText='Excel'
                             filename={t("Kategoriya")}
                           />
                         </div>
@@ -438,25 +439,27 @@ export const Category = () => {
                   </thead>
                   <thead>
                     <tr>
-                      <th className="border text-center">№</th>
-                      <th className="border text-center">
-                        {t("Kodi")}{"  "}
+                      <th className='border text-center'>№</th>
+                      <th className='border text-center'>
+                        {t("Kodi")}
+                        {"  "}
                         <Sort
                           data={category}
                           setData={setCategory}
                           property={"name"}
                         />
                       </th>
-                      <th className=" border text-center ">
-                       {t("Nomi")}{"  "}
+                      <th className=' border text-center '>
+                        {t("Nomi")}
+                        {"  "}
                         <Sort
                           data={category}
                           setData={setCategory}
                           property={"name"}
                         />
                       </th>
-                      <th className=" border text-center">{t("Tahrirlash")}</th>
-                      <th className=" border text-center">{t("O'chirish")}</th>
+                      <th className=' border text-center'>{t("Tahrirlash")}</th>
+                      <th className=' border text-center'>{t("O'chirish")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -464,40 +467,38 @@ export const Category = () => {
                       currentCategories.map((c, key) => {
                         return (
                           <tr key={key}>
-                            <td className="font-bold text-center border">
+                            <td className='font-bold text-center border'>
                               {currentPage * countPage + key + 1}
                             </td>
-                            <td className="text-black font-bold text-center border">
+                            <td className='text-black font-bold text-center border'>
                               {c.code}
                             </td>
-                            <td className=" text-black font-bold text-center border ">
+                            <td className=' text-black font-bold text-center border '>
                               {c.name}
                             </td>
-                            <td className="text-center border">
+                            <td className='text-center border'>
                               <button
                                 onClick={() =>
                                   setCategory({ ...category, ...c })
                                 }
-                                className="btn btn-success py-1 px-4"
-                                style={{ fontSize: "75%" }}
-                              >
+                                className='btn btn-success py-1 px-4'
+                                style={{ fontSize: "75%" }}>
                                 <FontAwesomeIcon
-                                  className="text-base"
+                                  className='text-base'
                                   icon={faPenAlt}
                                 />
                               </button>
                             </td>
-                            <td className="text-center border">
+                            <td className='text-center border'>
                               <button
                                 onClick={() => {
                                   setRemove(c);
                                   setModal(true);
                                 }}
-                                className="btn btn-secondary py-1 px-4"
-                                style={{ fontSize: "75%" }}
-                              >
+                                className='btn btn-secondary py-1 px-4'
+                                style={{ fontSize: "75%" }}>
                                 <FontAwesomeIcon
-                                  className="text-base"
+                                  className='text-base'
                                   icon={faTrashCan}
                                 />
                               </button>
@@ -513,8 +514,8 @@ export const Category = () => {
         </div>
       </div>
 
-      <div className="d-none">
-        <table className="table m-0" id="category-excel-table">
+      <div className='d-none'>
+        <table className='table m-0' id='category-excel-table'>
           <thead>
             <tr>
               <th>№</th>

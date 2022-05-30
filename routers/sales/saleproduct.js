@@ -544,3 +544,175 @@ module.exports.getsaleconnectors = async (req, res) => {
     res.status(400).json({ error: "Serverda xatolik yuz berdi..." });
   }
 };
+
+module.exports.registeredit = async (req, res) => {
+  try {
+    const {
+      saleproducts,
+      discounts,
+      payment,
+      debt,
+      market,
+      user,
+      saleconnectorid,
+    } = req.body;
+
+    const marke = await Market.findById(market);
+    if (!marke) {
+      return res.status(400).json({
+        message: `Diqqat! Do'kon haqida malumotlar topilmadi!`,
+      });
+    }
+
+    const use = await User.findById(user);
+
+    if (!use) {
+      return res.status(400).json({
+        message: `Diqqat! Avtorizatsiyadan o'tilmagan!`,
+      });
+    }
+
+    const totalprice = saleproducts.reduce((summ, saleproduct) => {
+      return summ + saleproduct.totalprice;
+    }, 0);
+
+    const totalpriceuzs = saleproducts.reduce((summ, saleproduct) => {
+      return summ + saleproduct.totalpriceuzs;
+    }, 0);
+
+    let all = [];
+
+    // Create SaleProducts
+    for (const saleproduct of saleproducts) {
+      if (saleproduct.pieces > 0) {
+        const {
+          totalprice,
+          unitprice,
+          totalpriceuzs,
+          unitpriceuzs,
+          pieces,
+          product,
+        } = saleproduct;
+        const { error } = validateSaleProduct({
+          totalprice,
+          totalpriceuzs,
+          unitprice,
+          unitpriceuzs,
+          pieces,
+          product: product._id,
+        });
+
+        const produc = await Product.findById(product._id);
+
+        const newSaleProduct = new SaleProduct({
+          totalprice: -totalprice,
+          totalpriceuzs: -totalpriceuzs,
+          unitprice,
+          unitpriceuzs,
+          pieces: -pieces,
+          product: product._id,
+          market,
+          user,
+        });
+
+        all.push(newSaleProduct);
+      }
+    }
+
+    const dailysaleconnector = new DailySaleConnector({
+      user,
+      market,
+      saleconnector: saleconnectorid,
+    });
+
+    await dailysaleconnector.save();
+
+    const saleconnector = await SaleConnector.findById(saleconnectorid);
+
+    saleconnector.dailyconnectors.push(dailysaleconnector._id);
+
+    let products = [];
+
+    for (const saleproduct of all) {
+      await saleproduct.save();
+      products.push(saleproduct._id);
+
+      const updateproduct = await Product.findById(saleproduct.product);
+      updateproduct.total -= saleproduct.pieces;
+      await updateproduct.save();
+    }
+
+    for (const discount of discounts) {
+      await Discount.findByIdAndUpdate(discount._id, discount);
+    }
+
+    if (debt.debt > 0) {
+      const newDebt = new Debt({
+        comment: debt.comment,
+        debt: debt.debt,
+        debtuzs: debt.debtuzs,
+        totalprice,
+        totalpriceuzs,
+        market,
+        user,
+        saleconnector: saleconnector._id,
+        products,
+      });
+      await newDebt.save();
+      saleconnector.debts.push(newDebt._id);
+      dailysaleconnector.debt = newDebt._id;
+    }
+
+    if (payment.carduzs + payment.cashuzs + payment.transferuzs !== 0) {
+      const newPayment = new Payment({
+        payment: payment.card + payment.cash + payment.transfer,
+        paymentuzs: payment.carduzs + payment.cashuzs + payment.transferuzs,
+        card: payment.card,
+        cash: payment.cash,
+        transfer: payment.transfer,
+        carduzs: payment.carduzs,
+        cashuzs: payment.cashuzs,
+        transferuzs: payment.transferuzs,
+        type: payment.type,
+        totalprice,
+        totalpriceuzs,
+        market,
+        user,
+        saleconnector: saleconnector._id,
+        products,
+      });
+      await newPayment.save();
+      saleconnector.payments.push(newPayment._id);
+      dailysaleconnector.payment = newPayment._id;
+    }
+
+    saleconnector.products.push(...products);
+    await saleconnector.save();
+
+    dailysaleconnector.id = saleconnector.dailyconnectors.length;
+    dailysaleconnector.products = [...products];
+    await dailysaleconnector.save();
+
+    const connector = await DailySaleConnector.findById(dailysaleconnector._id)
+      .select("-isArchive -updatedAt -user -market -__v")
+      .populate({
+        path: "products",
+        select: "totalprice unitprice totalpriceuzs unitpriceuzs pieces",
+        options: { sort: { created_at: -1 } },
+        populate: {
+          path: "product",
+          select: "category name",
+          populate: { path: "category", select: "code" },
+        },
+      })
+      .populate("payment", "payment paymentuzs")
+      .populate("discount", "discount discountuzs")
+      .populate("debt", "debt debtuzs")
+      .populate("client", "name")
+      .populate("packman", "name")
+      .populate("saleconnector", "id");
+    res.status(201).send(connector);
+  } catch (error) {
+    res.status(400).json({ error: "Serverda xatolik yuz berdi..." });
+  }
+};

@@ -21,7 +21,7 @@ export const Sales = ({
       <div className='table-container'>
         <div className='table-responsive'>
           <table className='table m-0'>
-            <thead className='bg-white'>
+            <thead className='bg-white bg-teal-500'>
               <tr>
                 <th className=''>
                   <select
@@ -59,9 +59,11 @@ export const Sales = ({
             </thead>
             <thead>
               <tr>
-                <th className='py-1 text-center font-bold border'>№</th>
-                <th className='text-center font-bold border'>Id</th>
-                <th className='py-1 text-center font-bold border'>
+                <th className='py-1 text-center font-bold border bg-teal-600'>
+                  №
+                </th>
+                <th className='text-center font-bold border bg-teal-600'>Id</th>
+                <th className='py-1 text-center font-bold border bg-teal-600'>
                   {t("Sana")}
                 </th>
                 <th className='py-1 text-center font-bold border'>
@@ -75,6 +77,9 @@ export const Sales = ({
                 </th>
                 <th className='py-1 text-center font-bold border'>
                   {t("Chek")}
+                </th>
+                <th className='py-1 text-center font-bold border'>
+                  {t("Qo'shish")}
                 </th>
                 <th className='py-1 text-center font-bold border'>
                   {t("Tahrirlash")}

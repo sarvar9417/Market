@@ -40,6 +40,10 @@ router.post("/saleproducts/register", (req, res) => {
   require("./saleproduct").register(req, res);
 });
 
+router.post("/saleproducts/registeredit", (req, res) => {
+  require("./saleproduct").registeredit(req, res);
+});
+
 router.post("/saleproducts/addproducts", (req, res) => {
   require("./saleproduct").addproducts(req, res);
 });

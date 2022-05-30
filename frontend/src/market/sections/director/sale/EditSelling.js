@@ -1,34 +1,20 @@
-import {
-  faMoneyCheckDollar,
-  faPenAlt,
-  faTrash,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
+import { faMoneyCheckDollar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
-import Select from "react-select";
+import React from "react";
 
 export const EditSelling = ({
   changeBack,
   editSaleConnector,
   checkNumber,
   payment,
-  debt,
   discount,
   totalprice,
   setVisible,
-  editProducts,
   saleproducts,
-  packmans,
-  clients,
-  changePackman,
-  changeClient,
-  inputClient,
 }) => {
-  const [btn, setBtn] = useState(true);
   return (
     <div className=' bg-white mb-3'>
-      <p className='bg-teal-500 text-center text-2xl text-white py-2 font-bold'>
+      <p className='bg-[#01C022] text-center text-2xl text-white py-2 font-bold'>
         CHEK: № A{1000001 + checkNumber.count}
       </p>
       <div className='px-3 py-2'>
@@ -36,18 +22,18 @@ export const EditSelling = ({
           <table className='bg-white w-full text-base relative min-w-[700px]'>
             <thead className='z-10 border text-center text-base  text-white py-4'>
               <tr>
-                <th className='border sticky top-0 bg-teal-500'>№</th>
-                <th className='border sticky top-0 bg-teal-500'>
+                <th className='border sticky top-0 bg-[#01C022]'>№</th>
+                <th className='border sticky top-0 bg-[#01C022]'>
                   Kategoriyasi
                 </th>
-                <th className='border sticky top-0 bg-teal-500'>Nomi</th>
-                <th className='border sticky top-0 bg-teal-500'>
+                <th className='border sticky top-0 bg-[#01C022]'>Nomi</th>
+                <th className='border sticky top-0 bg-[#01C022]'>
                   Xarid qilingan
                 </th>
 
-                <th className='border sticky top-0 bg-teal-500'>Narxi</th>
-                <th className='border sticky top-0 bg-teal-500'>Back</th>
-                <th className='border sticky top-0 bg-teal-500'>Narxi</th>
+                <th className='border sticky top-0 bg-[#01C022]'>Narxi</th>
+                <th className='border sticky top-0 bg-[#01C022]'>Back</th>
+                <th className='border sticky top-0 bg-[#01C022]'>Narxi</th>
               </tr>
             </thead>
             <tbody className='border text-black'>
@@ -94,18 +80,18 @@ export const EditSelling = ({
             <div className='flex justify-between '>
               <span className='text-black font-bold'>Umumiy summa:</span>
               <span className='text-black font-bold'>
-                {totalprice.toLocaleString("de-DE")}{" "}
+                {(Math.round(totalprice * 100) / 100).toLocaleString("de-DE")}{" "}
                 <span className='text-teal-600'>USD</span>
               </span>
             </div>
             <div className='flex justify-between'>
               <span className='text-black font-bold'>Chegirma:</span>
               <span className='text-yellow-500 font-bold'>
-                {discount
-                  .reduce((summ, discount) => {
+                {Math.round(
+                  discount.reduce((summ, discount) => {
                     return summ + discount.discount;
-                  }, 0)
-                  .toLocaleString("de-DE")}{" "}
+                  }, 0) * 100
+                ) / (100).toLocaleString("de-DE")}{" "}
                 <span className='text-teal-600'>USD</span>
               </span>
             </div>
@@ -113,11 +99,11 @@ export const EditSelling = ({
             <div className='flex justify-between'>
               <span className='text-black font-bold'>To'langan:</span>
               <span className='text-green-700 font-bold'>
-                {payment
-                  .reduce((summ, payment) => {
+                {Math.round(
+                  payment.reduce((summ, payment) => {
                     return summ + payment.payment;
-                  }, 0)
-                  .toLocaleString("de-DE")}{" "}
+                  }, 0) * 100
+                ) / (100).toLocaleString("de-DE")}{" "}
                 <span className='text-teal-600'>USD</span>
               </span>
             </div>
@@ -125,13 +111,16 @@ export const EditSelling = ({
               <span className='text-black font-bold'>Farq:</span>
               <span className='text-yellow-500 font-bold'>
                 {(
-                  totalprice -
-                  discount.reduce((summ, discount) => {
-                    return summ + discount.discount;
-                  }, 0) -
-                  payment.reduce((summ, payment) => {
-                    return summ + payment.payment;
-                  }, 0)
+                  Math.round(
+                    (totalprice -
+                      discount.reduce((summ, discount) => {
+                        return summ + discount.discount;
+                      }, 0) -
+                      payment.reduce((summ, payment) => {
+                        return summ + payment.payment;
+                      }, 0)) *
+                      100
+                  ) / 100
                 ).toLocaleString("de-DE")}{" "}
                 <span className='text-teal-600'>USD</span>
               </span>
@@ -139,7 +128,7 @@ export const EditSelling = ({
           </div>
           <button
             onClick={() => setVisible(true)}
-            className='w-1/5 my-4 ml-3 bg-teal-500 text-white rounded font-bold text-4xl'>
+            className='w-1/6 my-4 ml-3 bg-[#01C022] text-white rounded-xl font-bold text-6xl'>
             <FontAwesomeIcon icon={faMoneyCheckDollar} />
           </button>
         </div>
