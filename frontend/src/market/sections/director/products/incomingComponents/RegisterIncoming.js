@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenAlt, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { t } from "i18next";
 
+
 const animatedComponents = makeAnimated();
 
 export const RegisterIncoming = ({
@@ -30,6 +31,8 @@ export const RegisterIncoming = ({
   brand,
   changeBrand,
   setModal,
+  selectRef,
+  clearSelect,
 }) => {
   const [value, setValue] = useState({
     supplier: false,
@@ -46,7 +49,21 @@ export const RegisterIncoming = ({
         <div className="col-12">
           <div className="card">
             <div className="card-header">
-              <div className="card-title">{t("Mahsulotni qabul qilish")}</div>
+              <div className="flex justify-between">
+    <div className="card-title">{t("Mahsulotni qabul qilish")}</div>
+                {loading ? (
+                  <button className="btn btn-info" disabled>
+                    <span className="spinner-border spinner-border-sm"></span>
+                    Loading...
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => clearSelect()}
+                    className="btn btn-secondary py-1 px-4"
+                  >
+                    <FontAwesomeIcon className="text-base" icon={faRepeat} />
+                  </button>
+                )}
             </div>
             <div className="card-body  ">
               <div className="bg-primary p-1 flex justify-between">
@@ -56,6 +73,7 @@ export const RegisterIncoming = ({
                     placeholder={t("Yetkazib beruvchilar")}
                     isClearable={true}
                     isLoading={loading}
+                    ref={selectRef.supplier}
                     onChange={(e) => {
                       setSupplier(e.supplier);
                       setValue({
@@ -80,6 +98,7 @@ export const RegisterIncoming = ({
                     isDisabled={!value.supplier}
                     placeholder={t("Kategoriyalar")}
                     isClearable={true}
+                    ref={selectRef.category}
                     isLoading={loading}
                     onChange={(e) => {
                       changeCategory(e);
@@ -101,10 +120,9 @@ export const RegisterIncoming = ({
                     isDisabled={!value.supplier}
                     placeholder={t("Mahsulot turlari")}
                     isClearable={true}
+                    ref={selectRef.producttype}
                     isLoading={loading}
-                    onChange={(e) => {
-                      changeProductType(e);
-                    }}
+                    onChange={(e) => changeProductType(e)}
                     components={animatedComponents}
                     options={productType}
                     theme={(theme) => ({
@@ -124,10 +142,10 @@ export const RegisterIncoming = ({
                     isDisabled={!value.supplier}
                     placeholder={t("Mahsulotlar")}
                     isClearable={true}
+                    ref={selectRef.product}
                     isLoading={loading}
                     onChange={(e) => {
                       changeProduct(e);
-                      setModal(true);
                     }}
                     components={animatedComponents}
                     options={products}
@@ -198,7 +216,8 @@ export const RegisterIncoming = ({
                               <td className="border text-black font-bold">
                                 {product.product.code} {" - "}{" "}
                                 {product.product.name},{" "}
-                                {product.brand && product.brand.name.toUpperCase()}
+                                {product.brand &&
+                                  product.brand.name.toUpperCase()}
                               </td>
                               <td className="border text-black font-bold">
                                 <span>{product.producttype.name}</span>
@@ -256,7 +275,7 @@ export const RegisterIncoming = ({
             </div>
           </div>
         </div>
-      </div >
+      </div>
       {/* Row end */}
     </>
   );

@@ -28,8 +28,17 @@ module.exports.registerAll = async (req, res) => {
           error: error.message,
         });
       }
-      const { name, code, unit, category, producttype, brand, price, total } =
-        product;
+      const {
+        name,
+        code,
+        unit,
+        category,
+        producttype,
+        brand,
+        incomingprice,
+        sellingprice,
+        total,
+      } = product;
       const marke = await Market.findById(market);
 
       if (!marke) {
@@ -90,7 +99,10 @@ module.exports.registerAll = async (req, res) => {
       // Create Price
 
       const newPrice = new ProductPrice({
-        sellingprice: price ? Math.round(price * 100) / 100 : 0,
+        incomingprice: incomingprice
+          ? Math.round(incomingprice * 100) / 100
+          : 0,
+        sellingprice: sellingprice ? Math.round(sellingprice * 100) / 100 : 0,
         market,
       });
 
@@ -299,6 +311,8 @@ module.exports.register = async (req, res) => {
 
     newProduct.price = newPrice._id;
     await newProduct.save();
+    newPrice.product = newProduct._id;
+    await newPrice.save();
 
     await Category.findByIdAndUpdate(categor._id, {
       $push: {

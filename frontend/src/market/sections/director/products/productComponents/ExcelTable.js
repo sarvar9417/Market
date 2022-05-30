@@ -34,6 +34,9 @@ export const ExcelTable = ({ data, ...props }) => {
                     {p.total} {p.unit.name}
                   </td>
                   <td className="border-right">
+                    {(p.price && p.price.incomingprice) || 0}
+                  </td>
+                  <td className="border-right">
                     {(p.price && p.price.sellingprice) || 0}
                   </td>
                 </tr>

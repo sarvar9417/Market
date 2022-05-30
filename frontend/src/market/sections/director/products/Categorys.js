@@ -126,7 +126,8 @@ export const Category = () => {
   const searchCategory = (e) => {
     const searching = searchStorage.filter(
       (item) =>
-        item.name.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        (item.name &&
+          item.name.toLowerCase().includes(e.target.value.toLowerCase())) ||
         String(item.code).includes(e.target.value)
     );
     setCategories(searching);

@@ -79,6 +79,7 @@ export const Product = () => {
   });
 
   const sections = [
+
     { name: t("Kategoriya kodi"), value: "category" },
     { name: t("Mahsulot turi"), value: "producttype" },
     { name: t("Brend"), value: "brand" },

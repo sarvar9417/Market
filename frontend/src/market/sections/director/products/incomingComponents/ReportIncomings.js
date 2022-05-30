@@ -78,7 +78,7 @@ export const ReportIncomings = ({
                   >
                     <p className="font-bold  text-right  flex justify-between">
                       <span className="font-bold text-orange-700">
-                        {connector.suppliers}
+                        {connector.suppliers && connector.suppliers}
                       </span>
                       <span className="text-amber-100">
                         {new Date(connector.day).toLocaleDateString()}
@@ -86,7 +86,7 @@ export const ReportIncomings = ({
                     </p>
                     <p className="font-bold  flex justify-around text-2xl py-1">
                       <span className="text-amber-100">
-                        {connector.total} $
+                        {connector.total && connector.total} $
                       </span>
                     </p>
                     <p className="font-bold text-sm flex justify-between">
@@ -94,7 +94,7 @@ export const ReportIncomings = ({
                         {connector.producttypes}
                       </span>
                       <span className="text-orange-400 font-bold">
-                        {connector.products}
+                        {connector.products && connector.products}
                       </span>
                     </p>
                   </button>
