@@ -2,38 +2,29 @@ import { t } from "i18next";
 import React, { useCallback } from "react";
 import ReactPaginate from "react-paginate";
 
-export const Pagination = ({
-  countPage,
-  totalServices,
-  setCurrentPage,
-  setCurrentServices,
-  services,
-}) => {
+export const Pagination = ({ countPage, totalDatas, setCurrentPage }) => {
   const pageNumbers = [];
 
-  for (let i = 1; i <= Math.ceil(totalServices / countPage); i++) {
+  for (let i = 1; i <= Math.ceil(totalDatas / countPage); i++) {
     pageNumbers.push(i);
   }
 
-  const pageHandle = useCallback((data) => {
-    setCurrentPage(data.selected);
-    setCurrentServices(
-      services.slice(
-        data.selected * countPage,
-        data.selected * countPage + countPage
-      )
-    );
-  }, [services, setCurrentPage, setCurrentServices, countPage]);
+  const pageHandle = useCallback(
+    (data) => {
+      setCurrentPage(data.selected);
+    },
+    [setCurrentPage]
+  );
 
   return (
     <nav className="float-right">
       <ReactPaginate
-        previousLabel={t("oldingi")}
-        nextLabel={t("keyingi")}
+        previousLabel={"<<"}
+        nextLabel=">>"
         breakLabel={"..."}
         pageCount={pageNumbers.length}
-        marginPagesDisplayed={2}
-        pageRangeDisplayed={3}
+        marginPagesDisplayed={1}
+        pageRangeDisplayed={2}
         onPageChange={pageHandle}
         containerClassName={"pagination justify-content-right"}
         pageClassName={"page-item"}
