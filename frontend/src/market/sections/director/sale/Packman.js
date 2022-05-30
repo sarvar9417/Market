@@ -10,7 +10,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AuthContext } from "../../../context/AuthContext";
 import { useHttp } from "../../../hooks/http.hook";
-import { Pagination } from "../components/Pagination";
+import { Pagination } from "./components/Pagination";
 import { Sort } from "../components/Sort";
 import { checkPackman } from "./checkData";
 import { t } from "i18next";
@@ -116,27 +116,6 @@ export const Packman = () => {
   //====================================================================
   //====================================================================
 
-  const changeData = (method, data) => {
-    let arr = [];
-    if (method === "POST") {
-      arr = [{ ...data }, ...searchStorage];
-    }
-    if (method === "UPDATE") {
-      arr = searchStorage.map((item) => {
-        if (item._id === data._id) {
-          return (item = { ...data });
-        }
-        return item;
-      });
-    }
-    if (method === "DELETE") {
-      arr = searchStorage.filter((item) => item._id !== data._id);
-    }
-    setPackmans(arr);
-    setCurrentPackmans(arr);
-    setSearchStorage(arr);
-  };
-
   //====================================================================
   //====================================================================
 
@@ -151,6 +130,9 @@ export const Packman = () => {
       return createPackman();
     }
   };
+
+  //====================================================================
+  //====================================================================
 
   const [packmans, setPackmans] = useState([]);
   const [currentPackmans, setCurrentPackmans] = useState([]);
@@ -178,6 +160,58 @@ export const Packman = () => {
     }
   }, [auth, notify, indexFirstPackman, indexLastPackman, request]);
 
+  //====================================================================
+  //====================================================================
+
+  const [connectorCount, setConnectorCount] = useState(0);
+
+  const getConnectorsCount = useCallback(async () => {
+    try {
+      const data = await request(
+        "/api/sales/packman/getcount",
+        "POST",
+        { market: auth.market && auth.market._id },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setConnectorCount(data);
+    } catch (error) {
+      notify({
+        title: error,
+        description: "",
+        status: "error",
+      });
+    }
+  }, [auth, notify, request]);
+
+  const getConnectors = useCallback(async () => {
+    try {
+      const data = await request(
+        "/api/sales/packman/getconnectors",
+        "POST",
+        { market: auth.market._id, currentPage, countPage },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setCurrentPackmans(data);
+    } catch (error) {
+      notify({
+        title: error,
+        description: "",
+        status: "error",
+      });
+    }
+  }, [auth, request, notify, currentPage, countPage]);
+
+  useEffect(() => {
+    getConnectors();
+  }, [getConnectors, currentPage, countPage]);
+
+  //====================================================================
+  //====================================================================
+
   const createPackman = async () => {
     try {
       const data = await request(
@@ -188,7 +222,7 @@ export const Packman = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      changeData("POST", data);
+      getConnectors();
       clearInputs();
       setPackman({
         market: auth.market && auth.market._id,
@@ -207,6 +241,9 @@ export const Packman = () => {
     }
   };
 
+  //====================================================================
+  //====================================================================
+
   const updatePackman = async () => {
     try {
       const data = await request(
@@ -217,11 +254,11 @@ export const Packman = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      changeData("UPDATE", data);
       clearInputs();
       setPackman({
         market: auth.market && auth.market._id,
       });
+      getConnectors();
       notify({
         title: `${data.name} ${t("degan yetkazuvchi yangilandi!")}`,
         description: "",
@@ -236,6 +273,9 @@ export const Packman = () => {
     }
   };
 
+  //====================================================================
+  //====================================================================
+
   const deletePackman = async () => {
     try {
       const data = await request(
@@ -246,10 +286,10 @@ export const Packman = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      changeData("DELETE", data);
       setRemove({
         market: auth.market && auth.market._id,
       });
+      getConnectors();
       notify({
         title: `${data.name} ${t("degan yetkazuvchi o'chirildi!")}`,
         description: "",
@@ -265,16 +305,17 @@ export const Packman = () => {
     }
   };
 
+  //====================================================================
+  //====================================================================
+
   const [n, setN] = useState(false);
   useEffect(() => {
     if (!n) {
       getPackmans();
+      getConnectorsCount();
       setN(true);
     }
-  }, [getPackmans, n]);
-
-  //====================================================================
-  //====================================================================
+  }, [getPackmans, n, getConnectorsCount]);
 
   //====================================================================
   //====================================================================
@@ -284,62 +325,64 @@ export const Packman = () => {
 
   return (
     <>
-      <div className='content-wrapper px-lg-5 px-3'>
-        <div className='row gutters'>
-          <div className='col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12'>
-            <div className='table-container'>
-              <div className='table-responsive'>
-                <table className='table m-0'>
+      <div className="content-wrapper px-lg-5 px-3">
+        <div className="row gutters">
+          <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div className="table-container">
+              <div className="table-responsive">
+                <table className="table m-0">
                   <thead>
                     <tr>
-                      <th className='border text-center'>{t("Yetkazuvchi")}</th>
-                      <th className='border text-center'>{t("Saqlash")}</th>
-                      <th className='border text-center'>{t("Tozalash")}</th>
+                      <th className="border text-center">{t("Yetkazuvchi")}</th>
+                      <th className="border text-center">{t("Saqlash")}</th>
+                      <th className="border text-center">{t("Tozalash")}</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className='border text-center'>
-                      <td className='border text-center'>
+                    <tr className="border text-center">
+                      <td className="border text-center">
                         <input
-                          name='name'
+                          name="name"
                           value={packman.name || ""}
                           onKeyUp={keyPressed}
                           onChange={changeHandler}
-                          type='text'
-                          className='focus: outline-none focus:ring focus:border-blue-500 rounded py-1 px-3'
-                          id='name'
+                          type="text"
+                          className="focus: outline-none focus:ring focus:border-blue-500 rounded py-1 px-3"
+                          id="name"
                           placeholder={t("Yetkazuvchini kiriting")}
                         />
                       </td>
-                      <td className='border text-center'>
+                      <td className="border text-center">
                         {loading ? (
-                          <button className='btn btn-success' disabled>
-                            <span className='spinner-border spinner-border-sm'></span>
+                          <button className="btn btn-success" disabled>
+                            <span className="spinner-border spinner-border-sm"></span>
                             Loading...
                           </button>
                         ) : (
                           <button
                             onClick={saveHandler}
-                            className='btn btn-success py-1 px-4'>
+                            className="btn btn-success py-1 px-4"
+                          >
                             <FontAwesomeIcon
-                              className='text-base'
+                              className="text-base"
                               icon={faFloppyDisk}
                             />
                           </button>
                         )}
                       </td>
-                      <td className='border text-center'>
+                      <td className="border text-center">
                         {loading ? (
-                          <button className='btn btn-success' disabled>
-                            <span className='spinner-border spinner-border-sm'></span>
+                          <button className="btn btn-success" disabled>
+                            <span className="spinner-border spinner-border-sm"></span>
                             Loading...
                           </button>
                         ) : (
                           <button
                             onClick={clearInputs}
-                            className='btn btn-secondary py-1 px-4'>
+                            className="btn btn-secondary py-1 px-4"
+                          >
                             <FontAwesomeIcon
-                              className='text-base'
+                              className="text-base"
                               icon={faRepeat}
                             />
                           </button>
@@ -350,17 +393,18 @@ export const Packman = () => {
                 </table>
               </div>
             </div>
-            <div className='table-container'>
-              <div className='table-responsive'>
-                <table className='table m-0'>
-                  <thead className='bg-white'>
+            <div className="table-container">
+              <div className="table-responsive">
+                <table className="table m-0">
+                  <thead className="bg-white">
                     <tr>
                       <th>
                         <select
-                          className='form-control form-control-sm selectpicker'
+                          className="form-control form-control-sm selectpicker"
                           placeholder={t("Bo'limni tanlang")}
                           onChange={setPageSize}
-                          style={{ minWidth: "50px" }}>
+                          style={{ minWidth: "50px" }}
+                        >
                           <option value={10}>10</option>
                           <option value={25}>25</option>
                           <option value={50}>50</option>
@@ -369,20 +413,18 @@ export const Packman = () => {
                       </th>
                       <th>
                         <input
-                          className='form-control'
-                          type='search'
+                          className="form-control"
+                          type="search"
                           onChange={searchPackman}
                           style={{ maxWidth: "100px" }}
                           placeholder={t("Yetkazuvchilar")}
                         />
                       </th>
-                      <th className='text-center'>
+                      <th className="text-center">
                         <Pagination
-                          setCurrentDatas={setCurrentPackmans}
-                          datas={packmans}
                           setCurrentPage={setCurrentPage}
                           countPage={countPage}
-                          totalDatas={packmans.length}
+                          totalDatas={connectorCount.count}
                         />
                       </th>
                       {/* <th className="text-center">
@@ -399,9 +441,9 @@ export const Packman = () => {
                     </tr>
                   </thead>
                   <thead>
-                    <tr className='border text-center'>
-                      <th className='border text-center'>№</th>
-                      <th className='border text-center'>
+                    <tr className="border text-center">
+                      <th className="border text-center">№</th>
+                      <th className="border text-center">
                         {t("Yetkazuvchi")}{" "}
                         <Sort
                           data={packmans}
@@ -409,43 +451,45 @@ export const Packman = () => {
                           property={"name"}
                         />
                       </th>
-                      <th className='border text-center'>{t("Tahrirlash")}</th>
-                      <th className='border text-center'>{t("O'chirish")}</th>
+                      <th className="border text-center">{t("Tahrirlash")}</th>
+                      <th className="border text-center">{t("O'chirish")}</th>
                     </tr>
                   </thead>
                   <tbody>
                     {currentPackmans &&
                       currentPackmans.map((s, key) => {
                         return (
-                          <tr className='border text-center' key={key}>
-                            <td className='border text-center font-bold text-bold text-black'>
+                          <tr className="border text-center" key={key}>
+                            <td className="border text-center font-bold text-bold text-black">
                               {currentPage * countPage + key + 1}
                             </td>
-                            <td className='border text-center font-bold text-bold text-black'>
+                            <td className="border text-center font-bold text-bold text-black">
                               {s.name}
                             </td>
-                            <td className='border text-center'>
+                            <td className="border text-center">
                               <button
                                 onClick={() => {
                                   setPackman({ ...s });
                                 }}
-                                className='btn btn-success py-1 px-4'
-                                style={{ fontSize: "75%" }}>
+                                className="btn btn-success py-1 px-4"
+                                style={{ fontSize: "75%" }}
+                              >
                                 <FontAwesomeIcon
-                                  className='text-base'
+                                  className="text-base"
                                   icon={faPenAlt}
                                 />
                               </button>
                             </td>
-                            <td className='border text-center'>
+                            <td className="border text-center">
                               <button
                                 onClick={() => {
                                   setRemove({ ...s });
                                   setModal(true);
                                 }}
-                                className='btn btn-secondary py-1 px-4'>
+                                className="btn btn-secondary py-1 px-4"
+                              >
                                 <FontAwesomeIcon
-                                  className='text-base'
+                                  className="text-base"
                                   icon={faTrashCan}
                                 />
                               </button>

@@ -172,6 +172,46 @@ export const ProductType = () => {
   //====================================================================
   //====================================================================
 
+  const getConnectorsCount = useCallback(async () => {
+    try {
+      const data = await request(
+        "/api/products/producttype/getconnectorscount",
+        "POST",
+        { market: auth.market && auth.market._id },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setConnectorCount(data);
+    } catch (error) {
+      notify({
+        title: error,
+        description: "",
+        status: "error",
+      });
+    }
+  }, [auth, notify, request]);
+
+  const getConnectors = useCallback(async () => {
+    try {
+      const data = await request(
+        "/api/products/producttype/getconnectors",
+        "POST",
+        { market: auth.market._id, currentPage, countPage },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setCurrentProductTypes(data);
+    } catch (error) {
+      notify({
+        title: error,
+        description: "",
+        status: "error",
+      });
+    }
+  }, [auth, request, notify, currentPage, countPage]);
+
   //====================================================================
   //====================================================================
 
@@ -202,15 +242,7 @@ export const ProductType = () => {
         status: "error",
       });
     }
-  }, [
-    request,
-    auth,
-    notify,
-    producttype,
-    clearInputs,
-    getProductTypes,
-    getConnectors,
-  ]);
+  }, [request, auth, notify, clearInputs, getConnectors, producttype]);
 
   const updateHandler = useCallback(async () => {
     try {
@@ -239,17 +271,7 @@ export const ProductType = () => {
         status: "error",
       });
     }
-  }, [
-    request,
-    auth,
-    notify,
-    setProductTypes,
-    producttype,
-    clearInputs,
-    producttypes,
-    getProductTypes,
-    getConnectors,
-  ]);
+  }, [request, auth, notify, producttype, clearInputs, getConnectors]);
 
   const saveHandler = () => {
     if (checkProductType(producttype)) {
@@ -296,59 +318,9 @@ export const ProductType = () => {
         status: "error",
       });
     }
-  }, [
-    auth,
-    request,
-    remove,
-    notify,
-    setProductTypes,
-    clearInputs,
-    producttypes,
-    getProductTypes,
-    getConnectors,
-  ]);
+  }, [auth, request, remove, notify, clearInputs, getConnectors]);
   //====================================================================
   //====================================================================
-
-  const getConnectorsCount = useCallback(async () => {
-    try {
-      const data = await request(
-        "/api/products/producttype/getconnectorscount",
-        "POST",
-        { market: auth.market && auth.market._id },
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
-      );
-      setConnectorCount(data);
-    } catch (error) {
-      notify({
-        title: error,
-        description: "",
-        status: "error",
-      });
-    }
-  }, [auth, notify, request]);
-
-  const getConnectors = useCallback(async () => {
-    try {
-      const data = await request(
-        "/api/products/producttype/getconnectors",
-        "POST",
-        { market: auth.market._id, currentPage, countPage },
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
-      );
-      setCurrentProductTypes(data);
-    } catch (error) {
-      notify({
-        title: error,
-        description: "",
-        status: "error",
-      });
-    }
-  }, [auth, request, notify, currentPage, countPage]);
 
   //====================================================================
   //====================================================================

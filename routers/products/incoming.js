@@ -14,6 +14,7 @@ const {
 } = require("../../models/Products/IncomingConnector");
 const { ProductPrice } = require("../../models/Products/ProductPrice");
 const { Supplier } = require("../../models/Supplier/Supplier");
+const router = require("./category_products");
 
 //Incoming registerall
 module.exports.registerAll = async (req, res) => {
@@ -262,7 +263,7 @@ module.exports.update = async (req, res) => {
 //Incoming getall
 module.exports.get = async (req, res) => {
   try {
-    const { market, beginDay, endDay } = req.body;
+    const { market, beginDay, endDay, currentPage, countPage } = req.body;
     const marke = await Market.findById(market);
 
     if (!marke) {
@@ -278,6 +279,9 @@ module.exports.get = async (req, res) => {
         $lt: endDay,
       },
     })
+      .sort({ _id: -1 })
+      .skip(currentPage * countPage)
+      .limit(countPage)
       .select("-isArchive, -updatedAt, -market -user")
       .populate("supplier", "name")
       .populate("category", "code")
@@ -286,7 +290,7 @@ module.exports.get = async (req, res) => {
       .populate("unit", "name")
       .populate("brand", "name");
 
-    res.send(incomings);
+    res.status(201).send(incomings);
   } catch (error) {
     res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
   }
@@ -336,3 +340,22 @@ module.exports.getConnectors = async (req, res) => {
 //     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
 //   }
 // }
+
+// Pagination
+module.exports.getCount = async (req, res) => {
+  try {
+    const { market } = req.body;
+
+    const marke = await Market.findById(market);
+    if (!marke) {
+      return res
+        .status(400)
+        .json({ message: "Diqqat! Do'kon malumotlari topilmadi" });
+    }
+
+    const count = await Incoming.find({ market }).count();
+    res.status(201).send({ count });
+  } catch (error) {
+    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
+  }
+};
