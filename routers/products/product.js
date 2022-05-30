@@ -760,3 +760,53 @@ module.exports.deleteAll = async (req, res) => {
     res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
   }
 };
+
+// Pagination
+
+module.exports.getProductCount = async (req, res) => {
+  try {
+    const { market } = req.body;
+
+    const marke = await Market.findById(market);
+
+    if (!marke) {
+      return res
+        .status(400)
+        .json({ message: "Diqqat! Do'kon malumotlari topilmadi" });
+    }
+
+    const count = await Product.find({ market }).count();
+
+    res.status(201).json({ count });
+  } catch (error) {
+    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
+  }
+};
+
+module.exports.getProductConnectors = async (req, res) => {
+  try {
+    const { market, currentPage, countPage } = req.body;
+    const marke = await Market.findById(market);
+    if (!marke) {
+      return res
+        .status(400)
+        .send({ message: "Diqqat! Do'kon malumotlari topilmadi!" });
+    }
+
+    const connector = await Product.find({ market })
+      .sort({ _id: -1 })
+      .skip(currentPage * countPage)
+      .limit(countPage)
+      .sort({ _id: -1 })
+      .select("name code unit category producttype brand price total")
+      .populate("category", "name code")
+      .populate("producttype", "name")
+      .populate("unit", "name")
+      .populate("brand", "name")
+      .populate("price", "incomingprice sellingprice");
+
+    res.status(201).send(connector);
+  } catch (error) {
+    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
+  }
+};

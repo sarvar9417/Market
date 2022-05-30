@@ -13,7 +13,7 @@ import {
   faRepeat,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
-import { Pagination } from "../components/Pagination";
+import { Pagination } from "./productComponents/Pagination";
 import ReactHtmlTableToExcel from "react-html-table-to-excel";
 import { t } from "i18next";
 
@@ -110,6 +110,48 @@ export const Brand = () => {
   //====================================================================
   //====================================================================
 
+  const [connectorCount, setConnectorCount] = useState(0);
+
+  const getConnectorsCount = useCallback(async () => {
+    try {
+      const data = await request(
+        "/api/products/brand/getconnectorscount",
+        "POST",
+        { market: auth.market && auth.market._id },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setConnectorCount(data);
+    } catch (error) {
+      notify({
+        title: error,
+        description: "",
+        status: "error",
+      });
+    }
+  }, [auth, notify, request]);
+
+  const getConnectors = useCallback(async () => {
+    try {
+      const data = await request(
+        "/api/products/brand/getconnectors",
+        "POST",
+        { market: auth.market._id, currentPage, countPage },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setCurrentBrands(data);
+    } catch (error) {
+      notify({
+        title: error,
+        description: "",
+        status: "error",
+      });
+    }
+  }, [auth, request, notify, currentPage, countPage]);
+
   //====================================================================
   //====================================================================
 
@@ -128,9 +170,7 @@ export const Brand = () => {
         description: "",
         status: "success",
       });
-      let c = [...brands];
-      c.unshift({ ...data });
-      setBrands([...c]);
+      getConnectors();
       setBrand({
         market: auth.market && auth.market._id,
       });
@@ -142,7 +182,7 @@ export const Brand = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify, setBrands, brand, clearInputs, brands]);
+  }, [request, auth, notify, brand, clearInputs, getConnectors]);
 
   const updateHandler = useCallback(async () => {
     try {
@@ -159,12 +199,7 @@ export const Brand = () => {
         description: "",
         status: "success",
       });
-      let index = brands.findIndex((bran) => {
-        return brand._id === bran._id;
-      });
-      let c = [...brands];
-      c.splice(index, 1, { ...data });
-      setBrands([...c]);
+      getConnectors();
       setBrand({
         market: auth.market && auth.market._id,
       });
@@ -176,7 +211,7 @@ export const Brand = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify, setBrands, brand, clearInputs, brands]);
+  }, [request, auth, notify, brand, clearInputs, getConnectors]);
 
   const saveHandler = () => {
     if (checkBrand(brand)) {
@@ -210,12 +245,7 @@ export const Brand = () => {
         description: "",
         status: "success",
       });
-      let index = brands.findIndex((bran) => {
-        return remove._id === bran._id;
-      });
-      let c = [...brands];
-      c.splice(index, 1);
-      setBrands([...c]);
+      getConnectors();
       setModal(false);
       setBrand({
         market: auth.market && auth.market._id,
@@ -228,7 +258,7 @@ export const Brand = () => {
         status: "error",
       });
     }
-  }, [auth, request, remove, notify, setBrands, clearInputs, brands]);
+  }, [auth, request, remove, notify, clearInputs, getConnectors]);
   //====================================================================
   //====================================================================
 
@@ -258,13 +288,19 @@ export const Brand = () => {
 
   //====================================================================
   //====================================================================
+
+  useEffect(() => {
+    getConnectors();
+  }, [getConnectors, currentPage, countPage]);
+
   const [n, setN] = useState();
   useEffect(() => {
     if (!n) {
       setN(1);
+      getConnectorsCount();
       getBrands();
     }
-  }, [getBrands, n]);
+  }, [getBrands, n, getConnectorsCount]);
   //====================================================================
   //====================================================================
 
@@ -279,9 +315,7 @@ export const Brand = () => {
                 <table className="table m-0">
                   <thead>
                     <tr>
-                      <th className="border text-center">
-                        {t("Brend")}
-                      </th>
+                      <th className="border text-center">{t("Brend")}</th>
                       <th className="border text-center">{t("Saqlash")}</th>
                       <th className="border text-center">{t("Tozalash")}</th>
                     </tr>
@@ -370,11 +404,9 @@ export const Brand = () => {
                       </th>
                       <th className="text-center">
                         <Pagination
-                          setCurrentDatas={setCurrentBrands}
-                          datas={brands}
                           setCurrentPage={setCurrentPage}
                           countPage={countPage}
-                          totalDatas={brands.length}
+                          totalDatas={connectorCount.count}
                         />
                       </th>
                       <th className="text-center">
@@ -394,7 +426,7 @@ export const Brand = () => {
                     <tr className="border text-center">
                       <th className="border text-center">№</th>
                       <th className="border text-center">
-                        {t("Brend nomi")} {" "}
+                        {t("Brend nomi")}{" "}
                         <Sort
                           data={brands}
                           setData={setBrands}
@@ -409,7 +441,7 @@ export const Brand = () => {
                     {currentBrands &&
                       currentBrands.map((s, key) => {
                         return (
-                          <tr className="border text-center" key={key} c>
+                          <tr className="border text-center" key={key}>
                             <td className="border text-center font-bold text-bold text-black">
                               {currentPage * countPage + key + 1}
                             </td>
