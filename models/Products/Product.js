@@ -44,7 +44,8 @@ function validateProductExcel(product) {
     code: Joi.string().required(),
     category: Joi.number(),
     brand: Joi.string(),
-    price: Joi.number(),
+    incomingprice: Joi.number(),
+    sellingprice: Joi.number(),
     total: Joi.number(),
   });
 

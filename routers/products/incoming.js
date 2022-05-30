@@ -159,11 +159,11 @@ module.exports.registerAll = async (req, res) => {
     })
       .sort({ _id: -1 })
       .select("supplier incoming total createdAt")
-      .populate("supplier", "name");
+      .populate("supplier", "name")
+      .populate("incoming", "pieces");
 
-    res.send(connectors);
+    res.status(201).send(connectors);
   } catch (error) {
-    console.log(error);
     res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
   }
 };
