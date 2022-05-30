@@ -1,5 +1,6 @@
 import { faClose, faFloppyDisk } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { t } from 'i18next'
 import React from 'react'
 
 export const Payment = () => {
@@ -7,8 +8,8 @@ export const Payment = () => {
         <div className='w-full h-screen bg-blue-400 p-10 absolute top-0'>
             <div className='flex justify-between md:justify-end'>
                 <div>
-                    <h1 className='font-bold text-blue-100 text-xl'>Buyurtma: PH012212</h1>
-                    <p className='font-bold text-blue-100'>Mijoz:Sarvar Murodullayev</p>
+                    <h1 className='font-bold text-blue-100 text-xl'>{t("Buyurtma")}: PH012212</h1>
+                    <p className='font-bold text-blue-100'>{t("Mijoz:")}Sarvar Murodullayev</p>
                     <p className='font-bold text-blue-100'>Postavshik: Sarvar murodullayev</p>
                 </div>
                 <button className='border border-1 border-blue-50 w-[70px] h-[70px] rounded-full flex items-center justify-center text-3xl mx-10 text-white'>

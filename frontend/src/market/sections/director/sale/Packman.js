@@ -13,6 +13,7 @@ import { useHttp } from "../../../hooks/http.hook";
 import { Pagination } from "../components/Pagination";
 import { Sort } from "../components/Sort";
 import { checkPackman } from "./checkData";
+import { t } from "i18next";
 
 export const Packman = () => {
   //====================================================================
@@ -193,7 +194,7 @@ export const Packman = () => {
         market: auth.market && auth.market._id,
       });
       notify({
-        title: `${data.name} degan yetkazuvchi yaratildi!`,
+        title: `${data.name} ${t("degan yetkazuvchi yaratildi!")}`,
         description: "",
         status: "success",
       });
@@ -222,7 +223,7 @@ export const Packman = () => {
         market: auth.market && auth.market._id,
       });
       notify({
-        title: `${data.name} degan yetkazuvchi yangilandi!`,
+        title: `${data.name} ${t("degan yetkazuvchi yangilandi!")}`,
         description: "",
         status: "success",
       });
@@ -250,7 +251,7 @@ export const Packman = () => {
         market: auth.market && auth.market._id,
       });
       notify({
-        title: `${data.name} degan yetkazuvchi o'chirildi!`,
+        title: `${data.name} ${t("degan yetkazuvchi o'chirildi!")}`,
         description: "",
         status: "success",
       });
@@ -264,13 +265,13 @@ export const Packman = () => {
     }
   };
 
-  const [t, setT] = useState(false);
+  const [n, setN] = useState(false);
   useEffect(() => {
-    if (!t) {
+    if (!n) {
       getPackmans();
-      setT(true);
+      setN(true);
     }
-  }, [getPackmans, t]);
+  }, [getPackmans, n]);
 
   //====================================================================
   //====================================================================
@@ -291,9 +292,9 @@ export const Packman = () => {
                 <table className="table m-0">
                   <thead>
                     <tr>
-                      <th className="border text-center">Yetkazuvchi</th>
-                      <th className="border text-center">Saqlash</th>
-                      <th className="border text-center">Tozalash</th>
+                      <th className="border text-center">{t("Yetkazuvchi")}</th>
+                      <th className="border text-center">{t("Saqlash")}</th>
+                      <th className="border text-center">{t("Tozalash")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -307,7 +308,7 @@ export const Packman = () => {
                           type="text"
                           className="focus: outline-none focus:ring focus:border-blue-500 rounded py-1 px-3"
                           id="name"
-                          placeholder="Yetkazuvchini kiriting"
+                          placeholder={t("Yetkazuvchini kiriting")}
                         />
                       </td>
                       <td className="border text-center">
@@ -359,7 +360,7 @@ export const Packman = () => {
                       <th>
                         <select
                           className="form-control form-control-sm selectpicker"
-                          placeholder="Bo'limni tanlang"
+                          placeholder={t("Bo'limni tanlang")}
                           onChange={setPageSize}
                           style={{ minWidth: "50px" }}
                         >
@@ -375,7 +376,7 @@ export const Packman = () => {
                           type="search"
                           onChange={searchPackman}
                           style={{ maxWidth: "100px" }}
-                          placeholder="Yetkazuvchilar"
+                          placeholder={t("Yetkazuvchilar")}
                         />
                       </th>
                       <th className="text-center">
@@ -404,15 +405,15 @@ export const Packman = () => {
                     <tr className="border text-center">
                       <th className="border text-center">№</th>
                       <th className="border text-center">
-                        Yetkazuvchi{" "}
+                        {t("Yetkazuvchi")}{" "}
                         <Sort
                           data={packmans}
                           setData={setPackmans}
                           property={"name"}
                         />
                       </th>
-                      <th className="border text-center">Tahrirlash</th>
-                      <th className="border text-center">O'chirish</th>
+                      <th className="border text-center">{t("Tahrirlash")}</th>
+                      <th className="border text-center">{t("O'chirish")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -469,7 +470,7 @@ export const Packman = () => {
         modal={modal}
         setModal={setModal}
         basic={remove && remove.name}
-        text={"yetkazuvchini o'chirishni tasdiqlaysizmi?"}
+        text={t("yetkazuvchini o'chirishni tasdiqlaysizmi?")}
         handler={deletePackman}
       />
     </>

@@ -15,6 +15,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Pagination } from "../components/Pagination";
 import ReactHtmlTableToExcel from "react-html-table-to-excel";
+import { t } from "i18next";
 
 export const Category = () => {
   //====================================================================
@@ -156,7 +157,7 @@ export const Category = () => {
         }
       );
       notify({
-        title: `${data.name} kategoriyasi yaratildi!`,
+        title: `${data.name} ${t("kategoriyasi yaratildi!")}`,
         description: "",
         status: "success",
       });
@@ -285,13 +286,13 @@ export const Category = () => {
   //====================================================================
   //====================================================================
 
-  const [t, setT] = useState();
+  const [n, setN] = useState();
   useEffect(() => {
-    if (!t) {
-      setT(1);
+    if (!n) {
+      setN(1);
       getCategory();
     }
-  }, [getCategory, t]);
+  }, [getCategory, n]);
   //====================================================================
   //====================================================================
 
@@ -306,10 +307,10 @@ export const Category = () => {
                 <table className="table m-0">
                   <thead>
                     <tr>
-                      <th className="border text-center"> Kategoriya kodi</th>
-                      <th className="border text-center">Kategoriya nomi</th>
-                      <th className="border text-center">Saqlash</th>
-                      <th className="border text-center">Tozalash</th>
+                      <th className="border text-center">{t("Kategoriya kodi")}</th>
+                      <th className="border text-center">{t("Kategoriya nomi")}</th>
+                      <th className="border text-center">{t("Saqlash")}</th>
+                      <th className="border text-center">{t("Tozalash")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -329,7 +330,7 @@ export const Category = () => {
                           className="focus: outline-none focus:ring focus: border-blue-500 py-2 px-3 rounded"
                           id="inputName"
                           name="code"
-                          placeholder="Kategoriya kodini kiriting"
+                          placeholder={t("Kategoriya kodini kiriting")}
                         />
                       </td>
                       <td className=" text-center border">
@@ -342,7 +343,7 @@ export const Category = () => {
                           className="focus: outline-none focus:ring focus: border-blue-500 py-2 px-3 rounded"
                           id="inputName"
                           name="name"
-                          placeholder="Kategotiya nomini kiriting"
+                          placeholder={t("Kategotiya nomini kiriting")}
                         />
                       </td>
                       <td className="text-center border">
@@ -394,7 +395,7 @@ export const Category = () => {
                       <th>
                         <select
                           className="form-control form-control-sm selectpicker"
-                          placeholder="Bo'limni tanlang"
+                          placeholder={t("Bo'limni tanlang")}
                           onChange={setPageSize}
                           style={{ minWidth: "50px" }}
                         >
@@ -409,7 +410,7 @@ export const Category = () => {
                           style={{ maxWidth: "120px", minWidth: "100px" }}
                           type="search"
                           className="w-100 form-control form-control-sm selectpicker"
-                          placeholder="Kategoriya"
+                          placeholder={t("Kategoriya")}
                           onChange={searchCategory}
                         />
                       </th>
@@ -429,7 +430,7 @@ export const Category = () => {
                             table="category-excel-table"
                             sheet="Sheet"
                             buttonText="Excel"
-                            filename="Kategoriya"
+                            filename={t("Kategoriya")}
                           />
                         </div>
                       </th>
@@ -439,7 +440,7 @@ export const Category = () => {
                     <tr>
                       <th className="border text-center">№</th>
                       <th className="border text-center">
-                        Kodi{"  "}
+                        {t("Kodi")}{"  "}
                         <Sort
                           data={category}
                           setData={setCategory}
@@ -447,15 +448,15 @@ export const Category = () => {
                         />
                       </th>
                       <th className=" border text-center ">
-                        Nomi{"  "}
+                       {t("Nomi")}{"  "}
                         <Sort
                           data={category}
                           setData={setCategory}
                           property={"name"}
                         />
                       </th>
-                      <th className=" border text-center">Tahrirlash</th>
-                      <th className=" border text-center">O'chirish</th>
+                      <th className=" border text-center">{t("Tahrirlash")}</th>
+                      <th className=" border text-center">{t("O'chirish")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -517,8 +518,8 @@ export const Category = () => {
           <thead>
             <tr>
               <th>№</th>
-              <th>Kategoriya kodi</th>
-              <th>Kategoriya nomi</th>
+              <th>{t("Kategoriya kodi")}</th>
+              <th>{t("Kategoriya nomi")}</th>
             </tr>
           </thead>
           <tbody>

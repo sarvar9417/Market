@@ -14,6 +14,7 @@ import { Modal } from "./modal/Modal";
 import { TableProduct } from "./productComponents/TableProduct";
 import { InputProduct } from "./productComponents/InputProduct";
 import { ExcelCols } from "./productComponents/ExcelCols";
+import { t } from "i18next";
 
 export const Product = () => {
   //====================================================================
@@ -78,15 +79,15 @@ export const Product = () => {
   });
 
   const sections = [
-    { name: "Kategoriya kodi", value: "category" },
-    { name: "Mahsulot turi", value: "producttype" },
-    { name: "Brend", value: "brand" },
-    { name: "Mahsulot kodi", value: "code" },
-    { name: "Mahsulot nomi", value: "name" },
-    { name: "O'lchov birligi", value: "unit" },
-    { name: "Olish narxi", value: "incomingprice" },
-    { name: "Sotish narxi", value: "sellingprice" },
-    { name: "Soni", value: "total" },
+
+    { name: t("Kategoriya kodi"), value: "category" },
+    { name: t("Mahsulot turi"), value: "producttype" },
+    { name: t("Brend"), value: "brand" },
+    { name: t("Mahsulot kodi"), value: "code" },
+    { name: t("Mahsulot nomi"), value: "name" },
+    { name: t("O'lchov birligi"), value: "unit" },
+    { name: t("Narxi"), value: "price" },
+    { name: t("Soni"), value: "total" },
   ];
 
   //====================================================================
@@ -406,7 +407,7 @@ export const Product = () => {
         }
       );
       notify({
-        title: `${data.name} mahsuloti yaratildi!`,
+        title: `${data.name} ${t("mahsuloti yaratildi!")}`,
         description: "",
         status: "success",
       });
@@ -434,7 +435,7 @@ export const Product = () => {
       );
 
       notify({
-        title: `${data.name} mahsuloti yangilandi!`,
+        title: `${data.name} ${t("mahsuloti yangilandi!")}`,
         description: "",
         status: "success",
       });
@@ -476,7 +477,7 @@ export const Product = () => {
         }
       );
       notify({
-        title: `${data.name} mahsuloti o'chirildi!`,
+        title: `${data.name} ${t("mahsuloti o'chirildi!")}`,
         description: "",
         status: "success",
       });
@@ -515,7 +516,7 @@ export const Product = () => {
         }
       );
       notify({
-        title: `Barcha mahsulolar yuklandi!`,
+        title: `${t("Barcha mahsulolar yuklandi!")}`,
         description: "",
         status: "success",
       });
@@ -629,17 +630,17 @@ export const Product = () => {
 
   //====================================================================
   //====================================================================
-  const [t, setT] = useState();
+  const [n, setN] = useState();
   useEffect(() => {
-    if (!t) {
-      setT(1);
+    if (!n) {
+      setN(1);
       getCategories();
       getProducts();
       getProductTypes();
       getUnits();
       getBrand();
     }
-  }, [getProducts, getUnits, getCategories, getProductTypes, getBrand, t]);
+  }, [getProducts, getUnits, getCategories, getProductTypes, getBrand, n]);
   //====================================================================
   //====================================================================
   return (
@@ -701,7 +702,7 @@ export const Product = () => {
         modal={modal}
         setModal={setModal}
         basic={remove && remove.name}
-        text={"mahsulotnti o'chirishni tasdiqlaysizmi?"}
+        text={t("mahsulotnti o'chirishni tasdiqlaysizmi?")}
         handler={deleteHandler}
       />
 

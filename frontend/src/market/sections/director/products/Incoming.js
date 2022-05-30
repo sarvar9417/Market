@@ -1,17 +1,12 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { useToast } from "@chakra-ui/react";
-import { RegisterIncoming } from "./incomingComponents/RegisterIncoming";
-import { useHttp } from "./../../../hooks/http.hook";
-import { AuthContext } from "../../../context/AuthContext";
-import { TableIncoming } from "./incomingComponents/TableIncoming";
-import { ReportIncomings } from "./incomingComponents/ReportIncomings";
-import { Modal } from "./modal/Modal";
+import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { useToast } from '@chakra-ui/react'
+import { RegisterIncoming } from './incomingComponents/RegisterIncoming'
+import { useHttp } from './../../../hooks/http.hook'
+import { AuthContext } from '../../../context/AuthContext'
+import { TableIncoming } from './incomingComponents/TableIncoming'
+import { ReportIncomings } from './incomingComponents/ReportIncomings'
+import { Modal } from './modal/Modal'
+import { t } from 'i18next'
 
 export const Incoming = () => {
   const [beginDay, setBeginDay] = useState(
@@ -732,15 +727,16 @@ export const Incoming = () => {
   //====================================================================
   // useEffect
 
-  const [t, setT] = useState(0);
+
+  const [n, setN] = useState(0)
 
   useEffect(() => {
-    if (auth.market && !t) {
-      setT(1);
-      getSuppliers();
-      getCategorys();
-      getProducts();
-      getProductType();
+    if (auth.market && !n) {
+      setN(1)
+      getSuppliers()
+      getCategorys()
+      getProducts()
+      getProductType()
       // getBrand();
       getImports(beginDay, endDay);
       getIncomingConnectors(beginDay, endDay);
@@ -748,7 +744,7 @@ export const Incoming = () => {
   }, [
     auth,
     getSuppliers,
-    t,
+    n,
     getCategorys,
     getProducts,
     getImports,
@@ -777,7 +773,7 @@ export const Incoming = () => {
                     }`}
                     onClick={changeVisible}
                   >
-                    Qabul qilish
+                    {t("Qabul qilish")}
                   </button>
                   <button
                     className={`btn btn-primary mb-4 ${
@@ -785,7 +781,7 @@ export const Incoming = () => {
                     }`}
                     onClick={changeVisible}
                   >
-                    Qabul qilish
+                    {t("Qabul qilish")}
                   </button>
                 </div>
               </div>
@@ -825,7 +821,7 @@ export const Incoming = () => {
                 className="w-full btn btn-primary py-1 rounded-t text-center text-white font-bold text-base"
                 onClick={() => setVisibleReport(!visibleReport)}
               >
-                Qabul qilingan mahsulotlar
+                {t("Qabul qilingan mahsulotlar")}
               </button>
               <div className={`${visibleReport ? "d-block" : "d-none"}`}>
                 <ReportIncomings
@@ -842,7 +838,7 @@ export const Incoming = () => {
             </div>
             <div className="w-full mt-2">
               <div className="bg-primary py-1 rounded-t text-center text-white font-bold text-base">
-                Jadval
+                {t("Jadval")}
               </div>
               <div className={`${visibleTable ? "d-block" : "d-none"}`}>
                 <TableIncoming
@@ -885,9 +881,9 @@ export const Incoming = () => {
               <table className="table">
                 <thead>
                   <tr>
-                    <th className="border p-1">Soni</th>
-                    <th className="border p-1">Narx</th>
-                    <th className="border p-1">Umumiy narx</th>
+                    <th className="border p-1">{t("Soni")}</th>
+                    <th className="border p-1">{t("Narx")}</th>
+                    <th className="border p-1">{t("Umumiy narx")}</th>
                   </tr>
                 </thead>
                 <tbody>

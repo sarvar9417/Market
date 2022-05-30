@@ -1,20 +1,22 @@
+import { t } from "i18next";
+
 export const checkUserData = (user) => {
   if (!user.login)
     return {
-      title: "Diqqat! Login kiritilmagan.",
-      description: "Iltimos loginni kiriting.",
+      title: t("Diqqat! Login kiritilmagan."),
+      description: t("Iltimos loginni kiriting."),
       status: "error",
     };
   if (!user.password)
     return {
-      title: "Diqqat! Parol kiritilmagan.",
-      description: "Iltimos parolni kiriting.",
+      title: t("Diqqat! Parol kiritilmagan."),
+      description: t("Iltimos parolni kiriting."),
       status: "error",
     };
   if (user.password.length < 6)
     return {
-      title: "Diqqat! Parol noto'g'ri",
-      description: "Iltimos parolni qayta kiriting.",
+      title: t("Diqqat! Parol noto'g'ri"),
+      description: t("Iltimos parolni qayta kiriting."),
       status: "error",
     };
   return false;
@@ -23,24 +25,24 @@ export const checkUserData = (user) => {
 export const checkDirectorData = (director) => {
   if (!director.firstname) {
     return {
-      title: "Diqqat! Direktor ismi kiritilmagan.",
-      description: "Iltimos direktor ismini kiriting.",
+      title: t("Diqqat! Direktor ismi kiritilmagan."),
+      description: t("Iltimos direktor ismini kiriting."),
       status: "error",
     };
   }
 
   if (!director.lastname) {
     return {
-      title: "Diqqat! Direktor familiyasi kiritilmagan.",
-      description: "Iltimos direktor familiyasini kiriting.",
+      title: t("Diqqat! Direktor familiyasi kiritilmagan."),
+      description:t("Iltimos direktor familiyasini kiriting."),
       status: "error",
     };
   }
 
   if (!director.phone) {
     return {
-      title: "Diqqat! Direktor telefon raqami kiritilmagan.",
-      description: "Iltimos direktor telefon raqami kiriting.",
+      title: t("Diqqat! Direktor telefon raqami kiritilmagan."),
+      description: t("Iltimos direktor telefon raqami kiriting."),
       status: "error",
     };
   }
@@ -48,55 +50,55 @@ export const checkDirectorData = (director) => {
   if (director.phone.length !== 9) {
     return {
       title:
-        "Diqqat! Direktor telefon raqami kiritishda xatolikka yo'l qo'yilgan.",
-      description: "Iltimos direktor telefon raqamini to'g'ri kiriting.",
+        t("Diqqat! Direktor telefon raqami kiritishda xatolikka yo'l qo'yilgan."),
+      description: t("Iltimos direktor telefon raqamini to'g'ri kiriting."),
       status: "error",
     };
   }
 
   if (!director.login) {
     return {
-      title: "Diqqat! Direktor logini kiritilmagan.",
-      description: "Iltimos direktor logini kiriting.",
+      title: t("Diqqat! Direktor logini kiritilmagan."),
+      description: t("Iltimos direktor logini kiriting."),
       status: "error",
     };
   }
 
   if (!director.password) {
     return {
-      title: "Diqqat! Direktor paroli kiritilmagan.",
-      description: "Iltimos direktor parolini kiriting.",
+      title: t("Diqqat! Direktor paroli kiritilmagan."),
+      description: t("Iltimos direktor parolini kiriting."),
       status: "error",
     };
   }
 
   if (director.password < 6) {
     return {
-      title: "Diqqat! ",
-      description: "Parol uzunligi 6 belgidan kam bo'lmasligi kerak.",
+      title: t("Diqqat!"),
+      description: t("Parol uzunligi 6 belgidan kam bo'lmasligi kerak."),
       status: "error",
     };
   }
 
   if (!director.confirmPassword) {
     return {
-      title: "Diqqat! Parolni tasdiqlash qismini to'ldirilmagan.",
+      title: t("Diqqat! Parolni tasdiqlash qismini to'ldirilmagan."),
       description:
-        "Iltimos parolni tasdiqlash bo'limiga parolni qayta kiriting.",
+        t("Iltimos parolni tasdiqlash bo'limiga parolni qayta kiriting."),
       status: "error",
     };
   }
   if (director.password !== director.confirmPassword) {
     return {
-      title: "Diqqat! Parolni qayta kiritishda xatolikka yo'l qo'yilgan.",
-      description: "Iltimos parolni to'g'ri tasdiqlang.",
+      title: t("Diqqat! Parolni qayta kiritishda xatolikka yo'l qo'yilgan."),
+      description: t("Iltimos parolni to'g'ri tasdiqlang."),
       status: "error",
     };
   }
   if (!director.image) {
     return {
-      title: "Diqqat! Director surati yuklanmagan.",
-      description: "Iltimos direktor suratini yuklang.",
+      title: t("Diqqat! Director surati yuklanmagan."),
+      description: t("Iltimos direktor suratini yuklang."),
       status: "error",
     };
   }
@@ -106,32 +108,32 @@ export const checkDirectorData = (director) => {
 export const checkDirectorUpdateData = (director) => {
   if (!director.firstname) {
     return {
-      title: "Diqqat! Direktor ismi kiritilmagan.",
-      description: "Iltimos direktor ismini kiriting.",
+      title: t("Diqqat! Direktor ismi kiritilmagan."),
+      description: t("Iltimos direktor ismini kiriting."),
       status: "error",
     };
   }
 
   if (!director.lastname) {
     return {
-      title: "Diqqat! Direktor familiyasi kiritilmagan.",
-      description: "Iltimos direktor familiyasini kiriting.",
+      title: t("Diqqat! Direktor familiyasi kiritilmagan."),
+      description: t("Iltimos direktor familiyasini kiriting."),
       status: "error",
     };
   }
 
   if (!director.phone) {
     return {
-      title: "Diqqat! Direktor telefon raqami kiritilmagan.",
-      description: "Iltimos direktor telefon raqami kiriting.",
+      title: t("Diqqat! Direktor telefon raqami kiritilmagan."),
+      description: t("Iltimos direktor telefon raqami kiriting."),
       status: "error",
     };
   }
 
   if (!director.image) {
     return {
-      title: "Diqqat!  Direktor surati yuklanmagan.",
-      description: "Iltimos direktor suratini yuklang.",
+      title: t("Diqqat!  Direktor surati yuklanmagan."),
+      description: t("Iltimos direktor suratini yuklang."),
       status: "error",
     };
   }
@@ -141,24 +143,24 @@ export const checkDirectorUpdateData = (director) => {
 export const checkMarketData = (market) => {
   if (!market.name) {
     return {
-      title: "Diqqat! Shifoxona nomi kiritilmagan.",
-      description: "Iltimos shifoxona nomini kiriting.",
+      title: t("Diqqat! Do'kon nomi kiritilmagan."),
+      description: t("Iltimos do'kon nomini kiriting."),
       status: "error",
     };
   }
 
   if (!market.phone1) {
     return {
-      title: "Diqqat! Shifoxona telefon raqami kiritilmagan.",
-      description: "Iltimos telefon raqamini kiriting.",
+      title: t("Diqqat! Do'kon telefon raqami kiritilmagan."),
+      description: t("Iltimos telefon raqamini kiriting."),
       status: "error",
     };
   }
 
   if (!market.image) {
     return {
-      title: "Diqqat! Shifoxona logotipi yoki surati yuklanmagan.",
-      description: "Iltimos shifoxona logotipi yoki surati yuklang.",
+      title: t("Diqqat! Do'kon logotipi yoki surati yuklanmagan."),
+      description: t("Iltimos do'kon logotipi yoki surati yuklang."),
       status: "error",
     };
   }
@@ -173,8 +175,8 @@ export const checkDirectorUpdatePassword = (director) => {
     director.confirmpassword.length < 6
   ) {
     return {
-      title: "Diqqat! Parol 6 belgidan kam bo'lmasligi kerak.",
-      description: "Iltimos parolni to'g'ri kiriting.",
+      title: t("Diqqat! Parol 6 belgidan kam bo'lmasligi kerak."),
+      description: t("Iltimos parolni to'g'ri kiriting."),
       status: "error",
     };
   }
@@ -182,8 +184,8 @@ export const checkDirectorUpdatePassword = (director) => {
   if (director.newpassword !== director.confirmpassword) {
     return {
       title:
-        "Diqqat! Yangi parol va uni qayta kiritishdagi nusxasi mos kelmadi.",
-      description: "Iltimos parolni to'g'ri kiriting.",
+        t("Diqqat! Yangi parol va uni qayta kiritishdagi nusxasi mos kelmadi."),
+      description: t("Iltimos parolni to'g'ri kiriting."),
       status: "error",
     };
   }

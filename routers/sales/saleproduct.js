@@ -67,7 +67,7 @@ module.exports.register = async (req, res) => {
         totalpriceuzs,
         unitpriceuzs,
         pieces,
-        _id,
+        product,
       } = saleproduct;
       const { error } = validateSaleProduct({
         totalprice,
@@ -75,13 +75,13 @@ module.exports.register = async (req, res) => {
         unitprice,
         unitpriceuzs,
         pieces,
-        product: _id,
+        product: product._id,
       });
 
-      const product = await Product.findById(_id);
-      if (product.total < pieces) {
+      const produc = await Product.findById(product._id);
+      if (produc.total < pieces) {
         return res.status(400).json({
-          error: `Diqqat! ${product.name} mahsuloti onmborda yetarlicha mavjud emas. Qolgan mahsulot soni ${product.total} ta`,
+          error: `Diqqat! ${produc.name} mahsuloti onmborda yetarlicha mavjud emas. Qolgan mahsulot soni ${product.total} ta`,
         });
       }
       if (error) {
@@ -96,7 +96,7 @@ module.exports.register = async (req, res) => {
         unitprice,
         unitpriceuzs,
         pieces,
-        product: _id,
+        product: product._id,
         market,
         user,
       });
@@ -148,6 +148,10 @@ module.exports.register = async (req, res) => {
       await newDiscount.save();
       saleconnector.discounts.push(newDiscount._id);
       dailysaleconnector.discount = newDiscount._id;
+      for (const product of all) {
+        product.discount = newDiscount._id;
+        await product.save();
+      }
     }
 
     if (debt.debt > 0) {
@@ -232,7 +236,6 @@ module.exports.register = async (req, res) => {
         path: "products",
         select: "totalprice unitprice totalpriceuzs unitpriceuzs pieces",
         options: { sort: { created_at: -1 } },
-        limit: 1,
         populate: {
           path: "product",
           select: "category name",
@@ -305,7 +308,7 @@ module.exports.addproducts = async (req, res) => {
         totalpriceuzs,
         unitpriceuzs,
         pieces,
-        _id,
+        product,
       } = saleproduct;
       const { error } = validateSaleProduct({
         totalprice,
@@ -313,11 +316,11 @@ module.exports.addproducts = async (req, res) => {
         unitprice,
         unitpriceuzs,
         pieces,
-        product: _id,
+        product: product._id,
       });
 
-      const product = await Product.findById(_id);
-      if (product.total < pieces) {
+      const produc = await Product.findById(product._id);
+      if (produc.total < pieces) {
         return res.status(400).json({
           error: `Diqqat! ${product.name} mahsuloti onmborda yetarlicha mavjud emas. Qolgan mahsulot soni ${product.total} ta`,
         });
@@ -334,7 +337,7 @@ module.exports.addproducts = async (req, res) => {
         unitprice,
         unitpriceuzs,
         pieces,
-        product: _id,
+        product: product._id,
         market,
         user,
       });
@@ -381,6 +384,11 @@ module.exports.addproducts = async (req, res) => {
       await newDiscount.save();
       saleconnector.discounts.push(newDiscount._id);
       dailysaleconnector.discount = newDiscount._id;
+
+      for (const product of all) {
+        product.discount = newDiscount._id;
+        await product.save();
+      }
     }
 
     if (debt.debt > 0) {
@@ -450,7 +458,7 @@ module.exports.addproducts = async (req, res) => {
       }
     }
 
-    saleconnector.products.push([...products]);
+    saleconnector.products.push(...products);
     await saleconnector.save();
 
     dailysaleconnector.id = saleconnector.dailyconnectors.length;
@@ -463,7 +471,6 @@ module.exports.addproducts = async (req, res) => {
         path: "products",
         select: "totalprice unitprice totalpriceuzs unitpriceuzs pieces",
         options: { sort: { created_at: -1 } },
-        limit: 1,
         populate: {
           path: "product",
           select: "category name",
@@ -518,7 +525,7 @@ module.exports.getsaleconnectors = async (req, res) => {
       .populate({
         path: "products",
         select:
-          "totalprice unitprice totalpriceuzs unitpriceuzs pieces createdAt",
+          "totalprice unitprice totalpriceuzs unitpriceuzs pieces createdAt discount",
         options: { sort: { createdAt: -1 } },
         populate: {
           path: "product",
@@ -527,7 +534,7 @@ module.exports.getsaleconnectors = async (req, res) => {
         },
       })
       .populate("payments", "payment paymentuzs")
-      .populate("discounts", "discount discountuzs")
+      .populate("discounts", "discount discountuzs procient products")
       .populate("debts", "debt debtuzs")
       .populate("client", "name")
       .populate("packman", "name");

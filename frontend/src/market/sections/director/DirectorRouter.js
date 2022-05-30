@@ -14,6 +14,7 @@ import { Filials } from "./filials/Filials";
 import { Sale } from "./sale/Sale";
 import { Packman } from "./sale/Packman";
 import { Client } from "./sale/Client";
+import { t } from "i18next";
 
 export const DirectorRouter = () => {
   return (
@@ -21,7 +22,7 @@ export const DirectorRouter = () => {
       <Switch>
         {/* Services */}
         <Route path="/alo24" exact>
-          <h1> Bosh sahifa</h1>
+          <h1> {t("Bosh sahifa")}</h1>
         </Route>
         <Route path="/alo24/editdirector">
           <EditDirector />

@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import React from "react";
 
 export const ExcelTable = ({ data, ...props }) => {
@@ -8,12 +9,11 @@ export const ExcelTable = ({ data, ...props }) => {
           <thead>
             <tr>
               <th className="border-righ">№</th>
-              <th className="border-righ">Kategoriya</th>
-              <th className="border-righ">Mahsulot turi va mahsulot</th>
-              <th className="border-righ">Brend</th>
-              <th className="border-righ">Soni - O'.B.</th>
-              <th className="border-righ">Olish narxi</th>
-              <th className="border-righ">Sotish narxi</th>
+              <th className="border-righ">{t("Kategoriya")}</th>
+              <th className="border-righ">{t("Mahsulot turi va mahsulot")}</th>
+              <th className="border-righ">{t("Brend")}</th>
+              <th className="border-righ">{t("Soni - O'.B.")}</th>
+              <th className="border-righ">{t("Narxi")}</th>
             </tr>
           </thead>
           <tbody>

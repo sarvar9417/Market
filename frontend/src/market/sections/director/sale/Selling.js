@@ -2,8 +2,10 @@ import {
   faMoneyCheckDollar,
   faPenAlt,
   faTrash,
+  faTrashCan,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
+import { t } from "i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import Select from "react-select";
@@ -45,7 +47,7 @@ export const Selling = ({
             <Select
               // isDisabled={loading}
               onChange={changePackman}
-              placeholder='Yetkazuvchi'
+              placeholder={t("Yetkazuvchi")}
               isClearable={true}
               // isLoading={loading}
               // components={}
@@ -56,7 +58,7 @@ export const Selling = ({
             <Select
               // isDisabled={loading}
               onChange={changeClient}
-              placeholder='Xaridor'
+              placeholder={t("Xaridor")}
               isClearable={true}
               // isLoading={loading}
               // components={}
@@ -69,7 +71,7 @@ export const Selling = ({
               type='text'
               className='form-control rounded px-3'
               id=''
-              placeholder='Xaridor'
+              placeholder={t("Xaridor")}
               onChange={inputClient}
             />
           </div>
@@ -80,13 +82,19 @@ export const Selling = ({
               <tr>
                 <th className='border sticky top-0 bg-teal-500'>№</th>
                 <th className='border sticky top-0 bg-teal-500'>
-                  Kategoriyasi
+                  {t("Kategoriyasi")}
                 </th>
-                <th className='border sticky top-0 bg-teal-500'>Nomi</th>
-                <th className='border sticky top-0 bg-teal-500'>Soni</th>
-                <th className='border sticky top-0 bg-teal-500'>Narxi</th>
-                <th className='border sticky top-0 bg-teal-500'>Edit</th>
-                <th className='border sticky top-0 bg-teal-500'>Delete</th>
+                <th className='border sticky top-0 bg-teal-500'>{t("Nomi")}</th>
+                <th className='border sticky top-0 bg-teal-500'>{t("Soni")}</th>
+                <th className='border sticky top-0 bg-teal-500'>
+                  {t("Narxi")}
+                </th>
+                <th className='border sticky top-0 bg-teal-500'>
+                  <FontAwesomeIcon className='text-base' icon={faPenAlt} />
+                </th>
+                <th className='border sticky top-0 bg-red-500'>
+                  <FontAwesomeIcon className=' text-base' icon={faTrashCan} />
+                </th>
               </tr>
             </thead>
             <tbody className='border text-black'>
@@ -139,25 +147,27 @@ export const Selling = ({
         <div className='flex'>
           <div className='py-3 text-lg w-4/5'>
             <div className='flex justify-between '>
-              <span className='text-black font-bold'>Umumiy summa:</span>
+              <span className='text-black font-bold'>{t("Umumiy summa:")}</span>
               <span className='text-black font-bold'>
                 {totalprice.toLocaleString("de-DE")} $
               </span>
             </div>
             <div className='flex justify-between'>
-              <span className='text-black font-bold'>Chegirma:</span>
+              <span className='text-black font-bold'>{t("Chegirma")}:</span>
               <span className='text-yellow-500 font-bold'>
                 {discount.discount.toLocaleString("de-DE")} $
               </span>
             </div>
             <div className='flex justify-between'>
-              <span className='text-black font-bold'>Qarz:</span>
+              <span className='text-black font-bold'>{t("Qarz")}:</span>
               <span className='text-yellow-500 font-bold'>
                 {Math.abs(debt.debt).toLocaleString("de-DE")} $
               </span>
             </div>
             <div className='flex justify-between'>
-              <span className='text-black font-bold'>To'lanayotgsan:</span>
+              <span className='text-black font-bold'>
+                {t("To'lanayotgan")}:
+              </span>
               <span className='text-green-700 font-bold'>
                 {(
                   payment.cash +

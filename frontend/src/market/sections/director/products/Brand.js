@@ -15,6 +15,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Pagination } from "../components/Pagination";
 import ReactHtmlTableToExcel from "react-html-table-to-excel";
+import { t } from "i18next";
 
 export const Brand = () => {
   //====================================================================
@@ -123,7 +124,7 @@ export const Brand = () => {
         }
       );
       notify({
-        title: `${data.name} brand yaratildi!`,
+        title: `${data.name} ${t("brеnd yaratildi!")}`,
         description: "",
         status: "success",
       });
@@ -154,7 +155,7 @@ export const Brand = () => {
         }
       );
       notify({
-        title: `${data.name} brand yangilandi!`,
+        title: `${data.name} ${t("brend yangilandi!")}`,
         description: "",
         status: "success",
       });
@@ -205,7 +206,7 @@ export const Brand = () => {
         }
       );
       notify({
-        title: `${data.name} nomli brand o'chirildi!`,
+        title: `${data.name} ${t("nomli brend o'chirildi!")}`,
         description: "",
         status: "success",
       });
@@ -257,13 +258,13 @@ export const Brand = () => {
 
   //====================================================================
   //====================================================================
-  const [t, setT] = useState();
+  const [n, setN] = useState();
   useEffect(() => {
-    if (!t) {
-      setT(1);
+    if (!n) {
+      setN(1);
       getBrands();
     }
-  }, [getBrands, t]);
+  }, [getBrands, n]);
   //====================================================================
   //====================================================================
 
@@ -278,9 +279,11 @@ export const Brand = () => {
                 <table className="table m-0">
                   <thead>
                     <tr>
-                      <th className="border text-center">Brand</th>
-                      <th className="border text-center">Saqlash</th>
-                      <th className="border text-center">Tozalash</th>
+                      <th className="border text-center">
+                        {t("Brend")}
+                      </th>
+                      <th className="border text-center">{t("Saqlash")}</th>
+                      <th className="border text-center">{t("Tozalash")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -294,7 +297,7 @@ export const Brand = () => {
                           type="text"
                           className="focus: outline-none focus:ring focus:border-blue-500 rounded py-1 px-3"
                           id="name"
-                          placeholder="Brand nomini kiriting"
+                          placeholder={t("Brend nomini kiriting")}
                         />
                       </td>
                       <td className="border text-center">
@@ -346,7 +349,7 @@ export const Brand = () => {
                       <th>
                         <select
                           className="form-control form-control-sm selectpicker"
-                          placeholder="Bo'limni tanlang"
+                          placeholder={t("Bo'limni tanlang")}
                           onChange={setPageSize}
                           style={{ minWidth: "50px" }}
                         >
@@ -362,7 +365,7 @@ export const Brand = () => {
                           type="search"
                           onChange={searchBrand}
                           style={{ maxWidth: "100px" }}
-                          placeholder="Brand"
+                          placeholder={t("Brend")}
                         />
                       </th>
                       <th className="text-center">
@@ -381,7 +384,7 @@ export const Brand = () => {
                             table="brand-excel-table"
                             sheet="Sheet"
                             buttonText="Excel"
-                            filename="Brendlar"
+                            filename={t("Brendlar")}
                           />
                         </div>
                       </th>
@@ -391,15 +394,15 @@ export const Brand = () => {
                     <tr className="border text-center">
                       <th className="border text-center">№</th>
                       <th className="border text-center">
-                        Brand nomi{" "}
+                        {t("Brend nomi")} {" "}
                         <Sort
                           data={brands}
                           setData={setBrands}
                           property={"name"}
                         />
                       </th>
-                      <th className="border text-center">Tahrirlash</th>
-                      <th className="border text-center">O'chirish</th>
+                      <th className="border text-center">{t("Tahrirlash")}</th>
+                      <th className="border text-center">{t("O'chirish")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -457,7 +460,7 @@ export const Brand = () => {
           <thead>
             <tr>
               <th>№</th>
-              <th>Brend</th>
+              <th>{t("Brend")}</th>
             </tr>
           </thead>
           <tbody>
@@ -476,7 +479,7 @@ export const Brand = () => {
         modal={modal}
         setModal={setModal}
         basic={remove && remove.name}
-        text={"yetkazib beruvchi o'chirishni tasdiqlaysizmi?"}
+        text={t("Brendni o'chirishni tasdiqlaysizmi?")}
         handler={deleteHandler}
       />
     </>

@@ -5,6 +5,7 @@ import { faAngleUp, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { Pagination } from "../../components/Pagination";
 import { ExcelTable } from "./ExcelTable";
 import { DatePickers } from "../../components/DatePickers";
+import { t } from "i18next";
 
 export const TableIncoming = ({
   currentImports,
@@ -32,7 +33,7 @@ export const TableIncoming = ({
                 <th>
                   <select
                     className="form-control form-control-sm selectpicker"
-                    placeholder="Bo'limni tanlang"
+                    placeholder={t("Bo'limni tanlang")}
                     onChange={setPageSize}
                     style={{ minWidth: "50px" }}
                   >
@@ -48,7 +49,7 @@ export const TableIncoming = ({
                     style={{ maxWidth: "100px", minWidth: "100px" }}
                     type="search"
                     className="w-100 form-control form-control-sm selectpicker"
-                    placeholder="Yetkazib beruvchi"
+                    placeholder={t("Yetkazib beruvchi")}
                   />
                 </th>
                 <th>
@@ -57,7 +58,7 @@ export const TableIncoming = ({
                     style={{ maxWidth: "100px" }}
                     type="search"
                     className="form-control form-control-sm selectpicker"
-                    placeholder="Kategoriya"
+                    placeholder={t("Kategoriya")}
                     aria-controls="basicExample"
                   />
                 </th>
@@ -67,7 +68,7 @@ export const TableIncoming = ({
                     style={{ maxWidth: "100px" }}
                     type="search"
                     className="form-control form-control-sm selectpicker"
-                    placeholder="Mahsulot"
+                    placeholder={t("Mahsulot")}
                     aria-controls="basicExample"
                   />
                 </th>
@@ -77,7 +78,7 @@ export const TableIncoming = ({
                     style={{ maxWidth: "100px" }}
                     type="search"
                     className="form-control form-control-sm selectpicker"
-                    placeholder="Brend"
+                    placeholder={t("Brend")}
                     aria-controls="basicExample"
                   />
                 </th>
@@ -88,7 +89,7 @@ export const TableIncoming = ({
                       table="products-table"
                       sheet="Sheet"
                       buttonText="Excel"
-                      filename="Mahsulotlar"
+                      filename={t("Mahsulotlar")}
                     />
                   </div>
                 </th>
@@ -119,7 +120,7 @@ export const TableIncoming = ({
               <tr>
                 <th className="border-right">№</th>
                 <th className="border-right d-flex">
-                  <div>Yetkazib beruvchi</div>
+                  <div>{t("Yetkazib beruvchi")}</div>
                   <div className="btn-group-vertical ml-2">
                     <FontAwesomeIcon
                       onClick={() =>
@@ -146,7 +147,7 @@ export const TableIncoming = ({
                   </div>
                 </th>
                 <th className="border-right">
-                  Kategoriya
+                  {t("Kategoriya")}
                   <div className="btn-group-vertical ml-2">
                     <FontAwesomeIcon
                       onClick={() =>
@@ -173,7 +174,7 @@ export const TableIncoming = ({
                   </div>
                 </th>
                 <th className="border-right">
-                  Mahsulot turi
+                  {t("Mahsulot turi")}
                   <div className="btn-group-vertical ml-2">
                     <FontAwesomeIcon
                       onClick={() =>
@@ -200,7 +201,7 @@ export const TableIncoming = ({
                   </div>
                 </th>
                 <th className="border-right">
-                  Brend
+                  {t("Brend")}
                   <div className="btn-group-vertical ml-2">
                     <FontAwesomeIcon
                       onClick={() =>
@@ -227,7 +228,7 @@ export const TableIncoming = ({
                   </div>
                 </th>
                 <th className="border-right d-flex">
-                  Soni - O'l.B.
+                  {t("Soni - O'l.B.")}
                   <div className="btn-group-vertical ml-2">
                     <FontAwesomeIcon
                       onClick={() =>
@@ -254,7 +255,7 @@ export const TableIncoming = ({
                   </div>
                 </th>
                 <th className="border-right">
-                  Narx "1"
+                  {t("Narx '1'")}
                   <div className="btn-group-vertical ml-2">
                     <FontAwesomeIcon
                       onClick={() =>
@@ -281,7 +282,7 @@ export const TableIncoming = ({
                   </div>
                 </th>
                 <th className="border-right">
-                  Umumiy narx
+                  {t("Umumiy narx")}
                   <div className="btn-group-vertical ml-2">
                     <FontAwesomeIcon
                       onClick={() =>

@@ -3,11 +3,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPenAlt,
-  faRepeat,
-  faTrashAlt,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPenAlt, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { t } from "i18next";
+
 
 const animatedComponents = makeAnimated();
 
@@ -52,7 +50,7 @@ export const RegisterIncoming = ({
           <div className="card">
             <div className="card-header">
               <div className="flex justify-between">
-                <div className="card-title">Mahsulotni qabul qilish</div>
+    <div className="card-title">{t("Mahsulotni qabul qilish")}</div>
                 {loading ? (
                   <button className="btn btn-info" disabled>
                     <span className="spinner-border spinner-border-sm"></span>
@@ -66,14 +64,13 @@ export const RegisterIncoming = ({
                     <FontAwesomeIcon className="text-base" icon={faRepeat} />
                   </button>
                 )}
-              </div>
             </div>
             <div className="card-body  ">
               <div className="bg-primary p-1 flex justify-between">
                 <div className="w-1/3">
                   <Select
                     id="select"
-                    placeholder="Yetkazib beruvchilar"
+                    placeholder={t("Yetkazib beruvchilar")}
                     isClearable={true}
                     isLoading={loading}
                     ref={selectRef.supplier}
@@ -99,7 +96,7 @@ export const RegisterIncoming = ({
                   <Select
                     id="select"
                     isDisabled={!value.supplier}
-                    placeholder="Kategoriyalar"
+                    placeholder={t("Kategoriyalar")}
                     isClearable={true}
                     ref={selectRef.category}
                     isLoading={loading}
@@ -121,7 +118,7 @@ export const RegisterIncoming = ({
                   <Select
                     id="select"
                     isDisabled={!value.supplier}
-                    placeholder="Mahsulot turlari"
+                    placeholder={t("Mahsulot turlari")}
                     isClearable={true}
                     ref={selectRef.producttype}
                     isLoading={loading}
@@ -143,7 +140,7 @@ export const RegisterIncoming = ({
                   <Select
                     id="select"
                     isDisabled={!value.supplier}
-                    placeholder="Mahsulotlar"
+                    placeholder={t("Mahsulotlar")}
                     isClearable={true}
                     ref={selectRef.product}
                     isLoading={loading}
@@ -167,41 +164,41 @@ export const RegisterIncoming = ({
         <div className="col-12">
           <div className="card">
             <div className="card-header">
-              <div className="card-title">Qabul qilinayotgan mahsulotlar</div>
+              <div className="card-title">{t("Qabul qilinayotgan mahsulotlar")}</div>
             </div>
             <div className="card-body">
               <div className="row gutters">
                 <div className="col-12">
                   <div className="text-teal-900 font-bold text-lg">
-                    Yetzib beruvchi: {supplier && supplier.name}
+                   {t(" Yetzib beruvchi:")} {supplier && supplier.name}
                   </div>
                   <table className="table">
                     <thead>
                       <tr>
                         <th className="border py-1 fontbold text-center">№</th>
                         <th className="border py-1 fontbold text-center">
-                          Kategoriyasi va kategoriya kodi
+                          {t("Kategoriyasi va kategoriya kodi")}
                         </th>
                         <th className="border py-1 fontbold text-center">
-                          Nomi va kodi
+                          {t("Nomi va kodi")}
                         </th>
                         <th className="border py-1 fontbold text-center">
-                          Mahsulot turi
+                          {t("Mahsulot turi")}
                         </th>
                         <th className="border py-1 fontbold text-center">
-                          Soni
+                          {t("Soni")}
                         </th>
                         <th className="border py-1 fontbold text-center">
-                          Narx (1)
+                          {t("Narx (1)")}
                         </th>
                         <th className="border py-1 fontbold text-center">
-                          Ulgurji narxi
+                          {t("Ulgurji narxi")}
                         </th>
                         <th className="border py-1 fontbold text-center">
-                          Tahrirlash
+                          {t("Tahrirlash")}
                         </th>
                         <th className="border py-1 fontbold text-center">
-                          O'chirish
+                          {t("O'chirish")}
                         </th>
                       </tr>
                     </thead>
@@ -269,7 +266,7 @@ export const RegisterIncoming = ({
                         onClick={createHandler}
                         className="btn btn-primary"
                       >
-                        Saqlash
+                        {t("Saqlash")}
                       </button>
                     )}
                   </div>
