@@ -1,4 +1,3 @@
-import { t } from "i18next";
 import React, { useCallback } from "react";
 import ReactPaginate from "react-paginate";
 

@@ -170,6 +170,10 @@ router.post("/incoming/getconnectors", auth, (req, res) => {
   require("./incoming").getConnectors(req, res);
 });
 
+router.post("/incoming/getcount", auth, (req, res) => {
+  require("./incoming").getCount(req, res);
+});
+
 //========================================================
 // BRAND
 // CRUD

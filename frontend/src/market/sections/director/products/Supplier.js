@@ -13,7 +13,7 @@ import {
   faRepeat,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
-import { Pagination } from "../components/Pagination";
+import { Pagination } from "./productComponents/Pagination";
 import ReactHtmlTableToExcel from "react-html-table-to-excel";
 import { t } from "i18next";
 
@@ -110,6 +110,48 @@ export const Supplier = () => {
   //====================================================================
   //====================================================================
 
+  const [connectorCount, setConnectorCount] = useState(0);
+
+  const getConnectorsCount = useCallback(async () => {
+    try {
+      const data = await request(
+        "/api/supplier/getconnectorscount",
+        "POST",
+        { market: auth.market && auth.market._id },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setConnectorCount(data);
+    } catch (error) {
+      notify({
+        title: error,
+        description: "",
+        status: "error",
+      });
+    }
+  }, [auth, notify, request]);
+
+  const getConnectors = useCallback(async () => {
+    try {
+      const data = await request(
+        "/api/supplier/getconnectors",
+        "POST",
+        { market: auth.market._id, currentPage, countPage },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setCurrentSuppliers(data);
+    } catch (error) {
+      notify({
+        title: error,
+        description: "",
+        status: "error",
+      });
+    }
+  }, [auth, request, notify, currentPage, countPage]);
+
   //====================================================================
   //====================================================================
 
@@ -132,6 +174,7 @@ export const Supplier = () => {
         market: auth.market && auth.market._id,
       });
       clearInputs();
+      getConnectors();
     } catch (error) {
       notify({
         title: error,
@@ -139,7 +182,7 @@ export const Supplier = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify, supplier, clearInputs]);
+  }, [request, auth, notify, supplier, clearInputs, getConnectors]);
 
   const updateHandler = useCallback(async () => {
     try {
@@ -160,6 +203,7 @@ export const Supplier = () => {
         market: auth.market && auth.market._id,
       });
       clearInputs();
+      getConnectors();
     } catch (error) {
       notify({
         title: error,
@@ -167,7 +211,7 @@ export const Supplier = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify, supplier, clearInputs]);
+  }, [request, auth, notify, supplier, clearInputs, getConnectors]);
 
   const saveHandler = () => {
     if (checkSupplier(supplier)) {
@@ -206,6 +250,7 @@ export const Supplier = () => {
         market: auth.market && auth.market._id,
       });
       clearInputs();
+      getConnectors();
     } catch (error) {
       notify({
         title: error,
@@ -213,7 +258,7 @@ export const Supplier = () => {
         status: "error",
       });
     }
-  }, [auth, request, remove, notify, clearInputs]);
+  }, [auth, request, remove, notify, clearInputs, getConnectors]);
   //====================================================================
   //====================================================================
 
@@ -244,13 +289,19 @@ export const Supplier = () => {
 
   //====================================================================
   //====================================================================
+
+  useEffect(() => {
+    getConnectors();
+  }, [getConnectors, currentPage, countPage]);
+
   const [n, setN] = useState();
   useEffect(() => {
     if (!n) {
       setN(1);
       getSuppliers();
+      getConnectorsCount();
     }
-  }, [getSuppliers, n]);
+  }, [getSuppliers, n, getConnectorsCount]);
   //====================================================================
   //====================================================================
 
@@ -265,7 +316,9 @@ export const Supplier = () => {
                 <table className="table m-0">
                   <thead>
                     <tr>
-                      <th className="border text-center">{t("Yetkazib beruvchi")}</th>
+                      <th className="border text-center">
+                        {t("Yetkazib beruvchi")}
+                      </th>
                       <th className="border text-center">{t("Saqlash")}</th>
                       <th className="border text-center">{t("Tozalash")}</th>
                     </tr>
@@ -348,11 +401,9 @@ export const Supplier = () => {
                       </th>
                       <th className="text-center">
                         <Pagination
-                          setCurrentDatas={setCurrentSuppliers}
-                          datas={suppliers}
                           setCurrentPage={setCurrentPage}
                           countPage={countPage}
-                          totalDatas={suppliers.length}
+                          totalDatas={connectorCount.count}
                         />
                       </th>
                       <th className="text-center">

@@ -27,8 +27,8 @@ export const Incoming = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [countPage, setCountPage] = useState(10);
 
-  const indexLastImport = (currentPage + 1) * countPage;
-  const indexFirstImport = indexLastImport - countPage;
+  // const indexLastImport = (currentPage + 1) * countPage;
+  // const indexFirstImport = indexLastImport - countPage;
   const [currentImports, setCurrentImports] = useState([]);
 
   //====================================================================
@@ -454,11 +454,14 @@ export const Incoming = () => {
                 new Date().setDate(new Date(endDay).getDate() + 1)
               ).setHours(0, 0, 0, 0)
             ),
+            currentPage,
+            countPage,
           },
           {
             Authorization: `Bearer ${auth.token}`,
           }
         );
+        console.log(data);
         let data2 = data.filter((item) => {
           if (supplierConnector === "all") {
             return item;
@@ -468,7 +471,7 @@ export const Incoming = () => {
         });
         setImports(data2);
         setSearchStorage(data2);
-        setCurrentImports(data2.slice(indexFirstImport, indexLastImport));
+        setCurrentImports(data2);
         setDataExcel(data2);
         setVisibleReport(false);
         setVisibleTable(true);
@@ -485,15 +488,42 @@ export const Incoming = () => {
       auth,
       notify,
       endDay,
-      indexFirstImport,
-      indexLastImport,
       setVisibleTable,
       supplierConnector,
+      currentPage,
+      countPage,
     ]
   );
 
+  useEffect(() => {
+    getImports(beginDay, endDay);
+  }, [currentPage, countPage, getImports, beginDay, endDay]);
+
   //====================================================================
   //====================================================================
+
+  const [connectorCount, setConnectorCount] = useState(0);
+
+  const getConnectorCount = useCallback(async () => {
+    try {
+      const data = await request(
+        "/api/products/incoming/getcount",
+        "POST",
+        { market: auth.market._id },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      console.log(data);
+      setConnectorCount(data);
+    } catch (error) {
+      notify({
+        title: error,
+        description: "",
+        status: "error",
+      });
+    }
+  }, [auth, request, notify]);
 
   //====================================================================
   //====================================================================
@@ -743,7 +773,7 @@ export const Incoming = () => {
       getProducts();
       getProductType();
       // getBrand();
-      getImports(beginDay, endDay);
+      getConnectorCount();
       getIncomingConnectors(beginDay, endDay);
     }
   }, [
@@ -752,9 +782,9 @@ export const Incoming = () => {
     n,
     getCategorys,
     getProducts,
-    getImports,
     getProductType,
     // getBrand,
+    getConnectorCount,
     beginDay,
     endDay,
     // getProductType,
@@ -767,23 +797,25 @@ export const Incoming = () => {
   return (
     <>
       <div>
-        <div className='content-wrapper px-lg-5 px-3'>
-          <div className='row gutters'>
-            <div className='col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12'>
-              <div className='row'>
-                <div className='col-12 text-right'>
+        <div className="content-wrapper px-lg-5 px-3">
+          <div className="row gutters">
+            <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+              <div className="row">
+                <div className="col-12 text-right">
                   <button
                     className={`btn btn-primary mb-4 ${
                       visible ? "d-none" : ""
                     }`}
-                    onClick={changeVisible}>
+                    onClick={changeVisible}
+                  >
                     {t("Qabul qilish")}
                   </button>
                   <button
                     className={`btn btn-primary mb-4 ${
                       visible ? "" : "d-none"
                     }`}
-                    onClick={changeVisible}>
+                    onClick={changeVisible}
+                  >
                     {t("Qabul qilish")}
                   </button>
                 </div>
@@ -819,10 +851,11 @@ export const Incoming = () => {
                 />
               </div>
             </div>
-            <div className='w-full mt-2'>
+            <div className="w-full mt-2">
               <button
-                className='w-full btn btn-primary py-1 rounded-t text-center text-white font-bold text-base'
-                onClick={() => setVisibleReport(!visibleReport)}>
+                className="w-full btn btn-primary py-1 rounded-t text-center text-white font-bold text-base"
+                onClick={() => setVisibleReport(!visibleReport)}
+              >
                 {t("Qabul qilingan mahsulotlar")}
               </button>
               <div className={`${visibleReport ? "d-block" : "d-none"}`}>
@@ -838,8 +871,8 @@ export const Incoming = () => {
                 />
               </div>
             </div>
-            <div className='w-full mt-2'>
-              <div className='bg-primary py-1 rounded-t text-center text-white font-bold text-base'>
+            <div className="w-full mt-2">
+              <div className="bg-primary py-1 rounded-t text-center text-white font-bold text-base">
                 {t("Jadval")}
               </div>
               <div className={`${visibleTable ? "d-block" : "d-none"}`}>
@@ -861,6 +894,7 @@ export const Incoming = () => {
                   changeStart={changeStart}
                   changeEnd={changeEnd}
                   setCurrentPage={setCurrentPage}
+                  connectorCount={connectorCount}
                 />
               </div>
             </div>
@@ -874,51 +908,51 @@ export const Incoming = () => {
         handler={addIncoming}
         text={
           <>
-            <div className='font-bold text-black mb-1'>
+            <div className="font-bold text-black mb-1">
               {incoming &&
                 incoming.category &&
                 incoming.category.code + " " + incoming.product.name}
             </div>
-            <div className='table-responsive'>
-              <table className='table'>
+            <div className="table-responsive">
+              <table className="table">
                 <thead>
                   <tr>
-                    <th className='border p-1'>{t("Soni")}</th>
-                    <th className='border p-1'>{t("Narx")}</th>
-                    <th className='border p-1'>{t("Umumiy narx")}</th>
+                    <th className="border p-1">{t("Soni")}</th>
+                    <th className="border p-1">{t("Narx")}</th>
+                    <th className="border p-1">{t("Umumiy narx")}</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td className='border m-0 px-3 py-2 font-bold text-center'>
+                    <td className="border m-0 px-3 py-2 font-bold text-center">
                       <input
                         onChange={inputHandler}
                         value={incoming ? incoming.pieces : ""}
-                        type='number'
+                        type="number"
                         step={0.001}
-                        className='outline-none text-right text-black font-bold'
-                        name='pieces'
+                        className="outline-none text-right text-black font-bold"
+                        name="pieces"
                         style={{ maxWidth: "100px" }}
                       />
                     </td>
-                    <td className='border m-0 px-3 py-2 font-bolds text-center'>
+                    <td className="border m-0 px-3 py-2 font-bolds text-center">
                       <input
                         onChange={inputHandler}
                         value={incoming ? incoming.unitprice : ""}
-                        type='number'
-                        className='outline-none text-right text-black font-bold'
-                        name='unitprice'
+                        type="number"
+                        className="outline-none text-right text-black font-bold"
+                        name="unitprice"
                         style={{ maxWidth: "100px" }}
                       />
                     </td>
-                    <td className='border m-0 px-3 py-2 font-bold text-center'>
+                    <td className="border m-0 px-3 py-2 font-bold text-center">
                       <input
                         onChange={inputHandler}
                         value={incoming ? incoming.totalprice : ""}
-                        type='number'
+                        type="number"
                         style={{ maxWidth: "100px" }}
-                        className='outline-none text-right w-full font-bold text-black'
-                        name='totalprice'
+                        className="outline-none text-right w-full font-bold text-black"
+                        name="totalprice"
                       />
                     </td>
                   </tr>
