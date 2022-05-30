@@ -101,24 +101,37 @@ export const EditSelling = ({
             <div className='flex justify-between'>
               <span className='text-black font-bold'>Chegirma:</span>
               <span className='text-yellow-500 font-bold'>
-                {discount.discount.toLocaleString("de-DE")}{" "}
+                {discount
+                  .reduce((summ, discount) => {
+                    return summ + discount.discount;
+                  }, 0)
+                  .toLocaleString("de-DE")}{" "}
                 <span className='text-teal-600'>USD</span>
               </span>
             </div>
+
             <div className='flex justify-between'>
-              <span className='text-black font-bold'>Qarz:</span>
-              <span className='text-yellow-500 font-bold'>
-                {Math.abs(debt.debt).toLocaleString("de-DE")}{" "}
-                <span className='text-teal-600'>USD</span>
-              </span>
-            </div>
-            <div className='flex justify-between'>
-              <span className='text-black font-bold'>To'lanayotgsan:</span>
+              <span className='text-black font-bold'>To'langan:</span>
               <span className='text-green-700 font-bold'>
+                {payment
+                  .reduce((summ, payment) => {
+                    return summ + payment.payment;
+                  }, 0)
+                  .toLocaleString("de-DE")}{" "}
+                <span className='text-teal-600'>USD</span>
+              </span>
+            </div>
+            <div className='flex justify-between'>
+              <span className='text-black font-bold'>Farq:</span>
+              <span className='text-yellow-500 font-bold'>
                 {(
-                  payment.cash +
-                  payment.card +
-                  payment.transfer
+                  totalprice -
+                  discount.reduce((summ, discount) => {
+                    return summ + discount.discount;
+                  }, 0) -
+                  payment.reduce((summ, payment) => {
+                    return summ + payment.payment;
+                  }, 0)
                 ).toLocaleString("de-DE")}{" "}
                 <span className='text-teal-600'>USD</span>
               </span>

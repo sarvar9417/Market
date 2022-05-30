@@ -12,6 +12,8 @@ import { Sales } from "./payment/Sales";
 import { Cheque } from "./payment/Cheque";
 import { ChequeConnectors } from "./payment/ChequeConnectors";
 import { EditSelling } from "./EditSelling";
+import { discountProcient, returnProduct } from "./returnProduct/turnProduct";
+import { CardEdit } from "./payment/CardEdit";
 export const Sale = () => {
   //====================================================================
   //====================================================================
@@ -53,6 +55,7 @@ export const Sale = () => {
   const [modal2, setModal2] = useState(false);
   const [modal3, setModal3] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [visibleEdit, setVisibleEdit] = useState(false);
   const [check, setCheck] = useState(false);
   const [checkConnectors, setCheckConnectors] = useState(false);
   //====================================================================
@@ -277,6 +280,7 @@ export const Sale = () => {
   const [saleproduct, setSaleProduct] = useState();
   const [saleproducts, setSaleProducts] = useState([]);
   const [totalprice, setTotalPrice] = useState(0);
+  const [totalpriceuzs, setTotalPriceUzs] = useState(0);
   const [sales, setSales] = useState({
     products: [],
     payment: {},
@@ -387,6 +391,7 @@ export const Sale = () => {
       return sale.totalprice + summ;
     }, 0);
     setTotalPrice(Math.round(total * 100) / 100);
+    setTotalPriceUzs(Math.round(total * exchangerate.exchangerate * 100) / 100);
     setPayment({
       ...payment,
       totalprice: Math.round(total * 100) / 100,
@@ -412,6 +417,7 @@ export const Sale = () => {
       return sale.totalprice + summ;
     }, 0);
     setTotalPrice(Math.round(total * 100) / 100);
+    setTotalPriceUzs(Math.round(total * exchangerate.exchangerate * 100) / 100);
     setPayment({
       ...payment,
       totalprice: Math.round(total * 100) / 100,
@@ -632,6 +638,7 @@ export const Sale = () => {
     });
     setSaleProducts([]);
     setTotalPrice(0);
+    setTotalPriceUzs(0);
     setPackman({});
     setClient({});
     getSaleCounts();
@@ -685,6 +692,7 @@ export const Sale = () => {
             100
         ) / 100,
     });
+
     discount.isProcient
       ? setDiscount({
           ...discount,
@@ -700,7 +708,8 @@ export const Sale = () => {
         })
       : setDiscount({
           ...discount,
-          procient: 0,
+          procient:
+            Math.round(((e.target.value * 100) / totalprice) * 100) / 100,
           discount: Math.round(e.target.value * 100) / 100,
           discountuzs:
             Math.round(e.target.value * exchangerate.exchangerate * 100) / 100,
@@ -772,7 +781,12 @@ export const Sale = () => {
         })
       : setDiscount({
           ...discount,
-          procient: 0,
+          procient:
+            Math.round(
+              (((e.target.value / exchangerate.exchangerate) * 100) /
+                totalprice) *
+                100
+            ) / 100,
           discount:
             Math.round((e.target.value / exchangerate.exchangerate) * 100) /
             100,
@@ -877,7 +891,7 @@ export const Sale = () => {
 
   const [paymentType, setPaymentType] = useState({
     type: "cash",
-    name: t("Naqt"),
+    name: "Naqt",
   });
 
   const typeHandler = (e) => {
@@ -1101,16 +1115,271 @@ export const Sale = () => {
   //====================================================================
   //====================================================================
   // Edit products
+  const [editExchanrate, setEditExchanrate] = useState({
+    exchangerate: 0,
+  });
+  const [paymentEdit, setPaymentEdit] = useState({
+    totalprice: 0,
+    totalpriceuzs: 0,
+    type: "cash",
+    cash: 0,
+    card: 0,
+    transfer: 0,
+    carduzs: 0,
+    cashuzs: 0,
+    transferuzs: 0,
+    discount: 0,
+    discountuzs: 0,
+  });
+
+  const [paymentTypeEdit, setPaymentTypeEdit] = useState({
+    type: "cash",
+    name: "Naqt",
+  });
+
+  const typeHandlerEdit = (e) => {
+    if (e.target.dataset.type === "debt") return;
+    // const payment = editPayments.reduce((summ, payment) => {
+    //   return summ + payment.payment;
+    // }, 0);
+
+    // const paymentuzs = editPayments.reduce((summ, payment) => {
+    //   return summ + payment.payment.uzs;
+    // }, 0);
+
+    let p = { ...paymentEdit };
+    if (e.target.dataset.type === "mixed") {
+      setDebt({
+        ...debt,
+        debt:
+          Math.round(
+            (totalprice -
+              editDiscounts.reduce((summ, discount) => {
+                return summ + discount.discount;
+              }, 0) -
+              editPayments.reduce((summ, payment) => {
+                return summ + payment.payment;
+              }, 0)) *
+              100
+          ) / 100,
+        debtuzs:
+          Math.round(
+            (totalpriceuzs -
+              editDiscounts.reduce((summ, discount) => {
+                return summ + discount.discountuzs;
+              }, 0) -
+              editPayments.reduce((summ, payment) => {
+                return summ + payment.paymentuzs;
+              }, 0)) *
+              100
+          ) / 100,
+      });
+    }
+    types.map((type) => {
+      return type === e.target.dataset.type
+        ? ((p[type] =
+            Math.round(
+              (totalprice -
+                editDiscounts.reduce((summ, discount) => {
+                  return summ + discount.discount;
+                }, 0) -
+                editPayments.reduce((summ, payment) => {
+                  return summ + payment.payment;
+                }, 0)) *
+                100
+            ) / 100),
+          (p[type + "uzs"] =
+            Math.round(
+              (totalpriceuzs -
+                editDiscounts.reduce((summ, discount) => {
+                  return summ + discount.discountuzs;
+                }, 0) -
+                editPayments.reduce((summ, payment) => {
+                  return summ + payment.paymentuzs;
+                }, 0)) *
+                100
+            ) / 100),
+          (p.type = type),
+          setDebt({
+            ...debt,
+            debt: 0,
+            debtuzs: 0,
+          }))
+        : ((p[type] = 0), (p[type + "uzs"] = 0));
+    });
+    setPaymentEdit(p);
+    setPaymentTypeEdit({
+      type: e.target.dataset.type,
+      name: e.target.name,
+    });
+  };
+
+  const changeTypeEdit = (e, p) => {
+    let total =
+      (e.target.dataset.type === "cash"
+        ? e.target.value === ""
+          ? 0
+          : Math.round(e.target.value * 100) / 100
+        : paymentEdit.cash) +
+      (e.target.dataset.type === "card"
+        ? e.target.value === ""
+          ? 0
+          : Math.round(e.target.value * 100) / 100
+        : paymentEdit.card) +
+      (e.target.dataset.type === "transfer"
+        ? e.target.value === ""
+          ? 0
+          : Math.round(e.target.value * 100) / 100
+        : paymentEdit.transfer);
+
+    const disc = editDiscounts.reduce((summ, discount) => {
+      return summ + discount.discount;
+    }, 0);
+    const pays = editPayments.reduce((summ, payment) => {
+      return summ + payment.payment;
+    }, 0);
+
+    if (
+      (totalprice - pays - disc > 0 && Math.round(total * 100) / 100) < 0 ||
+      (totalprice - pays - disc < 0 && Math.round(total * 100) / 100) > 0 ||
+      (totalprice - pays - disc < 0 &&
+        Math.round(total * 100) / 100 < totalprice - pays - disc) ||
+      (totalprice - pays - disc > 0 &&
+        Math.round(total * 100) / 100 > totalprice - pays - disc)
+    ) {
+      return notify({
+        title: t("Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!"),
+        description: "",
+        status: "error",
+      });
+    }
+    p[e.target.dataset.type] =
+      e.target.value === "" ? "" : Math.round(e.target.value * 100) / 100;
+    p[e.target.dataset.type + "uzs"] =
+      Math.round(e.target.value * 100 * editExchanrate.exchangerate) / 100;
+    setDebt({
+      ...debt,
+      debt:
+        totalprice -
+        editDiscounts.reduce((summ, discount) => {
+          return summ + discount.discount;
+        }, 0) -
+        editPayments.reduce((summ, payment) => {
+          return summ + payment.payment;
+        }, 0) -
+        p.cash -
+        p.card -
+        p.transfer,
+      debtuzs:
+        totalpriceuzs -
+        editDiscounts.reduce((summ, discount) => {
+          return summ + discount.discountuzs;
+        }, 0) -
+        editPayments.reduce((summ, payment) => {
+          return summ + payment.paymentuzs;
+        }, 0) -
+        p.cashuzs -
+        p.carduzs -
+        p.transferuzs,
+    });
+  };
+
+  const changeTypeUzsEdit = (e, p) => {
+    let total =
+      (e.target.dataset.type === "cash"
+        ? e.target.value === ""
+          ? 0
+          : Math.round((e.target.value / editExchanrate.exchangerate) * 100) /
+            100
+        : payment.cash) +
+      (e.target.dataset.type === "card"
+        ? e.target.value === ""
+          ? 0
+          : Math.round((e.target.value / editExchanrate.exchangerate) * 100) /
+            100
+        : payment.card) +
+      (e.target.dataset.type === "transfer"
+        ? e.target.value === ""
+          ? 0
+          : Math.round((e.target.value / editExchanrate.exchangerate) * 100) /
+            100
+        : payment.transfer);
+
+    const disc = editDiscounts.reduce((summ, discount) => {
+      return summ + discount.discount;
+    }, 0);
+    const pays = editPayments.reduce((summ, payment) => {
+      return summ + payment.payment;
+    }, 0);
+
+    if (
+      (totalprice - pays - disc > 0 && Math.round(total * 100) / 100) < 0 ||
+      (totalprice - pays - disc < 0 && Math.round(total * 100) / 100) > 0 ||
+      (totalprice - pays - disc < 0 &&
+        Math.round(total * 100) / 100 < totalprice - pays - disc) ||
+      (totalprice - pays - disc > 0 &&
+        Math.round(total * 100) / 100 > totalprice - pays - disc)
+    ) {
+      return notify({
+        title: t("Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!"),
+        description: "",
+        status: "error",
+      });
+    }
+    p[e.target.dataset.type] =
+      Math.round((e.target.value / editExchanrate.exchangerate) * 100) / 100;
+    p[e.target.dataset.type + "uzs"] =
+      e.target.value === "" ? "" : Math.round(e.target.value * 100) / 100;
+    setDebt({
+      ...debt,
+      debt:
+        totalprice -
+        editDiscounts.reduce((summ, discount) => {
+          return summ + discount.discount;
+        }, 0) -
+        editPayments.reduce((summ, payment) => {
+          return summ + payment.payment;
+        }, 0) -
+        p.cash -
+        p.card -
+        p.transfer,
+      debtuzs:
+        totalpriceuzs -
+        editDiscounts.reduce((summ, discount) => {
+          return summ + discount.discountuzs;
+        }, 0) -
+        editPayments.reduce((summ, payment) => {
+          return summ + payment.paymentuzs;
+        }, 0) -
+        p.cashuzs -
+        p.carduzs -
+        p.transferuzs,
+    });
+  };
+
+  const changeHandlerEdit = (e) => {
+    let p = { ...paymentEdit };
+    if (e.target.dataset.money === "UZS") {
+      changeTypeUzsEdit(e, p);
+    } else changeTypeEdit(e, p);
+
+    setPaymentEdit(p);
+  };
 
   const [editSaleProducts, setEditSaleProducts] = useState([]);
   const [editSaleConnectorId, setEditSaleConnectorId] = useState({ _id: 0 });
   const [editSaleConnector, setEditSaleConnector] = useState({});
   const [editPayments, setEditPayments] = useState([]);
-  const [editDiscounts, setEditDiscounts] = useState({ _id: 0 });
+  const [editDiscounts, setEditDiscounts] = useState([]);
   const editHandler = (e) => {
     setTotalPrice(
       e.products.reduce((summ, product) => {
         return summ + product.totalprice;
+      }, 0)
+    );
+    setTotalPriceUzs(
+      e.products.reduce((summ, product) => {
+        return summ + product.totalpriceuzs;
       }, 0)
     );
     setEditSaleConnector(e);
@@ -1139,18 +1408,69 @@ export const Sale = () => {
         status: "warning",
       });
     }
-    products[parseInt(e.target.id)].pieces = e.target.value;
-    products[parseInt(e.target.id)].totalprice =
-      e.target.value === ""
-        ? 0
-        : products[parseInt(e.target.id)].unitprice *
-          parseFloat(e.target.value);
-    products[parseInt(e.target.id)].totalpriceuzs =
-      e.target.value === ""
-        ? 0
-        : products[parseInt(e.target.id)].unitpriceuzs *
-          parseFloat(e.target.value);
-    setEditSaleProducts(products);
+    let EditDiscounts = [...editDiscounts];
+    for (const i in EditDiscounts) {
+      if (
+        EditDiscounts[i]._id === products[parseInt(e.target.id)].discount &&
+        EditDiscounts[i].procient > 0
+      ) {
+        EditDiscounts[i] = { ...editSaleConnector.discounts[i] };
+        setEditSaleProducts(returnProduct(products, e));
+        discountProcient(EditDiscounts, products, e, i);
+      }
+    }
+    setEditDiscounts(EditDiscounts);
+
+    let total =
+      editSaleConnector.products.reduce((summ, product) => {
+        return summ + product.totalprice;
+      }, 0) -
+      products.reduce((summ, product) => {
+        return summ + product.totalprice;
+      }, 0);
+
+    let totaluzs =
+      editSaleConnector.products.reduce((summ, product) => {
+        return summ + product.totalpriceuzs;
+      }, 0) -
+      products.reduce((summ, product) => {
+        return summ + product.totalpriceuzs;
+      }, 0);
+
+    let cashuzs =
+      totaluzs -
+      EditDiscounts.reduce((summ, discount) => {
+        return summ + discount.discountuzs;
+      }, 0) -
+      editPayments.reduce((summ, payment) => {
+        return summ + payment.paymentuzs;
+      }, 0);
+
+    let cash =
+      total -
+      EditDiscounts.reduce((summ, discount) => {
+        return summ + discount.discount;
+      }, 0) -
+      editPayments.reduce((summ, payment) => {
+        return summ + payment.payment;
+      }, 0);
+
+    setTotalPrice(total);
+    setTotalPriceUzs(totaluzs);
+    setPaymentEdit({
+      ...paymentEdit,
+      cash: Math.round(cash * 100) / 100,
+      cashuzs: Math.round(cashuzs * 100) / 100,
+      type: "cash",
+    });
+    setEditExchanrate({
+      exchangerate:
+        Math.round(
+          (editSaleConnector.products[parseInt(e.target.id)].unitpriceuzs /
+            editSaleConnector.products[parseInt(e.target.id)].unitprice) *
+            100
+        ) / 100,
+    });
   };
 
   //====================================================================
@@ -1220,6 +1540,25 @@ export const Sale = () => {
           debt={debt}
         />
       </div>
+      <div className={visibleEdit ? "" : "hidden"}>
+        <CardEdit
+          totalpriceuzs={totalpriceuzs}
+          client={client}
+          exchangerate={exchangerate}
+          checkNumber={saleCounts}
+          checkHandler={checkHandler}
+          discount={editDiscounts}
+          changeHandler={changeHandlerEdit}
+          paymentType={paymentTypeEdit}
+          typeHandler={typeHandlerEdit}
+          totalprice={totalprice}
+          visible={visible}
+          setVisible={setVisibleEdit}
+          payment={paymentEdit}
+          debt={debt}
+        />
+      </div>
+
       {/* <Payment /> */}
       <div
         className={visible || checkConnectors || check ? "invisible" : "m-3 "}>
@@ -1228,11 +1567,11 @@ export const Sale = () => {
             changeBack={changeBack}
             editSaleConnector={editSaleConnector}
             checkNumber={saleCounts}
-            payment={payment}
-            discount={discount}
+            payment={editPayments}
+            discount={editDiscounts}
             debt={debt}
             totalprice={totalprice}
-            setVisible={setVisible}
+            setVisible={setVisibleEdit}
             editProducts={editProducts}
             saleproducts={editSaleProducts}
             packmans={packmans}

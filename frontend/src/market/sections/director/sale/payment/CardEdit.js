@@ -1,11 +1,12 @@
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import { LeftCard } from "./LeftCard";
-import { RightBody } from "./RightBody";
 import { t } from "i18next";
+import { RightBodyEdit } from "./RightBodyEdit";
+import { LeftCardEdit } from "./LeftCardEdit";
 
-export const Card = ({
+export const CardEdit = ({
+  totalpriceuzs,
   client,
   exchangerate,
   checkNumber,
@@ -16,7 +17,6 @@ export const Card = ({
   paymentType,
   typeHandler,
   totalprice,
-  visible,
   setVisible,
   payment,
   debt,
@@ -42,9 +42,7 @@ export const Card = ({
                   <span className='flex justify-between text-sm'>
                     <span></span>
                     <span>
-                      {(totalprice * exchangerate.exchangerate).toLocaleString(
-                        "de-DE"
-                      )}
+                      {totalpriceuzs.toLocaleString("de-DE")}
                       &#177;
                       {(exchangerate.exchangerate / 100).toLocaleString(
                         "de-DE"
@@ -67,17 +65,17 @@ export const Card = ({
         </div>
       </div>
       <div className='grid grid-cols-1 md:grid-cols-2'>
-        <LeftCard
+        <LeftCardEdit
           exchangerate={exchangerate}
           checkHandler={checkHandler}
-          discount={discount}
+          discount={{ isProcient: true }}
           changeProcient={changeProcient}
           changeHandler={changeHandler}
           paymentType={paymentType}
           totalprice={totalprice}
           payment={payment}
         />
-        <RightBody
+        <RightBodyEdit
           exchangerate={exchangerate}
           typeHandler={typeHandler}
           payment={payment}

@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { t } from "i18next";
 import React from "react";
 
-export const RightBody = ({
+export const RightBodyEdit = ({
   exchangerate,
   payment,
   discount,
@@ -95,7 +95,7 @@ export const RightBody = ({
       </div>
       <div className='grid grid-cols-2 gap-2 pt-2'>
         <button
-          onClick={typeHandler}
+          // onClick={typeHandler}
           className='bg-teal-400 hover:bg-teal-500 text-white w-full rounded font-bold flex flex-col justify-between items-center px-3 py-3'
           name='Chegirma'
           data-type='discount'>
@@ -104,10 +104,20 @@ export const RightBody = ({
           </h1>
           <p className='text-3xl font-bold pointer-events-none flex flex-col'>
             <span className='text-black'>
-              {discount.discount.toLocaleString("de-DE")} USD
+              {discount
+                .reduce((summ, discount) => {
+                  return summ + discount.discount;
+                }, 0)
+                .toLocaleString("de-DE")}{" "}
+              USD
             </span>
             <span className='text-lg'>
-              {discount.discountuzs.toLocaleString("de-DE")} UZS
+              {discount
+                .reduce((summ, discount) => {
+                  return summ + discount.discountuzs;
+                }, 0)
+                .toLocaleString("de-DE")}{" "}
+              UZS
             </span>
           </p>
         </button>
