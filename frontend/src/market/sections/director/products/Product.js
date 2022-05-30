@@ -79,7 +79,6 @@ export const Product = () => {
   });
 
   const sections = [
-
     { name: t("Kategoriya kodi"), value: "category" },
     { name: t("Mahsulot turi"), value: "producttype" },
     { name: t("Brend"), value: "brand" },
@@ -131,6 +130,52 @@ export const Product = () => {
   ]);
   //====================================================================
   //====================================================================
+
+  const [connectorCount, setConnectorCount] = useState(0);
+
+  const getConnectorsCount = useCallback(async () => {
+    try {
+      const data = await request(
+        "/api/products/product/getconnectorscount",
+        "POST",
+        { market: auth.market && auth.market._id },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setConnectorCount(data);
+    } catch (error) {
+      notify({
+        title: error,
+        description: "",
+        status: "error",
+      });
+    }
+  }, [auth, notify, request]);
+
+  const getConnectors = useCallback(async () => {
+    try {
+      const data = await request(
+        "/api/products/product/getconnectors",
+        "POST",
+        { market: auth.market._id, currentPage, countPage },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setCurrentProducts(data);
+    } catch (error) {
+      notify({
+        title: error,
+        description: "",
+        status: "error",
+      });
+    }
+  }, [auth, request, notify, currentPage, countPage]);
+
+  //====================================================================
+  //====================================================================
+
   const [products, setProducts] = useState([]);
   const [searchStorage, setSearchStrorage] = useState([]);
   const [tableExcel, setTableExcel] = useState([]);
@@ -170,37 +215,6 @@ export const Product = () => {
   ]);
   //====================================================================
   //====================================================================
-
-  const changeData = useCallback(
-    (method, data) => {
-      let arr = [];
-      if (method === "POST") {
-        arr = [{ ...data }, ...searchStorage];
-      }
-      if (method === "UPDATE") {
-        arr = searchStorage.map((item) => {
-          if (item._id === data._id) {
-            return (item = { ...data });
-          }
-          return item;
-        });
-      }
-      if (method === "DELETE") {
-        arr = searchStorage.filter((item) => item._id !== data._id);
-      }
-      setProducts(arr);
-      setCurrentProducts(arr.slice(indexFirstProduct, indexLastProduct));
-      setSearchStrorage(arr);
-    },
-    [
-      searchStorage,
-      setProducts,
-      setCurrentProducts,
-      setSearchStrorage,
-      indexFirstProduct,
-      indexLastProduct,
-    ]
-  );
 
   //====================================================================
   //====================================================================
@@ -411,7 +425,7 @@ export const Product = () => {
         description: "",
         status: "success",
       });
-      changeData("POST", data);
+      getConnectors();
       clearInputs();
     } catch (error) {
       notify({
@@ -420,7 +434,7 @@ export const Product = () => {
         status: "error",
       });
     }
-  }, [auth, request, product, notify, clearInputs, changeData]);
+  }, [auth, request, product, notify, clearInputs, getConnectors]);
 
   const updateHandler = useCallback(async () => {
     try {
@@ -439,7 +453,7 @@ export const Product = () => {
         description: "",
         status: "success",
       });
-      changeData("UPDATE", data);
+      getConnectors();
       clearInputs();
     } catch (error) {
       notify({
@@ -448,7 +462,7 @@ export const Product = () => {
         status: "error",
       });
     }
-  }, [auth, request, product, notify, clearInputs, changeData]);
+  }, [auth, request, product, notify, clearInputs, getConnectors]);
 
   const saveHandler = () => {
     if (checkProduct(product)) {
@@ -481,7 +495,7 @@ export const Product = () => {
         description: "",
         status: "success",
       });
-      changeData("DELETE", data);
+      getConnectors();
       clearInputs();
       setModal(false);
     } catch (error) {
@@ -491,7 +505,7 @@ export const Product = () => {
         status: "error",
       });
     }
-  }, [auth, request, remove, notify, clearInputs, changeData]);
+  }, [auth, request, remove, notify, clearInputs, getConnectors]);
 
   //====================================================================
   //====================================================================
@@ -630,6 +644,11 @@ export const Product = () => {
 
   //====================================================================
   //====================================================================
+
+  useEffect(() => {
+    getConnectors();
+  }, [getConnectors, currentPage, countPage]);
+
   const [n, setN] = useState();
   useEffect(() => {
     if (!n) {
@@ -639,8 +658,17 @@ export const Product = () => {
       getProductTypes();
       getUnits();
       getBrand();
+      getConnectorsCount();
     }
-  }, [getProducts, getUnits, getCategories, getProductTypes, getBrand, n]);
+  }, [
+    getProducts,
+    getUnits,
+    getCategories,
+    getProductTypes,
+    getBrand,
+    n,
+    getConnectorsCount,
+  ]);
   //====================================================================
   //====================================================================
   return (
@@ -693,6 +721,7 @@ export const Product = () => {
               setModal2={setModal2}
               selectRef={selectRef}
               market={auth.market}
+              connectorCount={connectorCount}
             />
           </div>
         </div>

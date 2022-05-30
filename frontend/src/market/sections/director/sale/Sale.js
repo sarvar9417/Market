@@ -262,6 +262,7 @@ export const Sale = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+      console.log(data);
       setSaleCounts(data);
     } catch (error) {
       notify({
@@ -450,6 +451,9 @@ export const Sale = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+      console.log(data);
+      console.log(currentPage);
+      console.log(countPage);
       setCurrentProducts(data);
       setSaleConnectors(data);
     } catch (error) {
@@ -1598,7 +1602,7 @@ export const Sale = () => {
   //====================================================================
 
   return (
-    <div className=''>
+    <div className="">
       {/* <div className={`${editVisible ? "" : "hidden"}`}>
         <EditSaleProducts />
       </div> */}
@@ -1647,7 +1651,8 @@ export const Sale = () => {
 
       {/* <Payment /> */}
       <div
-        className={visible || checkConnectors || check ? "invisible" : "m-3 "}>
+        className={visible || checkConnectors || check ? "invisible" : "m-3 "}
+      >
         {editSaleConnectorId._id !== 0 ? (
           <EditSelling
             changeBack={changeBack}
@@ -1667,8 +1672,8 @@ export const Sale = () => {
             inputClient={inputClient}
           />
         ) : (
-          <div className='grid grid-cols-1 gap-4 md:grid-cols-7 pb-3'>
-            <div className='md:col-span-2 w-full'>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-7 pb-3">
+            <div className="md:col-span-2 w-full">
               <Products
                 changeProduct={changeProduct}
                 changeBrand={changeBrand}
@@ -1680,7 +1685,7 @@ export const Sale = () => {
                 products={products}
               />
             </div>
-            <div className='md:col-span-5 w-full'>
+            <div className="md:col-span-5 w-full">
               <Selling
                 checkNumber={saleCounts}
                 payment={payment}
@@ -1733,7 +1738,7 @@ export const Sale = () => {
         text={
           <input
             onChange={changeComment}
-            className='block border w-full px-2 rounded'
+            className="block border w-full px-2 rounded"
             placeholder={t("Izoh")}
           />
         }
@@ -1758,7 +1763,7 @@ export const Sale = () => {
         text={
           <input
             onChange={changeComment}
-            className='block border w-full px-2 rounded'
+            className="block border w-full px-2 rounded"
             placeholder={t("Izoh")}
           />
         }

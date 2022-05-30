@@ -6,7 +6,7 @@ import {
   faPenAlt,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
-import { Pagination } from "../../components/Pagination";
+import { Pagination } from "../productComponents/Pagination";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import { ExcelTable } from "./ExcelTable";
 import { ExcelUpload } from "./ExcelUpload";
@@ -37,6 +37,7 @@ export const TableProduct = ({
   searchBrand,
   selectRef,
   market,
+  connectorCount,
 }) => {
   const edit = (e, p) => {
     selectRef.category.current.selectOption({
@@ -116,11 +117,9 @@ export const TableProduct = ({
                 </th>
                 <th className="text-center" colSpan={2}>
                   <Pagination
-                    setCurrentDatas={setCurrentProducts}
-                    datas={products}
                     setCurrentPage={setCurrentPage}
                     countPage={countPage}
-                    totalDatas={products.length}
+                    totalDatas={connectorCount.count}
                   />
                 </th>
                 <th className="text-center">
@@ -229,9 +228,7 @@ export const TableProduct = ({
                 </th>
                 <th className="border text-center">
                   {t("Soni - O'.B.")}
-                  <div
-                    className="btn-group-vertical ml-2"
-                  >
+                  <div className="btn-group-vertical ml-2">
                     <FontAwesomeIcon
                       onClick={() =>
                         setCurrentProducts(

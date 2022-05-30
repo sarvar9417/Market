@@ -13,7 +13,7 @@ import {
   faRepeat,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
-import { Pagination } from "../components/Pagination";
+import { Pagination } from "./productComponents/Pagination";
 import ReactHtmlTableToExcel from "react-html-table-to-excel";
 import { t } from "i18next";
 
@@ -59,6 +59,7 @@ export const Category = () => {
   const [countPage, setCountPage] = useState(10);
   const indexLastProduct = (currentPage + 1) * countPage;
   const indexFirstProduct = indexLastProduct - countPage;
+  const [categoryCount, setCategoryCount] = useState(0);
   //====================================================================
   //====================================================================
 
@@ -143,6 +144,46 @@ export const Category = () => {
   //====================================================================
   //====================================================================
 
+  const getCategoryConnectors = useCallback(async () => {
+    try {
+      const data = await request(
+        "/api/products/category/getconnectors",
+        "POST",
+        { market: auth.market && auth.market._id, countPage, currentPage },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setCurrentCategories(data);
+    } catch (error) {
+      notify({
+        title: error,
+        description: "",
+        status: "error",
+      });
+    }
+  }, [auth, request, notify, countPage, currentPage]);
+
+  const getCategoryCount = useCallback(async () => {
+    try {
+      const data = await request(
+        "/api/products/category/datacount",
+        "POST",
+        { market: auth.market && auth.market._id },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setCategoryCount(data);
+    } catch (error) {
+      notify({
+        title: error,
+        description: "",
+        status: "error",
+      });
+    }
+  }, [notify, request, auth]);
+
   //====================================================================
   //====================================================================
 
@@ -161,9 +202,7 @@ export const Category = () => {
         description: "",
         status: "success",
       });
-      let c = [...categories];
-      c.unshift({ ...data });
-      setCategories([...c]);
+      getCategoryConnectors();
       setCategory({
         market: auth.market && auth.market._id,
       });
@@ -175,7 +214,7 @@ export const Category = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify, setCategory, category, clearInputs, categories]);
+  }, [request, auth, notify, category, clearInputs, getCategoryConnectors]);
 
   const updateHandler = useCallback(async () => {
     try {
@@ -192,12 +231,7 @@ export const Category = () => {
         description: "",
         status: "success",
       });
-      let index = categories.findIndex((categor) => {
-        return category._id === categor._id;
-      });
-      let c = [...categories];
-      c.splice(index, 1, { ...data });
-      setCategories([...c]);
+      getCategoryConnectors();
       setCategory({
         market: auth.market && auth.market._id,
       });
@@ -209,7 +243,7 @@ export const Category = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify, category, clearInputs, categories]);
+  }, [request, auth, notify, category, clearInputs, getCategoryConnectors]);
 
   const saveHandler = () => {
     if (checkCategory(category)) {
@@ -243,13 +277,7 @@ export const Category = () => {
         description: "",
         status: "success",
       });
-      let index = categories.findIndex((categor) => {
-        return remove._id === categor._id;
-      });
-      let c = [...categories];
-      c.splice(index, 1);
-      setCategories([...c]);
-      setModal(false);
+      getCategoryConnectors();
       setCategory({
         market: auth.market && auth.market._id,
       });
@@ -261,7 +289,7 @@ export const Category = () => {
         status: "error",
       });
     }
-  }, [auth, request, remove, notify, clearInputs, categories]);
+  }, [auth, request, remove, notify, clearInputs, getCategoryConnectors]);
 
   //====================================================================
   //====================================================================
@@ -283,16 +311,18 @@ export const Category = () => {
   //====================================================================
   //====================================================================
 
-  //====================================================================
-  //====================================================================
+  useEffect(() => {
+    getCategoryConnectors();
+  }, [currentPage, countPage, getCategoryConnectors]);
 
   const [n, setN] = useState();
   useEffect(() => {
     if (!n) {
       setN(1);
       getCategory();
+      getCategoryCount();
     }
-  }, [getCategory, n]);
+  }, [getCategory, n, getCategoryCount]);
   //====================================================================
   //====================================================================
 
@@ -417,11 +447,9 @@ export const Category = () => {
                       </th>
                       <th className='text-center'>
                         <Pagination
-                          setCurrentDatas={setCurrentCategories}
-                          datas={categories}
                           setCurrentPage={setCurrentPage}
                           countPage={countPage}
-                          totalDatas={categories.length}
+                          totalDatas={categoryCount.count}
                         />
                       </th>
                       <th className='text-center'>

@@ -15,7 +15,7 @@ import {
   faPenAlt,
   faTrashAlt,
 } from "@fortawesome/free-solid-svg-icons";
-import { Pagination } from "../components/Pagination";
+import { Pagination } from "./productComponents/Pagination";
 import ReactHtmlTableToExcel from "react-html-table-to-excel";
 import { t } from "i18next";
 
@@ -56,6 +56,7 @@ export const ProductType = () => {
   const [countPage, setCountPage] = useState(10);
   const indexLastProduct = (currentPage + 1) * countPage;
   const indexFirstProduct = indexLastProduct - countPage;
+  const [connectorCount, setConnectorCount] = useState(0);
 
   const [remove, setRemove] = useState({
     market: auth.market && auth.market._id,
@@ -123,7 +124,6 @@ export const ProductType = () => {
       setCurrentProductTypes(data.slice(indexFirstProduct, indexLastProduct));
       setSearchStorage(data);
       setTableExcel(data);
-      console.log(data);
     } catch (error) {
       notify({
         title: error,
@@ -171,7 +171,7 @@ export const ProductType = () => {
 
   //====================================================================
   //====================================================================
-  console.log(producttype);
+
   //====================================================================
   //====================================================================
 
@@ -190,11 +190,11 @@ export const ProductType = () => {
         description: "",
         status: "success",
       });
+      getConnectors();
       setProductType({
         market: auth.market && auth.market._id,
       });
       clearInputs();
-      getProductTypes();
     } catch (error) {
       notify({
         title: error,
@@ -202,7 +202,15 @@ export const ProductType = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify, producttype, clearInputs, getProductTypes]);
+  }, [
+    request,
+    auth,
+    notify,
+    producttype,
+    clearInputs,
+    getProductTypes,
+    getConnectors,
+  ]);
 
   const updateHandler = useCallback(async () => {
     try {
@@ -219,17 +227,11 @@ export const ProductType = () => {
         description: "",
         status: "success",
       });
-      let index = producttypes.findIndex((producttyp) => {
-        return producttype._id === producttyp._id;
-      });
-      let c = [...producttypes];
-      c.splice(index, 1, { ...data });
-      setProductTypes([...c]);
+      getConnectors();
       setProductType({
         market: auth.market && auth.market._id,
       });
       clearInputs();
-      getProductTypes();
     } catch (error) {
       notify({
         title: error,
@@ -246,6 +248,7 @@ export const ProductType = () => {
     clearInputs,
     producttypes,
     getProductTypes,
+    getConnectors,
   ]);
 
   const saveHandler = () => {
@@ -280,17 +283,11 @@ export const ProductType = () => {
         description: "",
         status: "success",
       });
-      let index = producttypes.findIndex((producttyp) => {
-        return remove._id === producttyp._id;
-      });
-      let c = [...producttypes];
-      c.splice(index, 1);
-      setProductTypes([...c]);
+      getConnectors();
       setModal(false);
       setProductType({
         market: auth.market && auth.market._id,
       });
-      getProductTypes();
       clearInputs();
     } catch (error) {
       notify({
@@ -308,26 +305,66 @@ export const ProductType = () => {
     clearInputs,
     producttypes,
     getProductTypes,
+    getConnectors,
   ]);
   //====================================================================
   //====================================================================
 
-  //====================================================================
-  //====================================================================
+  const getConnectorsCount = useCallback(async () => {
+    try {
+      const data = await request(
+        "/api/products/producttype/getconnectorscount",
+        "POST",
+        { market: auth.market && auth.market._id },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setConnectorCount(data);
+    } catch (error) {
+      notify({
+        title: error,
+        description: "",
+        status: "error",
+      });
+    }
+  }, [auth, notify, request]);
+
+  const getConnectors = useCallback(async () => {
+    try {
+      const data = await request(
+        "/api/products/producttype/getconnectors",
+        "POST",
+        { market: auth.market._id, currentPage, countPage },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setCurrentProductTypes(data);
+    } catch (error) {
+      notify({
+        title: error,
+        description: "",
+        status: "error",
+      });
+    }
+  }, [auth, request, notify, currentPage, countPage]);
 
   //====================================================================
   //====================================================================
+  useEffect(() => {
+    getConnectors();
+  }, [currentPage, countPage, getConnectors]);
 
-  //====================================================================
-  //====================================================================
   const [n, setN] = useState();
   useEffect(() => {
     if (!n) {
       setN(1);
       getCategories();
       getProductTypes();
+      getConnectorsCount();
     }
-  }, [getCategories, getProductTypes, n]);
+  }, [getCategories, getProductTypes, getConnectorsCount, n]);
   //====================================================================
   //====================================================================
 
@@ -345,9 +382,15 @@ export const ProductType = () => {
                       <th className="w-25 border text-center">
                         {t("Kategoriya nomi")}
                       </th>
-                      <th className="w-25 border text-center">{t("Mahsulot turi")}</th>
-                      <th className="w-25 border text-center">{t("Saqlash")}</th>
-                      <th className="w-25 border text-center">{t("Tozalash")}</th>
+                      <th className="w-25 border text-center">
+                        {t("Mahsulot turi")}
+                      </th>
+                      <th className="w-25 border text-center">
+                        {t("Saqlash")}
+                      </th>
+                      <th className="w-25 border text-center">
+                        {t("Tozalash")}
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -463,11 +506,9 @@ export const ProductType = () => {
                       </th>
                       <th className="text-center">
                         <Pagination
-                          setCurrentDatas={setCurrentProductTypes}
-                          datas={producttypes}
                           setCurrentPage={setCurrentPage}
                           countPage={countPage}
-                          totalDatas={producttypes.length}
+                          totalDatas={connectorCount.count}
                         />
                       </th>
                       <th className="text-center">
@@ -487,7 +528,8 @@ export const ProductType = () => {
                     <tr>
                       <th className="border text-center">№</th>
                       <th className="w-25 border text-center">
-                        {t("Kategoriya")}{"  "}
+                        {t("Kategoriya")}
+                        {"  "}
                         <div className="btn-group-vertical ml-2">
                           <FontAwesomeIcon
                             onClick={() =>
@@ -521,8 +563,12 @@ export const ProductType = () => {
                           property={"name"}
                         />
                       </th>
-                      <th className="w-25 border text-center">{t("Tahrirlash")}</th>
-                      <th className="w-25 border text-center">{t("O'chirish")}</th>
+                      <th className="w-25 border text-center">
+                        {t("Tahrirlash")}
+                      </th>
+                      <th className="w-25 border text-center">
+                        {t("O'chirish")}
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
