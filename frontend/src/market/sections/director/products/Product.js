@@ -84,7 +84,8 @@ export const Product = () => {
     { name: "Mahsulot kodi", value: "code" },
     { name: "Mahsulot nomi", value: "name" },
     { name: "O'lchov birligi", value: "unit" },
-    { name: "Narxi", value: "price" },
+    { name: "Olish narxi", value: "incomingprice" },
+    { name: "Sotish narxi", value: "sellingprice" },
     { name: "Soni", value: "total" },
   ];
 

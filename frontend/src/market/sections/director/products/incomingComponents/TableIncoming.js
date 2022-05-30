@@ -321,7 +321,7 @@ export const TableIncoming = ({
                         {p.supplier.name}
                       </td>
                       <td className="border-right font-bold text-black">
-                        {p.category.code} {" | "} {p.product.code}
+                        {p.category && p.category.code} {" | "} {p.product.code}
                       </td>
                       <td className="border-right font-bold text-black">
                         {p.producttype && p.producttype.name}

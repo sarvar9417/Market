@@ -12,7 +12,8 @@ export const ExcelTable = ({ data, ...props }) => {
               <th className="border-righ">Mahsulot turi va mahsulot</th>
               <th className="border-righ">Brend</th>
               <th className="border-righ">Soni - O'.B.</th>
-              <th className="border-righ">Narxi</th>
+              <th className="border-righ">Olish narxi</th>
+              <th className="border-righ">Sotish narxi</th>
             </tr>
           </thead>
           <tbody>
@@ -31,6 +32,9 @@ export const ExcelTable = ({ data, ...props }) => {
                   </td>
                   <td className="border-right">
                     {p.total} {p.unit.name}
+                  </td>
+                  <td className="border-right">
+                    {(p.price && p.price.incomingprice) || 0}
                   </td>
                   <td className="border-right">
                     {(p.price && p.price.sellingprice) || 0}
