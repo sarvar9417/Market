@@ -10,7 +10,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #ececec !important;
+  /* background-color: #ececec !important; */
 }
 
 code {
@@ -117,4 +117,7 @@ code {
   background-color: rgba(0, 0, 0, 0.7);
 }
 
+table {
+  background-color: #ececec !important;
+}
 /* table */

@@ -208,7 +208,6 @@ module.exports.categoryCounts = async (req, res) => {
     }
 
     const count = await Category.find({ market }).count();
-    console.log(count);
     res.status(201).json({ count });
   } catch (error) {
     res.status(400).json({ error: "Serverda xatolik yuz berdi..." });

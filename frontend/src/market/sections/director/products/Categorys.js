@@ -1,5 +1,4 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { Loader } from "../../../loader/Loader";
 import { useToast } from "@chakra-ui/react";
 import { useHttp } from "../../../hooks/http.hook";
 import { AuthContext } from "../../../context/AuthContext";
@@ -327,217 +326,192 @@ export const Category = () => {
   //====================================================================
 
   return (
-    <>
-      {loading ? <Loader /> : ""}
-      <div className='content-wrapper px-lg-5 px-3'>
-        <div className='row gutters'>
-          <div className='col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12'>
-            <div className='table-container'>
-              <div className='table-responsive'>
-                <table className='table m-0'>
-                  <thead>
-                    <tr>
-                      <th className='border text-center'>
-                        {t("Kategoriya kodi")}
-                      </th>
-                      <th className='border text-center'>
-                        {t("Kategoriya nomi")}
-                      </th>
-                      <th className='border text-center'>{t("Saqlash")}</th>
-                      <th className='border text-center'>{t("Tozalash")}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td className=' text-center border'>
-                        <input
-                          style={{ minWidth: "70px" }}
-                          value={category.code ? category.code : ""}
-                          onKeyUp={keyPressed}
-                          onChange={(e) =>
-                            setCategory({
-                              ...category,
-                              [e.target.name]: parseInt(e.target.value),
-                            })
-                          }
-                          type='text'
-                          className='focus: outline-none focus:ring focus: border-blue-500 py-2 px-3 rounded'
-                          id='inputName'
-                          name='code'
-                          placeholder={t("Kategoriya kodini kiriting")}
-                        />
-                      </td>
-                      <td className=' text-center border'>
-                        <input
-                          style={{ minWidth: "70px" }}
-                          value={category.name ? category.name : ""}
-                          onKeyUp={keyPressed}
-                          onChange={inputHandler}
-                          type='text'
-                          className='focus: outline-none focus:ring focus: border-blue-500 py-2 px-3 rounded'
-                          id='inputName'
-                          name='name'
-                          placeholder={t("Kategotiya nomini kiriting")}
-                        />
-                      </td>
-                      <td className='text-center border'>
-                        {loading ? (
-                          <button className='btn btn-info' disabled>
-                            <span className='spinner-border spinner-border-sm'></span>
-                            Loading...
-                          </button>
-                        ) : (
-                          <button
-                            onClick={saveHandler}
-                            className='btn btn-success py-1 px-4'>
-                            <FontAwesomeIcon
-                              className='text-base'
-                              icon={faFloppyDisk}
-                            />
-                          </button>
-                        )}
-                      </td>
-                      <td className='text-center border'>
-                        {loading ? (
-                          <button className='btn btn-info' disabled>
-                            <span className='spinner-border spinner-border-sm'></span>
-                            Loading...
-                          </button>
-                        ) : (
-                          <button
-                            onClick={clearInputs}
-                            className='btn btn-secondary py-1 px-4'>
-                            <FontAwesomeIcon
-                              className='text-base'
-                              icon={faRepeat}
-                            />
-                          </button>
-                        )}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+    <div>
+      <div className='m-3'>
+        <div className=''>
+          <div className=''>
+            <div className='mb-3'>
+              <ul className='grid grid-cols-12  shadow-xl bg-white rounded border-b text-white'>
+                <li className='text-center font-bold border-r py-2 col-span-4 bg-alo24'>
+                  {t("Kategoriya kodi")}
+                </li>
+                <li className='border-r font-bold text-center col-span-4 bg-alo24 py-2'>
+                  {t("Kategoriya nomi")}
+                </li>
+                <li className='border-r font-bold text-center col-span-2 bg-alo24 py-2 '>
+                  {t("Saqlash")}
+                </li>
+                <li className='text-center font-bold col-span-2 bg-alo24 py-2 '>
+                  {t("Tozalash")}
+                </li>
+              </ul>
+              <ul className='grid grid-cols-12 shadow-xl bg-white rounded text-white'>
+                <li className='text-center font-bold border-r py-2 col-span-4'>
+                  <input
+                    style={{ minWidth: "70px" }}
+                    value={category.code ? category.code : ""}
+                    onKeyUp={keyPressed}
+                    onChange={(e) =>
+                      setCategory({
+                        ...category,
+                        [e.target.name]: parseInt(e.target.value),
+                      })
+                    }
+                    type='text'
+                    className='border-blue border px-2 outline-none'
+                    id='inputName'
+                    name='code'
+                    placeholder={t("Kategoriya kodini kiriting")}
+                  />
+                </li>
+                <li className='border-r text-center col-span-4 py-2'>
+                  <input
+                    style={{ minWidth: "70px" }}
+                    value={category.name ? category.name : ""}
+                    onKeyUp={keyPressed}
+                    onChange={inputHandler}
+                    type='text'
+                    className='border px-2 outline-none'
+                    id='inputName'
+                    name='name'
+                    placeholder={t("Kategotiya nomini kiriting")}
+                  />
+                </li>
+                <li className='border-r text-center col-span-2  py-2'>
+                  {loading ? (
+                    <button className='btn btn-info' disabled>
+                      <span className='spinner-border spinner-border-sm'></span>
+                      Loading...
+                    </button>
+                  ) : (
+                    <button
+                      onClick={saveHandler}
+                      className='px-4 py-0 text-white shadow rounded-xl bg-darkblue-300 hover:bg-darkblue-200'>
+                      <FontAwesomeIcon
+                        className='text-sm'
+                        icon={faFloppyDisk}
+                      />
+                    </button>
+                  )}
+                </li>
+                <li className='text-center col-span-2  py-2'>
+                  {loading ? (
+                    <button className='btn btn-info' disabled>
+                      <span className='spinner-border spinner-border-sm'></span>
+                      Loading...
+                    </button>
+                  ) : (
+                    <button
+                      onClick={clearInputs}
+                      className='px-4 py-0 text-white shadow rounded-xl bg-red-400 hover:opacity-80'>
+                      <FontAwesomeIcon className='text-sm' icon={faRepeat} />
+                    </button>
+                  )}
+                </li>
+              </ul>
             </div>
-            <div className='table-container'>
-              <div className='table-responsive'>
-                <table className='table m-0'>
-                  <thead className='bg-white'>
-                    <tr>
-                      <th>
-                        <select
-                          className='form-control form-control-sm selectpicker'
-                          placeholder={t("Bo'limni tanlang")}
-                          onChange={setPageSize}
-                          style={{ minWidth: "50px" }}>
-                          <option value={10}>10</option>
-                          <option value={25}>25</option>
-                          <option value={50}>50</option>
-                          <option value={100}>100</option>
-                        </select>
-                      </th>
-                      <th className='text-center'>
-                        <input
-                          style={{ maxWidth: "120px", minWidth: "100px" }}
-                          type='search'
-                          className='w-100 form-control form-control-sm selectpicker'
-                          placeholder={t("Kategoriya")}
-                          onChange={searchCategory}
+            <ul className='grid grid-cols-12 shadow-xl bg-white bg-alo24 border-b'>
+              <li className='text-center font-bold border-r py-2 bg-alo24'>
+                <select
+                  className='rounded w-[70px] outline-none px-2 py-1 font-bold '
+                  placeholder={t("Bo'limni tanlang")}
+                  onChange={setPageSize}>
+                  <option value={10}>10</option>
+                  <option value={25}>25</option>
+                  <option value={50}>50</option>
+                  <option value={100}>100</option>
+                </select>
+              </li>
+              <li className='text-center font-bold border-r py-2 bg-alo24 px-1'>
+                <input
+                  type='search'
+                  className='px-2 py-1  outline-none text-white bg-alo24 font-bold placeholder:text-white w-full placeholder:text-white'
+                  placeholder={t("Kategoriya kodi")}
+                  onChange={searchCategory}
+                />
+              </li>
+              <li className='text-center font-bold border-r py-2 col-span-6 bg-alo24'>
+                <input
+                  type='search'
+                  className='px-2 py-1 outline-none text-white font-bold placeholder:text-white bg-alo24'
+                  placeholder={t("Kategoriya nomi")}
+                  onChange={searchCategory}
+                />
+              </li>
+              <li className='text-center font-bold border-r py-2 col-span-2 bg-alo24'>
+                <Pagination
+                  setCurrentPage={setCurrentPage}
+                  countPage={countPage}
+                  totalDatas={categoryCount.count}
+                />
+              </li>
+              <li className='text-center flex justify-center items-center font-bold border-r py-2 col-span-2 bg-alo24'>
+                <div className='px-3 py-1 bg-blue-100 font-bold text-white rounded inline'>
+                  <ReactHtmlTableToExcel
+                    id='reacthtmltoexcel'
+                    table='category-excel-table'
+                    sheet='Sheet'
+                    buttonText='Excel'
+                    filename={t("Kategoriya")}
+                  />
+                </div>
+              </li>
+            </ul>
+            <ul className='grid grid-cols-12 shadow-xl bg-white bg-alo24 text-white'>
+              <li className='text-center font-bold border-r py-2 bg-alo24'>
+                №
+              </li>
+              <li className='text-center font-bold border-r py-2 bg-alo24 px-1 text-white'>
+                Kodi
+              </li>
+              <li className='text-center font-bold border-r py-2 col-span-6 bg-alo24'>
+                Nomi
+              </li>
+              <li className='text-center font-bold border-r py-2 col-span-2 bg-alo24'>
+                Tahrirlash
+              </li>
+              <li className='text-center flex justify-center items-center font-bold border-r py-2 col-span-2 bg-alo24'>
+                O'chirish
+              </li>
+            </ul>
+            {currentCategories &&
+              currentCategories.map((category, key) => {
+                return (
+                  <ul
+                    key={key}
+                    className='grid grid-cols-12 my-2 shadow-xl bg-white rounded border hover:transition hover:translate-x-1 hover:translate-y-1 cursor-pointer'>
+                    <li className='text-center font-bold border-r py-2'>
+                      {key + 1}
+                    </li>
+                    <li className='text-center font-bold border-r py-2'>
+                      {category.code}
+                    </li>
+                    <li className='col-span-6 py-2 border-r px-3'>
+                      {category.name}
+                    </li>
+                    <li className='col-span-2 py-2 border-r text-center'>
+                      <button
+                        // onClick={() => setCategory({ ...category, ...c })}
+                        className='px-4 py-0 text-white shadow rounded-xl bg-darkblue-300 hover:bg-darkblue-200'>
+                        <FontAwesomeIcon className='text-sm' icon={faPenAlt} />
+                      </button>
+                    </li>
+                    <li className='col-span-2 py-2 text-center'>
+                      <button
+                        // onClick={() => {
+                        //   setRemove(c);
+                        //   setModal(true);
+                        // }}
+                        className='px-4 py-0 text-white shadow rounded-xl bg-red-400 hover:opacity-80'>
+                        <FontAwesomeIcon
+                          className='text-sm'
+                          icon={faTrashCan}
                         />
-                      </th>
-                      <th className='text-center'>
-                        <Pagination
-                          setCurrentPage={setCurrentPage}
-                          countPage={countPage}
-                          totalDatas={categoryCount.count}
-                        />
-                      </th>
-                      <th className='text-center'>
-                        <div className='btn btn-primary'>
-                          <ReactHtmlTableToExcel
-                            id='reacthtmltoexcel'
-                            table='category-excel-table'
-                            sheet='Sheet'
-                            buttonText='Excel'
-                            filename={t("Kategoriya")}
-                          />
-                        </div>
-                      </th>
-                    </tr>
-                  </thead>
-                  <thead>
-                    <tr>
-                      <th className='border text-center'>№</th>
-                      <th className='border text-center'>
-                        {t("Kodi")}
-                        {"  "}
-                        <Sort
-                          data={category}
-                          setData={setCategory}
-                          property={"name"}
-                        />
-                      </th>
-                      <th className=' border text-center '>
-                        {t("Nomi")}
-                        {"  "}
-                        <Sort
-                          data={category}
-                          setData={setCategory}
-                          property={"name"}
-                        />
-                      </th>
-                      <th className=' border text-center'>{t("Tahrirlash")}</th>
-                      <th className=' border text-center'>{t("O'chirish")}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {currentCategories &&
-                      currentCategories.map((c, key) => {
-                        return (
-                          <tr key={key}>
-                            <td className='font-bold text-center border'>
-                              {currentPage * countPage + key + 1}
-                            </td>
-                            <td className='text-black font-bold text-center border'>
-                              {c.code}
-                            </td>
-                            <td className=' text-black font-bold text-center border '>
-                              {c.name}
-                            </td>
-                            <td className='text-center border'>
-                              <button
-                                onClick={() =>
-                                  setCategory({ ...category, ...c })
-                                }
-                                className='btn btn-success py-1 px-4'
-                                style={{ fontSize: "75%" }}>
-                                <FontAwesomeIcon
-                                  className='text-base'
-                                  icon={faPenAlt}
-                                />
-                              </button>
-                            </td>
-                            <td className='text-center border'>
-                              <button
-                                onClick={() => {
-                                  setRemove(c);
-                                  setModal(true);
-                                }}
-                                className='btn btn-secondary py-1 px-4'
-                                style={{ fontSize: "75%" }}>
-                                <FontAwesomeIcon
-                                  className='text-base'
-                                  icon={faTrashCan}
-                                />
-                              </button>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
+                      </button>
+                    </li>
+                  </ul>
+                );
+              })}
           </div>
         </div>
       </div>
@@ -571,6 +545,6 @@ export const Category = () => {
         text={"kategoriyasini o'chirishni tasdiqlaysizmi?"}
         handler={deleteHandler}
       />
-    </>
+    </div>
   );
 };
