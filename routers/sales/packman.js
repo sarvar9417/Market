@@ -107,3 +107,47 @@ module.exports.deletePackman = async (req, res) => {
     res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
   }
 };
+
+// Pagination
+
+module.exports.getPackmanCount = async (req, res) => {
+  try {
+    const { market } = req.body;
+
+    const marke = await Market.findById(market);
+
+    if (!marke) {
+      return res
+        .status(400)
+        .json({ message: "Diqqat! Do'kon malumotlari topilmadi" });
+    }
+
+    const count = await Packman.find({ market }).count();
+
+    res.status(201).json({ count });
+  } catch (error) {
+    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
+  }
+};
+
+module.exports.getPackmanConnectors = async (req, res) => {
+  try {
+    const { market, currentPage, countPage } = req.body;
+    const marke = await Market.findById(market);
+    if (!marke) {
+      return res
+        .status(400)
+        .send({ message: "Diqqat! Do'kon malumotlari topilmadi!" });
+    }
+
+    const connector = await Packman.find({ market })
+      .sort({ _id: -1 })
+      .skip(currentPage * countPage)
+      .limit(countPage)
+      .select("name");
+
+    res.status(201).send(connector);
+  } catch (error) {
+    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
+  }
+};

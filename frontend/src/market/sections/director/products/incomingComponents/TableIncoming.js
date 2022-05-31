@@ -2,7 +2,7 @@ import React from "react";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleUp, faAngleDown } from "@fortawesome/free-solid-svg-icons";
-import { Pagination } from "../../components/Pagination";
+import { Pagination } from "../productComponents/Pagination";
 import { ExcelTable } from "./ExcelTable";
 import { DatePickers } from "../../components/DatePickers";
 import { t } from "i18next";
@@ -22,6 +22,7 @@ export const TableIncoming = ({
   changeStart,
   changeEnd,
   searchBrand,
+  connectorCount,
 }) => {
   return (
     <div className="table-container">
@@ -95,11 +96,9 @@ export const TableIncoming = ({
                 </th>
                 <th>
                   <Pagination
-                    setCurrentDatas={setCurrentImports}
-                    datas={imports}
                     setCurrentPage={setCurrentPage}
                     countPage={countPage}
-                    totalDatas={imports.length}
+                    totalDatas={connectorCount.count}
                   />
                 </th>
                 <th className="text-center" style={{ overflow: "hidden" }}>
