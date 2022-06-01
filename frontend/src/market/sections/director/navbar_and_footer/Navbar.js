@@ -73,33 +73,35 @@ export const Navbar = ({ baseUrl }) => {
 
   return (
     <div>
-      <div className='container-fluid p-0'>
+      <div className="container-fluid p-0">
         {/* Navigation start */}
-        <nav className='navbar navbar-expand-lg custom-navbar p-0'>
+        <nav className="navbar navbar-expand-lg custom-navbar p-0">
           <button
-            className='navbar-toggler'
-            type='button'
-            data-toggle='collapse'
-            data-target='#royalHospitalsNavbar'
-            aria-controls='royalHospitalsNavbar'
-            aria-expanded='false'
-            aria-label='Toggle navigation'>
-            <span className='navbar-toggler-icon'>
+            className="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#royalHospitalsNavbar"
+            aria-controls="royalHospitalsNavbar"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon">
               <i />
               <i />
               <i />
             </span>
           </button>
           <div
-            className='collapse navbar-collapse justify-content-between p-0'
-            id='royalHospitalsNavbar'>
-            <ul className='navbar-nav'>
-              <li className='nav-item mr-4 px-2'>
-                <span className='logo' style={{ fontSize: "26pt" }}>
+            className="collapse navbar-collapse justify-content-between p-0"
+            id="royalHospitalsNavbar"
+          >
+            <ul className="navbar-nav">
+              <li className="nav-item mr-4 px-2">
+                <span className="logo" style={{ fontSize: "26pt" }}>
                   Alo24
                 </span>
               </li>
-              <li className='nav-item'>
+              <li className="nav-item">
                 <Link
                   className={`nav-link ${
                     activePage === "/alo24" || activePage === "/"
@@ -109,18 +111,19 @@ export const Navbar = ({ baseUrl }) => {
                   onClick={() => {
                     setActivePage("/alo24");
                   }}
-                  to='/'>
-                  <i className='icon-devices_other nav-icon' />
+                  to="/"
+                >
+                  <i className="icon-devices_other nav-icon" />
                   {t("Bosh sahifa")}
                 </Link>
               </li>
-              <li className='nav-item dropdown '>
+              <li className="nav-item dropdown ">
                 <span
-                  id='doctoRs'
-                  role='button'
-                  data-toggle='dropdown'
-                  aria-haspopup='true'
-                  aria-expanded='false'
+                  id="doctoRs"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
                   className={`nav-link dropdown-toggle ${
                     activePage === "/alo24/category" ||
                     activePage === "/alo24/producttypes" ||
@@ -131,25 +134,28 @@ export const Navbar = ({ baseUrl }) => {
                     activePage === "/alo24/incoming"
                       ? "active-page"
                       : ""
-                  }`}>
-                  <i className='icon-users nav-icon' />
+                  }`}
+                >
+                  <i className="icon-users nav-icon" />
                   {t("Mahsulotlar")}
                 </span>
-                <ul className='dropdown-menu' aria-labelledby='doctoRs'>
+                <ul className="dropdown-menu" aria-labelledby="doctoRs">
                   <li>
                     <span
-                      className='dropdown-toggle sub-nav-link'
-                      to='#'
-                      id='buttonsDropdown'
-                      role='button'
-                      data-toggle='dropdown'
-                      aria-haspopup='true'
-                      aria-expanded='false'>
+                      className="dropdown-toggle sub-nav-link"
+                      to="#"
+                      id="buttonsDropdown"
+                      role="button"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
                       {t("Yaratish")}
                     </span>
                     <ul
-                      className='dropdown-menu dropdown-menu-right'
-                      aria-labelledby='buttonsDropdown'>
+                      className="dropdown-menu dropdown-menu-right"
+                      aria-labelledby="buttonsDropdown"
+                    >
                       <li>
                         <Link
                           className={`dropdown-item ${
@@ -160,7 +166,8 @@ export const Navbar = ({ baseUrl }) => {
                           onClick={() => {
                             setActivePage("/alo24/category");
                           }}
-                          to='/alo24/category'>
+                          to="/alo24/category"
+                        >
                           {t("Mahsulot kategoriyalari")}
                         </Link>
                       </li>
@@ -174,7 +181,8 @@ export const Navbar = ({ baseUrl }) => {
                           onClick={() => {
                             setActivePage("/alo24/producttypes");
                           }}
-                          to='/alo24/producttypes'>
+                          to="/alo24/producttypes"
+                        >
                           {t("Mahsulotlar turlari")}
                         </Link>
                       </li>
@@ -186,7 +194,8 @@ export const Navbar = ({ baseUrl }) => {
                           onClick={() => {
                             setActivePage("/alo24/brand");
                           }}
-                          to='/alo24/brand'>
+                          to="/alo24/brand"
+                        >
                           {t("Brendlar")}
                         </Link>
                       </li>
@@ -198,7 +207,8 @@ export const Navbar = ({ baseUrl }) => {
                           onClick={() => {
                             setActivePage("/alo24/product");
                           }}
-                          to='/alo24/product'>
+                          to="/alo24/product"
+                        >
                           {t("Mahsulotlar")}
                         </Link>
                       </li>
@@ -210,12 +220,13 @@ export const Navbar = ({ baseUrl }) => {
                           onClick={() => {
                             setActivePage("/alo24/unit");
                           }}
-                          to='/alo24/unit'>
+                          to="/alo24/unit"
+                        >
                           {t("O'lchov birliklari")}
                         </Link>
                       </li>
                       <li>
-                        <Link className='dropdown-item' to='/alo24/supplier'>
+                        <Link className="dropdown-item" to="/alo24/supplier">
                           {t("Yetkazib beruvchilar")}
                         </Link>
                       </li>
@@ -230,30 +241,32 @@ export const Navbar = ({ baseUrl }) => {
                       onClick={() => {
                         setActivePage("/alo24/incoming");
                       }}
-                      to='/alo24/incoming'>
+                      to="/alo24/incoming"
+                    >
                       {t("Qabul qilish")}
                     </Link>
                   </li>
                 </ul>
               </li>
-              <li className='nav-item dropdown'>
+              <li className="nav-item dropdown">
                 <span
-                  id='doctoRs'
-                  role='button'
-                  data-toggle='dropdown'
-                  aria-haspopup='true'
-                  aria-expanded='false'
+                  id="doctoRs"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
                   className={`nav-link dropdown-toggle ${
                     activePage === "/alo24/sales" ||
                     activePage === "/alo24/sales/packman" ||
                     activePage === "/alo24/sales/client"
                       ? "active-page"
                       : ""
-                  }`}>
-                  <i className='icon-users nav-icon' />
+                  }`}
+                >
+                  <i className="icon-users nav-icon" />
                   {t("Sotuv")}
                 </span>
-                <ul className='dropdown-menu' aria-labelledby='doctoRs'>
+                <ul className="dropdown-menu" aria-labelledby="doctoRs">
                   <li>
                     <Link
                       className={`dropdown-item ${
@@ -262,7 +275,8 @@ export const Navbar = ({ baseUrl }) => {
                       onClick={() => {
                         setActivePage("/alo24/packman");
                       }}
-                      to='/alo24/packman'>
+                      to="/alo24/packman"
+                    >
                       {t("Yetkazuvchi")}
                     </Link>
                   </li>
@@ -274,7 +288,8 @@ export const Navbar = ({ baseUrl }) => {
                       onClick={() => {
                         setActivePage("/alo24/client");
                       }}
-                      to='/alo24/client'>
+                      to="/alo24/client"
+                    >
                       {t("Mijoz")}
                     </Link>
                   </li>
@@ -286,13 +301,14 @@ export const Navbar = ({ baseUrl }) => {
                       onClick={() => {
                         setActivePage("/alo24/sales");
                       }}
-                      to='/alo24/sales'>
+                      to="/alo24/sales"
+                    >
                       {t("Sotuv")}
                     </Link>
                   </li>
                 </ul>
               </li>
-              <li className='nav-item dropdown'>
+              <li className="nav-item dropdown">
                 <Link
                   className={`nav-link ${
                     activePage === "/alo24/exchangerate" || activePage === "/"
@@ -302,27 +318,43 @@ export const Navbar = ({ baseUrl }) => {
                   onClick={() => {
                     setActivePage("/alo24/exchangerate");
                   }}
-                  to='/alo24/exchangerate'>
-                  <i className='icon-dollar-sign nav-icon'></i>
+                  to="/alo24/exchangerate"
+                >
+                  <i className="icon-dollar-sign nav-icon"></i>
                   {t("Valyuta kursi")}
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  className={`nav-link ${
+                    activePage === "/alo24/branch" ? "active-page" : ""
+                  }`}
+                  onClick={() => {
+                    setActivePage("/alo24/branch");
+                  }}
+                  to="/alo24/branch"
+                >
+                  <i className="icon-devices_other nav-icon" />
+                  Filiallar
                 </Link>
               </li>
             </ul>
 
-            <ul className='header-actions py-1 mr-2'>
-              <li className='dropdown'>
+            <ul className="header-actions py-1 mr-2">
+              <li className="dropdown">
                 <span
-                  id='userSettings'
-                  className='user-settings'
-                  data-toggle='dropdown'
-                  aria-haspopup='true'>
-                  <span className='user-name'>
+                  id="userSettings"
+                  className="user-settings"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                >
+                  <span className="user-name">
                     {user.firstname} {user.lastname}
                   </span>
-                  <span className='avatar md'>
+                  <span className="avatar md">
                     {baseUrl ? (
                       <img
-                        className='circle d-inline'
+                        className="circle d-inline"
                         src={
                           baseUrl && `${baseUrl}/api/upload/file/${user.image}`
                         }
@@ -332,15 +364,16 @@ export const Navbar = ({ baseUrl }) => {
                       user.firstname[0] + user.lastname[0]
                     )}
 
-                    <span className='status busy' />
+                    <span className="status busy" />
                   </span>
                 </span>
                 <div
-                  className='dropdown-menu dropdown-menu-right'
-                  aria-labelledby='userSettings'>
-                  <div className='header-profile-actions'>
-                    <div className='header-user-profile'>
-                      <div className='header-user'>
+                  className="dropdown-menu dropdown-menu-right"
+                  aria-labelledby="userSettings"
+                >
+                  <div className="header-profile-actions">
+                    <div className="header-user-profile">
+                      <div className="header-user">
                         <img
                           src={
                             baseUrl &&
@@ -352,18 +385,19 @@ export const Navbar = ({ baseUrl }) => {
                       {user.firstname} {user.lastname}
                       <p>{t("Direktor")}</p>
                     </div>
-                    <Link to='/alo24/editdirector'>
-                      <i className='icon-user1' /> {t("Tahrirlash")}
+                    <Link to="/alo24/editdirector">
+                      <i className="icon-user1" /> {t("Tahrirlash")}
                     </Link>
-                    <Link to='/alo24/editdirectorpassword'>
-                      <i className='icon-vpn_key' /> {t("Parolni o'zgartirish")}
+                    <Link to="/alo24/editdirectorpassword">
+                      <i className="icon-vpn_key" /> {t("Parolni o'zgartirish")}
                     </Link>
                     <button
                       onClick={() => {
                         auth.logout();
                         history.push("/");
-                      }}>
-                      <i className='icon-log-out1' /> {t("Tizimdan chiqish")}
+                      }}
+                    >
+                      <i className="icon-log-out1" /> {t("Tizimdan chiqish")}
                     </button>
                   </div>
                 </div>
@@ -372,11 +406,11 @@ export const Navbar = ({ baseUrl }) => {
           </div>
         </nav>
         {/* Navigation end */}
-        <div className='main-container'>
+        <div className="main-container">
           {/* Page header start */}
-          <div className='page-header'>
-            <ol className='breadcrumb'>
-              <li className='breadcrumb-item active'>{t("Bosh sahifa")}</li>
+          <div className="page-header">
+            <ol className="breadcrumb">
+              <li className="breadcrumb-item active">{t("Bosh sahifa")}</li>
             </ol>
           </div>
           {/* Page header end */}
