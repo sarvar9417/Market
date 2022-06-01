@@ -16,10 +16,10 @@ export const Pagination = ({ countPage, totalDatas, setCurrentPage }) => {
   );
 
   return (
-    <nav className='float-right'>
+    <nav className="float-right">
       <ReactPaginate
         previousLabel={"<<"}
-        nextLabel='>>'
+        nextLabel=">>"
         breakLabel={"..."}
         pageCount={pageNumbers.length}
         marginPagesDisplayed={1}
