@@ -54,7 +54,7 @@ export const DirectorRouter = () => {
         <Route path="/alo24/incoming">
           <Incoming />
         </Route>
-        <Route path="/alo24/filials">
+        <Route path="/alo24/branch">
           <Filials />
         </Route>
         <Route path="/alo24/packman">

@@ -1,16 +1,16 @@
 const {
   Market,
   validateMarket,
-} = require('../../models/MarketAndBranch/Market')
+} = require("../../models/MarketAndBranch/Market");
 
 module.exports.register = async (req, res) => {
   try {
-    const { error } = validateMarket(req.body)
+    const { error } = validateMarket(req.body);
 
     if (error) {
       return res.status(400).json({
         message: error.message,
-      })
+      });
     }
     const {
       name,
@@ -26,15 +26,15 @@ module.exports.register = async (req, res) => {
       orientation,
       director,
       mfo,
-    } = req.body
+    } = req.body;
 
-    const market = await Market.find({ name })
+    const market = await Market.find({ name });
 
     if (market.length > 0) {
       return res.status(400).json({
         message:
           "Diqqat! Klinika nomida biroz o'zgartirish qilib keyin kiriting.",
-      })
+      });
     }
 
     const newMarket = new Market({
@@ -51,46 +51,40 @@ module.exports.register = async (req, res) => {
       orientation,
       director,
       mfo,
-    })
+    });
 
-    await newMarket.save()
+    await newMarket.save();
 
-    res.status(201).send(newMarket)
+    res.status(201).send(newMarket);
   } catch (error) {
-    res.status(501).json({ message: error })
+    res.status(501).json({ message: error });
   }
-}
+};
 
 module.exports.edit = async (req, res) => {
   try {
-    const { market } = req.body
+    const { market } = req.body;
 
-    const update = await Market.findByIdAndUpdate(market._id, { ...market })
-    res.status(201).send(update)
+    const update = await Market.findByIdAndUpdate(market._id, { ...market });
+    res.status(201).send(update);
   } catch (error) {
-    res.status(501).json({ message: error })
+    res.status(501).json({ message: error });
   }
-}
+};
 
 module.exports.getMarket = async (req, res) => {
   try {
-    const { marketId } = req.body
-    if (!marketId) {
-      return res.status(400).json({
-        message: "Diqqat! Market ID si ko'rsatilmagan.",
-      })
-    }
-
-    const market = await Market.findById(marketId)
-
+    const { market } = req.body;
     if (!market) {
       return res.status(400).json({
-        message: "Diqqat! Ko'rsatilgan klinika ro'yxatdan o'tkazilmagan.",
-      })
+        message: "Diqqat! Market ID si ko'rsatilmagan.",
+      });
     }
 
-    res.status(200).send(market)
+    const markets = await Market.find().select("name");
+
+    res.status(200).send(markets);
   } catch (error) {
-    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
+    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
   }
-}
+};
