@@ -82,8 +82,8 @@ module.exports = {
 
       purple: "#e42c6a",
       alo24: "#00A2B7",
-      // white: "#FFFFFF",
-      // black: "#000000",
+      white: "#FFFFFF",
+      black: "#000000",
       // orange: "#F7C200",
       // blue: "#00A2B7",
       // lightblue: "#0dcaf0",

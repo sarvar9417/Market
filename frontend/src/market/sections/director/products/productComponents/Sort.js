@@ -4,7 +4,7 @@ import { faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
 
 export const Sort = ({ property, data, setData }) => {
   return (
-    <div className="btn-group-vertical ml-2">
+    <div className='flex flex-col pl-2'>
       <FontAwesomeIcon
         onClick={() =>
           setData(
@@ -12,11 +12,11 @@ export const Sort = ({ property, data, setData }) => {
           )
         }
         icon={faAngleUp}
-        style={{ cursor: "pointer" }}
+        className='cursor-pointer p-0 m-0'
       />
       <FontAwesomeIcon
         icon={faAngleDown}
-        style={{ cursor: "pointer" }}
+        className='cursor-pointer p-0 m-0'
         onClick={() =>
           setData(
             [...data].sort((a, b) => (b[property] > a[property] ? 1 : -1))

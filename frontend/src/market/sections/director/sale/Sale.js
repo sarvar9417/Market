@@ -5,15 +5,16 @@ import { AuthContext } from "../../../context/AuthContext";
 import { useHttp } from "../../../hooks/http.hook";
 import { Modal } from "../components/Modal";
 import { InputProduct } from "./components/InputProduct";
-import { Products } from "./Products";
-import { Selling } from "./Selling";
+import { Products } from "./ProductsSelling/Products";
+import { Selling } from "./ProductsSelling/Selling";
 import { Card } from "./payment/Card";
-import { Sales } from "./payment/Sales";
+import { Sales } from "./Sales";
 import { Cheque } from "./payment/Cheque";
-import { ChequeConnectors } from "./payment/ChequeConnectors";
+import { ChequeConnectors } from "./Sales/ChequeConnectors";
 import { EditSelling } from "./EditSelling";
 import { discountProcient, returnProduct } from "./returnProduct/turnProduct";
 import { CardEdit } from "./payment/CardEdit";
+import { RouterBtns } from "./RouterBtns/RouterBtns";
 export const Sale = () => {
   //====================================================================
   //====================================================================
@@ -22,6 +23,8 @@ export const Sale = () => {
   const [countPage, setCountPage] = useState(10);
 
   const [currentProducts, setCurrentProducts] = useState([]);
+  //====================================================================
+  //====================================================================
 
   //====================================================================
   //====================================================================
@@ -41,7 +44,6 @@ export const Sale = () => {
     },
     [toast]
   );
-
   //====================================================================
   //====================================================================
 
@@ -60,6 +62,33 @@ export const Sale = () => {
   const [visibleEdit, setVisibleEdit] = useState(false);
   const [check, setCheck] = useState(false);
   const [checkConnectors, setCheckConnectors] = useState(false);
+  const [sellingCard, setSellingCard] = useState(false);
+  const [sellingEditCard, setSellingEditCard] = useState(false);
+  const [tableCard, setTableCard] = useState(true);
+
+  const changeSellingCard = () => {
+    if (!sellingCard) {
+      setTableCard(false);
+      setSellingEditCard(false);
+    }
+    setSellingCard(!sellingCard);
+  };
+
+  const changeTableCard = () => {
+    if (!tableCard) {
+      setSellingCard(false);
+      setSellingEditCard(false);
+    }
+    setTableCard(!tableCard);
+  };
+
+  const changeSellingEditCard = () => {
+    if (!sellingEditCard) {
+      setSellingCard(false);
+      setTableCard(false);
+    }
+    setSellingEditCard(!sellingEditCard);
+  };
   //====================================================================
   //====================================================================
 
@@ -123,7 +152,6 @@ export const Sale = () => {
   //====================================================================
   //====================================================================
   // const [baseUrl, setBaseUrl] = useState();
-
   // const getBaseUrl = useCallback(async () => {
   //   try {
   //     const data = await request("/api/baseurl", "GET", null);
@@ -149,7 +177,6 @@ export const Sale = () => {
     try {
       const data = await request(
         `/api/products/producttype/getall`,
-
         "POST",
         { market: auth.market._id },
         {
@@ -190,7 +217,6 @@ export const Sale = () => {
     try {
       const data = await request(
         `/api/products/brand/getall`,
-
         "POST",
         { market: auth.market._id },
         {
@@ -214,6 +240,7 @@ export const Sale = () => {
       });
     }
   }, [request, auth, notify]);
+
   const changeBrand = (e) => {
     getProducts(e);
   };
@@ -224,6 +251,7 @@ export const Sale = () => {
   //====================================================================
   // Exchangerate
   const [exchangerate, setExchangerate] = useState({ exchangerate: 0 });
+
   const getExchangerate = useCallback(async () => {
     try {
       const data = await request(
@@ -252,6 +280,7 @@ export const Sale = () => {
   //====================================================================
   // Saleconnecter counts
   const [saleCounts, setSaleCounts] = useState(0);
+
   const getSaleCounts = useCallback(async () => {
     try {
       const data = await request(
@@ -262,7 +291,6 @@ export const Sale = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      console.log(data);
       setSaleCounts(data);
     } catch (error) {
       notify({
@@ -290,6 +318,7 @@ export const Sale = () => {
     debt: {},
     discount: {},
   });
+
   const [allSales, setAllSales] = useState({
     products: [],
     payments: [],
@@ -311,7 +340,12 @@ export const Sale = () => {
         let c = [];
         data.map((type) => {
           return c.push({
-            label: type.code + " " + type.name,
+            label: (
+              <span className='flex justify-between'>
+                <span>{type.code + " " + type.name}</span>{" "}
+                <span className='font-bold'>{type.total}</span>
+              </span>
+            ),
             type: "product",
             value: type,
           });
@@ -329,8 +363,18 @@ export const Sale = () => {
   );
 
   const changeProduct = (e) => {
+    if (e.value.price.sellingprice === 0) {
+      return notify({
+        title:
+          "Diqqat! Ushbu mahsulotga narx belgilanmagan. Ushbu mahsulotni sotish imkoni mavjud emas. ",
+        description:
+          "Sotuvdan oldin mahsulotga sotuv narxini belgilashingizni so'raymiz.",
+        status: "warning",
+      });
+    }
+
     for (const saleproduct of saleproducts) {
-      if (e.value._id === saleproduct._id) {
+      if (e.value._id === saleproduct.product._id) {
         return notify({
           title: "Diqqat! Ushbu mahsulot ro'yxatga qo'shilgan. ",
           description: "Qayta qo'shmasdan qiymatini o'zgartirishingiz mumkin.",
@@ -338,8 +382,10 @@ export const Sale = () => {
         });
       }
     }
+
     setModal(true);
     setSaleProduct({
+      total: e.value.total,
       product: e.value,
       totalprice: e.value.price.sellingprice,
       totalpriceuzs: e.value.price.sellingprice * exchangerate.exchangerate,
@@ -354,6 +400,14 @@ export const Sale = () => {
     let unitprice = saleproduct.unitprice;
     let totalprice = saleproduct.totalprice;
     if (e.target.name === "pieces") {
+      if (parseFloat(e.target.value) > saleproduct.total) {
+        return notify({
+          title:
+            "Diqqat! Ushbu mahsulot soni omborda mavjud mahsulot sonidan oshmasligi lozim.",
+          description: `Omborda mavjud mahsulot soni ${saleproduct.total}`,
+          status: "warning",
+        });
+      }
       totalprice =
         Math.round(
           (!unitprice ? 0 : unitprice) * parseFloat(e.target.value) * 100
@@ -363,7 +417,9 @@ export const Sale = () => {
         pieces: e.target.value === "" ? "" : parseFloat(e.target.value),
         totalprice: e.target.value === "" ? 0 : totalprice,
         totalpriceuzs:
-          e.target.value === "" ? 0 : totalprice * exchangerate.exchangerate,
+          e.target.value === ""
+            ? 0
+            : Math.round(totalprice * exchangerate.exchangerate * 100) / 100,
       });
     }
     if (e.target.name === "unitprice") {
@@ -376,10 +432,14 @@ export const Sale = () => {
         unitpriceuzs:
           e.target.value === ""
             ? ""
-            : parseFloat(e.target.value) * exchangerate.exchangerate,
+            : Math.round(
+                parseFloat(e.target.value) * exchangerate.exchangerate * 100
+              ) / 100,
         totalprice: e.target.value === "" ? 0 : totalprice,
         totalpriceuzs:
-          e.target.value === "" ? 0 : totalprice * exchangerate.exchangerate,
+          e.target.value === ""
+            ? 0
+            : Math.round(totalprice * exchangerate.exchangerate * 100) / 100,
       });
     }
   };
@@ -390,19 +450,25 @@ export const Sale = () => {
     setSaleProduct();
     setModal(false);
     setSaleProducts(sales);
+
     let total = sales.reduce((summ, sale) => {
       return sale.totalprice + summ;
     }, 0);
+
+    let totaluzs = sales.reduce((summ, sale) => {
+      return sale.totalpriceuzs + summ;
+    }, 0);
+
     setTotalPrice(Math.round(total * 100) / 100);
-    setTotalPriceUzs(Math.round(total * exchangerate.exchangerate * 100) / 100);
+    setTotalPriceUzs(Math.round(totaluzs * 100) / 100);
+
     setPayment({
       ...payment,
       totalprice: Math.round(total * 100) / 100,
-      totalpriceuzs:
-        (Math.round(total * 100) / 100) * exchangerate.exchangerate,
+      totalpriceuzs: Math.round(totaluzs * 100) / 100,
       type: "cash",
       cash: Math.round(total * 100) / 100,
-      cashuzs: Math.round(total * exchangerate.exchangerate * 100) / 100,
+      cashuzs: Math.round(totaluzs * 100) / 100,
       discount: 0,
       discountuzs: 0,
     });
@@ -410,10 +476,11 @@ export const Sale = () => {
 
   const editProducts = (product, index, type) => {
     let sales = [...saleproducts];
-    sales.splice(index, 1);
     if (type === "edit") {
       setSaleProduct(product);
       setModal(true);
+    } else {
+      sales.splice(index, 1);
     }
     setSaleProducts(sales);
     let total = sales.reduce((summ, sale) => {
@@ -451,9 +518,7 @@ export const Sale = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      console.log(data);
-      console.log(currentPage);
-      console.log(countPage);
+
       setCurrentProducts(data);
       setSaleConnectors(data);
     } catch (error) {
@@ -1062,6 +1127,8 @@ export const Sale = () => {
   const addProducts = (e) => {
     setSaleCounts({ count: (e.id % 1000000) - 1 });
     setSaleConnectorId(e._id);
+    setTableCard(false);
+    setSellingCard(true);
     window.scroll({ top: 0 });
   };
 
@@ -1124,6 +1191,7 @@ export const Sale = () => {
   const [editExchanrate, setEditExchanrate] = useState({
     exchangerate: 0,
   });
+
   const [paymentEdit, setPaymentEdit] = useState({
     totalprice: 0,
     totalpriceuzs: 0,
@@ -1212,7 +1280,6 @@ export const Sale = () => {
       type: e.target.dataset.type,
       name: e.target.name,
     });
-    console.log(p);
   };
 
   const changeTypeEdit = (e, p) => {
@@ -1405,6 +1472,8 @@ export const Sale = () => {
     setEditPayments([...e.payments]);
     setEditDiscounts([...e.discounts]);
     setSaleProducts([...e.products]);
+    setTableCard(false);
+    setSellingEditCard(true);
     window.scroll({ top: 0 });
   };
 
@@ -1509,7 +1578,6 @@ export const Sale = () => {
         status: "error",
       });
     }
-    console.log("salom");
     if (debt.debt > 0) {
       return setModal4(true);
     }
@@ -1563,6 +1631,18 @@ export const Sale = () => {
     getSaleConnectors,
     clearDatas,
   ]);
+
+  const Clear = () => {
+    setTotalPrice(0);
+    setTotalPriceUzs(0);
+    setEditSaleConnector({});
+    setEditSaleProducts([]);
+    setEditSaleConnectorId({ _id: 0 });
+    setEditPayments([]);
+    setEditDiscounts([]);
+    setSaleProducts([]);
+    window.scroll({ top: 0 });
+  };
   //====================================================================
   //====================================================================
 
@@ -1602,7 +1682,7 @@ export const Sale = () => {
   //====================================================================
 
   return (
-    <div className="">
+    <div className='m-3'>
       {/* <div className={`${editVisible ? "" : "hidden"}`}>
         <EditSaleProducts />
       </div> */}
@@ -1649,75 +1729,74 @@ export const Sale = () => {
         />
       </div>
 
-      {/* <Payment /> */}
-      <div
-        className={visible || checkConnectors || check ? "invisible" : "m-3 "}
-      >
-        {editSaleConnectorId._id !== 0 ? (
-          <EditSelling
-            changeBack={changeBack}
-            editSaleConnector={editSaleConnector}
-            checkNumber={saleCounts}
-            payment={editPayments}
-            discount={editDiscounts}
-            debt={debt}
-            totalprice={totalprice}
-            setVisible={setVisibleEdit}
-            editProducts={editProducts}
-            saleproducts={editSaleProducts}
-            packmans={packmans}
-            clients={clients}
-            changePackman={changePackman}
-            changeClient={changeClient}
-            inputClient={inputClient}
-          />
-        ) : (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-7 pb-3">
-            <div className="md:col-span-2 w-full">
-              <Products
-                changeProduct={changeProduct}
-                changeBrand={changeBrand}
-                changeProductType={changeProductType}
-                changeCategory={changeCategory}
-                categories={categories}
-                producttypes={producttypes}
-                brands={brands}
-                products={products}
-              />
-            </div>
-            <div className="md:col-span-5 w-full">
-              <Selling
-                checkNumber={saleCounts}
-                payment={payment}
-                discount={discount}
-                debt={debt}
-                totalprice={totalprice}
-                setVisible={setVisible}
-                editProducts={editProducts}
-                saleproducts={saleproducts}
-                packmans={packmans}
-                clients={clients}
-                changePackman={changePackman}
-                changeClient={changeClient}
-                inputClient={inputClient}
-              />
-            </div>
-          </div>
-        )}
-        <Sales
-          editHandler={editHandler}
-          currentPage={currentPage}
-          addProducts={addProducts}
-          saleCounts={saleCounts}
-          setCurrentProducts={setCurrentProducts}
-          setCurrentPage={setCurrentPage}
-          setPageSize={setPageSize}
-          countPage={countPage}
-          currentProducts={currentProducts}
-          saleconnectors={saleconnectors}
-          changeCheck={changeCheck}
+      <RouterBtns
+        changeSellingCard={changeSellingCard}
+        changeSellingEditCard={changeSellingEditCard}
+        changeTableCard={changeTableCard}
+      />
+
+      <div className={sellingCard ? "" : "hidden"}>
+        <Products
+          changeProduct={changeProduct}
+          changeBrand={changeBrand}
+          changeProductType={changeProductType}
+          changeCategory={changeCategory}
+          categories={categories}
+          producttypes={producttypes}
+          brands={brands}
+          products={products}
+        />
+        <Selling
+          checkNumber={saleCounts}
+          payment={payment}
+          discount={discount}
+          debt={debt}
+          totalprice={totalprice}
+          setVisible={setVisible}
+          editProducts={editProducts}
+          saleproducts={saleproducts}
+          packmans={packmans}
+          clients={clients}
+          changePackman={changePackman}
+          changeClient={changeClient}
+          inputClient={inputClient}
         />
       </div>
+
+      <Sales
+        tableCard={tableCard}
+        Clear={Clear}
+        editHandler={editHandler}
+        currentPage={currentPage}
+        addProducts={addProducts}
+        saleCounts={saleCounts}
+        setCurrentProducts={setCurrentProducts}
+        setCurrentPage={setCurrentPage}
+        setPageSize={setPageSize}
+        countPage={countPage}
+        currentProducts={currentProducts}
+        saleconnectors={saleconnectors}
+        changeCheck={changeCheck}
+      />
+
+      <EditSelling
+        sellingEditCard={sellingEditCard}
+        changeBack={changeBack}
+        editSaleConnector={editSaleConnector}
+        checkNumber={saleCounts}
+        payment={editPayments}
+        discount={editDiscounts}
+        debt={debt}
+        totalprice={totalprice}
+        setVisible={setVisibleEdit}
+        editProducts={editProducts}
+        saleproducts={editSaleProducts}
+        packmans={packmans}
+        clients={clients}
+        changePackman={changePackman}
+        changeClient={changeClient}
+        inputClient={inputClient}
+      />
 
       <Modal
         modal={modal}
@@ -1738,7 +1817,7 @@ export const Sale = () => {
         text={
           <input
             onChange={changeComment}
-            className="block border w-full px-2 rounded"
+            className='block border w-full px-2 rounded'
             placeholder={t("Izoh")}
           />
         }
@@ -1763,7 +1842,7 @@ export const Sale = () => {
         text={
           <input
             onChange={changeComment}
-            className="block border w-full px-2 rounded"
+            className='block border w-full px-2 rounded'
             placeholder={t("Izoh")}
           />
         }

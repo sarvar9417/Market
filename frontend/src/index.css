@@ -2,7 +2,62 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .thead {
+    @apply grid grid-cols-12 bg-white rounded border-b text-white;
+  }
+  .th {
+    @apply text-center font-bold py-2 bg-blue-800;
+  }
+
+  .th-h {
+    @apply text-center font-bold  py-2 bg-white px-2;
+  }
+
+  .tbody {
+    @apply grid grid-cols-12 shadow-xl rounded;
+  }
+
+  .td {
+    @apply py-2 px-2;
+  }
+
+  .td-btn {
+    @apply py-2 px-2 flex items-center justify-center;
+  }
+
+  .edit-btn {
+    @apply px-4 py-0 text-white shadow rounded-xl bg-green-700 hover:bg-green-800;
+  }
+
+  .delete-btn {
+    @apply px-4 py-0 text-white shadow rounded-xl bg-red-600 hover:bg-red-700;
+  }
+
+  .input {
+    @apply px-2 py-1 w-full border rounded focus:outline focus:outline-blue-800;
+  }
+
+  .excel {
+    @apply px-3 py-1 bg-green-700 font-bold text-white rounded inline shadow;
+  }
+
+  .tr {
+    @apply grid grid-cols-12 my-2 shadow-xl bg-white rounded border hover:transition hover:translate-x-1 hover:translate-y-1 cursor-pointer;
+  }
+
+  .no {
+    @apply text-center font-bold border-r py-2;
+  }
+
+  .card-header {
+    @apply bg-blue-800 text-center text-2xl text-white py-2 m-0 font-bold;
+  }
+}
+
+/* ////////////////////////////////////////////////////////////////////////////////// */
 @import url("https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap");
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -117,7 +172,4 @@ code {
   background-color: rgba(0, 0, 0, 0.7);
 }
 
-table {
-  background-color: #ececec !important;
-}
 /* table */

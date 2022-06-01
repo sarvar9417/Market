@@ -611,7 +611,7 @@ module.exports.getCategory = async (req, res) => {
       category,
     })
       .sort({ _id: -1 })
-      .select("name code unit category price")
+      .select("name code unit category price total")
       .populate("category", "name code")
       .populate("unit", "name")
       .populate("price", "sellingprice");
@@ -641,7 +641,7 @@ module.exports.getAllType = async (req, res) => {
       producttype: typeid,
     })
       .sort({ _id: -1 })
-      .select("name code unit category price")
+      .select("name code unit category price total")
       .populate("category", "name code")
       .populate("unit", "name")
       .populate("price", "sellingprice");
@@ -670,7 +670,7 @@ module.exports.getAllBrand = async (req, res) => {
 
       brand: typeid,
     })
-      .select("name code category producttype price unit")
+      .select("name code category producttype price unit total")
       .populate("category", "code")
       .populate("producttype", "name")
       .populate("price", "sellingprice")
@@ -699,7 +699,7 @@ module.exports.getAllCategory = async (req, res) => {
       category: typeid,
     })
       .sort({ _id: -1 })
-      .select("name code unit category price")
+      .select("name code unit category price total")
       .populate("category", "name code")
       .populate("unit", "name")
       .populate("price", "sellingprice");
