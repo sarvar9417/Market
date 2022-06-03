@@ -12,10 +12,11 @@ export const AddClient = ({
   packmans,
   changeClient,
   clients,
+  client,
   inputClient,
 }) => {
   return (
-    <div>
+    <div className='p-3'>
       <div className='flex justify-end py-2 px-2 '>
         <button
           onClick={() => setBtn(!btn)}
@@ -40,6 +41,7 @@ export const AddClient = ({
           options={clients}
         />
         <Input
+          data={client.name}
           classes={"py-2"}
           name='name'
           changeHandler={inputClient}

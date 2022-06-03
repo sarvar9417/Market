@@ -5,17 +5,12 @@ import { useHttp } from "../../../hooks/http.hook";
 import { AuthContext } from "../../../context/AuthContext";
 import { checkBrand } from "./checkData";
 import { Modal } from "./modal/Modal";
-import { Sort } from "../components/Sort";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faFloppyDisk,
-  faPenAlt,
-  faRepeat,
-  faTrashCan,
-} from "@fortawesome/free-solid-svg-icons";
-import { Pagination } from "./productComponents/Pagination";
-import ReactHtmlTableToExcel from "react-html-table-to-excel";
 import { t } from "i18next";
+import { CreateHeader } from "./Brand/CreateHeader";
+import { CreateBody } from "./Brand/CreateBody";
+import { TableHeader } from "./Brand/TableHeader";
+import { TableHead } from "./Brand/TableHead";
+import { Rows } from "./Brand/Rows";
 
 export const Brand = () => {
   //====================================================================
@@ -189,7 +184,7 @@ export const Brand = () => {
       const data = await request(
         `/api/products/brand/update`,
         "PUT",
-        { ...brand },
+        { ...brand, market: auth.market._id },
         {
           Authorization: `Bearer ${auth.token}`,
         }
@@ -235,7 +230,7 @@ export const Brand = () => {
       const data = await request(
         `/api/products/brand/delete`,
         "DELETE",
-        { ...remove },
+        { ...remove, market: auth.market._id },
         {
           Authorization: `Bearer ${auth.token}`,
         }
@@ -307,188 +302,48 @@ export const Brand = () => {
   return (
     <>
       {loading ? <Loader /> : ""}
-      <div className="content-wrapper px-lg-5 px-3">
-        <div className="row gutters">
-          <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <div className="table-container">
-              <div className="table-responsive">
-                <table className="table m-0">
-                  <thead>
-                    <tr>
-                      <th className="border text-center">{t("Brend")}</th>
-                      <th className="border text-center">{t("Saqlash")}</th>
-                      <th className="border text-center">{t("Tozalash")}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="border text-center">
-                      <td className="border text-center">
-                        <input
-                          name="name"
-                          value={brand.name || ""}
-                          onKeyUp={keyPressed}
-                          onChange={inputHandler}
-                          type="text"
-                          className="focus: outline-none focus:ring focus:border-blue-500 rounded py-1 px-3"
-                          id="name"
-                          placeholder={t("Brend nomini kiriting")}
-                        />
-                      </td>
-                      <td className="border text-center">
-                        {loading ? (
-                          <button className="btn btn-info" disabled>
-                            <span className="spinner-border spinner-border-sm"></span>
-                            Loading...
-                          </button>
-                        ) : (
-                          <button
-                            onClick={saveHandler}
-                            className="btn btn-success py-1 px-4"
-                          >
-                            <FontAwesomeIcon
-                              className="text-base"
-                              icon={faFloppyDisk}
-                            />
-                          </button>
-                        )}
-                      </td>
-                      <td className="border text-center">
-                        {loading ? (
-                          <button className="btn btn-info" disabled>
-                            <span className="spinner-border spinner-border-sm"></span>
-                            Loading...
-                          </button>
-                        ) : (
-                          <button
-                            onClick={clearInputs}
-                            className="btn btn-secondary py-1 px-4"
-                          >
-                            <FontAwesomeIcon
-                              className="text-base"
-                              icon={faRepeat}
-                            />
-                          </button>
-                        )}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <div className="table-container">
-              <div className="table-responsive">
-                <table className="table m-0">
-                  <thead className="bg-white">
-                    <tr>
-                      <th>
-                        <select
-                          className="form-control form-control-sm selectpicker"
-                          placeholder={t("Bo'limni tanlang")}
-                          onChange={setPageSize}
-                          style={{ minWidth: "50px" }}
-                        >
-                          <option value={10}>10</option>
-                          <option value={25}>25</option>
-                          <option value={50}>50</option>
-                          <option value={100}>100</option>
-                        </select>
-                      </th>
-                      <th>
-                        <input
-                          className="form-control"
-                          type="search"
-                          onChange={searchBrand}
-                          style={{ maxWidth: "100px" }}
-                          placeholder={t("Brend")}
-                        />
-                      </th>
-                      <th className="text-center">
-                        <Pagination
-                          setCurrentPage={setCurrentPage}
-                          countPage={countPage}
-                          totalDatas={connectorCount.count}
-                        />
-                      </th>
-                      <th className="text-center">
-                        <div className="btn btn-primary">
-                          <ReactHtmlTableToExcel
-                            id="reacthtmltoexcel"
-                            table="brand-excel-table"
-                            sheet="Sheet"
-                            buttonText="Excel"
-                            filename={t("Brendlar")}
-                          />
-                        </div>
-                      </th>
-                    </tr>
-                  </thead>
-                  <thead>
-                    <tr className="border text-center">
-                      <th className="border text-center">№</th>
-                      <th className="border text-center">
-                        {t("Brend nomi")}{" "}
-                        <Sort
-                          data={brands}
-                          setData={setBrands}
-                          property={"name"}
-                        />
-                      </th>
-                      <th className="border text-center">{t("Tahrirlash")}</th>
-                      <th className="border text-center">{t("O'chirish")}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {currentBrands &&
-                      currentBrands.map((s, key) => {
-                        return (
-                          <tr className="border text-center" key={key}>
-                            <td className="border text-center font-bold text-bold text-black">
-                              {currentPage * countPage + key + 1}
-                            </td>
-                            <td className="border text-center font-bold text-bold text-black">
-                              {s.name}
-                            </td>
-                            <td className="border text-center">
-                              <button
-                                onClick={() => {
-                                  setBrand({ ...brand, ...s });
-                                }}
-                                className="btn btn-success py-1 px-4"
-                                style={{ fontSize: "75%" }}
-                              >
-                                <FontAwesomeIcon
-                                  className="text-base"
-                                  icon={faPenAlt}
-                                />
-                              </button>
-                            </td>
-                            <td className="border text-center">
-                              <button
-                                onClick={() => {
-                                  setRemove({ ...remove, ...s });
-                                  setModal(true);
-                                }}
-                                className="btn btn-secondary py-1 px-4"
-                              >
-                                <FontAwesomeIcon
-                                  className="text-base"
-                                  icon={faTrashCan}
-                                />
-                              </button>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className='m-3 min-w-[700px]'>
+        <CreateHeader />
+        <CreateBody
+          brand={brand}
+          inputHandler={inputHandler}
+          saveHandler={saveHandler}
+          loading={loading}
+          keyPressed={keyPressed}
+          clearInputs={clearInputs}
+        />
+        <br />
+        <TableHeader
+          setPageSize={setPageSize}
+          searchBrand={searchBrand}
+          setCurrentPage={setCurrentPage}
+          brandsCount={connectorCount}
+          countPage={countPage}
+        />
+        <TableHead
+          currentBrands={currentBrands}
+          setCurrentBrands={setCurrentBrands}
+        />
+
+        {currentBrands &&
+          currentBrands.map((s, key) => {
+            return (
+              <Rows
+                index={key}
+                currentPage={currentPage}
+                key={key}
+                c={s}
+                brand={brand}
+                setBrand={setBrand}
+                setRemove={setRemove}
+                setModal={setModal}
+              />
+            );
+          })}
       </div>
 
-      <div className="d-none">
-        <table className="table m-0" id="brand-excel-table">
+      <div className='d-none'>
+        <table className='table m-0' id='brand-excel-table'>
           <thead>
             <tr>
               <th>№</th>

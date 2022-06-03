@@ -5,6 +5,8 @@ import { Table } from "./Selling/Table";
 import { Footer } from "./Selling/Footer";
 
 export const Selling = ({
+  saleconnectorid,
+  totalpriceuzs,
   checkNumber,
   payment,
   debt,
@@ -14,6 +16,7 @@ export const Selling = ({
   editProducts,
   saleproducts,
   packmans,
+  client,
   clients,
   changePackman,
   changeClient,
@@ -25,8 +28,11 @@ export const Selling = ({
       <p className='card-header'>
         {t("CHEK")}: № A{1000001 + checkNumber.count}
       </p>
-      <div className='px-3 py-2'>
+      {saleconnectorid ? (
+        ""
+      ) : (
         <AddClient
+          client={client}
           setBtn={setBtn}
           btn={btn}
           changePackman={changePackman}
@@ -35,8 +41,12 @@ export const Selling = ({
           clients={clients}
           inputClient={inputClient}
         />
+      )}
+
+      <div className='px-3 py-2 overflow-x-auto'>
         <Table saleproducts={saleproducts} editProducts={editProducts} />
         <Footer
+          totalpriceuzs={totalpriceuzs}
           totalprice={totalprice}
           discount={discount}
           debt={debt}

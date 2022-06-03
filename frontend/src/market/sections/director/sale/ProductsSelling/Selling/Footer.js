@@ -3,43 +3,71 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { t } from "i18next";
 import React from "react";
 
-export const Footer = ({ totalprice, discount, debt, payment, setVisible }) => {
+export const Footer = ({
+  totalprice,
+  discount,
+  debt,
+  payment,
+  setVisible,
+  totalpriceuzs,
+}) => {
   return (
-    <div className='flex'>
-      <div className='py-3 text-lg w-4/5'>
-        <div className='flex justify-between '>
-          <span className='text-black font-bold'>{t("Umumiy summa:")}</span>
-          <span className='text-black font-bold'>
-            {totalprice.toLocaleString("de-DE")} $
-          </span>
-        </div>
-        <div className='flex justify-between'>
-          <span className='text-black font-bold'>{t("Chegirma")}:</span>
-          <span className='text-yellow-500 font-bold'>
-            {discount.discount.toLocaleString("de-DE")} $
-          </span>
-        </div>
-        <div className='flex justify-between'>
-          <span className='text-black font-bold'>{t("Qarz")}:</span>
-          <span className='text-yellow-500 font-bold'>
-            {Math.abs(debt.debt).toLocaleString("de-DE")} $
-          </span>
-        </div>
-        <div className='flex justify-between'>
-          <span className='text-black font-bold'>{t("To'lanayotgan")}:</span>
-          <span className='text-green-700 font-bold'>
-            {(payment.cash + payment.card + payment.transfer).toLocaleString(
-              "de-DE"
-            )}{" "}
-            $
-          </span>
-        </div>
+    <div className='grid grid-cols-12 text-lg font-bold p-2 min-w-[700px]'>
+      <div className='col-span-6 flex flex-col'>
+        <span className='text-black font-bold'>{t("Umumiy summa:")}</span>
+        <span className='text-black font-bold'>{t("Chegirma")}:</span>
+        <span className='text-black font-bold'>{t("Qarz")}:</span>
+        <span className='text-black font-bold'>{t("To'lanayotgan")}:</span>
       </div>
-      <button
-        onClick={() => setVisible(true)}
-        className='w-1/5 my-4 ml-3 bg-blue-800 text-white rounded font-bold text-4xl'>
-        <FontAwesomeIcon icon={faMoneyCheckDollar} />
-      </button>
+      <div className='col-span-2 flex flex-col text-right'>
+        <span className=''>
+          {totalpriceuzs.toLocaleString("de-DE")}{" "}
+          <span className='text-green-800'>UZS</span>
+        </span>
+        <span className=''>
+          {discount.discountuzs.toLocaleString("de-DE")}{" "}
+          <span className='text-green-800'>UZS</span>
+        </span>
+        <span className=''>
+          {parseFloat(debt.debtuzs).toLocaleString("de-DE")}{" "}
+          <span className='text-green-800'>UZS</span>
+        </span>
+        <span className=''>
+          {(
+            payment.cashuzs +
+            payment.carduzs +
+            payment.transferuzs
+          ).toLocaleString("de-DE")}{" "}
+          <span className='text-green-800'>UZS</span>
+        </span>
+      </div>
+      <div className='col-span-2 flex flex-col text-right'>
+        <span className=''>
+          {totalprice.toLocaleString("de-DE")}{" "}
+          <span className='text-green-800'>USD</span>
+        </span>
+        <span className=''>
+          {discount.discount.toLocaleString("de-DE")}{" "}
+          <span className='text-green-800'>USD</span>
+        </span>
+        <span className=''>
+          {debt.debt.toLocaleString("de-DE")}{" "}
+          <span className='text-green-800'>USD</span>
+        </span>
+        <span className=''>
+          {(payment.cash + payment.card + payment.transfer).toLocaleString(
+            "de-DE"
+          )}{" "}
+          <span className='text-green-800'>USD</span>
+        </span>
+      </div>
+      <div className='font-bold text-4xl col-span-2 text-center py-2 px-3'>
+        <button
+          onClick={() => setVisible(true)}
+          className='w-full h-full  bg-blue-800 text-white rounded '>
+          <FontAwesomeIcon icon={faMoneyCheckDollar} />
+        </button>
+      </div>
     </div>
   );
 };

@@ -5,19 +5,12 @@ import { useHttp } from "../../../hooks/http.hook";
 import { AuthContext } from "../../../context/AuthContext";
 import { checkProductType } from "./checkData";
 import { Modal } from "./modal/Modal";
-import { Sort } from "./productComponents/Sort";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faAngleUp,
-  faAngleDown,
-  faFloppyDisk,
-  faRepeat,
-  faPenAlt,
-  faTrashAlt,
-} from "@fortawesome/free-solid-svg-icons";
-import { Pagination } from "./productComponents/Pagination";
-import ReactHtmlTableToExcel from "react-html-table-to-excel";
 import { t } from "i18next";
+import { CreateBody } from "./ProductType/CreateBody";
+import { CreateHeader } from "./ProductType/CreateHeader";
+import { TableHeader } from "./ProductType/TableHeader";
+import { TableHead } from "./ProductType/TableHead";
+import { Rows } from "./ProductType/Rows";
 
 export const ProductType = () => {
   //====================================================================
@@ -249,13 +242,13 @@ export const ProductType = () => {
       const data = await request(
         `/api/products/producttype/update`,
         "PUT",
-        { ...producttype },
+        { ...producttype, user: auth.userId },
         {
           Authorization: `Bearer ${auth.token}`,
         }
       );
       notify({
-        title: `${data.name} mahsuloti yangilandi!`,
+        title: `${data.name} mahsulot turi yangilandi!`,
         description: "",
         status: "success",
       });
@@ -341,270 +334,52 @@ export const ProductType = () => {
   //====================================================================
 
   return (
-    <>
+    <div className='overflow-x-auto'>
       {loading ? <Loader /> : ""}
-      <div className="content-wrapper px-lg-5 px-3">
-        <div className="row gutters">
-          <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <div className="table-container">
-              <div className="table-responsive">
-                <table className="table m-0">
-                  <thead>
-                    <tr>
-                      <th className="w-25 border text-center">
-                        {t("Kategoriya nomi")}
-                      </th>
-                      <th className="w-25 border text-center">
-                        {t("Mahsulot turi")}
-                      </th>
-                      <th className="w-25 border text-center">
-                        {t("Saqlash")}
-                      </th>
-                      <th className="w-25 border text-center">
-                        {t("Tozalash")}
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td className="border text-center">
-                        <select
-                          style={{ minWidth: "70px", maxWidth: "200px" }}
-                          className="text-center py-1 px-3 focus: outline-none focus:ring focus: border-blue-500 rounded"
-                          placeholder={t("Kategoriyani tanlang")}
-                          onChange={checkHandler}
-                        >
-                          <option value="all">Kategoriya tanlang</option>
-                          {categories &&
-                            categories.map((category, index) => {
-                              return (
-                                <option value={category._id} key={index}>
-                                  {category.code}
-                                </option>
-                              );
-                            })}
-                        </select>
-                      </td>
-                      <td className="border text-center">
-                        <input
-                          style={{ minWidth: "70px" }}
-                          name="name"
-                          value={producttype.name || ""}
-                          onKeyUp={keyPressed}
-                          onChange={inputHandler}
-                          type="text"
-                          className="text-center py-1 px-3 focus: outline-none focus:ring focus: border-blue-500 rounded"
-                          id="name"
-                          placeholder={t("Mahsulot turi nomi")}
-                        />
-                      </td>
-                      <td className="border text-center">
-                        {loading ? (
-                          <button className="btn btn-info" disabled>
-                            <span className="spinner-border spinner-border-sm"></span>
-                            Loading...
-                          </button>
-                        ) : (
-                          <button
-                            onClick={saveHandler}
-                            className="btn btn-success py-1 px-4"
-                          >
-                            <FontAwesomeIcon
-                              className="text-base"
-                              icon={faFloppyDisk}
-                            />
-                          </button>
-                        )}
-                      </td>
-
-                      <td className="border text-center">
-                        {loading ? (
-                          <button className="btn btn-info" disabled>
-                            <span className="spinner-border spinner-border-sm"></span>
-                            Loading...
-                          </button>
-                        ) : (
-                          <button
-                            onClick={clearInputs}
-                            className="btn btn-secondary py-1 px-4"
-                          >
-                            <FontAwesomeIcon
-                              className="text-base"
-                              icon={faRepeat}
-                            />
-                          </button>
-                        )}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <div className="table-container">
-              <div className="table-responsive">
-                <table className="table m-0">
-                  <thead className="bg-white">
-                    <tr>
-                      <th>
-                        <select
-                          className="form-control form-control-sm selectpicker"
-                          placeholder="Bo'limni tanlang"
-                          onChange={setPageSize}
-                          style={{ minWidth: "100px" }}
-                        >
-                          <option value={10}>10</option>
-                          <option value={25}>25</option>
-                          <option value={50}>50</option>
-                          <option value={100}>100</option>
-                        </select>
-                      </th>
-                      <th className="text-center">
-                        <input
-                          style={{ maxWidth: "120px", minWidth: "100px" }}
-                          type="search"
-                          className="w-100 form-control form-control-sm selectpicker"
-                          placeholder={t("Kategoriya")}
-                          onChange={searchCategory}
-                        />
-                      </th>
-                      <th className="text-center">
-                        <input
-                          style={{ maxWidth: "120px", minWidth: "100px" }}
-                          type="search"
-                          className="w-100 form-control form-control-sm selectpicker"
-                          placeholder={t("Mahsulot turi")}
-                          onChange={searchProductType}
-                        />
-                      </th>
-                      <th className="text-center">
-                        <Pagination
-                          setCurrentPage={setCurrentPage}
-                          countPage={countPage}
-                          totalDatas={connectorCount.count}
-                        />
-                      </th>
-                      <th className="text-center">
-                        <div className="btn btn-primary">
-                          <ReactHtmlTableToExcel
-                            id="reacthtmltoexcel"
-                            table="producttype-excel-table"
-                            sheet="Sheet"
-                            buttonText="Excel"
-                            filename={t("Mahsulot turi")}
-                          />
-                        </div>
-                      </th>
-                    </tr>
-                  </thead>
-                  <thead>
-                    <tr>
-                      <th className="border text-center">№</th>
-                      <th className="w-25 border text-center">
-                        {t("Kategoriya")}
-                        {"  "}
-                        <div className="btn-group-vertical ml-2">
-                          <FontAwesomeIcon
-                            onClick={() =>
-                              setProductTypes(
-                                [...producttypes].sort((a, b) =>
-                                  a.department.name > b.department.name ? 1 : -1
-                                )
-                              )
-                            }
-                            icon={faAngleUp}
-                            style={{ cursor: "pointer" }}
-                          />
-                          <FontAwesomeIcon
-                            icon={faAngleDown}
-                            style={{ cursor: "pointer" }}
-                            onClick={() =>
-                              setProductTypes(
-                                [...producttypes].sort((a, b) =>
-                                  b.department.name > a.department.name ? 1 : -1
-                                )
-                              )
-                            }
-                          />
-                        </div>
-                      </th>
-                      <th className="w-25 border text-center">
-                        {t("Mahsulot turi")}{" "}
-                        <Sort
-                          data={producttypes}
-                          setData={setProductTypes}
-                          property={"name"}
-                        />
-                      </th>
-                      <th className="w-25 border text-center">
-                        {t("Tahrirlash")}
-                      </th>
-                      <th className="w-25 border text-center">
-                        {t("O'chirish")}
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {currentProductTypes &&
-                      currentProductTypes.map((s, key) => {
-                        return (
-                          <tr key={key}>
-                            <td className="font-bold border text-center text-black">
-                              {currentPage * countPage + key + 1}
-                            </td>
-                            <td className="font-bold border text-center text-black">
-                              {s.category.code}
-                            </td>
-                            <td className="font-bold border text-center text-black">
-                              {s.name}
-                            </td>
-                            <td className="border text-center">
-                              <button
-                                onClick={() => {
-                                  const index = categories.findIndex(
-                                    (d) => s.category._id === d._id
-                                  );
-                                  document.getElementsByTagName(
-                                    "select"
-                                  )[0].selectedIndex = index + 1;
-                                  setProductType({ ...producttype, ...s });
-                                }}
-                                className="btn btn-success py-1 px-4"
-                                style={{ fontSize: "75%" }}
-                              >
-                                <FontAwesomeIcon
-                                  className="text-base"
-                                  icon={faPenAlt}
-                                />
-                              </button>
-                            </td>
-                            <td className="border text-center">
-                              <button
-                                onClick={() => {
-                                  setRemove({ ...remove, ...s });
-                                  setModal(true);
-                                }}
-                                className="btn btn-secondary py-1 px-4"
-                                style={{ fontSize: "75%" }}
-                              >
-                                <FontAwesomeIcon
-                                  className="text-base"
-                                  icon={faTrashAlt}
-                                />
-                              </button>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className='m-3 min-w-[700px]'>
+        <CreateHeader />
+        <CreateBody
+          checkHandler={checkHandler}
+          producttype={producttype}
+          categories={categories}
+          changeHandler={inputHandler}
+          saveHandler={saveHandler}
+          loading={loading}
+          keyPressed={keyPressed}
+          clearInputs={clearInputs}
+        />
+        <br />
+        <TableHeader
+          searchProductType={searchProductType}
+          setPageSize={setPageSize}
+          searchCategory={searchCategory}
+          setCurrentPage={setCurrentPage}
+          categoryCount={connectorCount}
+          countPage={countPage}
+        />
+        <TableHead
+          currentProductTypes={currentProductTypes}
+          setCurrentProductTypes={setCurrentProductTypes}
+        />
+        {currentProductTypes &&
+          currentProductTypes.map((s, key) => {
+            return (
+              <Rows
+                index={key}
+                currentPage={currentPage}
+                key={key}
+                c={s}
+                producttype={producttype}
+                setProductType={setProductType}
+                setRemove={setRemove}
+                setModal={setModal}
+              />
+            );
+          })}
       </div>
 
-      <div className="d-none">
-        <table className="table m-0" id="producttype-excel-table">
+      <div className='d-none'>
+        <table className='table m-0' id='data-excel-table'>
           <thead>
             <tr>
               <th>№</th>
@@ -632,6 +407,6 @@ export const ProductType = () => {
         text={t("mahsulot turini o'chirishni tasdiqlaysizmi?")}
         handler={deleteHandler}
       />
-    </>
+    </div>
   );
 };

@@ -21,7 +21,7 @@ export const Header = ({ auth, sales }) => {
           <span>{new Date(sales.createdAt).toLocaleDateString()}</span>
         </p>
       </div>
-      <div className='text-center text-xl font-bold'>Buyurtma: A{sales.id}</div>
+      <div className='text-center text-xl font-bold'>Sotuv: A{sales.id}</div>
       <div className='text-right text-2xl font-bold '>PIPIHOUSE</div>
     </div>
   );

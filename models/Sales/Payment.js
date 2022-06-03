@@ -3,8 +3,8 @@ const Joi = require("joi");
 
 const payment = new Schema(
   {
-    totalprice: { type: Number, required: true },
-    totalpriceuzs: { type: Number, required: true },
+    totalprice: { type: Number },
+    totalpriceuzs: { type: Number },
     products: [{ type: Schema.Types.ObjectId, ref: "Product", required: true }],
     payment: { type: Number, required: true },
     paymentuzs: { type: Number, required: true },
@@ -30,8 +30,8 @@ const payment = new Schema(
 
 function validatePayment(payment) {
   const schema = Joi.object({
-    totalprice: Joi.number().required(),
-    totalpriceuzs: Joi.number().required(),
+    totalprice: Joi.number(),
+    totalpriceuzs: Joi.number(),
     products: Joi.array().required(),
     payment: Joi.number(),
     paymentuzs: Joi.number(),

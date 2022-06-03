@@ -43,13 +43,19 @@ module.exports.register = async (req, res) => {
       });
     }
 
-    const totalprice = saleproducts.reduce((summ, saleproduct) => {
-      return summ + saleproduct.totalprice;
-    }, 0);
+    const totalprice =
+      Math.round(
+        saleproducts.reduce((summ, saleproduct) => {
+          return summ + saleproduct.totalprice;
+        }, 0) * 100
+      ) / 100;
 
-    const totalpriceuzs = saleproducts.reduce((summ, saleproduct) => {
-      return summ + saleproduct.totalpriceuzs;
-    }, 0);
+    const totalpriceuzs =
+      Math.round(
+        saleproducts.reduce((summ, saleproduct) => {
+          return summ + saleproduct.totalpriceuzs;
+        }, 0) * 100
+      ) / 100;
 
     if (checkPayments(totalprice, payment, discount, debt)) {
       return res.status(400).json({
@@ -284,13 +290,19 @@ module.exports.addproducts = async (req, res) => {
       });
     }
 
-    const totalprice = saleproducts.reduce((summ, saleproduct) => {
-      return summ + saleproduct.totalprice;
-    }, 0);
+    const totalprice =
+      Math.round(
+        saleproducts.reduce((summ, saleproduct) => {
+          return summ + saleproduct.totalprice;
+        }, 0) * 100
+      ) / 100;
 
-    const totalpriceuzs = saleproducts.reduce((summ, saleproduct) => {
-      return summ + saleproduct.totalpriceuzs;
-    }, 0);
+    const totalpriceuzs =
+      Math.round(
+        saleproducts.reduce((summ, saleproduct) => {
+          return summ + saleproduct.totalpriceuzs;
+        }, 0) * 100
+      ) / 100;
 
     if (checkPayments(totalprice, payment, discount, debt)) {
       return res.status(400).json({
@@ -492,7 +504,7 @@ module.exports.addproducts = async (req, res) => {
 
 module.exports.check = async (req, res) => {
   try {
-    const { market } = req.body;
+    const { market, startDate, endDate } = req.body;
 
     const marke = await Market.findById(market);
     if (!marke) {
@@ -500,7 +512,12 @@ module.exports.check = async (req, res) => {
         message: `Diqqat! Do'kon haqida malumotlar topilmadi!`,
       });
     }
-    const count = await SaleConnector.find().count();
+    const count = await SaleConnector.find({
+      createdAt: {
+        $gte: startDate,
+        $lt: endDate,
+      },
+    }).count();
     res.status(200).send({ count });
   } catch (error) {
     res.status(400).json({ error: "Serverda xatolik yuz berdi..." });
@@ -509,7 +526,7 @@ module.exports.check = async (req, res) => {
 
 module.exports.getsaleconnectors = async (req, res) => {
   try {
-    const { market, countPage, currentPage } = req.body;
+    const { market, countPage, currentPage, startDate, endDate } = req.body;
 
     const marke = await Market.findById(market);
     if (!marke) {
@@ -517,7 +534,12 @@ module.exports.getsaleconnectors = async (req, res) => {
         message: `Diqqat! Do'kon haqida malumotlar topilmadi!`,
       });
     }
-    const saleconnectors = await SaleConnector.find()
+    const saleconnectors = await SaleConnector.find({
+      createdAt: {
+        $gte: startDate,
+        $lt: endDate,
+      },
+    })
       .select("-isArchive -updatedAt -user -market -__v")
       .sort({ _id: -1 })
       .skip(currentPage * countPage)
@@ -572,13 +594,19 @@ module.exports.registeredit = async (req, res) => {
       });
     }
 
-    const totalprice = saleproducts.reduce((summ, saleproduct) => {
-      return summ + saleproduct.totalprice;
-    }, 0);
+    const totalprice =
+      Math.round(
+        saleproducts.reduce((summ, saleproduct) => {
+          return summ + saleproduct.totalprice;
+        }, 0) * 100
+      ) / 100;
 
-    const totalpriceuzs = saleproducts.reduce((summ, saleproduct) => {
-      return summ + saleproduct.totalpriceuzs;
-    }, 0);
+    const totalpriceuzs =
+      Math.round(
+        saleproducts.reduce((summ, saleproduct) => {
+          return summ + saleproduct.totalpriceuzs;
+        }, 0) * 100
+      ) / 100;
 
     let all = [];
 
@@ -662,7 +690,6 @@ module.exports.registeredit = async (req, res) => {
       saleconnector.debts.push(newDebt._id);
       dailysaleconnector.debt = newDebt._id;
     }
-
     if (payment.carduzs + payment.cashuzs + payment.transferuzs !== 0) {
       const newPayment = new Payment({
         payment: payment.card + payment.cash + payment.transfer,
@@ -693,26 +720,73 @@ module.exports.registeredit = async (req, res) => {
     dailysaleconnector.products = [...products];
     await dailysaleconnector.save();
 
-    const connector = await DailySaleConnector.findById(dailysaleconnector._id)
+    const saleconnectors = await SaleConnector.findById(saleconnectorid)
       .select("-isArchive -updatedAt -user -market -__v")
       .populate({
         path: "products",
-        select: "totalprice unitprice totalpriceuzs unitpriceuzs pieces",
-        options: { sort: { created_at: -1 } },
+        select:
+          "totalprice unitprice totalpriceuzs unitpriceuzs pieces createdAt discount",
+        options: { sort: { createdAt: -1 } },
         populate: {
           path: "product",
           select: "category name",
           populate: { path: "category", select: "code" },
         },
       })
-      .populate("payment", "payment paymentuzs")
-      .populate("discount", "discount discountuzs")
-      .populate("debt", "debt debtuzs")
+      .populate("payments", "payment paymentuzs")
+      .populate("discounts", "discount discountuzs procient products")
+      .populate("debts", "debt debtuzs")
       .populate("client", "name")
-      .populate("packman", "name")
-      .populate("saleconnector", "id");
-    res.status(201).send(connector);
+      .populate("packman", "name");
+
+    res.status(201).send(saleconnectors);
   } catch (error) {
+    res.status(400).json({ error: "Serverda xatolik yuz berdi..." });
+  }
+};
+
+module.exports.payment = async (req, res) => {
+  try {
+    const { payment, market, user, saleconnectorid } = req.body;
+
+    const marke = await Market.findById(market);
+    if (!marke) {
+      return res.status(400).json({
+        message: `Diqqat! Do'kon haqida malumotlar topilmadi!`,
+      });
+    }
+
+    const use = await User.findById(user);
+
+    if (!use) {
+      return res.status(400).json({
+        message: `Diqqat! Avtorizatsiyadan o'tilmagan!`,
+      });
+    }
+    console.log(req.body);
+    const saleconnector = await SaleConnector.findById(saleconnectorid);
+
+    const newPayment = new Payment({
+      payment: payment.card + payment.cash + payment.transfer,
+      paymentuzs: payment.carduzs + payment.cashuzs + payment.transferuzs,
+      card: payment.card,
+      cash: payment.cash,
+      transfer: payment.transfer,
+      carduzs: payment.carduzs,
+      cashuzs: payment.cashuzs,
+      transferuzs: payment.transferuzs,
+      type: payment.type,
+      market,
+      user,
+      saleconnector: saleconnectorid,
+    });
+    await newPayment.save();
+    saleconnector.payments.push(newPayment._id);
+    await saleconnector.save();
+
+    res.status(201).send(newPayment);
+  } catch (error) {
+    console.log(error);
     res.status(400).json({ error: "Serverda xatolik yuz berdi..." });
   }
 };

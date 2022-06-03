@@ -23,7 +23,7 @@ export const RouterBtns = ({
         <span className='w-[20px] h-[20px] bg-white text-green-700 flex items-center justify-center mr-1 rounded-full'>
           <FontAwesomeIcon icon={faTable} />
         </span>{" "}
-        Jadval
+        Ro'yxat
       </button>
       <button
         onClick={changeSellingEditCard}

@@ -9,7 +9,7 @@ import React from "react";
 
 export const Table = ({ saleproducts, editProducts }) => {
   return (
-    <div className='max-h-96 overflow-y-scroll'>
+    <div className='max-h-96'>
       <table className='bg-white w-full text-base relative min-w-[700px]'>
         <thead className='z-10 border text-center text-base  text-white py-4'>
           <tr>
@@ -48,7 +48,7 @@ export const Table = ({ saleproducts, editProducts }) => {
                   {product.totalprice.toLocaleString("de-DE")}{" "}
                   <span className='text-green-800'>USD</span>
                 </td>
-                <td className='border-r font-bold text-black  px-2 text-center '>
+                <td className='font-bold text-black  px-2 text-center border'>
                   <button
                     className='px-4 bg-green-700 hover:bg-green-800 text-white rounded-xl my-1 text-sm'
                     onClick={() => {
@@ -57,7 +57,7 @@ export const Table = ({ saleproducts, editProducts }) => {
                     <FontAwesomeIcon icon={faPenAlt} />
                   </button>
                 </td>
-                <td className='font-bold text-black  px-2 text-center'>
+                <td className='font-bold text-black  px-2 text-center border'>
                   <button
                     className='px-4 bg-red-600 hover:bg-red-600 text-white rounded-xl my-1 text-sm'
                     onClick={() => {

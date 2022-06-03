@@ -5,11 +5,11 @@ import { AuthContext } from "../../../context/AuthContext";
 import { checkCategory } from "./checkData";
 import { Modal } from "./modal/Modal";
 import { t } from "i18next";
-import { CreateHeader } from "./categoryComponents/CreateHeader";
-import { CreateBody } from "./categoryComponents/CreateBody";
-import { TableHeader } from "./categoryComponents/TableHeader";
-import { TableHead } from "./categoryComponents/TableHead";
-import { Rows } from "./categoryComponents/Rows";
+import { CreateHeader } from "./Category/CreateHeader";
+import { CreateBody } from "./Category/CreateBody";
+import { TableHeader } from "./Category/TableHeader";
+import { TableHead } from "./Category/TableHead";
+import { Rows } from "./Category/Rows";
 
 export const Category = () => {
   //====================================================================
@@ -316,8 +316,8 @@ export const Category = () => {
   //====================================================================
 
   return (
-    <div>
-      <div className='m-3'>
+    <div className='overflow-x-auto'>
+      <div className='m-3 min-w-[700px]'>
         <CreateHeader />
         <CreateBody
           category={category}
@@ -357,7 +357,7 @@ export const Category = () => {
       </div>
 
       <div className='hidden'>
-        <table className='table m-0' id='category-excel-table'>
+        <table className='table m-0' id='data-excel-table'>
           <thead>
             <tr className='bg-blue-700'>
               <th className='border border-black'>№</th>

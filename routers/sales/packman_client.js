@@ -71,4 +71,8 @@ router.post("/saleproducts/checknumber", (req, res) => {
 router.post("/saleproducts/getconnectors", (req, res) => {
   require("./saleproduct").getsaleconnectors(req, res);
 });
+
+router.post("/saleproducts/payment", (req, res) => {
+  require("./saleproduct").payment(req, res);
+});
 module.exports = router;

@@ -67,11 +67,13 @@ export const Packman = () => {
   });
 
   //====================================================================
+  //====================================================================
 
   const [packman, setPackman] = useState({
     market: auth.market && auth.market._id,
   });
 
+  //====================================================================
   //====================================================================
 
   const changeHandler = (e) => {
@@ -325,64 +327,62 @@ export const Packman = () => {
 
   return (
     <>
-      <div className="content-wrapper px-lg-5 px-3">
-        <div className="row gutters">
-          <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <div className="table-container">
-              <div className="table-responsive">
-                <table className="table m-0">
+      <div className='content-wrapper px-lg-5 px-3'>
+        <div className='row gutters'>
+          <div className='col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12'>
+            <div className='table-container'>
+              <div className='table-responsive'>
+                <table className='table m-0'>
                   <thead>
                     <tr>
-                      <th className="border text-center">{t("Yetkazuvchi")}</th>
-                      <th className="border text-center">{t("Saqlash")}</th>
-                      <th className="border text-center">{t("Tozalash")}</th>
+                      <th className='border text-center'>{t("Yetkazuvchi")}</th>
+                      <th className='border text-center'>{t("Saqlash")}</th>
+                      <th className='border text-center'>{t("Tozalash")}</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="border text-center">
-                      <td className="border text-center">
+                    <tr className='border text-center'>
+                      <td className='border text-center'>
                         <input
-                          name="name"
+                          name='name'
                           value={packman.name || ""}
                           onKeyUp={keyPressed}
                           onChange={changeHandler}
-                          type="text"
-                          className="focus: outline-none focus:ring focus:border-blue-500 rounded py-1 px-3"
-                          id="name"
+                          type='text'
+                          className='focus: outline-none focus:ring focus:border-blue-500 rounded py-1 px-3'
+                          id='name'
                           placeholder={t("Yetkazuvchini kiriting")}
                         />
                       </td>
-                      <td className="border text-center">
+                      <td className='border text-center'>
                         {loading ? (
-                          <button className="btn btn-success" disabled>
-                            <span className="spinner-border spinner-border-sm"></span>
+                          <button className='btn btn-success' disabled>
+                            <span className='spinner-border spinner-border-sm'></span>
                             Loading...
                           </button>
                         ) : (
                           <button
                             onClick={saveHandler}
-                            className="btn btn-success py-1 px-4"
-                          >
+                            className='btn btn-success py-1 px-4'>
                             <FontAwesomeIcon
-                              className="text-base"
+                              className='text-base'
                               icon={faFloppyDisk}
                             />
                           </button>
                         )}
                       </td>
-                      <td className="border text-center">
+                      <td className='border text-center'>
                         {loading ? (
-                          <button className="btn btn-success" disabled>
-                            <span className="spinner-border spinner-border-sm"></span>
+                          <button className='btn btn-success' disabled>
+                            <span className='spinner-border spinner-border-sm'></span>
                             Loading...
                           </button>
                         ) : (
                           <button
                             onClick={clearInputs}
-                            className="btn btn-secondary py-1 px-4"
-                          >
+                            className='btn btn-secondary py-1 px-4'>
                             <FontAwesomeIcon
-                              className="text-base"
+                              className='text-base'
                               icon={faRepeat}
                             />
                           </button>
@@ -393,18 +393,17 @@ export const Packman = () => {
                 </table>
               </div>
             </div>
-            <div className="table-container">
-              <div className="table-responsive">
-                <table className="table m-0">
-                  <thead className="bg-white">
+            <div className='table-container'>
+              <div className='table-responsive'>
+                <table className='table m-0'>
+                  <thead className='bg-white'>
                     <tr>
                       <th>
                         <select
-                          className="form-control form-control-sm selectpicker"
+                          className='form-control form-control-sm selectpicker'
                           placeholder={t("Bo'limni tanlang")}
                           onChange={setPageSize}
-                          style={{ minWidth: "50px" }}
-                        >
+                          style={{ minWidth: "50px" }}>
                           <option value={10}>10</option>
                           <option value={25}>25</option>
                           <option value={50}>50</option>
@@ -413,14 +412,14 @@ export const Packman = () => {
                       </th>
                       <th>
                         <input
-                          className="form-control"
-                          type="search"
+                          className='form-control'
+                          type='search'
                           onChange={searchPackman}
                           style={{ maxWidth: "100px" }}
                           placeholder={t("Yetkazuvchilar")}
                         />
                       </th>
-                      <th className="text-center">
+                      <th className='text-center'>
                         <Pagination
                           setCurrentPage={setCurrentPage}
                           countPage={countPage}
@@ -441,9 +440,9 @@ export const Packman = () => {
                     </tr>
                   </thead>
                   <thead>
-                    <tr className="border text-center">
-                      <th className="border text-center">№</th>
-                      <th className="border text-center">
+                    <tr className='border text-center'>
+                      <th className='border text-center'>№</th>
+                      <th className='border text-center'>
                         {t("Yetkazuvchi")}{" "}
                         <Sort
                           data={packmans}
@@ -451,45 +450,43 @@ export const Packman = () => {
                           property={"name"}
                         />
                       </th>
-                      <th className="border text-center">{t("Tahrirlash")}</th>
-                      <th className="border text-center">{t("O'chirish")}</th>
+                      <th className='border text-center'>{t("Tahrirlash")}</th>
+                      <th className='border text-center'>{t("O'chirish")}</th>
                     </tr>
                   </thead>
                   <tbody>
                     {currentPackmans &&
                       currentPackmans.map((s, key) => {
                         return (
-                          <tr className="border text-center" key={key}>
-                            <td className="border text-center font-bold text-bold text-black">
+                          <tr className='border text-center' key={key}>
+                            <td className='border text-center font-bold text-bold text-black'>
                               {currentPage * countPage + key + 1}
                             </td>
-                            <td className="border text-center font-bold text-bold text-black">
+                            <td className='border text-center font-bold text-bold text-black'>
                               {s.name}
                             </td>
-                            <td className="border text-center">
+                            <td className='border text-center'>
                               <button
                                 onClick={() => {
                                   setPackman({ ...s });
                                 }}
-                                className="btn btn-success py-1 px-4"
-                                style={{ fontSize: "75%" }}
-                              >
+                                className='btn btn-success py-1 px-4'
+                                style={{ fontSize: "75%" }}>
                                 <FontAwesomeIcon
-                                  className="text-base"
+                                  className='text-base'
                                   icon={faPenAlt}
                                 />
                               </button>
                             </td>
-                            <td className="border text-center">
+                            <td className='border text-center'>
                               <button
                                 onClick={() => {
                                   setRemove({ ...s });
                                   setModal(true);
                                 }}
-                                className="btn btn-secondary py-1 px-4"
-                              >
+                                className='btn btn-secondary py-1 px-4'>
                                 <FontAwesomeIcon
-                                  className="text-base"
+                                  className='text-base'
                                   icon={faTrashCan}
                                 />
                               </button>

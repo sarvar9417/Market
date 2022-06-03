@@ -48,11 +48,17 @@ export const TableFooter = ({ sales }) => {
             Qarz:
           </th>
           <th className='text-right text-teal-900 py-1'>
-            {sales.debts
-              .reduce((summ, debt) => {
-                return summ + debt.debt;
+            {(
+              sales.products.reduce((summ, product) => {
+                return summ + product.totalprice;
+              }, 0) -
+              sales.payments.reduce((summ, payment) => {
+                return summ + payment.payment;
+              }, 0) -
+              sales.discounts.reduce((summ, discount) => {
+                return summ + discount.discount;
               }, 0)
-              .toLocaleString("de-DE")}{" "}
+            ).toLocaleString("de-DE")}{" "}
             USD
           </th>
         </tr>

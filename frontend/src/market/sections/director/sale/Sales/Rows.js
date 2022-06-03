@@ -1,7 +1,10 @@
 import { faAdd, faPenAlt, faPrint } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { t } from "i18next";
 import React from "react";
 export const Rows = ({
+  countPage,
+  changePrepayment,
   Clear,
   index,
   saleconnector,
@@ -12,7 +15,7 @@ export const Rows = ({
 }) => {
   return (
     <ul className='tr'>
-      <li className='no'>{currentPage * 10 + 1 + index}</li>
+      <li className='no'>{currentPage * countPage + 1 + index}</li>
       <li className='no'>
         {new Date(saleconnector.createdAt).toLocaleDateString()}
       </li>
@@ -22,16 +25,19 @@ export const Rows = ({
       {/* <li className='td border-r font-bold text-right'>
         {saleconnector.products.length}
       </li> */}
-      <li className='td  font-bold col-span-2 text-right border-r-2 border-r-green-700'>
+      <li
+        onClick={() => changePrepayment(saleconnector)}
+        className='td font-bold col-span-2 text-right border-r-2 border-r-green-700 hover:bg-blue-200 flex justify-between'>
+        <span className='text-white'>{t("To'lov")}</span>
         <span>
           {saleconnector.products
             .reduce((summ, product) => {
               return summ + product.totalprice;
             }, 0)
             .toLocaleString("de-DE")}
+          {"  "}
+          <span className='text-green-900'>USD</span>
         </span>
-        {"  "}
-        <span className='text-green-900'>USD</span>
       </li>
       <li className='td border-r-2 border-red-600 font-bold col-span-2 text-right'>
         <span>
@@ -41,6 +47,9 @@ export const Rows = ({
             }, 0) -
             saleconnector.payments.reduce((summ, payment) => {
               return summ + payment.payment;
+            }, 0) -
+            saleconnector.discounts.reduce((summ, discount) => {
+              return summ + discount.discount;
             }, 0)
           ).toLocaleString("de-DE")}
         </span>

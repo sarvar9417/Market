@@ -8,21 +8,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { t } from "i18next";
 import React from "react";
 
-export const RightBodyEdit = ({
-  exchangerate,
-  payment,
-  discount,
-  debt,
-  typeHandler,
-}) => {
+export const RightBody = ({ payment, discount, debt, typeHandler }) => {
   return (
-    <div className='bg-cyan-50 text-[#333] font-semibold text-lg rounded p-2 h-min mt-4'>
+    <div className='bg-blue-100 text-[#333] font-semibold text-lg rounded p-2 h-min mt-4'>
       <div className='grid grid-cols-3 gap-2'>
         <div className='col-span-2'>
           <div className='grid grid-rows-3 gap-2'>
             <button
               onClick={typeHandler}
-              className='bg-teal-400 hover:bg-teal-500 text-white w-full rounded font-bold flex justify-between items-center px-3 py-2'
+              className='bg-blue-700 hover:bg-blue-800 text-white w-full rounded font-bold flex justify-between items-center px-3 py-2'
               name={t("Naqt")}
               data-type='cash'>
               <span className='text-4xl pointer-events-none'>
@@ -39,7 +33,7 @@ export const RightBodyEdit = ({
             </button>
             <button
               onClick={typeHandler}
-              className='bg-teal-400 hover:bg-teal-500 text-white w-full rounded font-bold flex justify-between items-center px-3 py-3'
+              className='bg-blue-700 hover:bg-blue-800 text-white w-full rounded font-bold flex justify-between items-center px-3 py-3'
               name='Plastik'
               data-type='card'>
               <span className='text-4xl pointer-events-none'>
@@ -56,7 +50,7 @@ export const RightBodyEdit = ({
             </button>
             <button
               onClick={typeHandler}
-              className='bg-teal-400 hover:bg-teal-500 text-white w-full rounded font-bold flex justify-between items-center px-3 py-3'
+              className='bg-blue-700 hover:bg-blue-800 text-white w-full rounded font-bold flex justify-between items-center px-3 py-3'
               name={t("O'tkazma")}
               data-type='transfer'>
               <span className='text-4xl pointer-events-none'>
@@ -77,7 +71,7 @@ export const RightBodyEdit = ({
           <div className=' row-span-3'>
             <button
               onClick={typeHandler}
-              className='bg-teal-400 hover:bg-teal-500 text-white w-full rounded font-bold flex justify-center items-center px-3 py-3 h-full'
+              className='bg-blue-700 hover:bg-blue-800 text-white w-full rounded font-bold flex justify-center items-center px-3 py-3 h-full'
               name='Aralash'
               data-type='mixed'>
               <span className='text-2xl pointer-events-none flex flex-col w-[105px] h-[105px] justify-center  border-white border-2 rounded-full p-4'>
@@ -95,8 +89,8 @@ export const RightBodyEdit = ({
       </div>
       <div className='grid grid-cols-2 gap-2 pt-2'>
         <button
-          // onClick={typeHandler}
-          className='bg-teal-400 hover:bg-teal-500 text-white w-full rounded font-bold flex flex-col justify-between items-center px-3 py-3'
+          onClick={typeHandler}
+          className='bg-blue-700 hover:bg-blue-800 text-white w-full rounded font-bold flex flex-col justify-between items-center px-3 py-3'
           name='Chegirma'
           data-type='discount'>
           <h1 className=' pointer-events-none text-yellow-600'>
@@ -104,26 +98,16 @@ export const RightBodyEdit = ({
           </h1>
           <p className='text-3xl font-bold pointer-events-none flex flex-col'>
             <span className='text-black'>
-              {discount
-                .reduce((summ, discount) => {
-                  return summ + discount.discount;
-                }, 0)
-                .toLocaleString("de-DE")}{" "}
-              USD
+              {discount.discount.toLocaleString("de-DE")} USD
             </span>
             <span className='text-lg'>
-              {discount
-                .reduce((summ, discount) => {
-                  return summ + discount.discountuzs;
-                }, 0)
-                .toLocaleString("de-DE")}{" "}
-              UZS
+              {discount.discountuzs.toLocaleString("de-DE")} UZS
             </span>
           </p>
         </button>
         <button
           onClick={typeHandler}
-          className='bg-teal-400 hover:bg-teal-500 text-white w-full rounded font-bold flex flex-col justify-between items-center px-3 py-3'
+          className='bg-blue-700 hover:bg-blue-800 text-white w-full rounded font-bold flex flex-col justify-between items-center px-3 py-3'
           name='Qarz'
           data-type='debt'>
           <h1 className=' pointer-events-none text-yellow-600'>{t("Qarz")}</h1>
