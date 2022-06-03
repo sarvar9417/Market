@@ -450,7 +450,7 @@ module.exports.getProducttypeConnectors = async (req, res) => {
       .sort({ _id: -1 })
       .skip(currentPage * countPage)
       .limit(countPage)
-      .select("name")
+      .select("name market")
       .populate("category", "code");
 
     res.status(201).send(connector);
