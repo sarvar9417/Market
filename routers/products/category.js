@@ -227,7 +227,7 @@ module.exports.getCategoryConnectors = async (req, res) => {
       .sort({ _id: -1 })
       .skip(currentPage * countPage)
       .limit(countPage)
-      .select("name code");
+      .select("name code market");
 
     res.status(201).send(categoryConnectors);
   } catch (error) {

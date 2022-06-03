@@ -177,7 +177,7 @@ module.exports.getBrandConnectors = async (req, res) => {
       .sort({ _id: -1 })
       .skip(currentPage * countPage)
       .limit(countPage)
-      .select("name");
+      .select("name market");
 
     res.status(201).send(connector);
   } catch (error) {

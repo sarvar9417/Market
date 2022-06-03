@@ -10,11 +10,13 @@ import { Product } from "./products/Product";
 import { Incoming } from "./products/Incoming";
 import { Supplier } from "./products/Supplier";
 import { Brand } from "./products/Brand";
-import { Filials } from "./filials/Filials";
 import { Sale } from "./sale/Sale";
 import { Packman } from "./sale/Packman";
 import { Client } from "./sale/Client";
 import { t } from "i18next";
+import { FilialRegister } from "./filials/FilialRegister";
+import { Filials } from "./filials/Filials";
+import { FilialDirector } from "./filials/FilialDirector";
 
 export const DirectorRouter = () => {
   return (
@@ -54,8 +56,14 @@ export const DirectorRouter = () => {
         <Route path="/alo24/incoming">
           <Incoming />
         </Route>
-        <Route path="/alo24/branch">
+        <Route path="/alo24/branchregister">
+          <FilialRegister />
+        </Route>
+        <Route path="/alo24/branches">
           <Filials />
+        </Route>
+        <Route path="/alo24/branchdirector">
+          <FilialDirector />
         </Route>
         <Route path="/alo24/packman">
           <Packman />

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import {
   Input,
   FormControl,
@@ -7,18 +7,19 @@ import {
   InputLeftAddon,
   Button,
 } from "@chakra-ui/react";
-import PasswordInput from "./PasswordInput";
-import { FileUpload } from "./fileUpLoad/FileUpload";
-import { useHttp } from "../hooks/http.hook";
+import PasswordInput from "../../../loginAndRegister/PasswordInput";
+import { FileUpload } from "../../../loginAndRegister/fileUpLoad/FileUpload";
+import { useHttp } from "../../../hooks/http.hook";
 import { useToast } from "@chakra-ui/react";
-import { checkDirectorData } from "./checkData";
+import { checkDirectorData } from "../../../loginAndRegister/checkData";
 import { useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { Loader } from "../loader/Loader";
+import { Loader } from "../../../loader/Loader";
 import { t } from "i18next";
+import { AuthContext } from "../../../context/AuthContext";
 
-export const DirectorRegistor = () => {
+export const FilialDirector = () => {
   //====================================================================
   //====================================================================
   const toast = useToast();
@@ -44,6 +45,7 @@ export const DirectorRegistor = () => {
   const [load, setLoad] = useState(false);
 
   const { request, loading } = useHttp();
+  const auth = useContext(AuthContext);
 
   const market = JSON.parse(localStorage.getItem("marketData"));
 
@@ -52,6 +54,7 @@ export const DirectorRegistor = () => {
     market: market && market.market._id,
     image: null,
   });
+
   //====================================================================
   //====================================================================
 
@@ -144,23 +147,24 @@ export const DirectorRegistor = () => {
       return notify(checkDirectorData(director));
     }
     try {
-      const data = await request("/api/director/register", "POST", {
-        ...director,
-      });
-      localStorage.setItem(
-        "director",
-        JSON.stringify({
-          director: data,
-        })
+      const data = await request(
+        "/api/branch/registerdirector",
+        "POST",
+        {
+          ...director,
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
       );
       notify({
-        title: `Tabriklaymiz ${
-          director.firstname + " " + director.lastname
-        } ${t("Siz uchun direktor bo'limi ham muvaffaqqiyatli yaratildi.")}`,
+        title: `Tabriklaymiz ${data.firstname + " " + data.lastname} ${t(
+          "Siz uchun direktor bo'limi ham muvaffaqqiyatli yaratildi."
+        )}`,
         description: "",
         status: "success",
       });
-      history.push("/alo24");
+      history.push("/alo24/branches");
     } catch (error) {
       notify({
         title: error,

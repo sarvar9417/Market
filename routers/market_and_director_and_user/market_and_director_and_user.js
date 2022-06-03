@@ -30,8 +30,12 @@ router.delete("/branch/delete", auth, (req, res) => {
   require("./branch.route").delete(req, res);
 });
 
-router.get("/branch/getallmarkets", auth, (req, res) => {
-  require("./branch.route").getAll(req, res);
+router.post("/branch/getall", auth, (req, res) => {
+  require("./branch.route").getBranch(req, res);
+});
+
+router.post("/branch/registerdirector", auth, (req, res) => {
+  require("./branch.route").registerBranchDirector(req, res);
 });
 
 //========================================================
