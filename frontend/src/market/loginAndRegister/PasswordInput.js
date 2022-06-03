@@ -14,7 +14,7 @@ function PasswordInput({ name, changeHandler, keyPressed }) {
         type={show ? "text" : "password"}
         placeholder={t("Parolni kiriting")}
         size="sm"
-        style={{ borderColor: "#eee", boxShadow: "none", color: "#fff" }}
+        style={{ borderColor: "#eee", boxShadow: "none", color: "#000" }}
         name={name}
         onChange={changeHandler}
         onKeyUp={keyPressed}

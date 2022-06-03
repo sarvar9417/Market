@@ -798,7 +798,7 @@ module.exports.getProductConnectors = async (req, res) => {
       .skip(currentPage * countPage)
       .limit(countPage)
       .sort({ _id: -1 })
-      .select("name code unit category producttype brand price total")
+      .select("name code unit category producttype brand price total market")
       .populate("category", "name code")
       .populate("producttype", "name")
       .populate("unit", "name")

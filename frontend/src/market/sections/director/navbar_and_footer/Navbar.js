@@ -324,19 +324,53 @@ export const Navbar = ({ baseUrl }) => {
                   {t("Valyuta kursi")}
                 </Link>
               </li>
-              <li className="nav-item">
-                <Link
-                  className={`nav-link ${
-                    activePage === "/alo24/branch" ? "active-page" : ""
+              <li className="nav-item dropdown">
+                <span
+                  id="doctoRs"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  className={`nav-link dropdown-toggle ${
+                    activePage === "/alo24/branches" ||
+                    activePage === "/alo24/branchregister"
+                      ? "active-page"
+                      : ""
                   }`}
-                  onClick={() => {
-                    setActivePage("/alo24/branch");
-                  }}
-                  to="/alo24/branch"
                 >
-                  <i className="icon-devices_other nav-icon" />
-                  Filiallar
-                </Link>
+                  <i className="icon-users nav-icon" />
+                  Filial
+                </span>
+                <ul className="dropdown-menu" aria-labelledby="doctoRs">
+                  <li>
+                    <Link
+                      className={`dropdown-item ${
+                        activePage === "/alo24/branchregister"
+                          ? "active-page"
+                          : ""
+                      }`}
+                      onClick={() => {
+                        setActivePage("/alo24/branchregister");
+                      }}
+                      to="/alo24/branchregister"
+                    >
+                      Filial yaratish
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={`dropdown-item ${
+                        activePage === "/alo24/branches" ? "active-page" : ""
+                      }`}
+                      onClick={() => {
+                        setActivePage("/alo24/branches");
+                      }}
+                      to="/alo24/branches"
+                    >
+                      Filiallar
+                    </Link>
+                  </li>
+                </ul>
               </li>
             </ul>
 

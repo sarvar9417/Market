@@ -38,7 +38,7 @@ export const SearchInput = ({
         onKeyUp={keyPressed}
         onChange={changeHandler}
         type={type}
-        className='input'
+        className="input"
         name={name}
         placeholder={t(placeholder)}
       />
