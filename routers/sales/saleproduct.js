@@ -763,7 +763,6 @@ module.exports.payment = async (req, res) => {
         message: `Diqqat! Avtorizatsiyadan o'tilmagan!`,
       });
     }
-    console.log(req.body);
     const saleconnector = await SaleConnector.findById(saleconnectorid);
 
     const newPayment = new Payment({

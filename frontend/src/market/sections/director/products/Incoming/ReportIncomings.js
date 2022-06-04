@@ -1,5 +1,5 @@
 import React from "react";
-import { Datapicker } from "./Datepicker";
+import { Datapicker } from "./components/Datepicker";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { t } from "i18next";

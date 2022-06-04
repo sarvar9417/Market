@@ -2,9 +2,9 @@ import React from "react";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleUp, faAngleDown } from "@fortawesome/free-solid-svg-icons";
-import { Pagination } from "../productComponents/Pagination";
+import { Pagination } from "./../../../components/Pagination";
 import { ExcelTable } from "./ExcelTable";
-import { DatePickers } from "../../components/DatePickers";
+import { DatePickers } from "./../../../components/DatePickers";
 import { t } from "i18next";
 
 export const TableIncoming = ({
@@ -25,19 +25,18 @@ export const TableIncoming = ({
   connectorCount,
 }) => {
   return (
-    <div className="table-container">
-      <div className="table-container">
-        <div className="table-responsive">
-          <table className="table m-0">
-            <thead className="bg-white">
+    <div className='table-container'>
+      <div className='table-container'>
+        <div className='table-responsive'>
+          <table className='table m-0'>
+            <thead className='bg-white'>
               <tr>
                 <th>
                   <select
-                    className="form-control form-control-sm selectpicker"
+                    className='form-control form-control-sm selectpicker'
                     placeholder={t("Bo'limni tanlang")}
                     onChange={setPageSize}
-                    style={{ minWidth: "50px" }}
-                  >
+                    style={{ minWidth: "50px" }}>
                     <option value={10}>10</option>
                     <option value={25}>25</option>
                     <option value={50}>50</option>
@@ -48,8 +47,8 @@ export const TableIncoming = ({
                   <input
                     onChange={searchSupplier}
                     style={{ maxWidth: "100px", minWidth: "100px" }}
-                    type="search"
-                    className="w-100 form-control form-control-sm selectpicker"
+                    type='search'
+                    className='w-100 form-control form-control-sm selectpicker'
                     placeholder={t("Yetkazib beruvchi")}
                   />
                 </th>
@@ -57,39 +56,39 @@ export const TableIncoming = ({
                   <input
                     onChange={searchCategoryTable}
                     style={{ maxWidth: "100px" }}
-                    type="search"
-                    className="form-control form-control-sm selectpicker"
+                    type='search'
+                    className='form-control form-control-sm selectpicker'
                     placeholder={t("Kategoriya")}
-                    aria-controls="basicExample"
+                    aria-controls='basicExample'
                   />
                 </th>
                 <th>
                   <input
                     onChange={searchProduct}
                     style={{ maxWidth: "100px" }}
-                    type="search"
-                    className="form-control form-control-sm selectpicker"
+                    type='search'
+                    className='form-control form-control-sm selectpicker'
                     placeholder={t("Mahsulot")}
-                    aria-controls="basicExample"
+                    aria-controls='basicExample'
                   />
                 </th>
                 <th>
                   <input
                     onChange={searchBrand}
                     style={{ maxWidth: "100px" }}
-                    type="search"
-                    className="form-control form-control-sm selectpicker"
+                    type='search'
+                    className='form-control form-control-sm selectpicker'
                     placeholder={t("Brend")}
-                    aria-controls="basicExample"
+                    aria-controls='basicExample'
                   />
                 </th>
                 <th>
-                  <div className="btn btn-primary">
+                  <div className='btn btn-primary'>
                     <ReactHTMLTableToExcel
-                      id="reacthtmltoexcel"
-                      table="products-table"
-                      sheet="Sheet"
-                      buttonText="Excel"
+                      id='reacthtmltoexcel'
+                      table='products-table'
+                      sheet='Sheet'
+                      buttonText='Excel'
                       filename={t("Mahsulotlar")}
                     />
                   </div>
@@ -101,14 +100,13 @@ export const TableIncoming = ({
                     totalDatas={connectorCount.count}
                   />
                 </th>
-                <th className="text-center" style={{ overflow: "hidden" }}>
+                <th className='text-center' style={{ overflow: "hidden" }}>
                   <div
                     style={{
                       display: "flex",
                       justifyContent: "space-between",
                       maxWidth: "200px",
-                    }}
-                  >
+                    }}>
                     <DatePickers changeDate={changeStart} />
                     <DatePickers changeDate={changeEnd} />
                   </div>
@@ -117,10 +115,10 @@ export const TableIncoming = ({
             </thead>
             <thead>
               <tr>
-                <th className="border-right">№</th>
-                <th className="border-right d-flex">
+                <th className='border-right'>№</th>
+                <th className='border-right d-flex'>
                   <div>{t("Yetkazib beruvchi")}</div>
-                  <div className="btn-group-vertical ml-2">
+                  <div className='btn-group-vertical ml-2'>
                     <FontAwesomeIcon
                       onClick={() =>
                         setCurrentImports(
@@ -145,9 +143,9 @@ export const TableIncoming = ({
                     />
                   </div>
                 </th>
-                <th className="border-right">
+                <th className='border-right'>
                   {t("Kategoriya")}
-                  <div className="btn-group-vertical ml-2">
+                  <div className='btn-group-vertical ml-2'>
                     <FontAwesomeIcon
                       onClick={() =>
                         setCurrentImports(
@@ -172,9 +170,9 @@ export const TableIncoming = ({
                     />
                   </div>
                 </th>
-                <th className="border-right">
+                <th className='border-right'>
                   {t("Mahsulot turi")}
-                  <div className="btn-group-vertical ml-2">
+                  <div className='btn-group-vertical ml-2'>
                     <FontAwesomeIcon
                       onClick={() =>
                         setCurrentImports(
@@ -199,9 +197,9 @@ export const TableIncoming = ({
                     />
                   </div>
                 </th>
-                <th className="border-right">
+                <th className='border-right'>
                   {t("Brend")}
-                  <div className="btn-group-vertical ml-2">
+                  <div className='btn-group-vertical ml-2'>
                     <FontAwesomeIcon
                       onClick={() =>
                         setCurrentImports(
@@ -226,9 +224,9 @@ export const TableIncoming = ({
                     />
                   </div>
                 </th>
-                <th className="border-right d-flex">
+                <th className='border-right d-flex'>
                   {t("Soni - O'l.B.")}
-                  <div className="btn-group-vertical ml-2">
+                  <div className='btn-group-vertical ml-2'>
                     <FontAwesomeIcon
                       onClick={() =>
                         setCurrentImports(
@@ -253,9 +251,9 @@ export const TableIncoming = ({
                     />
                   </div>
                 </th>
-                <th className="border-right">
+                <th className='border-right'>
                   {t("Narx '1'")}
-                  <div className="btn-group-vertical ml-2">
+                  <div className='btn-group-vertical ml-2'>
                     <FontAwesomeIcon
                       onClick={() =>
                         setCurrentImports(
@@ -280,9 +278,9 @@ export const TableIncoming = ({
                     />
                   </div>
                 </th>
-                <th className="border-right">
+                <th className='border-right'>
                   {t("Umumiy narx")}
-                  <div className="btn-group-vertical ml-2">
+                  <div className='btn-group-vertical ml-2'>
                     <FontAwesomeIcon
                       onClick={() =>
                         setCurrentImports(
@@ -314,30 +312,30 @@ export const TableIncoming = ({
                 currentImports.map((p, key) => {
                   return (
                     <tr key={key}>
-                      <td className="border-right font-bold text-black">
+                      <td className='border-right font-bold text-black'>
                         {currentPage * countPage + key + 1}
                       </td>
-                      <td className="border-right font-bold text-black">
+                      <td className='border-right font-bold text-black'>
                         {p.supplier.name}
                       </td>
-                      <td className="border-right font-bold text-black">
+                      <td className='border-right font-bold text-black'>
                         {p.category && p.category.code} {" | "} {p.product.code}
                       </td>
-                      <td className="border-right font-bold text-black">
+                      <td className='border-right font-bold text-black'>
                         {p.producttype && p.producttype.name}
                         {" | "}
                         {p.product && p.product.name}
                       </td>
-                      <td className="border-right font-bold text-black">
+                      <td className='border-right font-bold text-black'>
                         {p.brand && p.brand.name}
                       </td>
-                      <td className="border-right font-bold text-black">
+                      <td className='border-right font-bold text-black'>
                         {p.pieces} {p.unit.name}
                       </td>
-                      <td className="border-right font-bold text-black">
+                      <td className='border-right font-bold text-black'>
                         {p.unitprice}
                       </td>
-                      <td className="border-right font-bold text-black">
+                      <td className='border-right font-bold text-black'>
                         {p.totalprice}
                       </td>
                     </tr>
@@ -345,8 +343,8 @@ export const TableIncoming = ({
                 })}
             </tbody>
           </table>
-          <div className="d-none">
-            <ExcelTable data={dataExcel} id="products-table" />
+          <div className='d-none'>
+            <ExcelTable data={dataExcel} id='products-table' />
           </div>
         </div>
       </div>
