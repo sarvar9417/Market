@@ -47,9 +47,13 @@ export const ProductType = () => {
 
   const [currentPage, setCurrentPage] = useState(0);
   const [countPage, setCountPage] = useState(10);
-  const indexLastProduct = (currentPage + 1) * countPage;
-  const indexFirstProduct = indexLastProduct - countPage;
-  const [connectorCount, setConnectorCount] = useState(0);
+  const [producttypeCount, setProductTypeCount] = useState(0);
+  const [searchingEl, setSearchingEl] = useState({
+    type: "",
+    search: "",
+    searchcode: "",
+    searchname: "",
+  });
 
   const [remove, setRemove] = useState({
     market: auth.market && auth.market._id,
@@ -60,7 +64,7 @@ export const ProductType = () => {
   });
   //====================================================================
   //====================================================================
-
+  console.log(producttype);
   //====================================================================
   //====================================================================
   const [categories, setCategories] = useState([]);
@@ -75,6 +79,7 @@ export const ProductType = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+      console.log(data);
       setCategories(data);
     } catch (error) {
       notify({
@@ -106,17 +111,19 @@ export const ProductType = () => {
   const getProductTypes = useCallback(async () => {
     try {
       const data = await request(
-        `/api/products/producttype/getall`,
+        `/api/products/producttype/getproducttypes`,
         "POST",
-        { market: auth.market._id },
+        { market: auth.market._id, currentPage, countPage, searching: null },
         {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      setProductTypes(data);
-      setCurrentProductTypes(data.slice(indexFirstProduct, indexLastProduct));
-      setSearchStorage(data);
-      setTableExcel(data);
+      console.log(data);
+      setProductTypes(data.producttypes);
+      setCurrentProductTypes(data.producttypes);
+      setSearchStorage(data.producttypes);
+      setTableExcel(data.producttypes);
+      setProductTypeCount(data.count);
     } catch (error) {
       notify({
         title: error,
@@ -124,7 +131,33 @@ export const ProductType = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify, indexFirstProduct, indexLastProduct]);
+  }, [request, auth, notify, currentPage, countPage]);
+
+  const getSearchedProductType = async () => {
+    try {
+      const data = await request(
+        "/api/products/producttype/getproducttypes",
+        "POST",
+        {
+          market: auth.market._id,
+          currentPage,
+          countPage,
+          searching: searchingEl,
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setProductTypeCount(data.count);
+      setCurrentProductTypes(data.producttypes);
+    } catch (error) {
+      notify({
+        title: error,
+        description: "",
+        status: "error",
+      });
+    }
+  };
   //====================================================================
   //====================================================================
 
@@ -139,21 +172,48 @@ export const ProductType = () => {
   //====================================================================
   //====================================================================
 
-  const searchCategory = (e) => {
-    const filter = searchStorage.filter((item) =>
-      String(item.category.code).includes(e.target.value)
-    );
+  const searchProductType = (e) => {
+    if (e.target.name === "code") {
+      setSearchingEl({
+        type: "code",
+        search: e.target.value,
+        searchcode: e.target.value,
+        searchname: "",
+      });
 
-    setCurrentProductTypes(filter);
-    setProductType(filter);
+      const searched = searchStorage.filter(
+        (item) => item.category && item.category.code.includes(e.target.value)
+      );
+      setProductTypes(searched);
+      setCurrentProductTypes(searched);
+    }
+    if (e.target.name === "name") {
+      setSearchingEl({
+        type: "name",
+        search: e.target.value.toLowerCase(),
+        searchname: e.target.value.toLowerCase(),
+        searchcode: "",
+      });
+      const searched = searchStorage.filter(
+        (item) =>
+          item.name &&
+          item.name.toLowerCase().includes(e.target.value.toLowerCase())
+      );
+      setProductTypes(searched);
+      setCurrentProductTypes(searched);
+    }
+    if (e.target.value === "") {
+      setSearchingEl(null);
+    }
   };
 
-  const searchProductType = (e) => {
-    const filter = searchStorage.filter((item) =>
-      item.name.toLowerCase().includes(e.target.value.toLowerCase())
-    );
-    setCurrentProductTypes(filter);
-    setProductTypes(filter);
+  const searchKeypress = (e) => {
+    if (e.key === "Enter") {
+      if (searchingEl) {
+        return getSearchedProductType();
+      }
+      return getProductTypes();
+    }
   };
 
   const setPageSize = (e) => {
@@ -164,46 +224,6 @@ export const ProductType = () => {
 
   //====================================================================
   //====================================================================
-
-  const getConnectorsCount = useCallback(async () => {
-    try {
-      const data = await request(
-        "/api/products/producttype/getconnectorscount",
-        "POST",
-        { market: auth.market && auth.market._id },
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
-      );
-      setConnectorCount(data);
-    } catch (error) {
-      notify({
-        title: error,
-        description: "",
-        status: "error",
-      });
-    }
-  }, [auth, notify, request]);
-
-  const getConnectors = useCallback(async () => {
-    try {
-      const data = await request(
-        "/api/products/producttype/getconnectors",
-        "POST",
-        { market: auth.market._id, currentPage, countPage },
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
-      );
-      setCurrentProductTypes(data);
-    } catch (error) {
-      notify({
-        title: error,
-        description: "",
-        status: "error",
-      });
-    }
-  }, [auth, request, notify, currentPage, countPage]);
 
   //====================================================================
   //====================================================================
@@ -223,7 +243,7 @@ export const ProductType = () => {
         description: "",
         status: "success",
       });
-      getConnectors();
+      getProductTypes();
       setProductType({
         market: auth.market && auth.market._id,
       });
@@ -235,7 +255,7 @@ export const ProductType = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify, clearInputs, getConnectors, producttype]);
+  }, [request, auth, notify, clearInputs, getProductTypes, producttype]);
 
   const updateHandler = useCallback(async () => {
     try {
@@ -252,7 +272,7 @@ export const ProductType = () => {
         description: "",
         status: "success",
       });
-      getConnectors();
+      getProductTypes();
       setProductType({
         market: auth.market && auth.market._id,
       });
@@ -264,7 +284,7 @@ export const ProductType = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify, producttype, clearInputs, getConnectors]);
+  }, [request, auth, notify, producttype, clearInputs, getProductTypes]);
 
   const saveHandler = () => {
     if (checkProductType(producttype)) {
@@ -298,7 +318,7 @@ export const ProductType = () => {
         description: "",
         status: "success",
       });
-      getConnectors();
+      getProductTypes();
       setModal(false);
       setProductType({
         market: auth.market && auth.market._id,
@@ -311,32 +331,30 @@ export const ProductType = () => {
         status: "error",
       });
     }
-  }, [auth, request, remove, notify, clearInputs, getConnectors]);
+  }, [auth, request, remove, notify, clearInputs, getProductTypes]);
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
   useEffect(() => {
-    getConnectors();
-  }, [currentPage, countPage, getConnectors]);
+    getProductTypes();
+  }, [currentPage, countPage, getProductTypes]);
 
   const [n, setN] = useState();
   useEffect(() => {
     if (!n) {
       setN(1);
       getCategories();
-      getProductTypes();
-      getConnectorsCount();
     }
-  }, [getCategories, getProductTypes, getConnectorsCount, n]);
+  }, [getCategories, n]);
   //====================================================================
   //====================================================================
 
   return (
-    <div className='overflow-x-auto'>
+    <div className="overflow-x-auto">
       {loading ? <Loader /> : ""}
-      <div className='m-3 min-w-[700px]'>
+      <div className="m-3 min-w-[700px]">
         <CreateHeader />
         <CreateBody
           checkHandler={checkHandler}
@@ -352,10 +370,12 @@ export const ProductType = () => {
         <TableHeader
           searchProductType={searchProductType}
           setPageSize={setPageSize}
-          searchCategory={searchCategory}
           setCurrentPage={setCurrentPage}
-          categoryCount={connectorCount}
+          producttypeCount={producttypeCount}
           countPage={countPage}
+          valueCategory={(searchingEl && searchingEl.searchcode) || ""}
+          valueName={(searchingEl && searchingEl.searchname) || ""}
+          keyPressed={searchKeypress}
         />
         <TableHead
           currentProductTypes={currentProductTypes}
@@ -378,8 +398,8 @@ export const ProductType = () => {
           })}
       </div>
 
-      <div className='d-none'>
-        <table className='table m-0' id='data-excel-table'>
+      <div className="d-none">
+        <table className="table m-0" id="data-excel-table">
           <thead>
             <tr>
               <th>№</th>

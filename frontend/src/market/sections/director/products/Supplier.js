@@ -52,9 +52,7 @@ export const Supplier = () => {
 
   const [currentPage, setCurrentPage] = useState(0);
   const [countPage, setCountPage] = useState(10);
-
-  const indexLastProduct = (currentPage + 1) * countPage;
-  const indexFirstProduct = indexLastProduct - countPage;
+  const [searchingEl, setSearchingEl] = useState({});
 
   const [remove, setRemove] = useState({
     market: auth.market && auth.market._id,
@@ -85,64 +83,26 @@ export const Supplier = () => {
   const [searchStorage, setSearchStorage] = useState([]);
   const [tableExcel, setTableExcel] = useState([]);
 
+  //====================================================================
+  //====================================================================
+
+  const [suppliersCount, setSuppliersCount] = useState(0);
+
   const getSuppliers = useCallback(async () => {
     try {
       const data = await request(
-        `/api/supplier/getall`,
+        "/api/supplier/getsuppliers",
         "POST",
-        { market: auth.market._id },
+        { market: auth.market._id, currentPage, countPage, searching: null },
         {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      setSuppliers(data);
-      setCurrentSuppliers(data.slice(indexFirstProduct, indexLastProduct));
-      setSearchStorage(data);
-      setTableExcel(data);
-    } catch (error) {
-      notify({
-        title: error,
-        description: "",
-        status: "error",
-      });
-    }
-  }, [request, auth, notify, indexFirstProduct, indexLastProduct]);
-  //====================================================================
-  //====================================================================
-
-  const [connectorCount, setConnectorCount] = useState(0);
-
-  const getConnectorsCount = useCallback(async () => {
-    try {
-      const data = await request(
-        "/api/supplier/getconnectorscount",
-        "POST",
-        { market: auth.market && auth.market._id },
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
-      );
-      setConnectorCount(data);
-    } catch (error) {
-      notify({
-        title: error,
-        description: "",
-        status: "error",
-      });
-    }
-  }, [auth, notify, request]);
-
-  const getConnectors = useCallback(async () => {
-    try {
-      const data = await request(
-        "/api/supplier/getconnectors",
-        "POST",
-        { market: auth.market._id, currentPage, countPage },
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
-      );
-      setCurrentSuppliers(data);
+      setSuppliers(data.suppliers);
+      setCurrentSuppliers(data.suppliers);
+      setSearchStorage(data.suppliers);
+      setTableExcel(data.suppliers);
+      setSuppliersCount(data.count);
     } catch (error) {
       notify({
         title: error,
@@ -151,6 +111,65 @@ export const Supplier = () => {
       });
     }
   }, [auth, request, notify, currentPage, countPage]);
+
+  const getSearchedSuppliers = async () => {
+    try {
+      const data = await request(
+        "/api/supplier/getsuppliers",
+        "POST",
+        {
+          market: auth.market._id,
+          currentPage: 0,
+          countPage,
+          searching: searchingEl,
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setCurrentSuppliers(data.suppliers);
+      setSuppliersCount(data.count);
+    } catch (error) {
+      notify({
+        title: error,
+        description: "",
+        status: "error",
+      });
+    }
+  };
+
+  //====================================================================
+  //====================================================================
+
+  //====================================================================
+  //====================================================================
+
+  const searchKeypress = (e) => {
+    if (e.key === "Enter") {
+      if (searchingEl) {
+        return getSearchedSuppliers();
+      }
+      return getSuppliers();
+    }
+  };
+
+  const searchSupplier = (e) => {
+    if (e.target.name === "name") {
+      setSearchingEl({
+        type: "name",
+        search: e.target.value,
+      });
+
+      const searching = searchStorage.filter((item) =>
+        item.name.toLowerCase().includes(e.target.value.toLowerCase())
+      );
+      setSuppliers(searching);
+      setCurrentSuppliers(searching);
+    }
+  };
+
+  //====================================================================
+  //====================================================================
 
   //====================================================================
   //====================================================================
@@ -174,7 +193,7 @@ export const Supplier = () => {
         market: auth.market && auth.market._id,
       });
       clearInputs();
-      getConnectors();
+      getSuppliers();
     } catch (error) {
       notify({
         title: error,
@@ -182,7 +201,7 @@ export const Supplier = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify, supplier, clearInputs, getConnectors]);
+  }, [request, auth, notify, supplier, clearInputs, getSuppliers]);
 
   const updateHandler = useCallback(async () => {
     try {
@@ -203,7 +222,7 @@ export const Supplier = () => {
         market: auth.market && auth.market._id,
       });
       clearInputs();
-      getConnectors();
+      getSuppliers();
     } catch (error) {
       notify({
         title: error,
@@ -211,7 +230,7 @@ export const Supplier = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify, supplier, clearInputs, getConnectors]);
+  }, [request, auth, notify, supplier, clearInputs, getSuppliers]);
 
   const saveHandler = () => {
     if (checkSupplier(supplier)) {
@@ -250,7 +269,7 @@ export const Supplier = () => {
         market: auth.market && auth.market._id,
       });
       clearInputs();
-      getConnectors();
+      getSuppliers();
     } catch (error) {
       notify({
         title: error,
@@ -258,7 +277,7 @@ export const Supplier = () => {
         status: "error",
       });
     }
-  }, [auth, request, remove, notify, clearInputs, getConnectors]);
+  }, [auth, request, remove, notify, clearInputs, getSuppliers]);
   //====================================================================
   //====================================================================
 
@@ -267,15 +286,6 @@ export const Supplier = () => {
 
   const inputHandler = (e) => {
     setSupplier({ ...supplier, name: e.target.value });
-  };
-
-  const searchSupplier = (e) => {
-    const searching = searchStorage.filter((item) =>
-      item.name.toLowerCase().includes(e.target.value.toLowerCase())
-    );
-
-    setSuppliers(searching);
-    setCurrentSuppliers(searching);
   };
 
   const setPageSize = (e) => {
@@ -291,17 +301,9 @@ export const Supplier = () => {
   //====================================================================
 
   useEffect(() => {
-    getConnectors();
-  }, [getConnectors, currentPage, countPage]);
+    getSuppliers();
+  }, [getSuppliers, currentPage, countPage]);
 
-  const [n, setN] = useState();
-  useEffect(() => {
-    if (!n) {
-      setN(1);
-      getSuppliers();
-      getConnectorsCount();
-    }
-  }, [getSuppliers, n, getConnectorsCount]);
   //====================================================================
   //====================================================================
 
@@ -393,17 +395,19 @@ export const Supplier = () => {
                       <th>
                         <input
                           className="form-control"
-                          type="search"
+                          type="text"
                           onChange={searchSupplier}
+                          onKeyUp={searchKeypress}
                           style={{ maxWidth: "100px" }}
                           placeholder={t("Brend")}
+                          name="name"
                         />
                       </th>
                       <th className="text-center">
                         <Pagination
                           setCurrentPage={setCurrentPage}
                           countPage={countPage}
-                          totalDatas={connectorCount.count}
+                          totalDatas={suppliersCount}
                         />
                       </th>
                       <th className="text-center">

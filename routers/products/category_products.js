@@ -12,20 +12,16 @@ router.post("/category/getall", auth, (req, res) => {
   require("./category").getAll(req, res);
 });
 
+router.post("/category/getcategories", auth, (req, res) => {
+  require("./category").getCategories(req, res);
+});
+
 router.put("/category/update", auth, (req, res) => {
   require("./category").update(req, res);
 });
 
 router.delete("/category/delete", auth, (req, res) => {
   require("./category").delete(req, res);
-});
-
-router.post("/category/datacount", auth, (req, res) => {
-  require("./category").categoryCounts(req, res);
-});
-
-router.post("/category/getconnectors", auth, (req, res) => {
-  require("./category").getCategoryConnectors(req, res);
 });
 
 //========================================================
@@ -70,20 +66,16 @@ router.post("/product/getall", auth, (req, res) => {
   require("./product").getAll(req, res);
 });
 
+router.post("/product/getproducts", auth, (req, res) => {
+  require("./product").getProducts(req, res);
+});
+
 router.delete("/product/deleteall", auth, (req, res) => {
   require("./product").deleteAll(req, res);
 });
 
 router.delete("/product/deleteallcategory", auth, (req, res) => {
   require("./product").deleteAllcategory(req, res);
-});
-
-router.post("/product/getconnectors", auth, (req, res) => {
-  require("./product").getProductConnectors(req, res);
-});
-
-router.post("/product/getconnectorscount", auth, (req, res) => {
-  require("./product").getProductCount(req, res);
 });
 
 //========================================================
@@ -104,25 +96,11 @@ router.post("/producttype/getall", auth, (req, res) => {
   require("./producttype").getAll(req, res);
 });
 
-router.post("/producttype/getallcategory", auth, (req, res) => {
-  require("./producttype").getAllcategory(req, res);
+router.post("/producttype/getproducttypes", auth, (req, res) => {
+  require("./producttype").getProductType(req, res);
 });
 
-router.delete("/producttype/deleteall", auth, (req, res) => {
-  require("./producttype").deleteAll(req, res);
-});
-
-router.delete("/producttype/deleteallcategory", auth, (req, res) => {
-  require("./producttype").deleteAllcategory(req, res);
-});
-
-router.post("/producttype/getconnectors", auth, (req, res) => {
-  require("./producttype").getProducttypeConnectors(req, res);
-});
-
-router.post("/producttype/getconnectorscount", auth, (req, res) => {
-  require("./producttype").getProductTypeCount(req, res);
-});
+// router.post
 
 //========================================================
 // UNIT
@@ -193,12 +171,8 @@ router.delete("/brand/delete", auth, (req, res) => {
   require("./brand").delete(req, res);
 });
 
-router.post("/brand/getconnectors", auth, (req, res) => {
-  require("./brand").getBrandConnectors(req, res);
-});
-
-router.post("/brand/getconnectorscount", auth, (req, res) => {
-  require("./brand").getBrandCount(req, res);
+router.post("/brand/getbrands", auth, (req, res) => {
+  require("./brand").getBrands(req, res);
 });
 
 module.exports = router;

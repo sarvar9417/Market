@@ -51,9 +51,8 @@ export const Category = () => {
   //====================================================================
   const [currentPage, setCurrentPage] = useState(0);
   const [countPage, setCountPage] = useState(10);
-  const indexLastProduct = (currentPage + 1) * countPage;
-  const indexFirstProduct = indexLastProduct - countPage;
   const [categoryCount, setCategoryCount] = useState(0);
+  const [searchingEl, setSearchingEl] = useState({});
   //====================================================================
   //====================================================================
 
@@ -100,63 +99,22 @@ export const Category = () => {
   const getCategory = useCallback(async () => {
     try {
       const data = await request(
-        `/api/products/category/getall`,
+        "/api/products/category/getcategories",
         "POST",
-        { market: auth.market._id },
+        {
+          market: auth.market && auth.market._id,
+          countPage,
+          currentPage,
+        },
         {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      setCategories(data);
-      setCurrentCategories(data.slice(indexFirstProduct, indexLastProduct));
-      setSearchStorage(data);
-      setTableExcel(data);
-    } catch (error) {
-      notify({
-        title: error,
-        description: "",
-        status: "error",
-      });
-    }
-  }, [request, auth, notify, indexFirstProduct, indexLastProduct]);
-  //====================================================================
-  //====================================================================
-
-  //====================================================================
-  //====================================================================
-
-  const searchCategory = (e) => {
-    const searching = searchStorage.filter(
-      (item) =>
-        (item.name &&
-          item.name.toLowerCase().includes(e.target.value.toLowerCase())) ||
-        String(item.code).includes(e.target.value)
-    );
-    console.log(searching);
-    setCategories(searching);
-    setCurrentCategories(searching);
-  };
-
-  const setPageSize = (e) => {
-    setCurrentPage(0);
-    setCountPage(e.target.value);
-    setCurrentCategories(categories.slice(0, e.target.value));
-  };
-
-  //====================================================================
-  //====================================================================
-
-  const getCategoryConnectors = useCallback(async () => {
-    try {
-      const data = await request(
-        "/api/products/category/getconnectors",
-        "POST",
-        { market: auth.market && auth.market._id, countPage, currentPage },
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
-      );
-      setCurrentCategories(data);
+      setCategories(data.categories);
+      setCurrentCategories(data.categories);
+      setSearchStorage(data.categories);
+      setTableExcel(data.categories);
+      setCategoryCount(data.count);
     } catch (error) {
       notify({
         title: error,
@@ -166,17 +124,23 @@ export const Category = () => {
     }
   }, [auth, request, notify, countPage, currentPage]);
 
-  const getCategoryCount = useCallback(async () => {
+  const getSearchedCategory = async () => {
     try {
       const data = await request(
-        "/api/products/category/datacount",
+        "/api/products/category/getcategories",
         "POST",
-        { market: auth.market && auth.market._id },
+        {
+          market: auth.market._id,
+          currentPage: 0,
+          countPage,
+          searching: { ...searchingEl },
+        },
         {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      setCategoryCount(data);
+      setCurrentCategories(data.categories);
+      setCategoryCount(data.count);
     } catch (error) {
       notify({
         title: error,
@@ -184,7 +148,55 @@ export const Category = () => {
         status: "error",
       });
     }
-  }, [notify, request, auth]);
+  };
+
+  //====================================================================
+  //====================================================================
+
+  const searchKeypress = (e) => {
+    if (e.key === "Enter") {
+      if (searchingEl) {
+        return getSearchedCategory();
+      }
+      return getCategory();
+    }
+  };
+
+  const searchCategory = (e) => {
+    if (e.target.name === "code") {
+      setSearchingEl({
+        type: "code",
+        search: e.target.value.toLowerCase(),
+        searchcode: e.target.value.toLowerCase(),
+        searchname: "",
+      });
+    }
+    if (e.target.name === "name") {
+      setSearchingEl({
+        type: "name",
+        search: e.target.value.toLowerCase(),
+        searchname: e.target.value.toLowerCase(),
+        searchcode: "",
+      });
+    }
+    if (e.target.value === "") {
+      setSearchingEl(null);
+    }
+    const searching = searchStorage.filter(
+      (item) =>
+        (item.name &&
+          item.name.toLowerCase().includes(e.target.value.toLowerCase())) ||
+        String(item.code).includes(e.target.value)
+    );
+    setCategories(searching);
+    setCurrentCategories(searching);
+  };
+
+  const setPageSize = (e) => {
+    setCurrentPage(0);
+    setCountPage(e.target.value);
+    setCurrentCategories(categories.slice(0, e.target.value));
+  };
 
   //====================================================================
   //====================================================================
@@ -204,7 +216,7 @@ export const Category = () => {
         description: "",
         status: "success",
       });
-      getCategoryConnectors();
+      getCategory();
       setCategory({
         market: auth.market && auth.market._id,
       });
@@ -216,7 +228,7 @@ export const Category = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify, category, clearInputs, getCategoryConnectors]);
+  }, [request, auth, notify, category, clearInputs, getCategory]);
 
   const updateHandler = useCallback(async () => {
     try {
@@ -233,7 +245,7 @@ export const Category = () => {
         description: "",
         status: "success",
       });
-      getCategoryConnectors();
+      getCategory();
       setCategory({
         market: auth.market && auth.market._id,
       });
@@ -245,7 +257,7 @@ export const Category = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify, category, clearInputs, getCategoryConnectors]);
+  }, [request, auth, notify, category, clearInputs, getCategory]);
 
   const saveHandler = () => {
     if (checkCategory(category)) {
@@ -279,7 +291,7 @@ export const Category = () => {
         description: "",
         status: "success",
       });
-      getCategoryConnectors();
+      getCategory();
       setCategory({
         market: auth.market && auth.market._id,
       });
@@ -292,7 +304,7 @@ export const Category = () => {
         status: "error",
       });
     }
-  }, [auth, request, remove, notify, clearInputs, getCategoryConnectors]);
+  }, [auth, request, remove, notify, clearInputs, getCategory]);
 
   //====================================================================
   //====================================================================
@@ -301,23 +313,22 @@ export const Category = () => {
   //====================================================================
 
   useEffect(() => {
-    getCategoryConnectors();
-  }, [currentPage, countPage, getCategoryConnectors]);
+    getCategory();
+  }, [currentPage, countPage, getCategory]);
 
-  const [n, setN] = useState();
-  useEffect(() => {
-    if (!n) {
-      setN(1);
-      getCategory();
-      getCategoryCount();
-    }
-  }, [getCategory, n, getCategoryCount]);
+  // const [n, setN] = useState();
+  // useEffect(() => {
+  //   if (!n) {
+  //     setN(1);
+  //     getCategory();
+  //   }
+  // }, [getCategory, n]);
   //====================================================================
   //====================================================================
 
   return (
-    <div className='overflow-x-auto'>
-      <div className='m-3 min-w-[700px]'>
+    <div className="overflow-x-auto">
+      <div className="m-3 min-w-[700px]">
         <CreateHeader />
         <CreateBody
           category={category}
@@ -332,8 +343,12 @@ export const Category = () => {
           setPageSize={setPageSize}
           searchCategory={searchCategory}
           setCurrentPage={setCurrentPage}
-          categoryCount={categoryCount}
+          totalDatas={categoryCount}
           countPage={countPage}
+          nameValue={(searchingEl && searchingEl.searchname) || ""}
+          codeValue={(searchingEl && searchingEl.searchcode) || ""}
+          nameKeyPressed={searchKeypress}
+          codeKeyPressed={searchKeypress}
         />
         <TableHead
           currentCategories={currentCategories}
@@ -356,12 +371,12 @@ export const Category = () => {
           })}
       </div>
 
-      <div className='hidden'>
-        <table className='table m-0' id='data-excel-table'>
+      <div className="hidden">
+        <table className="table m-0" id="data-excel-table">
           <thead>
-            <tr className='bg-blue-700'>
-              <th className='border border-black'>№</th>
-              <th className='border'>{t("Kategoriya kodi")}</th>
+            <tr className="bg-blue-700">
+              <th className="border border-black">№</th>
+              <th className="border">{t("Kategoriya kodi")}</th>
               <th>{t("Kategoriya nomi")}</th>
             </tr>
           </thead>

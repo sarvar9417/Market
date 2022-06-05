@@ -117,7 +117,7 @@ module.exports.getAll = async (req, res) => {
 
     const suppliers = await Supplier.find({
       market,
-    }).select("name");
+    }).select("name, market");
 
     res.send(suppliers);
   } catch (error) {
@@ -125,43 +125,38 @@ module.exports.getAll = async (req, res) => {
   }
 };
 
-// Pagination
-module.exports.getSupplierCount = async (req, res) => {
+module.exports.getSuppliers = async (req, res) => {
   try {
-    const { market } = req.body;
-    const marke = await Market.findById(market);
+    const { market, currentPage, countPage, searching } = req.body;
 
-    if (!marke) {
-      return res
-        .status(400)
-        .json({ message: "Diqqat! Do'kon malumotlari topilmadi" });
-    }
-
-    const count = await Supplier.find({ market }).count();
-
-    res.status(201).json({ count });
-  } catch (error) {
-    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
-  }
-};
-
-module.exports.getSupplierConnectors = async (req, res) => {
-  try {
-    const { market, currentPage, countPage } = req.body;
     const marke = await Market.findById(market);
     if (!marke) {
       return res
-        .status(400)
-        .send({ message: "Diqqat! Do'kon malumotlari topilmadi!" });
+        .status(401)
+        .json({ message: "Diqqat! Do'kon malumotlari topilmadi." });
     }
 
-    const connector = await Supplier.find({ market })
-      .sort({ _id: -1 })
-      .skip(currentPage * countPage)
-      .limit(countPage)
-      .select("name");
+    if (searching && searching.type === "name") {
+      const name = new RegExp(".*" + searching.search + ".*", "i");
+      const count = await Supplier.find({ market, name: name }).count();
+      const suppliers = await Supplier.find({ market, name: name })
+        .sort({ _id: -1 })
+        .select("name market")
+        .skip(currentPage * countPage)
+        .limit(countPage);
 
-    res.status(201).send(connector);
+      return res.status(201).json({ suppliers: suppliers, count: count });
+    } else {
+      const count = await Supplier.find({ market }).count();
+
+      const suppliers = await Supplier.find({ market })
+        .sort({ _id: -1 })
+        .select("name market")
+        .skip(currentPage * countPage)
+        .limit(countPage);
+
+      res.status(201).json({ suppliers: suppliers, count: count });
+    }
   } catch (error) {
     res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
   }

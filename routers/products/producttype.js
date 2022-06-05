@@ -142,7 +142,6 @@ module.exports.update = async (req, res) => {
   try {
     const { _id, name, category, market } = req.body;
     const marke = await Market.findById(market);
-    console.log(req.body);
     if (!marke) {
       return res.status(400).json({
         message: "Diqqat! Do'kon ma'lumotlari topilmadi.",
@@ -201,7 +200,6 @@ module.exports.update = async (req, res) => {
 module.exports.delete = async (req, res) => {
   try {
     const { _id, category, market, name } = req.body;
-    console.log(req.body);
     const marke = await Market.findById(market);
 
     if (!marke) {
@@ -259,202 +257,124 @@ module.exports.delete = async (req, res) => {
 module.exports.getAll = async (req, res) => {
   try {
     const { market } = req.body;
-
-    const marke = await Market.findById(market);
-
-    if (!marke) {
-      return res.status(400).json({
-        message: "Diqqat! Do'kon ma'lumotlari topilmadi.",
-      });
-    }
-
-    const productstypes = await ProductType.find({
-      market,
-    })
-      .sort({ _id: -1 })
-      .select("name category market")
-      .populate("category", "code");
-
-    res.send(productstypes);
-  } catch (error) {
-    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
-  }
-};
-
-//ProductType getallcategory
-module.exports.getAllCategory = async (req, res) => {
-  try {
-    const { market, category } = req.body;
-
-    const marke = await Market.findById(market);
-
-    if (!marke) {
-      return res.status(400).json({
-        message: "Diqqat! Do'kon ma'lumotlari topilmadi.",
-      });
-    }
-
-    const departmen = await Category.findById(category);
-
-    if (!departmen) {
-      return res.status(400).json({
-        message: "Diqqat! Kategoriya ma'lumotlari topilmadi.",
-      });
-    }
-
-    const productstype = await ProductType.find({
-      market,
-      category,
-    });
-
-    res.send(productstype);
-  } catch (error) {
-    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
-  }
-};
-
-//ProductType deleteallcategory
-module.exports.deleteAllCategory = async (req, res) => {
-  try {
-    const { category, market } = req.body;
-
-    const marke = await Market.findById(market);
-
-    if (!marke) {
-      return res.status(400).json({
-        message: "Diqqat! Do'kon ma'lumotlari topilmadi.",
-      });
-    }
-
-    const departmen = await Category.findById(category);
-
-    if (!departmen) {
-      return res.status(400).json({
-        message: "Diqqat! Kategoriya ma'lumotlari topilmadi.",
-      });
-    }
-
-    const productstype = await ProductType.find({
-      market,
-      category,
-    });
-
-    let all = [];
-    for (const product of productstype) {
-      const del = await ProductType.findByIdAndDelete(product._id);
-
-      const categoryUpdate = await Category.findByIdAndUpdate(category, {
-        $pull: {
-          producttypes: new ObjectId(product._id),
-        },
-      });
-
-      product.products.map(async (s) => {
-        const id = new ObjectId(s).toString();
-        let ss = await Product.findById(id);
-        if (ss.producttype) {
-          ss.producttype = undefined;
-        }
-        await ss.save();
-      });
-
-      all.push(del);
-    }
-
-    res.send(all);
-  } catch (error) {
-    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
-  }
-};
-
-//ProductType deleteall
-module.exports.deleteAll = async (req, res) => {
-  try {
-    const { market } = req.body;
-
-    const marke = await Market.findById(market);
-
-    if (!marke) {
-      return res.status(400).json({
-        message: "Diqqat! Do'kon ma'lumotlari topilmadi.",
-      });
-    }
-
-    const productstype = await ProductType.find({
-      market,
-    });
-
-    let all = [];
-    for (const product of productstype) {
-      const del = await ProductType.findByIdAndDelete(product._id);
-      all.push(del);
-
-      const categoryUpdate = await Category.findByIdAndUpdate(
-        product.category,
-        {
-          $pull: {
-            producttypes: new ObjectId(product._id),
-          },
-        }
-      );
-
-      product.products.map(async (s) => {
-        const id = new ObjectId(s).toString();
-        let ss = await Product.findById(id);
-        if (ss.producttype) {
-          ss.producttype = undefined;
-        }
-        await ss.save();
-      });
-    }
-
-    res.send(all);
-  } catch (error) {
-    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
-  }
-};
-
-// Pagination
-
-module.exports.getProductTypeCount = async (req, res) => {
-  try {
-    const { market } = req.body;
-
-    const marke = await Market.findById(market);
-
-    if (!marke) {
-      return res
-        .status(400)
-        .json({ message: "Diqqat! Do'kon malumotlari topilmadi" });
-    }
-
-    const count = await ProductType.find({ market }).count();
-
-    res.status(201).json({ count });
-  } catch (error) {
-    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
-  }
-};
-
-module.exports.getProducttypeConnectors = async (req, res) => {
-  try {
-    const { market, currentPage, countPage } = req.body;
     const marke = await Market.findById(market);
     if (!marke) {
       return res
-        .status(400)
-        .send({ message: "Diqqat! Do'kon malumotlari topilmadi!" });
+        .status(401)
+        .json({ message: "Diqqat! Do'kon ma'lumotlari topilmadi." });
     }
 
-    const connector = await ProductType.find({ market })
-      .sort({ _id: -1 })
-      .skip(currentPage * countPage)
-      .limit(countPage)
-      .select("name market")
-      .populate("category", "code");
+    const producttypes = await ProductType.find({ market });
 
-    res.status(201).send(connector);
+    res.status(201).json(producttypes);
   } catch (error) {
     res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
   }
 };
+
+module.exports.getProductType = async (req, res) => {
+  try {
+    const { market, currentPage, countPage, searching } = req.body;
+
+    const marke = await Market.findById(market);
+
+    if (!marke) {
+      return res.status(400).json({
+        message: "Diqqat! Do'kon ma'lumotlari topilmadi.",
+      });
+    }
+    if (searching) {
+      let response;
+      let responseCount;
+      if (searching.type === "name") {
+        const name = new RegExp(".*" + searching.search + ".*", "i");
+        const count = await ProductType.find({
+          market,
+          name: name,
+        }).count();
+        const searchedNames = await ProductType.find({
+          market,
+          name: name,
+        })
+          .sort({ _id: -1 })
+          .select("name category market")
+          .populate("category", "code")
+          .skip(currentPage * countPage)
+          .limit(countPage);
+
+        response = searchedNames;
+        responseCount = count;
+      }
+      if (searching.type === "code") {
+        const categoryCode = await Category.findOne({
+          market,
+          code: searching.search,
+        });
+        const count = await ProductType.find({
+          market,
+          category: categoryCode._id,
+        }).count();
+        const searchedCodes = await ProductType.find({
+          market,
+          category: categoryCode._id,
+        })
+          .sort({ _id: -1 })
+          .select("name category market")
+          .populate("category", "code")
+          .skip(currentPage * countPage)
+          .limit(countPage);
+        response = searchedCodes;
+        responseCount = count;
+      }
+      return res
+        .status(201)
+        .json({ count: responseCount, producttypes: response });
+    } else {
+      const count = await ProductType.find({ market }).count();
+      const producttypes = await ProductType.find({ market })
+        .sort({ _id: -1 })
+        .select("name category market")
+        .populate("category", "code")
+        .skip(currentPage * countPage)
+        .limit(countPage);
+      res.status(201).json({ count: count, producttypes: producttypes });
+    }
+  } catch (error) {
+    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
+  }
+};
+
+//Category getProductType
+// module.exports.getProductType = async (req, res) => {
+//   try {
+//     const {market, currentPage, countPage, searching} = req.body;
+
+//     const marke = await Market.findById(market);
+//     if (!marke) {
+//       return res.status(401).json({ message: "Diqqat! Do'kon ma'lumotlari topilmadi."})
+//     }
+
+//     if (searching) {
+//       let response;
+//       let responseCount;
+//       if (searching.type === 'name') {
+//         const name = new RegExp(".*" + searching.search + ".*", "i");
+//         const producttypeCount = await ProductType.find({market, name: name}).count()
+//         const producttypes = await ProductType.find({market, name: name})
+//         .sort({_id: -1})
+//         .select('name category')
+//         .populate("category", "code")
+//         .skip(currentPage * countPage)
+//         .limit(countPage);
+//         response = producttypes;
+//         responseCount = producttypeCount
+//       }
+//       if (searching.type === 'category') {
+//         const category = await Category.find({code: searching.code})
+//       }
+//     }
+
+//   } catch (error) {
+
+//   }
+// };

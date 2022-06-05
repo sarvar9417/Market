@@ -1,4 +1,4 @@
-import { t } from "i18next";
+import t from "i18next";
 
 // CatecheckCategory
 export const checkCategory = (category) => {
@@ -136,7 +136,9 @@ export const checkUploadServices = (
     k++;
     if (market.name !== service.market) {
       return {
-        title: `${t("Diqqat!")} ${k}-${t("xizmatda do'kon nomi noto'g'ri ko'rsatilgan.")}`,
+        title: `${t("Diqqat!")} ${k}-${t(
+          "xizmatda do'kon nomi noto'g'ri ko'rsatilgan."
+        )}`,
         description: t("Iltimos do'kon nomini to'g'ri kiriting."),
         status: "error",
       };
@@ -144,7 +146,9 @@ export const checkUploadServices = (
     const d = categorys.find((category) => category.name === service.category);
     if (!d) {
       return {
-        title: `${t("Diqqat!")} ${k}-${t("xizmatda  bo'lim  ko'rsatilmagan yoki to'g'ri kiritilmagan.")}`,
+        title: `${t("Diqqat!")} ${k}-${t(
+          "xizmatda  bo'lim  ko'rsatilmagan yoki to'g'ri kiritilmagan."
+        )}`,
         description: t("Iltimos mavjud bo'lim nomini  kiriting."),
         status: "error",
       };
@@ -156,7 +160,9 @@ export const checkUploadServices = (
     );
     if (!s) {
       return {
-        title: `${t("Diqqat!")} ${k}-${t("xizmatda  xizmat turi ko'rsatilmagan.")}`,
+        title: `${t("Diqqat!")} ${k}-${t(
+          "xizmatda  xizmat turi ko'rsatilmagan."
+        )}`,
         description: t("Iltimos mavjud xizmat turini nomini  kiriting."),
         status: "error",
       };
@@ -164,16 +170,21 @@ export const checkUploadServices = (
 
     if (typeof service.price !== "number") {
       return {
-        title: `${t("Diqqat!")} ${k}-${t("xizmatda xizmat narxi noto'g'ri kiritilmagan.")}`,
-        description:
-          t("Iltimos xizmat narxini son ko'rinishida, mavjud bo'lmasa 0 kiriting."),
+        title: `${t("Diqqat!")} ${k}-${t(
+          "xizmatda xizmat narxi noto'g'ri kiritilmagan."
+        )}`,
+        description: t(
+          "Iltimos xizmat narxini son ko'rinishida, mavjud bo'lmasa 0 kiriting."
+        ),
         status: "error",
       };
     }
 
     if (service.doctorProcient && typeof service.doctorProcient !== "number") {
       return {
-        title: `${t("Diqqat!")} ${k}-xizmatda shifokor ulushi noto'g'ri kiritilgan.`,
+        title: `${t(
+          "Diqqat!"
+        )} ${k}-xizmatda shifokor ulushi noto'g'ri kiritilgan.`,
         description:
           "Iltimos shifokor ulushini son ko'rinishida, mavjud bo'lmasa 0 kiriting.",
         status: "error",
@@ -229,7 +240,9 @@ export const checkUploadRooms = (market, rooms) => {
     k++;
     if (market.name !== room.market) {
       return {
-        title: `${t("Diqqat!")} ${k}-qatorda do'kon nomi noto'g'ri ko'rsatilgan.`,
+        title: `${t(
+          "Diqqat!"
+        )} ${k}-qatorda do'kon nomi noto'g'ri ko'rsatilgan.`,
         description: t("Iltimos do'kon nomini to'g'ri kiriting."),
         status: "error",
       };
@@ -237,9 +250,12 @@ export const checkUploadRooms = (market, rooms) => {
 
     if (typeof room.price !== "number") {
       return {
-        title: `${t("Diqqat!")} ${k}-${t("qatorda xizmat narxi noto'g'ri kiritilmagan.")}`,
-        description:
-          t("Iltimos xona narxini son ko'rinishida, mavjud bo'lmasa 0 kiriting."),
+        title: `${t("Diqqat!")} ${k}-${t(
+          "qatorda xizmat narxi noto'g'ri kiritilmagan."
+        )}`,
+        description: t(
+          "Iltimos xona narxini son ko'rinishida, mavjud bo'lmasa 0 kiriting."
+        ),
         status: "error",
       };
     }
@@ -271,7 +287,9 @@ export const checkUploadProducts = (market, products) => {
     k++;
     if (market.name !== product.market) {
       return {
-        title: `${t("Diqqat!")} ${k}-${t("qatorda do'kon nomi noto'g'ri ko'rsatilgan.")}`,
+        title: `${t("Diqqat!")} ${k}-${t(
+          "qatorda do'kon nomi noto'g'ri ko'rsatilgan."
+        )}`,
         description: t("Iltimos do'kon nomini to'g'ri kiriting."),
         status: "error",
       };
@@ -279,9 +297,12 @@ export const checkUploadProducts = (market, products) => {
 
     if (typeof product.price !== "number") {
       return {
-        title: `${t("Diqqat!")} ${k}-${t("qatorda mahsulot narxi noto'g'ri kiritilgan.")}`,
-        description:
-         t("Iltimos mahsulot narxini son ko'rinishida, mavjud bo'lmasa 0 kiriting."),
+        title: `${t("Diqqat!")} ${k}-${t(
+          "qatorda mahsulot narxi noto'g'ri kiritilgan."
+        )}`,
+        description: t(
+          "Iltimos mahsulot narxini son ko'rinishida, mavjud bo'lmasa 0 kiriting."
+        ),
         status: "error",
       };
     }
@@ -304,7 +325,7 @@ export const checkUploadProducts = (market, products) => {
 
     if (!product.unit) {
       return {
-      title: t("Diqqat! o'lchov birligi kiritilmagan."),
+        title: t("Diqqat! o'lchov birligi kiritilmagan."),
         description: t("Iltimos o'lchov birligini kiriting."),
         status: "error",
       };
@@ -356,7 +377,9 @@ export const checkProducts = (products) => {
     k++;
     if (!product.category) {
       return {
-        title: `${t("Diqqat!")} ${k}-${t("qatorda kategoriya kodi kiritilmagan.")}`,
+        title: `${t("Diqqat!")} ${k}-${t(
+          "qatorda kategoriya kodi kiritilmagan."
+        )}`,
         description: "Iltimos kategoriya kodini kiriting.",
         status: "error",
       };
@@ -480,7 +503,9 @@ export const checkUploadProductConnectors = (market, productConnectors) => {
 
     if (!productConnector.pieces) {
       return {
-        title: `${t("Diqqat!")} ${k}-${t("qatorda mahsulot soni kiritilmagan.")}`,
+        title: `${t("Diqqat!")} ${k}-${t(
+          "qatorda mahsulot soni kiritilmagan."
+        )}`,
         description: "Iltimos mahsulot sonini kiriting.",
         status: "error",
       };

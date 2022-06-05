@@ -13,16 +13,12 @@ import { ExcelUpload } from "./ExcelUpload";
 import { t } from "i18next";
 
 export const TableProduct = ({
-  searchName,
-  searchProductTypeAndProductName,
-  searchCategory,
-  products,
+  changeHandler,
   setRemove,
   setModal,
   setProduct,
   setCurrentPage,
   countPage,
-  setCountPage,
   currentProducts,
   setCurrentProducts,
   currentPage,
@@ -31,13 +27,10 @@ export const TableProduct = ({
   tableExcel,
   setImports,
   setModal2,
-  categories,
-  producttypes,
-  product,
-  searchBrand,
   selectRef,
   market,
-  connectorCount,
+  productsCount,
+  keyPress,
 }) => {
   const edit = (e, p) => {
     selectRef.category.current.selectOption({
@@ -93,33 +86,39 @@ export const TableProduct = ({
                 </th>
                 <th>
                   <input
-                    onChange={searchCategory}
+                    onChange={changeHandler}
                     type="search"
                     className="form-control form-control-sm selectpicker"
                     placeholder={t("Kategoriya")}
+                    name="category"
+                    onKeyUp={keyPress}
                   />
                 </th>
                 <th>
                   <input
-                    onChange={searchProductTypeAndProductName}
+                    onChange={changeHandler}
                     type="search"
                     className="w-100 form-control form-control-sm selectpicker"
                     placeholder={t("Mahsulot turi")}
+                    name="producttype"
+                    onKeyUp={keyPress}
                   />
                 </th>
                 <th>
                   <input
-                    onChange={searchBrand}
+                    onChange={changeHandler}
                     type="search"
                     className="w-100 form-control form-control-sm selectpicker"
                     placeholder={t("Brend")}
+                    name="brand"
+                    onKeyUp={keyPress}
                   />
                 </th>
                 <th className="text-center" colSpan={2}>
                   <Pagination
                     setCurrentPage={setCurrentPage}
                     countPage={countPage}
-                    totalDatas={connectorCount.count}
+                    totalDatas={productsCount}
                   />
                 </th>
                 <th className="text-center">

@@ -31,6 +31,7 @@ export const SearchInput = ({
   type,
   placeholder,
   name,
+  value,
 }) => {
   return (
     <div>
@@ -41,6 +42,7 @@ export const SearchInput = ({
         className="input"
         name={name}
         placeholder={t(placeholder)}
+        value={value}
       />
     </div>
   );
