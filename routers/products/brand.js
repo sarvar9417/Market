@@ -133,53 +133,58 @@ module.exports.getAll = async (req, res) => {
     const brand = await Brand.find({
       market,
     })
-      .select("name")
+      .select("name market")
       .sort({ _id: -1 });
-    res.send(brand);
+    res.status(201).json(brand);
   } catch (error) {
     res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
   }
 };
 
-// Pagination
-
-module.exports.getBrandCount = async (req, res) => {
+module.exports.getBrands = async (req, res) => {
   try {
-    const { market } = req.body;
+    const { market, currentPage, countPage, searching } = req.body;
 
     const marke = await Market.findById(market);
 
     if (!marke) {
-      return res
-        .status(400)
-        .json({ message: "Diqqat! Do'kon malumotlari topilmadi" });
+      return res.status(400).json({
+        message: "Diqqat! Do'kon ma'lumotlari topilmadi.",
+      });
     }
 
-    const count = await Brand.find({ market }).count();
+    if (searching) {
+      let response;
+      let responseCount;
+      if (searching.type === "name") {
+        const name = new RegExp(".*" + searching.search + ".*", "i");
+        const namesCount = await Brand.find({
+          market,
+          name: name,
+        }).count();
+        const names = await Brand.find({ market, name: name })
+          .sort({ _id: -1 })
+          .skip(currentPage * countPage)
+          .limit(countPage)
+          .select("name market");
 
-    res.status(201).json({ count });
-  } catch (error) {
-    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
-  }
-};
+        response = names;
+        responseCount = namesCount;
+      }
+      return res.status(201).json({ brands: response, count: responseCount });
+    } else {
+      const brandCount = await Brand.find({ market }).count();
 
-module.exports.getBrandConnectors = async (req, res) => {
-  try {
-    const { market, currentPage, countPage } = req.body;
-    const marke = await Market.findById(market);
-    if (!marke) {
-      return res
-        .status(400)
-        .send({ message: "Diqqat! Do'kon malumotlari topilmadi!" });
+      const brands = await Brand.find({
+        market,
+      })
+        .sort({ _id: -1 })
+        .select("name market")
+        .skip(currentPage * countPage)
+        .limit(countPage);
+
+      res.status(201).json({ brands: brands, count: brandCount });
     }
-
-    const connector = await Brand.find({ market })
-      .sort({ _id: -1 })
-      .skip(currentPage * countPage)
-      .limit(countPage)
-      .select("name market");
-
-    res.status(201).send(connector);
   } catch (error) {
     res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
   }

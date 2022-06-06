@@ -10,28 +10,30 @@ export const TableHeader = ({
   setCurrentPage,
   brandsCount,
   countPage,
+  keyPressed,
 }) => {
   return (
-    <ul className='tbody border-b border-t-2 border-blue-800'>
-      <li className='th-h border-r'>
+    <ul className="tbody border-b border-t-2 border-blue-800">
+      <li className="th-h border-r">
         <PaginationSize setPageSize={setPageSize} />
       </li>
-      <li className='th-h col-span-5'>
+      <li className="th-h col-span-5">
         <SearchInput
           changeHandler={searchBrand}
-          type={"search"}
+          type={"text"}
           placeholder={"Brand nomi"}
-          name='searchBrand'
+          name="name"
+          keyPressed={keyPressed}
         />
       </li>
-      <li className='th-h border-r col-span-4 '>
+      <li className="th-h border-r col-span-4 ">
         <Pagination
           setCurrentPage={setCurrentPage}
           countPage={countPage}
-          totalDatas={brandsCount.count}
+          totalDatas={brandsCount}
         />
       </li>
-      <li className='text-center flex justify-center items-center font-bold border-r py-2 col-span-2 bg-white'>
+      <li className="text-center flex justify-center items-center font-bold border-r py-2 col-span-2 bg-white">
         <ExcelDownload filename={"Kategoriya"} />
       </li>
     </ul>

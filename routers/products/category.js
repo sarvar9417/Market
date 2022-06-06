@@ -141,10 +141,30 @@ module.exports.update = async (req, res) => {
   }
 };
 
-//Category getall
+// Category getAll
 module.exports.getAll = async (req, res) => {
   try {
     const { market } = req.body;
+    const marke = await Market.findById(market);
+
+    if (!marke) {
+      return res
+        .status(401)
+        .json({ message: "Diqqat! Do'kon ma'lumotlari topilmadi." });
+    }
+
+    const categories = await Category.find({ market }).select("code market");
+    res.status(201).json(categories);
+  } catch (error) {
+    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
+  }
+};
+
+//Category getaCategories
+module.exports.getCategories = async (req, res) => {
+  try {
+    const { market, currentPage, countPage, searching } = req.body;
+
     const marke = await Market.findById(market);
 
     if (!marke) {
@@ -153,13 +173,53 @@ module.exports.getAll = async (req, res) => {
       });
     }
 
-    const categorys = await Category.find({
-      market,
-    })
-      .select("name code")
-      .sort({ _id: -1 });
+    if (searching) {
+      let response;
+      let responseCount;
+      if (searching.type === "name") {
+        const categoryName = new RegExp(".*" + searching.search + ".*", "i");
+        const namesCount = await Category.find({
+          market,
+          name: categoryName,
+        }).count();
+        const names = await Category.find({ market, name: categoryName })
+          .sort({ _id: -1 })
+          .skip(currentPage * countPage)
+          .limit(countPage)
+          .select("name code market");
 
-    res.send(categorys);
+        response = names;
+        responseCount = namesCount;
+      }
+      if (searching.type === "code") {
+        const codesCount = await Category.find({
+          market,
+          code: searching.search,
+        }).count();
+        const codes = await Category.find({ market, code: searching.search })
+          .sort({ _id: -1 })
+          .skip(currentPage * countPage)
+          .limit(countPage)
+          .select("name code market");
+        response = codes;
+        responseCount = codesCount;
+      }
+      return res
+        .status(201)
+        .json({ categories: response, count: responseCount });
+    } else {
+      const categoryCount = await Category.find({ market }).count();
+
+      const categorys = await Category.find({
+        market,
+      })
+        .sort({ _id: -1 })
+        .select("name code market")
+        .skip(currentPage * countPage)
+        .limit(countPage);
+
+      res.status(201).json({ categories: categorys, count: categoryCount });
+    }
   } catch (error) {
     res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
   }
@@ -189,47 +249,6 @@ module.exports.delete = async (req, res) => {
     await Category.findByIdAndDelete(_id);
 
     res.send(category);
-  } catch (error) {
-    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
-  }
-};
-
-// Pagination
-module.exports.categoryCounts = async (req, res) => {
-  try {
-    const { market } = req.body;
-
-    const marke = await Market.findById(market);
-
-    if (!marke) {
-      return res
-        .status(400)
-        .json({ message: "Diqqat! Do'kon malumotlari topilmadi!" });
-    }
-
-    const count = await Category.find({ market }).count();
-    res.status(201).json({ count });
-  } catch (error) {
-    res.status(400).json({ error: "Serverda xatolik yuz berdi..." });
-  }
-};
-
-module.exports.getCategoryConnectors = async (req, res) => {
-  try {
-    const { market, countPage, currentPage } = req.body;
-    const marke = await Market.findById(market);
-    if (!marke) {
-      return res
-        .status(400)
-        .json({ message: "Diqqat! Do'kon malumotlari topilmadi" });
-    }
-    const categoryConnectors = await Category.find({ market })
-      .sort({ _id: -1 })
-      .skip(currentPage * countPage)
-      .limit(countPage)
-      .select("name code market");
-
-    res.status(201).send(categoryConnectors);
   } catch (error) {
     res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
   }

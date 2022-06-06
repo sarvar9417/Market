@@ -48,9 +48,6 @@ export const Brand = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [countPage, setCountPage] = useState(10);
 
-  const indexLastProduct = (currentPage + 1) * countPage;
-  const indexFirstProduct = indexLastProduct - countPage;
-
   const [remove, setRemove] = useState({
     market: auth.market && auth.market._id,
   });
@@ -79,65 +76,26 @@ export const Brand = () => {
   const [currentBrands, setCurrentBrands] = useState([]);
   const [searchStorage, setSearchStorage] = useState([]);
   const [tableExcel, setTableExcel] = useState([]);
+  const [searchingEl, setSearchingEl] = useState({});
+  //====================================================================
+  //====================================================================
+
+  const [brandsCount, setBrandsCount] = useState(0);
 
   const getBrands = useCallback(async () => {
     try {
       const data = await request(
-        `/api/products/brand/getall`,
+        "/api/products/brand/getbrands",
         "POST",
-        { market: auth.market._id },
+        { market: auth.market._id, currentPage, countPage, searching: null },
         {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      setBrands(data);
-      setCurrentBrands(data.slice(indexFirstProduct, indexLastProduct));
-      setSearchStorage(data);
-      setTableExcel(data);
-    } catch (error) {
-      notify({
-        title: error,
-        description: "",
-        status: "error",
-      });
-    }
-  }, [request, auth, notify, indexFirstProduct, indexLastProduct]);
-  //====================================================================
-  //====================================================================
-
-  const [connectorCount, setConnectorCount] = useState(0);
-
-  const getConnectorsCount = useCallback(async () => {
-    try {
-      const data = await request(
-        "/api/products/brand/getconnectorscount",
-        "POST",
-        { market: auth.market && auth.market._id },
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
-      );
-      setConnectorCount(data);
-    } catch (error) {
-      notify({
-        title: error,
-        description: "",
-        status: "error",
-      });
-    }
-  }, [auth, notify, request]);
-
-  const getConnectors = useCallback(async () => {
-    try {
-      const data = await request(
-        "/api/products/brand/getconnectors",
-        "POST",
-        { market: auth.market._id, currentPage, countPage },
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
-      );
-      setCurrentBrands(data);
+      setSearchStorage(data.brands);
+      setCurrentBrands(data.brands);
+      setTableExcel(data.brands);
+      setBrandsCount(data.count);
     } catch (error) {
       notify({
         title: error,
@@ -146,6 +104,32 @@ export const Brand = () => {
       });
     }
   }, [auth, request, notify, currentPage, countPage]);
+
+  const getSearchedBrands = async () => {
+    try {
+      const data = await request(
+        "/api/products/brand/getbrands",
+        "POST",
+        {
+          market: auth.market._id,
+          currentPage: 0,
+          countPage,
+          searching: searchingEl,
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setBrandsCount(data.count);
+      setCurrentBrands(data.brands);
+    } catch (error) {
+      notify({
+        title: error,
+        description: "",
+        status: "error",
+      });
+    }
+  };
 
   //====================================================================
   //====================================================================
@@ -165,7 +149,7 @@ export const Brand = () => {
         description: "",
         status: "success",
       });
-      getConnectors();
+      getBrands();
       setBrand({
         market: auth.market && auth.market._id,
       });
@@ -177,7 +161,7 @@ export const Brand = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify, brand, clearInputs, getConnectors]);
+  }, [request, auth, notify, brand, clearInputs, getBrands]);
 
   const updateHandler = useCallback(async () => {
     try {
@@ -194,7 +178,7 @@ export const Brand = () => {
         description: "",
         status: "success",
       });
-      getConnectors();
+      getBrands();
       setBrand({
         market: auth.market && auth.market._id,
       });
@@ -206,7 +190,7 @@ export const Brand = () => {
         status: "error",
       });
     }
-  }, [request, auth, notify, brand, clearInputs, getConnectors]);
+  }, [request, auth, notify, brand, clearInputs, getBrands]);
 
   const saveHandler = () => {
     if (checkBrand(brand)) {
@@ -225,6 +209,15 @@ export const Brand = () => {
     }
   };
 
+  const searchKeypress = (e) => {
+    if (e.key === "Enter") {
+      if (searchingEl) {
+        return getSearchedBrands();
+      }
+      return getBrands();
+    }
+  };
+
   const deleteHandler = useCallback(async () => {
     try {
       const data = await request(
@@ -240,7 +233,7 @@ export const Brand = () => {
         description: "",
         status: "success",
       });
-      getConnectors();
+      getBrands();
       setModal(false);
       setBrand({
         market: auth.market && auth.market._id,
@@ -253,7 +246,7 @@ export const Brand = () => {
         status: "error",
       });
     }
-  }, [auth, request, remove, notify, clearInputs, getConnectors]);
+  }, [auth, request, remove, notify, clearInputs, getBrands]);
   //====================================================================
   //====================================================================
 
@@ -271,11 +264,20 @@ export const Brand = () => {
   };
 
   const searchBrand = (e) => {
-    const searching = searchStorage.filter((item) =>
-      item.name.toLowerCase().includes(e.target.value.toLowerCase())
-    );
-    setCurrentBrands(searching);
-    setBrands(searching);
+    if (e.target.name === "name") {
+      setSearchingEl({
+        type: "name",
+        search: e.target.value,
+      });
+      const searching = searchStorage.filter((item) =>
+        item.name.toLowerCase().includes(e.target.value.toLowerCase())
+      );
+      setCurrentBrands(searching);
+      setBrands(searching);
+    }
+    if (e.target.value === "") {
+      setSearchingEl(null);
+    }
   };
 
   //====================================================================
@@ -285,24 +287,16 @@ export const Brand = () => {
   //====================================================================
 
   useEffect(() => {
-    getConnectors();
-  }, [getConnectors, currentPage, countPage]);
+    getBrands();
+  }, [getBrands, currentPage, countPage]);
 
-  const [n, setN] = useState();
-  useEffect(() => {
-    if (!n) {
-      setN(1);
-      getConnectorsCount();
-      getBrands();
-    }
-  }, [getBrands, n, getConnectorsCount]);
   //====================================================================
   //====================================================================
 
   return (
     <>
       {loading ? <Loader /> : ""}
-      <div className='m-3 min-w-[700px]'>
+      <div className="m-3 min-w-[700px]">
         <CreateHeader />
         <CreateBody
           brand={brand}
@@ -317,8 +311,9 @@ export const Brand = () => {
           setPageSize={setPageSize}
           searchBrand={searchBrand}
           setCurrentPage={setCurrentPage}
-          brandsCount={connectorCount}
+          brandsCount={brandsCount}
           countPage={countPage}
+          keyPressed={searchKeypress}
         />
         <TableHead
           currentBrands={currentBrands}
@@ -342,8 +337,8 @@ export const Brand = () => {
           })}
       </div>
 
-      <div className='d-none'>
-        <table className='table m-0' id='brand-excel-table'>
+      <div className="d-none">
+        <table className="table m-0" id="brand-excel-table">
           <thead>
             <tr>
               <th>№</th>

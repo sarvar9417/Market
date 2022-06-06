@@ -21,12 +21,8 @@ router.post("/getall", auth, (req, res) => {
   require("./supplier").getAll(req, res);
 });
 
-router.post("/getconnectorscount", auth, (req, res) => {
-  require("./supplier").getSupplierCount(req, res);
-});
-
-router.post("/getconnectors", auth, (req, res) => {
-  require("./supplier").getSupplierConnectors(req, res);
+router.post("/getsuppliers", auth, (req, res) => {
+  require("./supplier").getSuppliers(req, res);
 });
 
 module.exports = router;

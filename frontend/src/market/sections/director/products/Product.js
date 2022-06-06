@@ -77,7 +77,6 @@ export const Product = () => {
     incomingprice: 0,
     sellingprice: 0,
   });
-
   const sections = [
     { name: t("Kategoriya kodi"), value: "category" },
     { name: t("Mahsulot turi"), value: "producttype" },
@@ -131,47 +130,8 @@ export const Product = () => {
   //====================================================================
   //====================================================================
 
-  const [connectorCount, setConnectorCount] = useState(0);
-
-  const getConnectorsCount = useCallback(async () => {
-    try {
-      const data = await request(
-        "/api/products/product/getconnectorscount",
-        "POST",
-        { market: auth.market && auth.market._id },
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
-      );
-      setConnectorCount(data);
-    } catch (error) {
-      notify({
-        title: error,
-        description: "",
-        status: "error",
-      });
-    }
-  }, [auth, notify, request]);
-
-  const getConnectors = useCallback(async () => {
-    try {
-      const data = await request(
-        "/api/products/product/getconnectors",
-        "POST",
-        { market: auth.market._id, currentPage, countPage },
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
-      );
-      setCurrentProducts(data);
-    } catch (error) {
-      notify({
-        title: error,
-        description: "",
-        status: "error",
-      });
-    }
-  }, [auth, request, notify, currentPage, countPage]);
+  const [productsCount, setProductsCount] = useState(0);
+  const [searchingEl, setSearchingEl] = useState({});
 
   //====================================================================
   //====================================================================
@@ -185,18 +145,23 @@ export const Product = () => {
   const getProducts = useCallback(async () => {
     try {
       const data = await request(
-        `/api/products/product/getall`,
+        `/api/products/product/getproducts`,
         "POST",
-        { market: auth.market._id },
+        {
+          market: auth.market._id,
+          currentPage,
+          countPage,
+          searching: null,
+        },
         {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-
-      setProducts(data);
-      setSearchStrorage(data);
-      setCurrentProducts(data.slice(indexFirstProduct, indexLastProduct));
-      setTableExcel(data);
+      setProducts(data.products);
+      setSearchStrorage(data.products);
+      setCurrentProducts(data.products);
+      setTableExcel(data.products);
+      setProductsCount(data.count);
     } catch (error) {
       notify({
         title: error,
@@ -209,10 +174,42 @@ export const Product = () => {
     auth,
     notify,
     setCurrentProducts,
-    indexLastProduct,
-    indexFirstProduct,
     setSearchStrorage,
+    currentPage,
+    countPage,
   ]);
+
+  const getSearchedProducts = async () => {
+    try {
+      const data = await request(
+        "/api/products/product/getproducts",
+        "POST",
+        {
+          market: auth.market._id,
+          currentPage,
+          countPage,
+          searching: searchingEl,
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setCurrentProducts(data.products);
+      setProductsCount(data.count);
+    } catch (error) {
+      notify({
+        title: error,
+        description: "",
+        status: "error",
+      });
+    }
+  };
+  //====================================================================
+  //====================================================================
+
+  //====================================================================
+  //====================================================================
+
   //====================================================================
   //====================================================================
   //====================================================================
@@ -258,7 +255,7 @@ export const Product = () => {
     }
     setProduct({ ...product, category: e.value });
     const filter = allproducttypes.filter((item) => {
-      return item.producttype && item.producttype.category._id === e.value;
+      return item.producttype && item.producttype.category === e.value;
     });
     setProductTypes(filter);
   };
@@ -316,7 +313,6 @@ export const Product = () => {
   //====================================================================
   const [producttypes, setProductTypes] = useState();
   const [allproducttypes, setAllProductTypes] = useState();
-
   const getProductTypes = useCallback(async () => {
     try {
       const data = await request(
@@ -424,7 +420,7 @@ export const Product = () => {
         description: "",
         status: "success",
       });
-      getConnectors();
+      getProducts();
       clearInputs();
     } catch (error) {
       notify({
@@ -433,7 +429,7 @@ export const Product = () => {
         status: "error",
       });
     }
-  }, [auth, request, product, notify, clearInputs, getConnectors]);
+  }, [auth, request, product, notify, clearInputs, getProducts]);
 
   const updateHandler = useCallback(async () => {
     try {
@@ -452,7 +448,7 @@ export const Product = () => {
         description: "",
         status: "success",
       });
-      getConnectors();
+      getProducts();
       clearInputs();
     } catch (error) {
       notify({
@@ -461,7 +457,7 @@ export const Product = () => {
         status: "error",
       });
     }
-  }, [auth, request, product, notify, clearInputs, getConnectors]);
+  }, [auth, request, product, notify, clearInputs, getProducts]);
 
   const saveHandler = () => {
     if (checkProduct(product)) {
@@ -494,7 +490,7 @@ export const Product = () => {
         description: "",
         status: "success",
       });
-      getConnectors();
+      getProducts();
       clearInputs();
       setModal(false);
     } catch (error) {
@@ -504,7 +500,7 @@ export const Product = () => {
         status: "error",
       });
     }
-  }, [auth, request, remove, notify, clearInputs, getConnectors]);
+  }, [auth, request, remove, notify, clearInputs, getProducts]);
 
   //====================================================================
   //====================================================================
@@ -573,61 +569,71 @@ export const Product = () => {
   //====================================================================
   // SEARCH
 
-  const searchCategory = useCallback(
-    (e) => {
+  const searchProducts = (e) => {
+    if (e.target.name === "category") {
+      setSearchingEl({
+        type: "category",
+        search: e.target.value,
+        searchcategory: e.target.value,
+        searchproducttype: "",
+        searchbrand: "",
+      });
+
       const searching = searchStorage.filter(
         (item) =>
           item.category.code.includes(e.target.value) ||
           item.code.includes(e.target.value)
       );
-      setProducts(searching);
-      setCurrentProducts(searching.slice(0, countPage));
-    },
-    [searchStorage, countPage]
-  );
-
-  const searchName = useCallback(
-    (e) => {
+      setCurrentProducts(searching);
+    }
+    if (e.target.name === "producttype") {
+      setSearchingEl({
+        type: "producttype",
+        search: e.target.value,
+        searchproducttype: e.target.value,
+        searchcategory: "",
+        searchbrand: "",
+      });
       const searching = searchStorage.filter(
         (item) =>
-          item.name.toLowerCase().includes(e.target.value.toLowerCase()) ||
-          String(item.code).includes(e.target.value)
-      );
-      setProducts(searching);
-      setCurrentProducts(searching.slice(0, countPage));
-    },
-    [searchStorage, countPage]
-  );
-
-  const searchProductTypeAndProductName = useCallback(
-    (e) => {
-      const searching = searchStorage.filter(
-        (item) =>
-          item.producttype.name
-            .toLowerCase()
-            .includes(e.target.value.toLowerCase()) ||
-          item.name.toLowerCase().includes(e.target.value.toLowerCase())
-      );
-      setProducts(searching);
-      setCurrentProducts(searching.slice(0, countPage));
-    },
-    [searchStorage, countPage]
-  );
-  const searchBrand = useCallback(
-    (e) => {
-      const searching = searchStorage.filter(
-        (item) =>
-          (item.brand &&
-            item.brand.name
+          (item.producttype &&
+            item.producttype.name
               .toLowerCase()
               .includes(e.target.value.toLowerCase())) ||
-          (e.target.value === "" && item)
+          item.name.toLowerCase().includes(e.target.value.toLowerCase())
       );
-      setProducts(searching);
-      setCurrentProducts(searching.slice(0, countPage));
-    },
-    [searchStorage, countPage]
-  );
+      setCurrentProducts(searching);
+    }
+    if (e.target.name === "brand") {
+      setSearchingEl({
+        type: "brand",
+        search: e.target.value,
+        searchbrand: e.target.value,
+        searchproducttype: "",
+        searchcategory: "",
+      });
+      const searching = searchStorage.filter(
+        (item) =>
+          item.brand &&
+          item.brand.name.toLowerCase().includes(e.target.value.toLowerCase())
+      );
+      setCurrentProducts(searching);
+    }
+    if (e.target.value === "") {
+      setSearchingEl(null);
+    }
+  };
+
+  const searchKeypress = (e) => {
+    setCurrentPage(0);
+    if (e.key === "Enter") {
+      if (searchingEl) {
+        return getSearchedProducts();
+      }
+      return getProducts();
+    }
+  };
+
   //====================================================================
   //====================================================================
   const setPageSize = useCallback(
@@ -645,29 +651,19 @@ export const Product = () => {
   //====================================================================
 
   useEffect(() => {
-    getConnectors();
-  }, [getConnectors, currentPage, countPage]);
+    getProducts();
+  }, [getProducts, currentPage, countPage]);
 
   const [n, setN] = useState();
   useEffect(() => {
     if (!n) {
       setN(1);
       getCategories();
-      getProducts();
       getProductTypes();
       getUnits();
       getBrand();
-      getConnectorsCount();
     }
-  }, [
-    getProducts,
-    getUnits,
-    getCategories,
-    getProductTypes,
-    getBrand,
-    n,
-    getConnectorsCount,
-  ]);
+  }, [getUnits, getCategories, getProductTypes, getBrand, n]);
   //====================================================================
   //====================================================================
   return (
@@ -696,12 +692,10 @@ export const Product = () => {
             />
             <TableProduct
               producttypes={producttypes}
+              keyPress={searchKeypress}
               setImports={setImports}
               product={product}
-              searchName={searchName}
-              searchProductTypeAndProductName={searchProductTypeAndProductName}
-              searchBrand={searchBrand}
-              searchCategory={searchCategory}
+              changeHandler={searchProducts}
               categories={categories}
               products={products}
               tableExcel={tableExcel}
@@ -720,7 +714,7 @@ export const Product = () => {
               setModal2={setModal2}
               selectRef={selectRef}
               market={auth.market}
-              connectorCount={connectorCount}
+              productsCount={productsCount}
             />
           </div>
         </div>
