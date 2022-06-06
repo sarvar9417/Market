@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 
-export const Datapicker = ({ getIncomingConnectors }) => {
+export const Datapicker = ({ setBeginDay, setEndDay }) => {
   const [startDate, setStartDate] = useState(
     new Date(new Date().getFullYear(), new Date().getMonth(), 1)
   );
@@ -10,12 +10,11 @@ export const Datapicker = ({ getIncomingConnectors }) => {
     const [start, end] = dates;
     setStartDate(start);
     setEndDate(end);
-    getIncomingConnectors(
-      new Date(start).toISOString(),
+    setBeginDay(new Date(start).toISOString());
+    setEndDay(
       new Date(new Date(end).setDate(new Date(end).getDate() + 1)).toISOString()
     );
   };
-
   return (
     <div>
       <DatePicker

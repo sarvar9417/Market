@@ -486,29 +486,26 @@ export const Incoming = () => {
 
   const [connectors, setConnectors] = useState([]);
 
-  const getIncomingConnectors = useCallback(
-    async (beginDay, endDay) => {
-      try {
-        const data = await request(
-          `/api/products/incoming/getconnectors`,
-          'POST',
-          { market: auth.market._id, beginDay, endDay },
-          {
-            Authorization: `Bearer ${auth.token}`,
-          }
-        );
-        setConnectors(data);
-        daily(data);
-      } catch (error) {
-        notify({
-          title: error,
-          description: '',
-          status: 'error',
-        });
-      }
-    },
-    [request, auth, notify, daily]
-  );
+  const getIncomingConnectors = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/products/incoming/getconnectors`,
+        'POST',
+        { market: auth.market._id, beginDay, endDay },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setConnectors(data);
+      daily(data);
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [request, auth, notify, daily, beginDay, endDay]);
 
   const sortSuppliers = (e) => {
     if (e.value === 'all') {
@@ -850,6 +847,9 @@ export const Incoming = () => {
     getIncomingConnectors,
   ]);
 
+  useEffect(() => {
+    getIncomingConnectors();
+  }, [getIncomingConnectors, beginDay, endDay]);
   //====================================================================
   //====================================================================
 
@@ -887,6 +887,8 @@ export const Incoming = () => {
       </div>
       <div className={visibleReport ? '' : 'hidden'}>
         <ReportIncomings
+          setBeginDay={setBeginDay}
+          setEndDay={setEndDay}
           getImports={getImports}
           getIncomingConnectors={getIncomingConnectors}
           totalproducts={totalproducts}

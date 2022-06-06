@@ -7,6 +7,8 @@ import { t } from 'i18next';
 const animatedComponents = makeAnimated();
 
 export const ReportIncomings = ({
+  setBeginDay,
+  setEndDay,
   getImports,
   getIncomingConnectors,
   dailyConnectors,
@@ -22,7 +24,7 @@ export const ReportIncomings = ({
       <div className='grid grid-cols-12 p-3 grid-rows-6'>
         <div className='col-span-12 sm:col-span-6 lg:col-span-3 row-span-6'>
           <div className=' xsm:text-center sm:text-start'>
-            <Datapicker getIncomingConnectors={getIncomingConnectors} />
+            <Datapicker setBeginDay={setBeginDay} setEndDay={setEndDay} />
           </div>
         </div>
         <div className='col-span-12 sm:col-span-6 lg:col-span-3'>
