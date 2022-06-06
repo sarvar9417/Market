@@ -11,12 +11,17 @@ import { CreateHeader } from './ProductType/CreateHeader';
 import { TableHeader } from './ProductType/TableHeader';
 import { TableHead } from './ProductType/TableHead';
 import { Rows } from './ProductType/Rows';
+import { ExcelTable } from './ProductType/ExcelTable';
 
 export const ProductType = () => {
   //====================================================================
   //====================================================================
   const [modal, setModal] = useState(false);
   const [search, setSearch] = useState({
+    categorycode: '',
+    name: '',
+  });
+  const [sendingsearch, setSendingSearch] = useState({
     categorycode: '',
     name: '',
   });
@@ -51,12 +56,6 @@ export const ProductType = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [countPage, setCountPage] = useState(10);
   const [producttypeCount, setProductTypeCount] = useState(0);
-  const [searchingEl, setSearchingEl] = useState({
-    type: '',
-    search: '',
-    searchcode: '',
-    searchname: '',
-  });
 
   const [remove, setRemove] = useState({
     market: auth.market && auth.market._id,
@@ -104,7 +103,6 @@ export const ProductType = () => {
 
   //====================================================================
   //====================================================================
-  const [producttypes, setProductTypes] = useState([]);
   const [currentProductTypes, setCurrentProductTypes] = useState([]);
   const [searchStorage, setSearchStorage] = useState([]);
   const [tableExcel, setTableExcel] = useState([]);
@@ -114,7 +112,12 @@ export const ProductType = () => {
       const data = await request(
         `/api/products/producttype/getproducttypes`,
         'POST',
-        { market: auth.market._id, currentPage, countPage, search },
+        {
+          market: auth.market._id,
+          currentPage,
+          countPage,
+          search: sendingsearch,
+        },
         {
           Authorization: `Bearer ${auth.token}`,
         }
@@ -129,25 +132,23 @@ export const ProductType = () => {
         status: 'error',
       });
     }
-  }, [request, auth, notify, currentPage, countPage, search]);
+  }, [request, auth, notify, currentPage, countPage, sendingsearch]);
 
   const getSearchedProductType = async () => {
     try {
       const data = await request(
-        '/api/products/producttype/getproducttypes',
+        '/api/products/producttype/getproducttypesexcel',
         'POST',
         {
           market: auth.market._id,
-          currentPage,
-          countPage,
-          searching: searchingEl,
+          search: sendingsearch,
         },
         {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      setProductTypeCount(data.count);
-      setCurrentProductTypes(data.producttypes);
+      setTableExcel(data);
+      document.getElementById('reacthtmltoexcel').click();
     } catch (error) {
       notify({
         title: error,
@@ -193,17 +194,14 @@ export const ProductType = () => {
 
   const searchKeypress = (e) => {
     if (e.key === 'Enter') {
-      if (searchingEl) {
-        return getSearchedProductType();
-      }
-      return getProductTypes();
+      setCurrentPage(0);
+      setSendingSearch(search);
     }
   };
 
   const setPageSize = (e) => {
     setCurrentPage(0);
     setCountPage(e.target.value);
-    setCurrentProductTypes(producttypes.slice(0, e.target.value));
   };
 
   //====================================================================
@@ -325,13 +323,9 @@ export const ProductType = () => {
     getProductTypes();
   }, [currentPage, countPage, getProductTypes]);
 
-  const [n, setN] = useState();
   useEffect(() => {
-    if (!n) {
-      setN(1);
-      getCategories();
-    }
-  }, [getCategories, n]);
+    getCategories();
+  }, [getCategories]);
   //====================================================================
   //====================================================================
 
@@ -352,6 +346,8 @@ export const ProductType = () => {
         />
         <br />
         <TableHeader
+          currentPage={currentPage}
+          getSearchedProductType={getSearchedProductType}
           searchProductType={searchProductType}
           setPageSize={setPageSize}
           setCurrentPage={setCurrentPage}
@@ -381,27 +377,7 @@ export const ProductType = () => {
           })}
       </div>
 
-      <div className='d-none'>
-        <table className='table m-0' id='data-excel-table'>
-          <thead>
-            <tr>
-              <th>№</th>
-              <th>{t('Kategoriya')}</th>
-              <th>{t('Mahsulot turi')}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tableExcel &&
-              tableExcel.map((item, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{item.category.code}</td>
-                  <td>{item.name}</td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-      </div>
+      <ExcelTable datas={tableExcel} />
 
       <Modal
         modal={modal}

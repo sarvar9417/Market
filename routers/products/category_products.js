@@ -16,6 +16,10 @@ router.post('/category/getcategories', auth, (req, res) => {
   require('./category').getCategories(req, res);
 });
 
+router.post('/category/getcategoriesexcel', auth, (req, res) => {
+  require('./category').getCategoriesExcel(req, res);
+});
+
 router.put('/category/update', auth, (req, res) => {
   require('./category').update(req, res);
 });
@@ -102,6 +106,10 @@ router.post('/producttype/getall', auth, (req, res) => {
 
 router.post('/producttype/getproducttypes', auth, (req, res) => {
   require('./producttype').getProductType(req, res);
+});
+
+router.post('/producttype/getproducttypesexcel', auth, (req, res) => {
+  require('./producttype').getProductTypeExcel(req, res);
 });
 
 router.post('/producttype/getallcategory', auth, (req, res) => {

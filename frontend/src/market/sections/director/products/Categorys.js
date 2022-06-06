@@ -1,16 +1,16 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { useToast } from "@chakra-ui/react";
-import { useHttp } from "../../../hooks/http.hook";
-import { AuthContext } from "../../../context/AuthContext";
-import { checkCategory } from "./checkData";
-import { Modal } from "./modal/Modal";
-import { t } from "i18next";
-import { CreateHeader } from "./Category/CreateHeader";
-import { CreateBody } from "./Category/CreateBody";
-import { TableHeader } from "./Category/TableHeader";
-import { TableHead } from "./Category/TableHead";
-import { Rows } from "./Category/Rows";
-
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { useToast } from '@chakra-ui/react';
+import { useHttp } from '../../../hooks/http.hook';
+import { AuthContext } from '../../../context/AuthContext';
+import { checkCategory } from './checkData';
+import { Modal } from './modal/Modal';
+import { t } from 'i18next';
+import { CreateHeader } from './Category/CreateHeader';
+import { CreateBody } from './Category/CreateBody';
+import { TableHeader } from './Category/TableHeader';
+import { TableHead } from './Category/TableHead';
+import { Rows } from './Category/Rows';
+import { ExcelTable } from './Category/ExcelTable';
 export const Category = () => {
   //====================================================================
   //====================================================================
@@ -32,7 +32,7 @@ export const Category = () => {
         status: data.status && data.status,
         duration: 5000,
         isClosable: true,
-        position: "top-right",
+        position: 'top-right',
       });
     },
     [toast]
@@ -52,7 +52,8 @@ export const Category = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [countPage, setCountPage] = useState(10);
   const [categoryCount, setCategoryCount] = useState(0);
-  const [searchingEl, setSearchingEl] = useState({});
+  const [search, setSearch] = useState({ code: '', name: '' });
+  const [sendingsearch, setSendingSearch] = useState({ code: '', name: '' });
   //====================================================================
   //====================================================================
 
@@ -77,9 +78,9 @@ export const Category = () => {
   //====================================================================
 
   const clearInputs = useCallback(() => {
-    const inputs = document.getElementsByTagName("input");
+    const inputs = document.getElementsByTagName('input');
     for (const input of inputs) {
-      input.value = "";
+      input.value = '';
     }
     setCategory({
       market: auth.market && auth.market._id,
@@ -91,111 +92,93 @@ export const Category = () => {
 
   //====================================================================
   //====================================================================
-  const [categories, setCategories] = useState([]);
   const [currentCategories, setCurrentCategories] = useState([]);
   const [searchStorage, setSearchStorage] = useState([]);
-  const [tableExcel, setTableExcel] = useState([]);
 
   const getCategory = useCallback(async () => {
     try {
       const data = await request(
-        "/api/products/category/getcategories",
-        "POST",
+        '/api/products/category/getcategories',
+        'POST',
         {
           market: auth.market && auth.market._id,
           countPage,
           currentPage,
+          search: sendingsearch,
         },
         {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      setCategories(data.categories);
       setCurrentCategories(data.categories);
       setSearchStorage(data.categories);
-      setTableExcel(data.categories);
       setCategoryCount(data.count);
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
-  }, [auth, request, notify, countPage, currentPage]);
+  }, [auth, request, notify, countPage, currentPage, sendingsearch]);
 
-  const getSearchedCategory = async () => {
+  const [excelDatas, setExcelDatas] = useState([]);
+
+  const getCategoryExcel = useCallback(async () => {
     try {
       const data = await request(
-        "/api/products/category/getcategories",
-        "POST",
+        '/api/products/category/getcategoriesexcel',
+        'POST',
         {
-          market: auth.market._id,
-          currentPage: 0,
-          countPage,
-          searching: { ...searchingEl },
+          market: auth.market && auth.market._id,
+          search: sendingsearch,
         },
         {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      setCurrentCategories(data.categories);
-      setCategoryCount(data.count);
+      setExcelDatas(data);
+      document.getElementById('reacthtmltoexcel').click();
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
-  };
+  }, [auth, request, notify, sendingsearch]);
 
   //====================================================================
   //====================================================================
 
-  const searchKeypress = (e) => {
-    if (e.key === "Enter") {
-      if (searchingEl) {
-        return getSearchedCategory();
+  const searchKeypress = useCallback(
+    (e) => {
+      if (e.key === 'Enter') {
+        setCurrentPage(0);
+        setSendingSearch(search);
       }
-      return getCategory();
-    }
-  };
+    },
+    [search]
+  );
 
   const searchCategory = (e) => {
-    if (e.target.name === "code") {
-      setSearchingEl({
-        type: "code",
-        search: e.target.value.toLowerCase(),
-        searchcode: e.target.value.toLowerCase(),
-        searchname: "",
-      });
-    }
-    if (e.target.name === "name") {
-      setSearchingEl({
-        type: "name",
-        search: e.target.value.toLowerCase(),
-        searchname: e.target.value.toLowerCase(),
-        searchcode: "",
-      });
-    }
-    if (e.target.value === "") {
-      setSearchingEl(null);
-    }
+    setSearch({
+      ...search,
+      [e.target.name]: e.target.value,
+    });
+
     const searching = searchStorage.filter(
       (item) =>
         (item.name &&
           item.name.toLowerCase().includes(e.target.value.toLowerCase())) ||
         String(item.code).includes(e.target.value)
     );
-    setCategories(searching);
     setCurrentCategories(searching);
   };
 
   const setPageSize = (e) => {
     setCurrentPage(0);
     setCountPage(e.target.value);
-    setCurrentCategories(categories.slice(0, e.target.value));
   };
 
   //====================================================================
@@ -205,16 +188,16 @@ export const Category = () => {
     try {
       const data = await request(
         `/api/products/category/register`,
-        "POST",
+        'POST',
         { ...category, code: `${category.code}` },
         {
           Authorization: `Bearer ${auth.token}`,
         }
       );
       notify({
-        title: `${data.name} ${t("kategoriyasi yaratildi!")}`,
-        description: "",
-        status: "success",
+        title: `${data.name} ${t('kategoriyasi yaratildi!')}`,
+        description: '',
+        status: 'success',
       });
       getCategory();
       setCategory({
@@ -224,8 +207,8 @@ export const Category = () => {
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [request, auth, notify, category, clearInputs, getCategory]);
@@ -234,7 +217,7 @@ export const Category = () => {
     try {
       const data = await request(
         `/api/products/category/update`,
-        "PUT",
+        'PUT',
         { ...category, code: `${category.code}` },
         {
           Authorization: `Bearer ${auth.token}`,
@@ -242,8 +225,8 @@ export const Category = () => {
       );
       notify({
         title: `${data.name} kategoriyasi yangilandi!`,
-        description: "",
-        status: "success",
+        description: '',
+        status: 'success',
       });
       getCategory();
       setCategory({
@@ -253,8 +236,8 @@ export const Category = () => {
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [request, auth, notify, category, clearInputs, getCategory]);
@@ -271,7 +254,7 @@ export const Category = () => {
   };
 
   const keyPressed = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       return saveHandler();
     }
   };
@@ -280,7 +263,7 @@ export const Category = () => {
     try {
       const data = await request(
         `/api/products/category/delete`,
-        "DELETE",
+        'DELETE',
         { ...remove },
         {
           Authorization: `Bearer ${auth.token}`,
@@ -288,8 +271,8 @@ export const Category = () => {
       );
       notify({
         title: `${data.name} kategoriyasi o'chirildi!`,
-        description: "",
-        status: "success",
+        description: '',
+        status: 'success',
       });
       getCategory();
       setCategory({
@@ -300,35 +283,19 @@ export const Category = () => {
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [auth, request, remove, notify, clearInputs, getCategory]);
 
-  //====================================================================
-  //====================================================================
-
-  //====================================================================
-  //====================================================================
-
   useEffect(() => {
     getCategory();
-  }, [currentPage, countPage, getCategory]);
-
-  // const [n, setN] = useState();
-  // useEffect(() => {
-  //   if (!n) {
-  //     setN(1);
-  //     getCategory();
-  //   }
-  // }, [getCategory, n]);
-  //====================================================================
-  //====================================================================
+  }, [currentPage, countPage, getCategory, sendingsearch]);
 
   return (
-    <div className="overflow-x-auto">
-      <div className="m-3 min-w-[700px]">
+    <div className='overflow-x-auto'>
+      <div className='m-3 min-w-[700px]'>
         <CreateHeader />
         <CreateBody
           category={category}
@@ -340,13 +307,14 @@ export const Category = () => {
         />
         <br />
         <TableHeader
+          getCategoryExcel={getCategoryExcel}
+          currentPage={currentPage}
           setPageSize={setPageSize}
           searchCategory={searchCategory}
           setCurrentPage={setCurrentPage}
           totalDatas={categoryCount}
           countPage={countPage}
-          nameValue={(searchingEl && searchingEl.searchname) || ""}
-          codeValue={(searchingEl && searchingEl.searchcode) || ""}
+          search={search}
           nameKeyPressed={searchKeypress}
           codeKeyPressed={searchKeypress}
         />
@@ -370,28 +338,7 @@ export const Category = () => {
             );
           })}
       </div>
-
-      <div className="hidden">
-        <table className="table m-0" id="data-excel-table">
-          <thead>
-            <tr className="bg-blue-700">
-              <th className="border border-black">№</th>
-              <th className="border">{t("Kategoriya kodi")}</th>
-              <th>{t("Kategoriya nomi")}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tableExcel &&
-              tableExcel.map((item, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{item.code}</td>
-                  <td>{item.name}</td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-      </div>
+      <ExcelTable datas={excelDatas} />
 
       <Modal
         modal={modal}

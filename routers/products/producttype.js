@@ -287,21 +287,52 @@ module.exports.getProductType = async (req, res) => {
     const categorycode = new RegExp('.*' + search.categorycode + '.*', 'i');
     const name = new RegExp('.*' + search.name + '.*', 'i');
 
-    const count = await ProductType.find({ market }).count();
+    const count = await ProductType.find({ market })
+      .populate({ path: 'category', match: { code: categorycode } })
+      .count();
 
     const producttypes = await ProductType.find({ name: name, market })
       .sort({ _id: -1 })
       .select('name category market')
       .populate({ path: 'category', match: { code: categorycode } })
       .skip(currentPage * countPage)
-      .limit(countPage)
-      .exec();
+      .limit(countPage);
+
+    const filter = producttypes.filter((producttype) => {
+      return producttype.category !== null;
+    });
+   
+    res.status(201).json({ count: count, producttypes: filter });
+  } catch (error) {
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
+  }
+};
+
+module.exports.getProductTypeExcel = async (req, res) => {
+  try {
+    const { market, search } = req.body;
+
+    const marke = await Market.findById(market);
+
+    if (!marke) {
+      return res.status(400).json({
+        message: "Diqqat! Do'kon ma'lumotlari topilmadi.",
+      });
+    }
+
+    const categorycode = new RegExp('.*' + search.categorycode + '.*', 'i');
+    const name = new RegExp('.*' + search.name + '.*', 'i');
+
+    const producttypes = await ProductType.find({ name: name, market })
+      .sort({ _id: -1 })
+      .select('name category market')
+      .populate({ path: 'category', match: { code: categorycode } });
 
     const filter = producttypes.filter((producttype) => {
       return producttype.category !== null;
     });
 
-    res.status(201).json({ count: count, producttypes: filter });
+    res.status(201).json(filter);
   } catch (error) {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
