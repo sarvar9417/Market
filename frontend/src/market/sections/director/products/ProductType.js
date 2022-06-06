@@ -1,22 +1,25 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { Loader } from "../../../loader/Loader";
-import { useToast } from "@chakra-ui/react";
-import { useHttp } from "../../../hooks/http.hook";
-import { AuthContext } from "../../../context/AuthContext";
-import { checkProductType } from "./checkData";
-import { Modal } from "./modal/Modal";
-import { t } from "i18next";
-import { CreateBody } from "./ProductType/CreateBody";
-import { CreateHeader } from "./ProductType/CreateHeader";
-import { TableHeader } from "./ProductType/TableHeader";
-import { TableHead } from "./ProductType/TableHead";
-import { Rows } from "./ProductType/Rows";
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { Loader } from '../../../loader/Loader';
+import { useToast } from '@chakra-ui/react';
+import { useHttp } from '../../../hooks/http.hook';
+import { AuthContext } from '../../../context/AuthContext';
+import { checkProductType } from './checkData';
+import { Modal } from './modal/Modal';
+import { t } from 'i18next';
+import { CreateBody } from './ProductType/CreateBody';
+import { CreateHeader } from './ProductType/CreateHeader';
+import { TableHeader } from './ProductType/TableHeader';
+import { TableHead } from './ProductType/TableHead';
+import { Rows } from './ProductType/Rows';
 
 export const ProductType = () => {
   //====================================================================
   //====================================================================
   const [modal, setModal] = useState(false);
-
+  const [search, setSearch] = useState({
+    categorycode: '',
+    name: '',
+  });
   //====================================================================
   //====================================================================
 
@@ -32,7 +35,7 @@ export const ProductType = () => {
         status: data.status && data.status,
         duration: 5000,
         isClosable: true,
-        position: "top-right",
+        position: 'top-right',
       });
     },
     [toast]
@@ -49,10 +52,10 @@ export const ProductType = () => {
   const [countPage, setCountPage] = useState(10);
   const [producttypeCount, setProductTypeCount] = useState(0);
   const [searchingEl, setSearchingEl] = useState({
-    type: "",
-    search: "",
-    searchcode: "",
-    searchname: "",
+    type: '',
+    search: '',
+    searchcode: '',
+    searchname: '',
   });
 
   const [remove, setRemove] = useState({
@@ -64,7 +67,6 @@ export const ProductType = () => {
   });
   //====================================================================
   //====================================================================
-  console.log(producttype);
   //====================================================================
   //====================================================================
   const [categories, setCategories] = useState([]);
@@ -73,28 +75,27 @@ export const ProductType = () => {
     try {
       const data = await request(
         `/api/products/category/getall`,
-        "POST",
+        'POST',
         { market: auth.market._id },
         {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      console.log(data);
       setCategories(data);
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [request, auth, notify]);
 
   const clearInputs = useCallback(() => {
-    const inputs = document.getElementsByTagName("input");
-    document.getElementsByTagName("select")[0].selectedIndex = 0;
+    const inputs = document.getElementsByTagName('input');
+    document.getElementsByTagName('select')[0].selectedIndex = 0;
     for (const input of inputs) {
-      input.value = "";
+      input.value = '';
     }
     setProductType({ market: auth.market._id });
   }, [auth]);
@@ -112,32 +113,29 @@ export const ProductType = () => {
     try {
       const data = await request(
         `/api/products/producttype/getproducttypes`,
-        "POST",
-        { market: auth.market._id, currentPage, countPage, searching: null },
+        'POST',
+        { market: auth.market._id, currentPage, countPage, search },
         {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      console.log(data);
-      setProductTypes(data.producttypes);
       setCurrentProductTypes(data.producttypes);
       setSearchStorage(data.producttypes);
-      setTableExcel(data.producttypes);
       setProductTypeCount(data.count);
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
-  }, [request, auth, notify, currentPage, countPage]);
+  }, [request, auth, notify, currentPage, countPage, search]);
 
   const getSearchedProductType = async () => {
     try {
       const data = await request(
-        "/api/products/producttype/getproducttypes",
-        "POST",
+        '/api/products/producttype/getproducttypes',
+        'POST',
         {
           market: auth.market._id,
           currentPage,
@@ -153,8 +151,8 @@ export const ProductType = () => {
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   };
@@ -173,42 +171,28 @@ export const ProductType = () => {
   //====================================================================
 
   const searchProductType = (e) => {
-    if (e.target.name === "code") {
-      setSearchingEl({
-        type: "code",
-        search: e.target.value,
-        searchcode: e.target.value,
-        searchname: "",
-      });
+    if (e.target.name === 'code') {
+      setSearch({ ...search, categorycode: e.target.value });
 
       const searched = searchStorage.filter(
         (item) => item.category && item.category.code.includes(e.target.value)
       );
-      setProductTypes(searched);
       setCurrentProductTypes(searched);
     }
-    if (e.target.name === "name") {
-      setSearchingEl({
-        type: "name",
-        search: e.target.value.toLowerCase(),
-        searchname: e.target.value.toLowerCase(),
-        searchcode: "",
-      });
+    if (e.target.name === 'name') {
+      setSearch({ ...search, name: e.target.value });
+
       const searched = searchStorage.filter(
         (item) =>
           item.name &&
           item.name.toLowerCase().includes(e.target.value.toLowerCase())
       );
-      setProductTypes(searched);
       setCurrentProductTypes(searched);
-    }
-    if (e.target.value === "") {
-      setSearchingEl(null);
     }
   };
 
   const searchKeypress = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       if (searchingEl) {
         return getSearchedProductType();
       }
@@ -232,7 +216,7 @@ export const ProductType = () => {
     try {
       const data = await request(
         `/api/products/producttype/register`,
-        "POST",
+        'POST',
         { ...producttype },
         {
           Authorization: `Bearer ${auth.token}`,
@@ -240,8 +224,8 @@ export const ProductType = () => {
       );
       notify({
         title: `${data.name} mahsulot turi yaratildi!`,
-        description: "",
-        status: "success",
+        description: '',
+        status: 'success',
       });
       getProductTypes();
       setProductType({
@@ -251,8 +235,8 @@ export const ProductType = () => {
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [request, auth, notify, clearInputs, getProductTypes, producttype]);
@@ -261,7 +245,7 @@ export const ProductType = () => {
     try {
       const data = await request(
         `/api/products/producttype/update`,
-        "PUT",
+        'PUT',
         { ...producttype, user: auth.userId },
         {
           Authorization: `Bearer ${auth.token}`,
@@ -269,8 +253,8 @@ export const ProductType = () => {
       );
       notify({
         title: `${data.name} mahsulot turi yangilandi!`,
-        description: "",
-        status: "success",
+        description: '',
+        status: 'success',
       });
       getProductTypes();
       setProductType({
@@ -280,8 +264,8 @@ export const ProductType = () => {
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [request, auth, notify, producttype, clearInputs, getProductTypes]);
@@ -298,7 +282,7 @@ export const ProductType = () => {
   };
 
   const keyPressed = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       return saveHandler();
     }
   };
@@ -307,7 +291,7 @@ export const ProductType = () => {
     try {
       const data = await request(
         `/api/products/producttype/delete`,
-        "DELETE",
+        'DELETE',
         { ...remove },
         {
           Authorization: `Bearer ${auth.token}`,
@@ -315,8 +299,8 @@ export const ProductType = () => {
       );
       notify({
         title: `${data.name} nomli mahsulot turi o'chirildi!`,
-        description: "",
-        status: "success",
+        description: '',
+        status: 'success',
       });
       getProductTypes();
       setModal(false);
@@ -327,8 +311,8 @@ export const ProductType = () => {
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [auth, request, remove, notify, clearInputs, getProductTypes]);
@@ -352,9 +336,9 @@ export const ProductType = () => {
   //====================================================================
 
   return (
-    <div className="overflow-x-auto">
-      {loading ? <Loader /> : ""}
-      <div className="m-3 min-w-[700px]">
+    <div className='overflow-x-auto'>
+      {loading ? <Loader /> : ''}
+      <div className='m-3 min-w-[700px]'>
         <CreateHeader />
         <CreateBody
           checkHandler={checkHandler}
@@ -373,8 +357,7 @@ export const ProductType = () => {
           setCurrentPage={setCurrentPage}
           producttypeCount={producttypeCount}
           countPage={countPage}
-          valueCategory={(searchingEl && searchingEl.searchcode) || ""}
-          valueName={(searchingEl && searchingEl.searchname) || ""}
+          search={search}
           keyPressed={searchKeypress}
         />
         <TableHead
@@ -398,13 +381,13 @@ export const ProductType = () => {
           })}
       </div>
 
-      <div className="d-none">
-        <table className="table m-0" id="data-excel-table">
+      <div className='d-none'>
+        <table className='table m-0' id='data-excel-table'>
           <thead>
             <tr>
               <th>№</th>
-              <th>{t("Kategoriya")}</th>
-              <th>{t("Mahsulot turi")}</th>
+              <th>{t('Kategoriya')}</th>
+              <th>{t('Mahsulot turi')}</th>
             </tr>
           </thead>
           <tbody>

@@ -1,11 +1,11 @@
 const {
   ProductType,
   validateProductType,
-} = require("../../models/Products/ProductType");
-const { Market } = require("../../models/MarketAndBranch/Market");
-const { Category } = require("../../models/Products/Category");
-const { Product } = require("../../models/Products/Product");
-const ObjectId = require("mongodb").ObjectId;
+} = require('../../models/Products/ProductType');
+const { Market } = require('../../models/MarketAndBranch/Market');
+const { Category } = require('../../models/Products/Category');
+const { Product } = require('../../models/Products/Product');
+const ObjectId = require('mongodb').ObjectId;
 
 // //ProductType registerall
 // module.exports.registerAll = async (req, res) => {
@@ -122,8 +122,8 @@ module.exports.register = async (req, res) => {
     await newProductType.save();
 
     const producttype = await ProductType.findById(newProductType._id)
-      .select("name category")
-      .populate("category", "code");
+      .select('name category')
+      .populate('category', 'code');
 
     await Category.findByIdAndUpdate(category, {
       $push: {
@@ -133,7 +133,7 @@ module.exports.register = async (req, res) => {
 
     res.send(producttype);
   } catch (error) {
-    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
 
@@ -186,13 +186,13 @@ module.exports.update = async (req, res) => {
     }
 
     const updatedproduct = await ProductType.findById(_id)
-      .select("name category")
-      .populate("category", "code");
+      .select('name category')
+      .populate('category', 'code');
 
     res.send(updatedproduct);
   } catch (error) {
     console.log(error);
-    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
 
@@ -249,7 +249,7 @@ module.exports.delete = async (req, res) => {
     });
     res.send(productType);
   } catch (error) {
-    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
 
@@ -268,13 +268,13 @@ module.exports.getAll = async (req, res) => {
 
     res.status(201).json(producttypes);
   } catch (error) {
-    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
 
 module.exports.getProductType = async (req, res) => {
   try {
-    const { market, currentPage, countPage, searching } = req.body;
+    const { market, currentPage, countPage, search } = req.body;
 
     const marke = await Market.findById(market);
 
@@ -283,64 +283,27 @@ module.exports.getProductType = async (req, res) => {
         message: "Diqqat! Do'kon ma'lumotlari topilmadi.",
       });
     }
-    if (searching) {
-      let response;
-      let responseCount;
-      if (searching.type === "name") {
-        const name = new RegExp(".*" + searching.search + ".*", "i");
-        const count = await ProductType.find({
-          market,
-          name: name,
-        }).count();
-        const searchedNames = await ProductType.find({
-          market,
-          name: name,
-        })
-          .sort({ _id: -1 })
-          .select("name category market")
-          .populate("category", "code")
-          .skip(currentPage * countPage)
-          .limit(countPage);
 
-        response = searchedNames;
-        responseCount = count;
-      }
-      if (searching.type === "code") {
-        const categoryCode = await Category.findOne({
-          market,
-          code: searching.search,
-        });
-        const count = await ProductType.find({
-          market,
-          category: categoryCode._id,
-        }).count();
-        const searchedCodes = await ProductType.find({
-          market,
-          category: categoryCode._id,
-        })
-          .sort({ _id: -1 })
-          .select("name category market")
-          .populate("category", "code")
-          .skip(currentPage * countPage)
-          .limit(countPage);
-        response = searchedCodes;
-        responseCount = count;
-      }
-      return res
-        .status(201)
-        .json({ count: responseCount, producttypes: response });
-    } else {
-      const count = await ProductType.find({ market }).count();
-      const producttypes = await ProductType.find({ market })
-        .sort({ _id: -1 })
-        .select("name category market")
-        .populate("category", "code")
-        .skip(currentPage * countPage)
-        .limit(countPage);
-      res.status(201).json({ count: count, producttypes: producttypes });
-    }
+    const categorycode = new RegExp('.*' + search.categorycode + '.*', 'i');
+    const name = new RegExp('.*' + search.name + '.*', 'i');
+
+    const count = await ProductType.find({ market }).count();
+
+    const producttypes = await ProductType.find({ name: name, market })
+      .sort({ _id: -1 })
+      .select('name category market')
+      .populate({ path: 'category', match: { code: categorycode } })
+      .skip(currentPage * countPage)
+      .limit(countPage)
+      .exec();
+
+    const filter = producttypes.filter((producttype) => {
+      return producttype.category !== null;
+    });
+
+    res.status(201).json({ count: count, producttypes: filter });
   } catch (error) {
-    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
 
