@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import DatePicker from "react-datepicker";
+import React, { useState } from 'react';
+import DatePicker from 'react-datepicker';
 
 export const Datapicker = ({ getIncomingConnectors }) => {
   const [startDate, setStartDate] = useState(
@@ -11,10 +11,11 @@ export const Datapicker = ({ getIncomingConnectors }) => {
     setStartDate(start);
     setEndDate(end);
     getIncomingConnectors(
-      start,
-      new Date(new Date().setDate(new Date(end).getDate() + 1))
+      new Date(start).toISOString(),
+      new Date(new Date(end).setDate(new Date(end).getDate() + 1)).toISOString()
     );
   };
+
   return (
     <div>
       <DatePicker

@@ -88,8 +88,8 @@ module.exports.registerAll = async (req, res) => {
         supplier: supplier._id,
         unit: unit._id,
         pieces,
-        unitprice,
-        totalprice,
+        unitprice: Math.round(unitprice * 100) / 100,
+        totalprice: Math.round(totalprice * 100) / 100,
         unit: unit._id,
         market,
         user,
@@ -121,13 +121,16 @@ module.exports.registerAll = async (req, res) => {
         product: produc._id,
       });
       const price =
-        productprice && productprice[productprice.length - 1].sellingprice
-          ? productprice[productprice.length - 1].sellingprice
+        productprice.length > 0 &&
+        productprice[productprice.length - 1].sellingprice
+          ? Math.round(
+              productprice[productprice.length - 1].sellingprice * 100
+            ) / 100
           : 0;
       const newProductPrice = new ProductPrice({
         procient: productprice.procient,
         product: product.product,
-        incomingprice: product.unitprice,
+        incomingprice: Math.round(product.unitprice * 100) / 100,
         sellingprice: price,
         market,
       });
@@ -137,7 +140,7 @@ module.exports.registerAll = async (req, res) => {
       produc.price = newProductPrice._id;
       await produc.save();
       p.push(product._id);
-      t += product.totalprice;
+      t += Math.round(product.totalprice * 100) / 100;
     }
 
     const newIncomingConnector = new IncomingConnector({
@@ -215,7 +218,7 @@ module.exports.register = async (req, res) => {
     const produc = await Product.findById(product);
 
     produc.total += parseInt(pieces);
-    produc.incomingprice = parseFloat(unitprice);
+    produc.incomingprice = Math.round(unitprice * 100) / 100;
     await produc.save();
 
     res.send(newIncoming);
@@ -271,6 +274,14 @@ module.exports.get = async (req, res) => {
       });
     }
 
+    const count = await Incoming.find({
+      market,
+      createdAt: {
+        $gte: beginDay,
+        $lt: endDay,
+      },
+    }).count();
+
     const incomings = await Incoming.find({
       market,
       createdAt: {
@@ -281,15 +292,14 @@ module.exports.get = async (req, res) => {
       .sort({ _id: -1 })
       .skip(currentPage * countPage)
       .limit(countPage)
-      .select('-isArchive, -updatedAt, -market -user')
+      .select('-isArchive -updatedAt -market -user -__v')
       .populate('supplier', 'name')
       .populate('category', 'code')
       .populate('producttype', 'name')
       .populate('product', 'name code')
       .populate('unit', 'name')
       .populate('brand', 'name');
-
-    res.status(201).send(incomings);
+    res.status(201).send({ incomings, count });
   } catch (error) {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
@@ -299,7 +309,6 @@ module.exports.get = async (req, res) => {
 module.exports.getConnectors = async (req, res) => {
   try {
     const { market, beginDay, endDay } = req.body;
-
     const connectors = await IncomingConnector.find({
       market,
       createdAt: {

@@ -1,8 +1,8 @@
-import React from "react";
-import { Datapicker } from "./components/Datepicker";
-import Select from "react-select";
-import makeAnimated from "react-select/animated";
-import { t } from "i18next";
+import React from 'react';
+import { Datapicker } from './components/Datepicker';
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
+import { t } from 'i18next';
 
 const animatedComponents = makeAnimated();
 
@@ -11,97 +11,78 @@ export const ReportIncomings = ({
   getIncomingConnectors,
   dailyConnectors,
   suppliers,
-  totalproducts,
+  // totalproducts,
   totalprice,
   totalproducttypes,
   sortSuppliers,
 }) => {
   return (
-    <div className="py-3 w-full">
-      <div className="grid grid-cols-12">
-        <div className="xsm:col-span-12 sm:col-sapn-12 md:col-span-4 lg:col-span-3">
-          <div className=" xsm:text-center sm:text-start">
+    <div className='w-full shadow-lg'>
+      <div className='card-header text-lg'>Qabul qilingan mahsulotlar</div>
+      <div className='grid grid-cols-12 p-3 grid-rows-6'>
+        <div className='col-span-12 sm:col-span-6 lg:col-span-3 row-span-6'>
+          <div className=' xsm:text-center sm:text-start'>
             <Datapicker getIncomingConnectors={getIncomingConnectors} />
           </div>
-          <div className="font-bold flex justify-between pr-8 py-2">
-            <span>{t("Yetkazib beruvchilar:")}</span>{" "}
-            <span className="py-1 px-3 bg-[#29245A]"></span>
-          </div>
-          <div className="font-bold flex justify-between pr-8 py-2">
-            <span>{t("Mahsulotlar:")}</span>{" "}
-            <span className="py-1 px-3 bg-indigo-700"></span>
-          </div>
-          <div className="font-bold flex justify-between pr-8 py-2">
-            <span>{t("Umumiy summasi:")}</span>{" "}
-            <span className="py-1 px-3 bg-amber-100"></span>
-          </div>
         </div>
-        <div className="xsm:col-span-12 sm:col-span-12 md:col-span-8 lg:col-span-9 ">
-          <div className="grid grid-12">
-            <div className="flex justify-between sm:flex-row sm:space-y-0 sm:flex-start xsm:flex-col xsm:space-y-4 xsm:items-start ">
-              <div className="text-base text-primary ">
-                <Select
-                  id="select"
-                  placeholder={t("Yetkazib beruvchilar")}
-                  isClearable={true}
-                  components={animatedComponents}
-                  options={suppliers}
-                  onChange={(e) => {
-                    sortSuppliers(e);
-                  }}
-                  theme={(theme) => ({
-                    ...theme,
-                    borderRadius: 0,
-                    padding: 0,
-                    height: 0,
-                  })}
-                />
+        <div className='col-span-12 sm:col-span-6 lg:col-span-3'>
+          <Select
+            id='select'
+            placeholder={t('Yetkazib beruvchilar')}
+            isClearable={true}
+            components={animatedComponents}
+            options={suppliers}
+            onChange={sortSuppliers}
+          />
+        </div>
+        <div className='col-span-12 sm:col-span-6 lg:col-span-3 font-bold flex justify-between text-center px-3 text-base pt-1 mx-3'>
+          <span>{t('Mahsulotlar turlari:')}</span>{' '}
+          <span className='text-blue-900'>{totalproducttypes}</span>
+        </div>
+        <div className='col-span-12 sm:col-span-6 lg:col-span-3 font-bold flex justify-between text-center px-3 text-base pt-1 mx-3'>
+          {t('Jami')}:{' '}
+          <span className='text-blue-900'>
+            {Math.round(totalprice * 100) / 100} USD
+          </span>
+        </div>
+        <div className='col-span-12 lg:col-span-9 grid grid-cols-12 row-span-5'>
+          {dailyConnectors.map((connector, index) => {
+            return (
+              <div
+                key={index}
+                className='col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3 m-2'>
+                <button
+                  onClick={() => getImports(connector.day)}
+                  className='bg-[#216BA5] font-bold rounded text-white text-left py-2 px-3 inline-block w-100'>
+                  <p className='font-bold  text-right  flex justify-between'>
+                    <span className='font-bold text-orange-700'>
+                      {/* {connector.suppliers && connector.suppliers} */}
+                    </span>
+                    <span className='text-amber-100'>
+                      {new Date(connector.day).toLocaleDateString()}
+                    </span>
+                  </p>
+                  <p className='font-bold  flex justify-around text-2xl py-1'>
+                    <span className='text-amber-100'>
+                      {connector.total &&
+                        Math.round(connector.total * 100) / 100}{' '}
+                      USD
+                    </span>
+                  </p>
+                  <p className='font-bold text-sm flex justify-between'>
+                    <span className='text-orange-400 font-bold'>
+                      {connector.suppliers && connector.suppliers}
+                      {/* {connector.producttypes} */}
+                    </span>
+                    <span className='text-orange-400 font-bold'>
+                      {/* {connector.products && connector.products} */}
+                      {connector.producttypes}
+                    </span>
+                  </p>
+                </button>
               </div>
-              <p className="font-bold text-base text-teal-700 ">
-                {t("Mahsulotlar turlari:")} <span>{totalproducttypes}</span>
-              </p>
-              <p className="font-bold text-base text-teal-700 ">
-                {t("Mahsulotlar:")} <span>{totalproducts}</span>
-              </p>
-              <p className="font-bold text-base text-teal-700 ">
-                {t("Summasi:")} <span>{totalprice}$</span>
-              </p>
-            </div>
-          </div>
-          <div className="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 xsm:grid-col-2 py-2 gap-3 ">
-            {dailyConnectors.map((connector, index) => {
-              return (
-                <div key={index}>
-                  <button
-                    onClick={() => getImports(connector.day)}
-                    className="bg-[#216BA5] font-bold rounded text-white text-left py-2 px-3 inline-block w-100"
-                  >
-                    <p className="font-bold  text-right  flex justify-between">
-                      <span className="font-bold text-orange-700">
-                        {connector.suppliers && connector.suppliers}
-                      </span>
-                      <span className="text-amber-100">
-                        {new Date(connector.day).toLocaleDateString()}
-                      </span>
-                    </p>
-                    <p className="font-bold  flex justify-around text-2xl py-1">
-                      <span className="text-amber-100">
-                        {connector.total && connector.total} $
-                      </span>
-                    </p>
-                    <p className="font-bold text-sm flex justify-between">
-                      <span className="text-orange-400 font-bold">
-                        {connector.producttypes}
-                      </span>
-                      <span className="text-orange-400 font-bold">
-                        {connector.products && connector.products}
-                      </span>
-                    </p>
-                  </button>
-                </div>
-              );
-            })}
-          </div>
+            );
+          })}
         </div>
       </div>
     </div>

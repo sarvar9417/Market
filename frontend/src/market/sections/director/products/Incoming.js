@@ -9,10 +9,9 @@ import { useToast } from '@chakra-ui/react';
 import { RegisterIncoming } from './Incoming/RegisterIncoming';
 import { useHttp } from './../../../hooks/http.hook';
 import { AuthContext } from '../../../context/AuthContext';
-import { TableIncoming } from './Incoming/components/TableIncoming';
+import { TableIncoming } from './Incoming/TableIncoming';
 import { ReportIncomings } from './Incoming/ReportIncomings';
 import { Modal } from './modal/Modal';
-import { t } from 'i18next';
 import { RouterBtns } from './Incoming/RouterBtns';
 import { ModalTable } from './Incoming/ModalTable';
 
@@ -21,16 +20,20 @@ export const Incoming = () => {
     new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString()
   );
   const [endDay, setEndDay] = useState(
-    new Date(new Date().setDate(new Date().getDate() + 1)).toISOString()
+    new Date(new Date().setDate(new Date().getDate())).toISOString()
   );
+
+  const [startDate, setStartDate] = useState(
+    new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString()
+  );
+  const [endDate, setEndDate] = useState(new Date().toISOString());
+
   //====================================================================
   //====================================================================
 
   const [currentPage, setCurrentPage] = useState(0);
   const [countPage, setCountPage] = useState(10);
-
-  // const indexLastImport = (currentPage + 1) * countPage;
-  // const indexFirstImport = indexLastImport - countPage;
+  const [countData, setCountData] = useState(0);
   const [currentImports, setCurrentImports] = useState([]);
 
   //====================================================================
@@ -42,8 +45,36 @@ export const Incoming = () => {
   //====================================================================
   //====================================================================
 
+  //====================================================================
+  //====================================================================
+  // Visible
+  const [visible, setVisible] = useState(false);
   const [visibleTable, setVisibleTable] = useState(false);
   const [visibleReport, setVisibleReport] = useState(true);
+
+  const changeVisibleTable = () => {
+    if (!visibleTable) {
+      setVisible(false);
+      setVisibleReport(false);
+    }
+    setVisibleTable(!visibleTable);
+  };
+
+  const changeVisible = () => {
+    if (!visible) {
+      setVisibleTable(false);
+      setVisibleReport(false);
+    }
+    setVisible(!visible);
+  };
+
+  const changeVisibleReport = () => {
+    if (!visible) {
+      setVisibleTable(false);
+      setVisible(false);
+    }
+    setVisibleReport(!visibleReport);
+  };
 
   //====================================================================
   //====================================================================
@@ -328,6 +359,20 @@ export const Incoming = () => {
   };
 
   const addIncoming = () => {
+    if (incoming.pieces === 0 || incoming.pieces === '') {
+      return notify({
+        title: 'Diqqat! Mahsulot soni kiritilmagan.',
+        description: 'Iltimos Qabul qilinayotgan mahsulot sonini kiriting.',
+        status: 'warning',
+      });
+    }
+    if (incoming.unitprice === 0 || incoming.unitprice === '') {
+      return notify({
+        title: 'Diqqat! Mahsulot narxi kiritilmagan.',
+        description: 'Iltimos Qabul qilinayotgan mahsulot narxini kiriting.',
+        status: 'warning',
+      });
+    }
     let i = [...incomings];
     i.unshift({ ...incoming });
     setIncomings(i);
@@ -374,10 +419,17 @@ export const Incoming = () => {
   const [dailyConnectors, setDailyConnectors] = useState([]);
 
   const daily = useCallback((connectors) => {
+    if (connectors.length === 0) {
+      setTotalPrice(0);
+      setTotalProducts(0);
+      // setSupplier(supplier);
+      setTotalProductTypes(0);
+      setDailyConnectors([]);
+      return;
+    }
     let price = 0;
     let producttype = 0;
     let product = 0;
-    let supplier = 0;
     let connectorss = [];
     let connector = {};
     for (const key in connectors) {
@@ -433,7 +485,6 @@ export const Incoming = () => {
   }, []);
 
   const [connectors, setConnectors] = useState([]);
-  const [supplierConnector, setSupplierConnector] = useState('all');
 
   const getIncomingConnectors = useCallback(
     async (beginDay, endDay) => {
@@ -462,11 +513,9 @@ export const Incoming = () => {
   const sortSuppliers = (e) => {
     if (e.value === 'all') {
       daily(connectors);
-      setSupplierConnector('all');
     } else {
       const filter = connectors.filter((item) => item.supplier._id === e.value);
       daily(filter);
-      setSupplierConnector(`${e.value}`);
     }
   };
   //====================================================================
@@ -474,65 +523,42 @@ export const Incoming = () => {
   // IMPORTS
   const [imports, setImports] = useState([]);
   const [searchStorage, setSearchStorage] = useState([]);
-  const [dataExcel, setDataExcel] = useState([]);
 
-  const getImports = useCallback(
-    async (beginDay) => {
-      try {
-        const data = await request(
-          `/api/products/incoming/get`,
-          'POST',
-          {
-            market: auth.market._id,
-            beginDay: new Date(new Date(beginDay).setHours(0, 0, 0, 0)),
-            endDay: new Date(
-              new Date(
-                new Date().setDate(new Date(endDay).getDate() + 1)
-              ).setHours(0, 0, 0, 0)
-            ),
-            currentPage,
-            countPage,
-          },
-          {
-            Authorization: `Bearer ${auth.token}`,
-          }
-        );
-        let data2 = data.filter((item) => {
-          if (supplierConnector === 'all') {
-            return item;
-          } else {
-            return item.supplier._id === supplierConnector;
-          }
-        });
-        setImports(data2);
-        setSearchStorage(data2);
-        setCurrentImports(data2);
-        setDataExcel(data2);
-        setVisibleReport(false);
-        setVisibleTable(true);
-      } catch (error) {
-        notify({
-          title: error,
-          description: '',
-          status: 'error',
-        });
-      }
-    },
-    [
-      request,
-      auth,
-      notify,
-      endDay,
-      setVisibleTable,
-      supplierConnector,
-      currentPage,
-      countPage,
-    ]
-  );
+  const getImports = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/products/incoming/get`,
+        'POST',
+        {
+          market: auth.market._id,
+          beginDay: startDate,
+          endDay: new Date(
+            new Date(
+              new Date().setDate(new Date(endDate).getDate() + 1)
+            ).toISOString()
+          ),
+          currentPage,
+          countPage,
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setCountData(data.count);
+      setSearchStorage(data.incomings);
+      setCurrentImports(data.incomings);
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [request, auth, notify, currentPage, countPage, startDate, endDate]);
 
   useEffect(() => {
-    getImports(beginDay, endDay);
-  }, [currentPage, countPage, getImports, beginDay, endDay]);
+    getImports();
+  }, [currentPage, countPage, getImports, startDate, endDate]);
 
   //====================================================================
   //====================================================================
@@ -558,11 +584,6 @@ export const Incoming = () => {
       });
     }
   }, [auth, request, notify]);
-
-  //====================================================================
-  //====================================================================
-  // Visible
-  const [visible, setVisible] = useState(false);
 
   //====================================================================
   //====================================================================
@@ -736,7 +757,7 @@ export const Incoming = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      localStorage.setItem('data', data);
+      getIncomingConnectors(beginDay, endDay);
       changeConnectors(data);
       clearSelect();
       setIncomings([]);
@@ -753,6 +774,7 @@ export const Incoming = () => {
         unit: '',
       });
       setVisible(false);
+      setVisibleReport(true);
       notify({
         title: `Mahsulotlar qabul qilindi!`,
         description: '',
@@ -777,6 +799,7 @@ export const Incoming = () => {
     notify,
     clearSelect,
     changeConnectors,
+    getIncomingConnectors,
   ]);
 
   //====================================================================
@@ -784,27 +807,14 @@ export const Incoming = () => {
 
   //====================================================================
   //====================================================================
-  // ChangeDate
-
-  const changeStart = (e) => {
-    setBeginDay(new Date(new Date(e).setUTCHours(0, 0, 0, 0)));
-    getImports(new Date(new Date(e).setUTCHours(0, 0, 0, 0)), endDay);
+  // Search
+  const changeDate = (e) => {
+    e.target.name === 'startDate'
+      ? setStartDate(new Date(e.target.value).toISOString())
+      : setEndDate(new Date(e.target.value).toISOString());
   };
-
-  const changeEnd = (e) => {
-    const date = new Date(
-      new Date(new Date().setDate(new Date(e).getDate() + 1)).setUTCHours(
-        0,
-        0,
-        0,
-        0
-      )
-    );
-
-    setEndDay(date);
-    getImports(beginDay, date);
-  };
-
+  //====================================================================
+  //====================================================================
   //====================================================================
   //====================================================================
 
@@ -845,8 +855,12 @@ export const Incoming = () => {
 
   return (
     <div className='m-3'>
-      <RouterBtns changeVisible={setVisible} visible={visible} />
-      <div className={` ${visible ? '' : 'd-none'}`}>
+      <RouterBtns
+        changeVisible={changeVisible}
+        changeVisibleTable={changeVisibleTable}
+        changeVisibleReport={changeVisibleReport}
+      />
+      <div className={visible ? '' : 'd-none'}>
         <RegisterIncoming
           createHandler={createHandler}
           removeIncoming={removeIncoming}
@@ -871,58 +885,40 @@ export const Incoming = () => {
           selectRef={selectRef}
         />
       </div>
-      <div>
-        <div className='content-wrapper px-lg-5 px-3'>
-          <div className='row gutters'>
-            <div className='col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12'></div>
-            <div className='w-full mt-2'>
-              <button
-                className='w-full btn btn-primary py-1 rounded-t text-center text-white font-bold text-base'
-                onClick={() => setVisibleReport(!visibleReport)}>
-                {t('Qabul qilingan mahsulotlar')}
-              </button>
-              <div className={`${visibleReport ? 'd-block' : 'd-none'}`}>
-                <ReportIncomings
-                  getImports={getImports}
-                  getIncomingConnectors={getIncomingConnectors}
-                  totalproducts={totalproducts}
-                  totalprice={totalprice}
-                  totalproducttypes={totalproducttypes}
-                  dailyConnectors={dailyConnectors}
-                  suppliers={suppliers}
-                  sortSuppliers={sortSuppliers}
-                />
-              </div>
-            </div>
-            <div className='w-full mt-2'>
-              <div className='bg-primary py-1 rounded-t text-center text-white font-bold text-base'>
-                {t('Jadval')}
-              </div>
-              <div className={`${visibleTable ? 'd-block' : 'd-none'}`}>
-                <TableIncoming
-                  currentImports={currentImports}
-                  imports={imports}
-                  setCurrentImports={setCurrentImports}
-                  setImports={setImports}
-                  searchCategoryTable={searchCategoryTable}
-                  searchSupplier={searchSupplier}
-                  searchProduct={searchProduct}
-                  searchBrand={searchBrand}
-                  countPage={countPage}
-                  setCountPage={setCountPage}
-                  currentPage={currentPage}
-                  setPageSize={setPageSize}
-                  loading={loading}
-                  dataExcel={dataExcel}
-                  changeStart={changeStart}
-                  changeEnd={changeEnd}
-                  setCurrentPage={setCurrentPage}
-                  connectorCount={connectorCount}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className={visibleReport ? '' : 'hidden'}>
+        <ReportIncomings
+          getImports={getImports}
+          getIncomingConnectors={getIncomingConnectors}
+          totalproducts={totalproducts}
+          totalprice={totalprice}
+          totalproducttypes={totalproducttypes}
+          dailyConnectors={dailyConnectors}
+          suppliers={suppliers}
+          sortSuppliers={sortSuppliers}
+        />
+      </div>
+      <div className={visibleTable ? '' : 'hidden'}>
+        <TableIncoming
+          countData={countData}
+          changeDate={changeDate}
+          startDate={startDate}
+          endDate={endDate}
+          currentImports={currentImports}
+          imports={imports}
+          setCurrentImports={setCurrentImports}
+          setImports={setImports}
+          searchCategoryTable={searchCategoryTable}
+          searchSupplier={searchSupplier}
+          searchProduct={searchProduct}
+          searchBrand={searchBrand}
+          countPage={countPage}
+          setCountPage={setCountPage}
+          currentPage={currentPage}
+          setPageSize={setPageSize}
+          loading={loading}
+          setCurrentPage={setCurrentPage}
+          connectorCount={connectorCount}
+        />
       </div>
 
       <Modal
