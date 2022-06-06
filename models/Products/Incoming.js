@@ -1,5 +1,5 @@
-const { Schema, model, Types } = require('mongoose')
-const Joi = require('joi')
+const { Schema, model, Types } = require('mongoose');
+const Joi = require('joi');
 
 const incoming = new Schema(
   {
@@ -23,8 +23,8 @@ const incoming = new Schema(
   },
   {
     timestamps: true,
-  },
-)
+  }
+);
 
 function validateIncoming(incoming) {
   const schema = Joi.object({
@@ -39,8 +39,8 @@ function validateIncoming(incoming) {
     user: Joi.string().required(),
     file: Joi.string(),
     market: Joi.string().required(),
-  })
-  return schema.validate(incoming)
+  });
+  return schema.validate(incoming);
 }
 
 function validateIncomingAll(incoming) {
@@ -50,17 +50,17 @@ function validateIncomingAll(incoming) {
     pieces: Joi.number().required(),
     product: Joi.object().required(),
     category: Joi.object().required(),
-    producttype: Joi.object().required(),
-    brand: Joi.object(),
+    producttype: Joi.object(),
+    brand: Joi.any(),
     unit: Joi.object().required(),
     supplier: Joi.object().required(),
     user: Joi.string().required(),
     pieces: Joi.number().required(),
     file: Joi.string(),
-  })
-  return schema.validate(incoming)
+  });
+  return schema.validate(incoming);
 }
 
-module.exports.validateIncoming = validateIncoming
-module.exports.validateIncomingAll = validateIncomingAll
-module.exports.Incoming = model('Incoming', incoming)
+module.exports.validateIncoming = validateIncoming;
+module.exports.validateIncomingAll = validateIncomingAll;
+module.exports.Incoming = model('Incoming', incoming);
