@@ -294,15 +294,18 @@ module.exports.getProductType = async (req, res) => {
     const producttypes = await ProductType.find({ name: name, market })
       .sort({ _id: -1 })
       .select('name category market')
-      .populate({ path: 'category', match: { code: categorycode } })
-      .skip(currentPage * countPage)
-      .limit(countPage);
+      .populate({ path: 'category', match: { code: categorycode } });
+    // .skip(currentPage * countPage)
+    // .limit(countPage);
 
     const filter = producttypes.filter((producttype) => {
       return producttype.category !== null;
     });
-   
-    res.status(201).json({ count: count, producttypes: filter });
+
+    res.status(201).json({
+      count: filter.length,
+      producttypes: filter.splice(currentPage * countPage, countPage),
+    });
   } catch (error) {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }

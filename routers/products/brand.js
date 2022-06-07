@@ -1,8 +1,8 @@
-const { Brand, validateBrand } = require("../../models/Products/Brand");
-const { Market } = require("../../models/MarketAndBranch/Market");
-const { Category } = require("../../models/Products/Category");
-const { Product } = require("../../models/Products/Product");
-const ObjectId = require("mongodb").ObjectId;
+const { Brand, validateBrand } = require('../../models/Products/Brand');
+const { Market } = require('../../models/MarketAndBranch/Market');
+const { Category } = require('../../models/Products/Category');
+const { Product } = require('../../models/Products/Product');
+const ObjectId = require('mongodb').ObjectId;
 //Brand register
 
 module.exports.register = async (req, res) => {
@@ -43,7 +43,7 @@ module.exports.register = async (req, res) => {
 
     res.send(newBrand);
   } catch (error) {
-    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
 
@@ -84,7 +84,7 @@ module.exports.update = async (req, res) => {
 
     res.send(brand);
   } catch (error) {
-    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
 
@@ -113,7 +113,7 @@ module.exports.delete = async (req, res) => {
 
     res.send(brand);
   } catch (error) {
-    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
 
@@ -133,17 +133,17 @@ module.exports.getAll = async (req, res) => {
     const brand = await Brand.find({
       market,
     })
-      .select("name market")
+      .select('name market')
       .sort({ _id: -1 });
     res.status(201).json(brand);
   } catch (error) {
-    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
 
 module.exports.getBrands = async (req, res) => {
   try {
-    const { market, currentPage, countPage, searching } = req.body;
+    const { market, currentPage, countPage, search } = req.body;
 
     const marke = await Market.findById(market);
 
@@ -152,40 +152,46 @@ module.exports.getBrands = async (req, res) => {
         message: "Diqqat! Do'kon ma'lumotlari topilmadi.",
       });
     }
+    const name = new RegExp('.*' + (search ? search.name : '') + '.*', 'i');
 
-    if (searching) {
-      let response;
-      let responseCount;
-      if (searching.type === "name") {
-        const name = new RegExp(".*" + searching.search + ".*", "i");
-        const namesCount = await Brand.find({
-          market,
-          name: name,
-        }).count();
-        const names = await Brand.find({ market, name: name })
-          .sort({ _id: -1 })
-          .skip(currentPage * countPage)
-          .limit(countPage)
-          .select("name market");
+    const brandCount = await Brand.find({ market, name }).count();
 
-        response = names;
-        responseCount = namesCount;
-      }
-      return res.status(201).json({ brands: response, count: responseCount });
-    } else {
-      const brandCount = await Brand.find({ market }).count();
+    const brands = await Brand.find({
+      market,
+      name,
+    })
+      .sort({ _id: -1 })
+      .select('name market')
+      .skip(currentPage * countPage)
+      .limit(countPage);
 
-      const brands = await Brand.find({
-        market,
-      })
-        .sort({ _id: -1 })
-        .select("name market")
-        .skip(currentPage * countPage)
-        .limit(countPage);
-
-      res.status(201).json({ brands: brands, count: brandCount });
-    }
+    res.status(201).json({ brands: brands, count: brandCount });
   } catch (error) {
-    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
+  }
+};
+
+module.exports.getBrandsExcel = async (req, res) => {
+  try {
+    const { market, search } = req.body;
+
+    const marke = await Market.findById(market);
+
+    if (!marke) {
+      return res.status(400).json({
+        message: "Diqqat! Do'kon ma'lumotlari topilmadi.",
+      });
+    }
+    const name = new RegExp('.*' + (search ? search.name : '') + '.*', 'i');
+
+    const brands = await Brand.find({
+      market,
+      name,
+    })
+      .sort({ _id: -1 })
+      .select('name market');
+    res.status(201).json(brands);
+  } catch (error) {
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };

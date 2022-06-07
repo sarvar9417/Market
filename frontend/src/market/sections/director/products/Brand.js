@@ -1,16 +1,17 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { Loader } from "../../../loader/Loader";
-import { useToast } from "@chakra-ui/react";
-import { useHttp } from "../../../hooks/http.hook";
-import { AuthContext } from "../../../context/AuthContext";
-import { checkBrand } from "./checkData";
-import { Modal } from "./modal/Modal";
-import { t } from "i18next";
-import { CreateHeader } from "./Brand/CreateHeader";
-import { CreateBody } from "./Brand/CreateBody";
-import { TableHeader } from "./Brand/TableHeader";
-import { TableHead } from "./Brand/TableHead";
-import { Rows } from "./Brand/Rows";
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { Loader } from '../../../loader/Loader';
+import { useToast } from '@chakra-ui/react';
+import { useHttp } from '../../../hooks/http.hook';
+import { AuthContext } from '../../../context/AuthContext';
+import { checkBrand } from './checkData';
+import { Modal } from './modal/Modal';
+import { t } from 'i18next';
+import { CreateHeader } from './Brand/CreateHeader';
+import { CreateBody } from './Brand/CreateBody';
+import { TableHeader } from './Brand/TableHeader';
+import { TableHead } from './Brand/TableHead';
+import { Rows } from './Brand/Rows';
+import { ExcelTable } from './Brand/ExcelTable';
 
 export const Brand = () => {
   //====================================================================
@@ -32,7 +33,7 @@ export const Brand = () => {
         status: data.status && data.status,
         duration: 5000,
         isClosable: true,
-        position: "top-right",
+        position: 'top-right',
       });
     },
     [toast]
@@ -72,11 +73,11 @@ export const Brand = () => {
 
   //====================================================================
   //====================================================================
-  const [brands, setBrands] = useState([]);
   const [currentBrands, setCurrentBrands] = useState([]);
   const [searchStorage, setSearchStorage] = useState([]);
   const [tableExcel, setTableExcel] = useState([]);
-  const [searchingEl, setSearchingEl] = useState({});
+  const [search, setSearch] = useState({ name: '' });
+  const [sendingsearch, setSendingSearch] = useState({ name: '' });
   //====================================================================
   //====================================================================
 
@@ -85,9 +86,14 @@ export const Brand = () => {
   const getBrands = useCallback(async () => {
     try {
       const data = await request(
-        "/api/products/brand/getbrands",
-        "POST",
-        { market: auth.market._id, currentPage, countPage, searching: null },
+        '/api/products/brand/getbrands',
+        'POST',
+        {
+          market: auth.market._id,
+          currentPage,
+          countPage,
+          search: sendingsearch,
+        },
         {
           Authorization: `Bearer ${auth.token}`,
         }
@@ -99,34 +105,32 @@ export const Brand = () => {
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
-  }, [auth, request, notify, currentPage, countPage]);
+  }, [auth, request, notify, currentPage, countPage, sendingsearch]);
 
-  const getSearchedBrands = async () => {
+  const getBrandsExcel = async () => {
     try {
       const data = await request(
-        "/api/products/brand/getbrands",
-        "POST",
+        '/api/products/brand/getbrandsexcel',
+        'POST',
         {
           market: auth.market._id,
-          currentPage: 0,
-          countPage,
-          searching: searchingEl,
+          search: sendingsearch,
         },
         {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      setBrandsCount(data.count);
-      setCurrentBrands(data.brands);
+      setTableExcel(data);
+      document.getElementById('reacthtmltoexcel').click();
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   };
@@ -138,16 +142,16 @@ export const Brand = () => {
     try {
       const data = await request(
         `/api/products/brand/register`,
-        "POST",
+        'POST',
         { ...brand },
         {
           Authorization: `Bearer ${auth.token}`,
         }
       );
       notify({
-        title: `${data.name} ${t("brеnd yaratildi!")}`,
-        description: "",
-        status: "success",
+        title: `${data.name} ${t('brеnd yaratildi!')}`,
+        description: '',
+        status: 'success',
       });
       getBrands();
       setBrand({
@@ -157,8 +161,8 @@ export const Brand = () => {
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [request, auth, notify, brand, clearInputs, getBrands]);
@@ -167,16 +171,16 @@ export const Brand = () => {
     try {
       const data = await request(
         `/api/products/brand/update`,
-        "PUT",
+        'PUT',
         { ...brand, market: auth.market._id },
         {
           Authorization: `Bearer ${auth.token}`,
         }
       );
       notify({
-        title: `${data.name} ${t("brend yangilandi!")}`,
-        description: "",
-        status: "success",
+        title: `${data.name} ${t('brend yangilandi!')}`,
+        description: '',
+        status: 'success',
       });
       getBrands();
       setBrand({
@@ -186,8 +190,8 @@ export const Brand = () => {
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [request, auth, notify, brand, clearInputs, getBrands]);
@@ -204,17 +208,15 @@ export const Brand = () => {
   };
 
   const keyPressed = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       return saveHandler();
     }
   };
 
   const searchKeypress = (e) => {
-    if (e.key === "Enter") {
-      if (searchingEl) {
-        return getSearchedBrands();
-      }
-      return getBrands();
+    if (e.key === 'Enter') {
+      setCurrentPage(0);
+      setSendingSearch(search);
     }
   };
 
@@ -222,7 +224,7 @@ export const Brand = () => {
     try {
       const data = await request(
         `/api/products/brand/delete`,
-        "DELETE",
+        'DELETE',
         { ...remove, market: auth.market._id },
         {
           Authorization: `Bearer ${auth.token}`,
@@ -230,8 +232,8 @@ export const Brand = () => {
       );
       notify({
         title: `${data.name} ${t("nomli brend o'chirildi!")}`,
-        description: "",
-        status: "success",
+        description: '',
+        status: 'success',
       });
       getBrands();
       setModal(false);
@@ -242,8 +244,8 @@ export const Brand = () => {
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [auth, request, remove, notify, clearInputs, getBrands]);
@@ -260,24 +262,16 @@ export const Brand = () => {
   const setPageSize = (e) => {
     setCurrentPage(0);
     setCountPage(e.target.value);
-    setCurrentBrands(brands.slice(0, e.target.value));
   };
 
   const searchBrand = (e) => {
-    if (e.target.name === "name") {
-      setSearchingEl({
-        type: "name",
-        search: e.target.value,
-      });
-      const searching = searchStorage.filter((item) =>
-        item.name.toLowerCase().includes(e.target.value.toLowerCase())
-      );
-      setCurrentBrands(searching);
-      setBrands(searching);
-    }
-    if (e.target.value === "") {
-      setSearchingEl(null);
-    }
+    setSearch({
+      name: e.target.value,
+    });
+    const searching = searchStorage.filter((item) =>
+      item.name.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    setCurrentBrands(searching);
   };
 
   //====================================================================
@@ -288,15 +282,15 @@ export const Brand = () => {
 
   useEffect(() => {
     getBrands();
-  }, [getBrands, currentPage, countPage]);
+  }, [getBrands, currentPage, countPage, sendingsearch]);
 
   //====================================================================
   //====================================================================
 
   return (
     <>
-      {loading ? <Loader /> : ""}
-      <div className="m-3 min-w-[700px]">
+      {loading ? <Loader /> : ''}
+      <div className='m-3 min-w-[700px]'>
         <CreateHeader />
         <CreateBody
           brand={brand}
@@ -308,6 +302,8 @@ export const Brand = () => {
         />
         <br />
         <TableHeader
+          getBrandsExcel={getBrandsExcel}
+          currentPage={currentPage}
           setPageSize={setPageSize}
           searchBrand={searchBrand}
           setCurrentPage={setCurrentPage}
@@ -337,25 +333,7 @@ export const Brand = () => {
           })}
       </div>
 
-      <div className="d-none">
-        <table className="table m-0" id="brand-excel-table">
-          <thead>
-            <tr>
-              <th>№</th>
-              <th>{t("Brend")}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tableExcel &&
-              tableExcel.map((item, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{item.name}</td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-      </div>
+      <ExcelTable datas={tableExcel} />
 
       <Modal
         modal={modal}

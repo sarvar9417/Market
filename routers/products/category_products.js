@@ -197,4 +197,8 @@ router.post('/brand/getbrands', auth, (req, res) => {
   require('./brand').getBrands(req, res);
 });
 
+router.post('/brand/getbrandsexcel', auth, (req, res) => {
+  require('./brand').getBrandsExcel(req, res);
+});
+
 module.exports = router;
