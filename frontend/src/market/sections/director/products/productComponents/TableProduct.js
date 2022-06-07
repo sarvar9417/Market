@@ -1,16 +1,8 @@
-import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faAngleUp,
-  faAngleDown,
-  faPenAlt,
-  faTrashCan,
-} from "@fortawesome/free-solid-svg-icons";
-import { Pagination } from "../productComponents/Pagination";
-import ReactHTMLTableToExcel from "react-html-table-to-excel";
-import { ExcelTable } from "./ExcelTable";
-import { ExcelUpload } from "./ExcelUpload";
-import { t } from "i18next";
+import React from 'react';
+import { ExcelTable } from './excelTable/ExcelTable';
+import { TableRow } from './tableProduct/TableRow';
+import { TableHeader } from './tableProduct/TableHeader';
+import { TableHead } from './tableProduct/TableHead';
 
 export const TableProduct = ({
   changeHandler,
@@ -57,7 +49,7 @@ export const TableProduct = ({
       category: p.category._id,
       unit: p.unit._id,
       producttype: p.producttype._id,
-      brand: p.brand ? p.brand._id : "",
+      brand: p.brand ? p.brand._id : '',
       total: p.total || 0,
       priceid: (p.price && p.price._id) || 0,
       incomingprice: p.price.incomingprice || 0,
@@ -66,334 +58,41 @@ export const TableProduct = ({
   };
 
   return (
-    <div className="table-container">
-      <div className="table-container">
-        <div className="table-responsive">
-          <table className="table m-0">
-            <thead className="bg-white">
-              <tr>
-                <th className="">
-                  <select
-                    className="form-control form-control-sm selectpicker"
-                    placeholder={t("Bo'limni tanlang")}
-                    onChange={setPageSize}
-                  >
-                    <option value={10}>10</option>
-                    <option value={25}>25</option>
-                    <option value={50}>50</option>
-                    <option value={100}>100</option>
-                  </select>
-                </th>
-                <th>
-                  <input
-                    onChange={changeHandler}
-                    type="search"
-                    className="form-control form-control-sm selectpicker"
-                    placeholder={t("Kategoriya")}
-                    name="category"
-                    onKeyUp={keyPress}
-                  />
-                </th>
-                <th>
-                  <input
-                    onChange={changeHandler}
-                    type="search"
-                    className="w-100 form-control form-control-sm selectpicker"
-                    placeholder={t("Mahsulot turi")}
-                    name="producttype"
-                    onKeyUp={keyPress}
-                  />
-                </th>
-                <th>
-                  <input
-                    onChange={changeHandler}
-                    type="search"
-                    className="w-100 form-control form-control-sm selectpicker"
-                    placeholder={t("Brend")}
-                    name="brand"
-                    onKeyUp={keyPress}
-                  />
-                </th>
-                <th className="text-center" colSpan={2}>
-                  <Pagination
-                    setCurrentPage={setCurrentPage}
-                    countPage={countPage}
-                    totalDatas={productsCount}
-                  />
-                </th>
-                <th className="text-center">
-                  <div className="btn btn-primary">
-                    <ReactHTMLTableToExcel
-                      id="reacthtmltoexcel"
-                      table="products-table"
-                      sheet="Sheet"
-                      buttonText="Excel"
-                      filename={t("Mahsulotlar")}
-                    />
-                  </div>
-                </th>
-                <th className="text-center">
-                  <ExcelUpload
-                    setData={setImports}
-                    setModal={setModal2}
-                    loading={loading}
-                  />
-                </th>
-              </tr>
-            </thead>
-            <thead>
-              <tr>
-                <th className="border text-center">№</th>
-                <th className="border text-center">
-                  {t("Kategoriya")}
-                  <div className="btn-group-vertical ml-2">
-                    <FontAwesomeIcon
-                      onClick={() =>
-                        setCurrentProducts(
-                          [...currentProducts].sort((a, b) =>
-                            a.category.code > b.category.code ? 1 : -1
-                          )
-                        )
-                      }
-                      icon={faAngleUp}
-                      style={{ cursor: "pointer" }}
-                    />
-                    <FontAwesomeIcon
-                      icon={faAngleDown}
-                      style={{ cursor: "pointer" }}
-                      onClick={() =>
-                        setCurrentProducts(
-                          [...currentProducts].sort((a, b) =>
-                            b.category.code > a.category.code ? 1 : -1
-                          )
-                        )
-                      }
-                    />
-                  </div>
-                </th>
-                <th className="border text-center">
-                  {t("Mahsulot turi va mahsulot")}
-                  <div className="btn-group-vertical ml-2">
-                    <FontAwesomeIcon
-                      onClick={() =>
-                        setCurrentProducts(
-                          [...currentProducts].sort((a, b) =>
-                            a.producttype.name > b.producttype.name ? 1 : -1
-                          )
-                        )
-                      }
-                      icon={faAngleUp}
-                      style={{ cursor: "pointer" }}
-                    />
-                    <FontAwesomeIcon
-                      icon={faAngleDown}
-                      style={{ cursor: "pointer" }}
-                      onClick={() =>
-                        setCurrentProducts(
-                          [...currentProducts].sort((a, b) =>
-                            b.producttype.name > a.producttype.name ? 1 : -1
-                          )
-                        )
-                      }
-                    />
-                  </div>
-                </th>
-                <th className="border text-center">
-                  {t("Brend")}
-                  <div className="btn-group-vertical ml-2">
-                    <FontAwesomeIcon
-                      onClick={() =>
-                        setCurrentProducts(
-                          [...currentProducts].sort((a, b) =>
-                            a.brand.name > b.brand.name ? 1 : -1
-                          )
-                        )
-                      }
-                      icon={faAngleUp}
-                      style={{ cursor: "pointer" }}
-                    />
-                    <FontAwesomeIcon
-                      icon={faAngleDown}
-                      style={{ cursor: "pointer" }}
-                      onClick={() =>
-                        setCurrentProducts(
-                          [...currentProducts].sort((a, b) =>
-                            b.brand.name > a.brand.name ? 1 : -1
-                          )
-                        )
-                      }
-                    />
-                  </div>
-                </th>
-                <th className="border text-center">
-                  {t("Soni - O'.B.")}
-                  <div className="btn-group-vertical ml-2">
-                    <FontAwesomeIcon
-                      onClick={() =>
-                        setCurrentProducts(
-                          [...currentProducts].sort((a, b) =>
-                            a.unit.name > b.unit.name ? 1 : -1
-                          )
-                        )
-                      }
-                      icon={faAngleUp}
-                      style={{ cursor: "pointer" }}
-                    />
-                    <FontAwesomeIcon
-                      icon={faAngleDown}
-                      style={{ cursor: "pointer" }}
-                      onClick={() =>
-                        setCurrentProducts(
-                          [...currentProducts].sort((a, b) =>
-                            b.uni.name > a.unit.name ? 1 : -1
-                          )
-                        )
-                      }
-                    />
-                  </div>
-                </th>
-                <th className="border text-center">
-                  Olish
-                  <div className="btn-group-vertical ml-2">
-                    <FontAwesomeIcon
-                      onClick={() =>
-                        setCurrentProducts(
-                          [...currentProducts].sort((a, b) =>
-                            a.unit.name > b.unit.name ? 1 : -1
-                          )
-                        )
-                      }
-                      icon={faAngleUp}
-                      style={{ cursor: "pointer" }}
-                    />
-                    <FontAwesomeIcon
-                      icon={faAngleDown}
-                      style={{ cursor: "pointer" }}
-                      onClick={() =>
-                        setCurrentProducts(
-                          [...currentProducts].sort((a, b) =>
-                            b.uni.name > a.unit.name ? 1 : -1
-                          )
-                        )
-                      }
-                    />
-                  </div>
-                </th>
-                <th className="border text-center">
-                  Sotish
-                  <div className="btn-group-vertical ml-2">
-                    <FontAwesomeIcon
-                      onClick={() =>
-                        setCurrentProducts(
-                          [...currentProducts].sort((a, b) =>
-                            a.unit.name > b.unit.name ? 1 : -1
-                          )
-                        )
-                      }
-                      icon={faAngleUp}
-                      style={{ cursor: "pointer" }}
-                    />
-                    <FontAwesomeIcon
-                      icon={faAngleDown}
-                      style={{ cursor: "pointer" }}
-                      onClick={() =>
-                        setCurrentProducts(
-                          [...currentProducts].sort((a, b) =>
-                            b.uni.name > a.unit.name ? 1 : -1
-                          )
-                        )
-                      }
-                    />
-                  </div>
-                </th>
-                <th className="border text-center">{t("Tahrirlash")}</th>
-                <th className="border text-center">{t("O'chirish")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentProducts &&
-                currentProducts.map((p, key) => {
-                  return (
-                    <tr key={key}>
-                      <td className="border font-bold text-center text-black">
-                        {currentPage * countPage + key + 1}
-                      </td>
-                      <td className="border text-center font-bold text-black">
-                        {p.category.code} {p.code}
-                      </td>
-                      <td className="border text-black px-5 font-bold ">
-                        <span className="uppercase ">
-                          {p.producttype && p.producttype.name}
-                        </span>{" "}
-                        - {p.name}
-                      </td>
-                      <td className="border text-center font-bold text-black">
-                        {p.brand && p.brand.name}
-                      </td>
-                      <td className="border text-center font-bold text-black">
-                        {p.total} {p.unit.name}
-                      </td>
-                      <td className="border text-center font-bold text-black">
-                        {(p.price && p.price.incomingprice) || 0} $
-                      </td>
-                      <td className="border text-center font-bold text-black">
-                        {(p.price && p.price.sellingprice) || 0} $
-                      </td>
-                      <td className="border text-center text-base">
-                        {loading ? (
-                          <button className="btn btn-success py-1 px-2">
-                            <span className="spinner-border spinner-border-sm"></span>
-                            Loading...
-                          </button>
-                        ) : (
-                          <button
-                            id={`btn${key}`}
-                            onClick={(e) => {
-                              edit(e, p);
-                            }}
-                            className="btn btn-success py-1 px-4"
-                          >
-                            <FontAwesomeIcon
-                              className="text-base"
-                              icon={faPenAlt}
-                            />
-                          </button>
-                        )}
-                      </td>
-                      <td className="text-center border">
-                        {loading ? (
-                          <button
-                            className="btn btn-secondary py-1 px-4"
-                            disabled
-                          >
-                            <span className="spinner-border spinner-border-sm"></span>
-                            Loading...
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => {
-                              setRemove(p);
-                              setModal(true);
-                            }}
-                            className="btn btn-secondary py-1 px-4"
-                          >
-                            <FontAwesomeIcon
-                              className="text-base"
-                              icon={faTrashCan}
-                            />
-                          </button>
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })}
-            </tbody>
-          </table>
-          <div className="d-none">
-            <ExcelTable data={tableExcel} id="products-table" />
-          </div>
-        </div>
+    <>
+      <TableHeader
+        setPageSize={setPageSize}
+        changeHandler={changeHandler}
+        keyPress={keyPress}
+        countPage={countPage}
+        setCurrentPage={setCurrentPage}
+        productsCount={productsCount}
+        setImports={setImports}
+        setModal2={setModal2}
+        loading={loading}
+      />
+
+      <TableHead
+        setCurrentProducts={setCurrentProducts}
+        currentProducts={currentProducts}
+      />
+
+      {currentProducts &&
+        currentProducts.map((p, index) => (
+          <TableRow
+            key={index}
+            currentPage={currentPage}
+            p={p}
+            index={index}
+            edit={edit}
+            setRemove={setRemove}
+            setModal={setModal}
+            loading={loading}
+          />
+        ))}
+
+      <div className='d-none'>
+        <ExcelTable data={currentProducts} id='products-table' />
       </div>
-    </div>
+    </>
   );
 };

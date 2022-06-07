@@ -51,12 +51,6 @@ export const ProductType = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [countPage, setCountPage] = useState(10);
   const [producttypeCount, setProductTypeCount] = useState(0);
-  const [searchingEl, setSearchingEl] = useState({
-    type: '',
-    search: '',
-    searchcode: '',
-    searchname: '',
-  });
 
   const [remove, setRemove] = useState({
     market: auth.market && auth.market._id,
@@ -104,10 +98,9 @@ export const ProductType = () => {
 
   //====================================================================
   //====================================================================
-  const [producttypes, setProductTypes] = useState([]);
+
   const [currentProductTypes, setCurrentProductTypes] = useState([]);
   const [searchStorage, setSearchStorage] = useState([]);
-  const [tableExcel, setTableExcel] = useState([]);
 
   const getProductTypes = useCallback(async () => {
     try {
@@ -131,23 +124,18 @@ export const ProductType = () => {
     }
   }, [request, auth, notify, currentPage, countPage, search]);
 
-  const getSearchedProductType = async () => {
+  const getAllProductType = useCallback(async () => {
     try {
       const data = await request(
-        '/api/products/producttype/getproducttypes',
+        '/api/products/producttype/getall',
         'POST',
-        {
-          market: auth.market._id,
-          currentPage,
-          countPage,
-          searching: searchingEl,
-        },
+        { market: auth.market._id, currentPage, countPage },
         {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      setProductTypeCount(data.count);
       setCurrentProductTypes(data.producttypes);
+      setProductTypeCount(data.count);
     } catch (error) {
       notify({
         title: error,
@@ -155,7 +143,7 @@ export const ProductType = () => {
         status: 'error',
       });
     }
-  };
+  }, [notify, auth, currentPage, countPage, request]);
   //====================================================================
   //====================================================================
 
@@ -172,7 +160,7 @@ export const ProductType = () => {
 
   const searchProductType = (e) => {
     if (e.target.name === 'code') {
-      setSearch({ ...search, categorycode: e.target.value });
+      setSearch({ name: '', categorycode: e.target.value });
 
       const searched = searchStorage.filter(
         (item) => item.category && item.category.code.includes(e.target.value)
@@ -180,7 +168,7 @@ export const ProductType = () => {
       setCurrentProductTypes(searched);
     }
     if (e.target.name === 'name') {
-      setSearch({ ...search, name: e.target.value });
+      setSearch({ categorycode: '', name: e.target.value });
 
       const searched = searchStorage.filter(
         (item) =>
@@ -193,17 +181,16 @@ export const ProductType = () => {
 
   const searchKeypress = (e) => {
     if (e.key === 'Enter') {
-      if (searchingEl) {
-        return getSearchedProductType();
-      }
-      return getProductTypes();
+      setCurrentPage(0);
+      setChangedCurrentPage(0);
+      getProductTypes();
     }
   };
 
   const setPageSize = (e) => {
     setCurrentPage(0);
     setCountPage(e.target.value);
-    setCurrentProductTypes(producttypes.slice(0, e.target.value));
+    setCurrentProductTypes(currentProductTypes.slice(0, e.target.value));
   };
 
   //====================================================================
@@ -321,17 +308,22 @@ export const ProductType = () => {
 
   //====================================================================
   //====================================================================
+  const [changedCurrentPage, setChangedCurrentPage] = useState(currentPage);
   useEffect(() => {
-    getProductTypes();
-  }, [currentPage, countPage, getProductTypes]);
+    if (currentPage > changedCurrentPage || currentPage < changedCurrentPage) {
+      getProductTypes();
+      setChangedCurrentPage(currentPage);
+    }
+  }, [currentPage, countPage, getProductTypes, changedCurrentPage]);
 
   const [n, setN] = useState();
   useEffect(() => {
     if (!n) {
       setN(1);
       getCategories();
+      getAllProductType();
     }
-  }, [getCategories, n]);
+  }, [getCategories, n, getAllProductType]);
   //====================================================================
   //====================================================================
 
@@ -391,8 +383,8 @@ export const ProductType = () => {
             </tr>
           </thead>
           <tbody>
-            {tableExcel &&
-              tableExcel.map((item, index) => (
+            {currentProductTypes &&
+              currentProductTypes.map((item, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
                   <td>{item.category.code}</td>
