@@ -1,10 +1,14 @@
-import React from "react";
+import React from 'react';
 // import { SearchInput } from "../../components/Input";
-import { PaginationSize } from "../../components/PaginationSize";
-import { Pagination } from "../../components/Pagination";
-import { ExcelDownload } from "../../components/ExcelDownload";
+import { PaginationSize } from '../../components/PaginationSize';
+import { Pagination } from '../../components/Pagination';
+import { ExcelDownload } from '../../components/ExcelDownload';
+import { faFileExcel } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const TableHeader = ({
+  getSaleConnectorsExcel,
+  currentPage,
   changeDate,
   startDate,
   endDate,
@@ -51,13 +55,19 @@ export const TableHeader = ({
           className='border rounded p-1 focus:outline-green-800 ml-2'
         />
         <Pagination
+          currentPage={currentPage}
           setCurrentPage={setCurrentPage}
           countPage={countPage}
-          totalDatas={categoryCount.count}
+          totalDatas={categoryCount}
         />
       </li>
       <li className='text-center flex justify-center items-center font-bold py-2 bg-white'>
-        <ExcelDownload filename={"Sotuvlar"} />
+        <button
+          className='px-4 bg-green-700 hover:bg-green-800 text-white rounded'
+          onClick={getSaleConnectorsExcel}>
+          <FontAwesomeIcon icon={faFileExcel} />
+        </button>
+        <ExcelDownload filename={'Sutuvlar'} />
       </li>
     </ul>
   );
