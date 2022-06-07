@@ -1,25 +1,20 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { Loader } from "../../../loader/Loader";
-import { useToast } from "@chakra-ui/react";
-import { useHttp } from "../../../hooks/http.hook";
-import { AuthContext } from "../../../context/AuthContext";
-import { checkUnit } from "./checkData";
-import { Modal } from "./modal/Modal";
-import { Sort } from "./productComponents/Sort";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faFloppyDisk,
-  faPenAlt,
-  faRepeat,
-  faTrashCan,
-} from "@fortawesome/free-solid-svg-icons";
-import { t } from "i18next";
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { Loader } from '../../../loader/Loader';
+import { useToast } from '@chakra-ui/react';
+import { useHttp } from '../../../hooks/http.hook';
+import { AuthContext } from '../../../context/AuthContext';
+import { checkUnit } from './checkData';
+import { Modal } from './modal/Modal';
+import { t } from 'i18next';
+import { CreateHeader } from './Unit/CreateHeader';
+import { CreateBody } from './Unit/CreateBody';
+import { TableHead } from './Unit/TableHead';
+import { Rows } from './Unit/Rows';
 
 export const Unit = () => {
   //====================================================================
   //====================================================================
   const [modal, setModal] = useState(false);
-
   //====================================================================
   //====================================================================
 
@@ -35,7 +30,7 @@ export const Unit = () => {
         status: data.status && data.status,
         duration: 5000,
         isClosable: true,
-        position: "top-right",
+        position: 'top-right',
       });
     },
     [toast]
@@ -78,7 +73,7 @@ export const Unit = () => {
     try {
       const data = await request(
         `/api/products/unit/getall`,
-        "POST",
+        'POST',
         { market: auth.market._id },
         {
           Authorization: `Bearer ${auth.token}`,
@@ -88,8 +83,8 @@ export const Unit = () => {
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [request, auth, notify]);
@@ -103,7 +98,7 @@ export const Unit = () => {
     try {
       const data = await request(
         `/api/products/unit/register`,
-        "POST",
+        'POST',
         { ...unit },
         {
           Authorization: `Bearer ${auth.token}`,
@@ -111,27 +106,28 @@ export const Unit = () => {
       );
       notify({
         title: `${data.name} ${t("o'lchov birliki yaratildi!")}`,
-        description: "",
-        status: "success",
+        description: '',
+        status: 'success',
       });
       setUnit({
         market: auth.market && auth.market._id,
       });
+      getUnits();
       clearInputs();
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
-  }, [request, auth, notify, unit, clearInputs]);
+  }, [request, auth, notify, unit, clearInputs, getUnits]);
 
   const updateHandler = useCallback(async () => {
     try {
       const data = await request(
         `/api/products/unit/update`,
-        "PUT",
+        'PUT',
         { ...unit },
         {
           Authorization: `Bearer ${auth.token}`,
@@ -139,21 +135,22 @@ export const Unit = () => {
       );
       notify({
         title: `${data.name} ${t("o'lchov birliki yangilandi!")}`,
-        description: "",
-        status: "success",
+        description: '',
+        status: 'success',
       });
       setUnit({
         market: auth.market && auth.market._id,
       });
       clearInputs();
+      getUnits();
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
-  }, [request, auth, notify, unit, clearInputs]);
+  }, [request, auth, notify, unit, clearInputs, getUnits]);
 
   const saveHandler = () => {
     if (checkUnit(unit)) {
@@ -167,7 +164,7 @@ export const Unit = () => {
   };
 
   const keyPressed = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       return saveHandler();
     }
   };
@@ -176,7 +173,7 @@ export const Unit = () => {
     try {
       const data = await request(
         `/api/products/unit/delete`,
-        "DELETE",
+        'DELETE',
         { ...remove },
         {
           Authorization: `Bearer ${auth.token}`,
@@ -184,10 +181,11 @@ export const Unit = () => {
       );
       notify({
         title: `${data.name} ${t("o'lchov birliki o'chirildi!")}`,
-        description: "",
-        status: "success",
+        description: '',
+        status: 'success',
       });
       setModal(false);
+      getUnits();
       setUnit({
         market: auth.market && auth.market._id,
       });
@@ -195,11 +193,11 @@ export const Unit = () => {
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
-  }, [auth, request, remove, notify, clearInputs]);
+  }, [auth, request, remove, notify, clearInputs, getUnits]);
   //====================================================================
   //====================================================================
 
@@ -226,135 +224,31 @@ export const Unit = () => {
   //====================================================================
 
   return (
-    <>
-      {loading ? <Loader /> : ""}
-      <div className="content-wrapper px-lg-5 px-3">
-        <div className="row gutters">
-          <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            <div className="table-container">
-              <div className="table-responsive">
-                <table className="table m-0">
-                  <thead>
-                    <tr>
-                      <th className="border text-center">{t("O'lchov birliki")}</th>
-                      <th className="border text-center">{t("Saqlash")}</th>
-                      <th className="border text-center">{t("Tozalash")}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="border text-center">
-                      <td className="border text-center">
-                        <input
-                          name="name"
-                          value={unit.name || ""}
-                          onKeyUp={keyPressed}
-                          onChange={inputHandler}
-                          type="text"
-                          className="focus: outline-none focus:ring focus: border-blue-500 rounded py-1 px-3"
-                          id="name"
-                          placeholder={t("O'lchov birlikini kiriting")}
-                        />
-                      </td>
-                      <td className="border text-center">
-                        {loading ? (
-                          <button className="btn btn-info" disabled>
-                            <span className="spinner-border spinner-border-sm"></span>
-                            Loading...
-                          </button>
-                        ) : (
-                          <button
-                            onClick={saveHandler}
-                            className="btn btn-success py-1 px-4"
-                          >
-                            <FontAwesomeIcon
-                              className="text-base"
-                              icon={faFloppyDisk}
-                            />
-                          </button>
-                        )}
-                      </td>
-                      <td className="border text-center">
-                        {loading ? (
-                          <button className="btn btn-info" disabled>
-                            <span className="spinner-border spinner-border-sm"></span>
-                            Loading...
-                          </button>
-                        ) : (
-                          <button
-                            onClick={clearInputs}
-                            className="btn btn-secondary py-1 px-4"
-                          >
-                            <FontAwesomeIcon
-                              className="text-base"
-                              icon={faRepeat}
-                            />
-                          </button>
-                        )}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <div className="table-container">
-              <div className="table-responsive">
-                <table className="table m-0">
-                  <thead className="border text-center">
-                    <tr>
-                      <th className="border">№</th>
-                      <th className="border">
-                        {t("O'lchov birliki")}{" "}
-                        <Sort
-                          data={units}
-                          setData={setUnits}
-                          property={"name"}
-                        />
-                      </th>
-                      <th className="border">{t("Tahrirlash")}</th>
-                      <th className="border">{t("O'chirish")}</th>
-                    </tr>
-                  </thead>
-                  <tbody className="border text-center">
-                    {units &&
-                      units.map((s, key) => {
-                        return (
-                          <tr className="border" key={key}>
-                            <td className="font-bold text-black border">
-                              {key + 1}
-                            </td>
-                            <td className="font-bold text-black border">
-                              {s.name}
-                            </td>
-                            <td className="border">
-                              <button
-                                onClick={() => {
-                                  setUnit({ ...unit, ...s });
-                                }}
-                                className="btn btn-success py-1 px-4 text-base"
-                              >
-                                <FontAwesomeIcon icon={faPenAlt} />
-                              </button>
-                            </td>
-                            <td>
-                              <button
-                                onClick={() => {
-                                  setRemove({ ...remove, ...s });
-                                  setModal(true);
-                                }}
-                                className="btn btn-secondary py-1 px-4 text-base"
-                              >
-                                <FontAwesomeIcon icon={faTrashCan} />
-                              </button>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
+    <div className='overflow-x-auto'>
+      {loading ? <Loader /> : ''}
+      <div className='m-3 min-w-[700px]'>
+        <CreateHeader />
+        <CreateBody
+          unit={unit}
+          keyPressed={keyPressed}
+          inputHandler={inputHandler}
+          saveHandler={saveHandler}
+          clearInputs={clearInputs}
+        />
+        <br />
+        <TableHead currentUnits={units} setCurrentUnits={setUnits} />
+        {units.map((unit, index) => {
+          return (
+            <Rows
+              setUnit={setUnit}
+              index={index}
+              key={index}
+              unit={unit}
+              setModal={setModal}
+              setRemove={setRemove}
+            />
+          );
+        })}
       </div>
 
       <Modal
@@ -364,6 +258,6 @@ export const Unit = () => {
         text={t("o'lchov birlikini o'chirishni tasdiqlaysizmi?")}
         handler={deleteHandler}
       />
-    </>
+    </div>
   );
 };

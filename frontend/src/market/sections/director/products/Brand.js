@@ -288,7 +288,7 @@ export const Brand = () => {
   //====================================================================
 
   return (
-    <>
+    <div className='overflow-x-auto'>
       {loading ? <Loader /> : ''}
       <div className='m-3 min-w-[700px]'>
         <CreateHeader />
@@ -324,7 +324,6 @@ export const Brand = () => {
                 currentPage={currentPage}
                 key={key}
                 c={s}
-                brand={brand}
                 setBrand={setBrand}
                 setRemove={setRemove}
                 setModal={setModal}
@@ -342,6 +341,6 @@ export const Brand = () => {
         text={t("Brendni o'chirishni tasdiqlaysizmi?")}
         handler={deleteHandler}
       />
-    </>
+    </div>
   );
 };

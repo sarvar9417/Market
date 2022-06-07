@@ -1,7 +1,7 @@
-const { Unit, validateUnit } = require('../../models/Products/Unit')
-const { Market } = require('../../models/MarketAndBranch/Market')
-const { Product } = require('../../models/Products/Product')
-const { ProductType } = require('../../models/Products/ProductType')
+const { Unit, validateUnit } = require('../../models/Products/Unit');
+const { Market } = require('../../models/MarketAndBranch/Market');
+const { Product } = require('../../models/Products/Product');
+const { ProductType } = require('../../models/Products/ProductType');
 
 //Unit register
 // module.exports.registerAll = async (req, res) => {
@@ -56,118 +56,120 @@ const { ProductType } = require('../../models/Products/ProductType')
 
 module.exports.register = async (req, res) => {
   try {
-    const { error } = validateUnit(req.body)
+    const { error } = validateUnit(req.body);
     if (error) {
       return res.status(400).json({
         error: error.message,
-      })
+      });
     }
 
-    const { name, market } = req.body
+    const { name, market } = req.body;
 
     const unit = await Unit.findOne({
       market,
       name,
-    })
+    });
 
     if (unit) {
       return res.status(400).json({
         message: "Diqqat! Ushbu o'lchov birligi avval yaratilgan.",
-      })
+      });
     }
 
-    const marke = await Market.findById(market)
+    const marke = await Market.findById(market);
 
     if (!marke) {
       return res.status(400).json({
         message: "Diqqat! Do'kon ma'lumotlari topilmadi.",
-      })
+      });
     }
 
     const newUnit = new Unit({
       name,
       market,
-    })
-    await newUnit.save()
+    });
+    await newUnit.save();
 
-    res.send(newUnit)
+    res.send(newUnit);
   } catch (error) {
-    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
-}
+};
 
 //Unit update
 module.exports.update = async (req, res) => {
   try {
-    const { name, market } = req.body
+    const { name, market } = req.body;
 
-    const marke = await Market.findById(market)
+    const marke = await Market.findById(market);
 
     if (!marke) {
       return res.status(400).json({
         message: "Diqqat! Do'kon ma'lumotlari topilmadi.",
-      })
+      });
     }
 
     const old = await Unit.findOne({
       market,
       name,
-    })
+    });
 
     if (old) {
       return res.status(400).json({
         message: "Diqqat! Ushbu o'lchov birligi avval yaratilgan.",
-      })
+      });
     }
 
-    const unit = await Unit.findById(req.body._id)
+    const unit = await Unit.findById(req.body._id);
 
     if (!unit) {
       return res.status(400).json({
         message: "Diqqat! Ushbu o'lchov birligi topilmadi.",
-      })
+      });
     }
 
-    unit.name = name
-    await unit.save()
+    unit.name = name;
+    await unit.save();
 
-    res.send(unit)
+    res.send(unit);
   } catch (error) {
-    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
-}
+};
 
 //Unit update
 module.exports.delete = async (req, res) => {
   try {
-    const { _id } = req.body
+    const { _id } = req.body;
 
-    const unit = await Unit.findByIdAndDelete(_id)
+    const unit = await Unit.findByIdAndDelete(_id);
 
-    res.send(unit)
+    res.send(unit);
   } catch (error) {
-    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
-}
+};
 
 //Unit getall
 module.exports.getAll = async (req, res) => {
   try {
-    const { market } = req.body
-    const marke = await Market.findById(market)
+    const { market } = req.body;
+    const marke = await Market.findById(market);
 
     if (!marke) {
       return res.status(400).json({
         message: "Diqqat! Do'kon ma'lumotlari topilmadi.",
-      })
+      });
     }
 
     const units = await Unit.find({
       market,
-    }).select('name')
+    })
+      .select('name market')
+      .sort({ _id: -1 });
 
-    res.send(units)
+    res.send(units);
   } catch (error) {
-    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
-}
+};

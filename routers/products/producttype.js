@@ -287,16 +287,10 @@ module.exports.getProductType = async (req, res) => {
     const categorycode = new RegExp('.*' + search.categorycode + '.*', 'i');
     const name = new RegExp('.*' + search.name + '.*', 'i');
 
-    const count = await ProductType.find({ market })
-      .populate({ path: 'category', match: { code: categorycode } })
-      .count();
-
     const producttypes = await ProductType.find({ name: name, market })
       .sort({ _id: -1 })
       .select('name category market')
       .populate({ path: 'category', match: { code: categorycode } });
-    // .skip(currentPage * countPage)
-    // .limit(countPage);
 
     const filter = producttypes.filter((producttype) => {
       return producttype.category !== null;
