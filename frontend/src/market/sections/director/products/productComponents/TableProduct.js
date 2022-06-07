@@ -1,5 +1,4 @@
 import React from 'react';
-import { ExcelTable } from './excelTable/ExcelTable';
 import { TableRow } from './tableProduct/TableRow';
 import { TableHeader } from './tableProduct/TableHeader';
 import { TableHead } from './tableProduct/TableHead';
@@ -23,8 +22,9 @@ export const TableProduct = ({
   market,
   productsCount,
   keyPress,
+  getProductExcel,
 }) => {
-  const edit = (e, p) => {
+  const edit = (p) => {
     selectRef.category.current.selectOption({
       label: p.category.code,
       value: p.category._id,
@@ -69,6 +69,7 @@ export const TableProduct = ({
         setImports={setImports}
         setModal2={setModal2}
         loading={loading}
+        getProductExcel={getProductExcel}
       />
 
       <TableHead
@@ -89,10 +90,6 @@ export const TableProduct = ({
             loading={loading}
           />
         ))}
-
-      <div className='d-none'>
-        <ExcelTable data={currentProducts} id='products-table' />
-      </div>
     </>
   );
 };

@@ -74,6 +74,10 @@ router.post('/product/getproducts', auth, (req, res) => {
   require('./product').getProducts(req, res);
 });
 
+router.post('/product/getexceldata', auth, (req, res) => {
+  require('./product').getProductExcel(req, res);
+});
+
 router.post('/product/getproducttypes', auth, (req, res) => {
   require('./product').getAllProducttypes(req, res);
 });

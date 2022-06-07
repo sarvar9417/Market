@@ -1,6 +1,8 @@
+import { faFileExcel } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { t } from 'i18next';
 import React from 'react';
-import ReactHtmlTableToExcel from 'react-html-table-to-excel';
+import { ExcelDownloadBtn } from '../ExcelDownloadBtn';
 import { ExcelUpload } from '../excelTable/ExcelUpload';
 import { Pagination } from '../Pagination';
 
@@ -14,6 +16,7 @@ export const TableHeader = ({
   setImports,
   setModal2,
   loading,
+  getProductExcel,
 }) => {
   return (
     <ul className='tbody border-b border-t-2 border-blue-800'>
@@ -67,15 +70,13 @@ export const TableHeader = ({
         />
       </li>
       <li className='th-h border-r col-span-1'>
-        <div className='btn btn-primary'>
-          <ReactHtmlTableToExcel
-            id='reacthtmltoexcel'
-            table='products-table'
-            sheet='Sheet'
-            buttonText='Excel'
-            filename={t('Mahsulotlar')}
-          />
-        </div>
+        <button
+          className='px-4 bg-green-700 hover:bg-green-800 text-white rounded'
+          onClick={getProductExcel}
+        >
+          <FontAwesomeIcon icon={faFileExcel} />
+        </button>
+        <ExcelDownloadBtn filename={'Mahsulotlar'} />
       </li>
       <li className='th-h border-r col-span-1'>
         <ExcelUpload

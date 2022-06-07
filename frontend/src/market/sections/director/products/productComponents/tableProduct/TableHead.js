@@ -7,7 +7,7 @@ export const TableHead = ({ currentProducts, setCurrentProducts }) => {
   return (
     <ul className='thead shadow-xl'>
       <li className='th border-r'>№</li>
-      <li className='th border-r flex justify-center col-span-1'>
+      <li className='th border-r flex flex-column items-center col-span-1 px-1'>
         {t('Kategoriya')}
         <div className='btn-group-vertical ml-2'>
           <FontAwesomeIcon
@@ -34,7 +34,7 @@ export const TableHead = ({ currentProducts, setCurrentProducts }) => {
           />
         </div>
       </li>
-      <li className='th border-r flex justify-center col-span-3'>
+      <li className='th border-r flex flex-column items-center col-span-3'>
         {t('Mahsulot turi va mahsulot')}
         <div className='btn-group-vertical ml-2'>
           <FontAwesomeIcon
@@ -61,7 +61,7 @@ export const TableHead = ({ currentProducts, setCurrentProducts }) => {
           />
         </div>
       </li>
-      <li className='th border-r flex justify-center col-span-2'>
+      <li className='th border-r flex flex-column items-center col-span-2'>
         {t('Brend')}
         <div className='btn-group-vertical ml-2'>
           <FontAwesomeIcon
@@ -88,7 +88,7 @@ export const TableHead = ({ currentProducts, setCurrentProducts }) => {
           />
         </div>
       </li>
-      <li className='th border-r flex justify-center col-span-1'>
+      <li className='th border-r flex flex-column items-center col-span-1'>
         {t("Soni - O'.B.")}
         <div className='btn-group-vertical ml-2'>
           <FontAwesomeIcon
@@ -115,7 +115,7 @@ export const TableHead = ({ currentProducts, setCurrentProducts }) => {
           />
         </div>
       </li>
-      <li className='th border-r flex justify-center col-span-1'>
+      <li className='th border-r flex flex-column items-center col-span-1'>
         Olish
         <div className='btn-group-vertical ml-2'>
           <FontAwesomeIcon
@@ -142,7 +142,7 @@ export const TableHead = ({ currentProducts, setCurrentProducts }) => {
           />
         </div>
       </li>
-      <li className='th border-r flex justify-center col-span-1'>
+      <li className='th border-r flex flex-column items-center col-span-1'>
         Sotish
         <div className='btn-group-vertical ml-2'>
           <FontAwesomeIcon
