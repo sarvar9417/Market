@@ -647,8 +647,6 @@ module.exports.getProducts = async (req, res) => {
     })
       .sort({ _id: -1 })
       .select('name category market producttype code unit total brand price')
-      // .populate({ path: 'category', match: { code: categorycode } })
-      // .populate({ path: 'producttype', match: { name: producttype } })
       .populate({ path: 'brand', match: { name: brandname } })
       .populate('category', 'code')
       .populate('producttype', 'name')
@@ -657,11 +655,7 @@ module.exports.getProducts = async (req, res) => {
       .skip(currentPage * countPage)
       .limit(countPage);
     const filter = products.filter((item) => {
-      return (
-        // item.category !== null &&
-        // item.producttype !== null &&
-        item.brand !== null
-      );
+      return item.brand !== null;
     });
     res.status(201).json({ products: filter, count: filterCount.length });
   } catch (error) {
@@ -714,6 +708,49 @@ module.exports.getAllProducttypes = async (req, res) => {
     );
 
     res.status(201).json(producttypes);
+  } catch (error) {
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
+  }
+};
+
+// Product getProductExcel
+module.exports.getProductExcel = async (req, res) => {
+  try {
+    const { market, search } = req.body;
+    const marke = await Market.findById(market);
+    if (!marke) {
+      return res
+        .status(401)
+        .json({ message: "Diqqat! Do'kon malummotlari topilmadi." });
+    }
+
+    const name = new RegExp(
+      '.*' + search ? search.productname : '' + '.*',
+      'i'
+    );
+    const code = new RegExp(
+      '.*' + search ? search.productcode : '' + '.*',
+      'i'
+    );
+    const brand = new RegExp('.*' + search ? search.brand : '' + '.*', 'i');
+
+    const products = await Product.find({
+      code: code,
+      name: name,
+      market,
+    })
+      .sort({ _id: -1 })
+      .select('name category market producttype code unit total brand price')
+      .populate({ path: 'brand', match: { name: brand } })
+      .populate('category', 'code')
+      .populate('producttype', 'name')
+      .populate('unit', 'name')
+      .populate('price', 'incomingprice sellingprice');
+
+    const filter = products.filter((item) => {
+      return item.brand !== null;
+    });
+    res.status(201).json(filter);
   } catch (error) {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }

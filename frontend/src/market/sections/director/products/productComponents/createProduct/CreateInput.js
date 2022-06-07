@@ -4,17 +4,8 @@ import { t } from 'i18next';
 export const CreateInput = ({ product, keyPressed, inputHandler }) => {
   return (
     <>
-      <ul className='thead'>
-        <li className='th col-span-3 border-r'>Maxsulot kodi</li>
-        <li className='th col-span-3 border-r'>Maxsulot nomi</li>
-        <li className='th col-span-3 border-r'>Maxsulotlar soni</li>
-        <li className='th col-span-3 border-r flex'>
-          <div className='text-center w-1/2 border-r'>Olish narxi</div>
-          <div className='text-center w-1/2 border-r'>Sotish narxi</div>
-        </li>
-      </ul>
       <ul className='tbody'>
-        <li className='td text-center bg-white font-bold border-r col-span-3'>
+        <li className='td text-center bg-white font-bold col-span-3'>
           <input
             name='code'
             value={product.code || ''}
@@ -26,7 +17,7 @@ export const CreateInput = ({ product, keyPressed, inputHandler }) => {
             placeholder={t('Mahsulot kodini kiriting')}
           />
         </li>
-        <li className='td text-center bg-white font-bold border-r col-span-3'>
+        <li className='td text-center bg-white font-bold col-span-3'>
           <input
             name='name'
             value={product.name || ''}
@@ -38,7 +29,7 @@ export const CreateInput = ({ product, keyPressed, inputHandler }) => {
             placeholder={t('Mahsulot nomini kiriting')}
           />
         </li>
-        <li className='td text-center bg-white font-bold border-r col-span-3'>
+        <li className='td text-center bg-white font-bold col-span-3'>
           <input
             name='total'
             value={product.total || ''}
@@ -50,7 +41,7 @@ export const CreateInput = ({ product, keyPressed, inputHandler }) => {
             placeholder={t('Sonini kiriting')}
           />
         </li>
-        <li className='td text-center bg-white font-bold border-r col-span-3 flex'>
+        <li className='td text-center bg-white font-bold col-span-3 flex'>
           <div>
             <input
               name='incomingprice'
@@ -60,7 +51,7 @@ export const CreateInput = ({ product, keyPressed, inputHandler }) => {
               type='number'
               className='form-control'
               id='shortname'
-              placeholder='Narxini kiriting'
+              placeholder='Olish narxi'
             />
           </div>
           <div>
@@ -72,7 +63,7 @@ export const CreateInput = ({ product, keyPressed, inputHandler }) => {
               type='number'
               className='form-control'
               id='shortname'
-              placeholder='Narxini kiriting'
+              placeholder='Sotish narxi'
             />
           </div>
         </li>

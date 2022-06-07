@@ -15,6 +15,7 @@ import { TableProduct } from './productComponents/TableProduct';
 import { ExcelCols } from './productComponents/excelTable/ExcelCols';
 import { CreateProduct } from './productComponents/CreateProduct';
 import { t } from 'i18next';
+import { ExcelTable } from './Category/ExcelTable';
 
 export const Product = () => {
   //====================================================================
@@ -29,7 +30,7 @@ export const Product = () => {
 
   //====================================================================
   //====================================================================
-
+  const btn = useRef();
   //====================================================================
   //====================================================================
   const [modal, setModal] = useState(false);
@@ -185,9 +186,35 @@ export const Product = () => {
     sendingsearch,
   ]);
 
-  //====================================================================
-  //====================================================================
+  const [excelDatas, setExcelDatas] = useState([]);
 
+  const getProductExcel = useCallback(async () => {
+    try {
+      const data = await request(
+        '/api/products/product/getexceldata',
+        'POST',
+        {
+          market: auth.market && auth.market._id,
+          search: sendingsearch,
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setExcelDatas(data);
+      document.getElementById('reacthtmltoexcel').click();
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [auth, request, notify, sendingsearch]);
+
+  //====================================================================
+  //====================================================================
+  // console.log(document.getElementById('excel-btn'));
   //====================================================================
   //====================================================================
 
@@ -659,6 +686,7 @@ export const Product = () => {
               selectRef={selectRef}
             />
             <TableProduct
+              getProductExcel={getProductExcel}
               producttypes={producttypes}
               keyPress={searchKeypress}
               setImports={setImports}
@@ -709,6 +737,10 @@ export const Product = () => {
           />
         }
       />
+
+      <div className='d-none'>
+        <ExcelTable data={excelDatas} />
+      </div>
     </>
   );
 };
