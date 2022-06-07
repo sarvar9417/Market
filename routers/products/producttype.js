@@ -256,7 +256,7 @@ module.exports.delete = async (req, res) => {
 //ProductType getall
 module.exports.getAll = async (req, res) => {
   try {
-    const { market } = req.body;
+    const { market, currentPage, countPage } = req.body;
     const marke = await Market.findById(market);
     if (!marke) {
       return res
@@ -264,9 +264,14 @@ module.exports.getAll = async (req, res) => {
         .json({ message: "Diqqat! Do'kon ma'lumotlari topilmadi." });
     }
 
-    const producttypes = await ProductType.find({ market });
-
-    res.status(201).json(producttypes);
+    const producttypesCount = await ProductType.find({ market }).count();
+    const producttypes = await ProductType.find({ market })
+      .sort({ _id: -1 })
+      .select('name market category')
+      .populate('category', 'code')
+      .skip(currentPage, countPage)
+      .limit(countPage);
+    res.status(201).json({ producttypes, count: producttypesCount });
   } catch (error) {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }

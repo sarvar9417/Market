@@ -4,17 +4,17 @@ import React, {
   useEffect,
   useRef,
   useState,
-} from "react";
-import { Loader } from "../../../loader/Loader";
-import { useToast } from "@chakra-ui/react";
-import { useHttp } from "../../../hooks/http.hook";
-import { AuthContext } from "../../../context/AuthContext";
-import { checkProduct, checkProducts } from "./checkData";
-import { Modal } from "./modal/Modal";
-import { TableProduct } from "./productComponents/TableProduct";
-import { InputProduct } from "./productComponents/InputProduct";
-import { ExcelCols } from "./productComponents/ExcelCols";
-import { t } from "i18next";
+} from 'react';
+import { Loader } from '../../../loader/Loader';
+import { useToast } from '@chakra-ui/react';
+import { useHttp } from '../../../hooks/http.hook';
+import { AuthContext } from '../../../context/AuthContext';
+import { checkProduct, checkProducts } from './checkData';
+import { Modal } from './modal/Modal';
+import { TableProduct } from './productComponents/TableProduct';
+import { ExcelCols } from './productComponents/excelTable/ExcelCols';
+import { CreateProduct } from './productComponents/CreateProduct';
+import { t } from 'i18next';
 
 export const Product = () => {
   //====================================================================
@@ -58,7 +58,7 @@ export const Product = () => {
         status: data.status && data.status,
         duration: 5000,
         isClosable: true,
-        position: "top-right",
+        position: 'top-right',
       });
     },
     [toast]
@@ -78,14 +78,14 @@ export const Product = () => {
     sellingprice: 0,
   });
   const sections = [
-    { name: t("Kategoriya kodi"), value: "category" },
-    { name: t("Mahsulot turi"), value: "producttype" },
-    { name: t("Brend"), value: "brand" },
-    { name: t("Mahsulot kodi"), value: "code" },
-    { name: t("Mahsulot nomi"), value: "name" },
-    { name: t("O'lchov birligi"), value: "unit" },
-    { name: t("Narxi"), value: "price" },
-    { name: t("Soni"), value: "total" },
+    { name: t('Kategoriya kodi'), value: 'category' },
+    { name: t('Mahsulot turi'), value: 'producttype' },
+    { name: t('Brend'), value: 'brand' },
+    { name: t('Mahsulot kodi'), value: 'code' },
+    { name: t('Mahsulot nomi'), value: 'name' },
+    { name: t("O'lchov birligi"), value: 'unit' },
+    { name: t('Narxi'), value: 'price' },
+    { name: t('Soni'), value: 'total' },
   ];
 
   //====================================================================
@@ -94,25 +94,25 @@ export const Product = () => {
   //====================================================================
   //====================================================================
   const clearInputs = useCallback(() => {
-    const inputs = document.getElementsByTagName("input");
+    const inputs = document.getElementsByTagName('input');
     for (const input of inputs) {
-      input.value = "";
+      input.value = '';
     }
     selectRef.category.current.selectOption({
-      label: "Kategoriya",
-      value: "delete",
+      label: 'Kategoriya',
+      value: 'delete',
     });
     selectRef.producttype.current.selectOption({
-      label: "Mahsulot",
-      value: "delete",
+      label: 'Mahsulot',
+      value: 'delete',
     });
     selectRef.brand.current.selectOption({
-      label: "Brand",
-      value: "delete",
+      label: 'Brand',
+      value: 'delete',
     });
     selectRef.unit.current.selectOption({
       label: "O'lchov birligi",
-      value: "delete",
+      value: 'delete',
     });
     setProduct({
       market: auth.market && auth.market._id,
@@ -131,8 +131,15 @@ export const Product = () => {
   //====================================================================
 
   const [productsCount, setProductsCount] = useState(0);
-  const [searchingEl, setSearchingEl] = useState({});
-
+  const [search, setSearch] = useState({
+    categorycode: '',
+    productcode: '',
+    producttype: '',
+    productname: '',
+    brand: '',
+  });
+  const [sendingsearch, setSendingSearch] = useState({});
+  // const [sendingsearch, setSendingSearch] = useState({});
   //====================================================================
   //====================================================================
 
@@ -146,27 +153,25 @@ export const Product = () => {
     try {
       const data = await request(
         `/api/products/product/getproducts`,
-        "POST",
+        'POST',
         {
           market: auth.market._id,
           currentPage,
           countPage,
-          searching: null,
+          search: sendingsearch,
         },
         {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      setProducts(data.products);
       setSearchStrorage(data.products);
       setCurrentProducts(data.products);
-      setTableExcel(data.products);
       setProductsCount(data.count);
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [
@@ -177,33 +182,9 @@ export const Product = () => {
     setSearchStrorage,
     currentPage,
     countPage,
+    sendingsearch,
   ]);
 
-  const getSearchedProducts = async () => {
-    try {
-      const data = await request(
-        "/api/products/product/getproducts",
-        "POST",
-        {
-          market: auth.market._id,
-          currentPage,
-          countPage,
-          searching: searchingEl,
-        },
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
-      );
-      setCurrentProducts(data.products);
-      setProductsCount(data.count);
-    } catch (error) {
-      notify({
-        title: error,
-        description: "",
-        status: "error",
-      });
-    }
-  };
   //====================================================================
   //====================================================================
 
@@ -212,6 +193,7 @@ export const Product = () => {
 
   //====================================================================
   //====================================================================
+
   //====================================================================
   //====================================================================
   const [categories, setCategories] = useState([]);
@@ -220,7 +202,7 @@ export const Product = () => {
     try {
       const data = await request(
         `/api/products/category/getall`,
-        "POST",
+        'POST',
         { market: auth.market._id },
         {
           Authorization: `Bearer ${auth.token}`,
@@ -228,8 +210,8 @@ export const Product = () => {
       );
       let s = [
         {
-          label: "Kategoriya",
-          value: "delete",
+          label: 'Kategoriya',
+          value: 'delete',
         },
       ];
       data.map((category) => {
@@ -242,14 +224,14 @@ export const Product = () => {
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [request, auth, notify]);
 
   const changeCategory = (e) => {
-    if (e.value === "delete") {
+    if (e.value === 'delete') {
       setProductTypes(allproducttypes);
       setProduct({ ...product, category: null });
     }
@@ -270,8 +252,8 @@ export const Product = () => {
   const getUnits = useCallback(async () => {
     try {
       const data = await request(
-        "/api/products/unit/getall",
-        "POST",
+        '/api/products/unit/getall',
+        'POST',
         { market: auth.market._id },
         {
           Authorization: `Bearer ${auth.token}`,
@@ -280,7 +262,7 @@ export const Product = () => {
       let s = [
         {
           label: "O'lchov birligi",
-          value: "delete",
+          value: 'delete',
         },
       ];
       data.map((unit) => {
@@ -293,14 +275,14 @@ export const Product = () => {
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [request, notify, auth]);
 
   const changeUnit = (e) => {
-    if (e.value === "delete") {
+    if (e.value === 'delete') {
       setProduct({ ...product, unit: null });
     }
     setProduct({ ...product, unit: e.value });
@@ -316,8 +298,8 @@ export const Product = () => {
   const getProductTypes = useCallback(async () => {
     try {
       const data = await request(
-        `/api/products/producttype/getall`,
-        "POST",
+        `/api/products/product/getproducttypes`,
+        'POST',
         { market: auth.market._id },
         {
           Authorization: `Bearer ${auth.token}`,
@@ -325,8 +307,8 @@ export const Product = () => {
       );
       let s = [
         {
-          label: "Mahsulot turi",
-          value: "delete",
+          label: 'Mahsulot turi',
+          value: 'delete',
         },
       ];
       data.map((producttype) => {
@@ -341,14 +323,14 @@ export const Product = () => {
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [request, auth, notify]);
 
   const changeProductType = (e) => {
-    if (e.value === "delete") {
+    if (e.value === 'delete') {
       setProduct({ ...product, producttype: null });
     }
     setProduct({ ...product, producttype: e.value });
@@ -365,7 +347,7 @@ export const Product = () => {
     try {
       const data = await request(
         `/api/products/brand/getall`,
-        "POST",
+        'POST',
         { market: auth.market._id },
         {
           Authorization: `Bearer ${auth.token}`,
@@ -373,8 +355,8 @@ export const Product = () => {
       );
       let s = [
         {
-          label: "Brend",
-          value: "delete",
+          label: 'Brend',
+          value: 'delete',
         },
       ];
       data.map((brand) => {
@@ -387,14 +369,14 @@ export const Product = () => {
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [request, auth, notify]);
 
   const changeBrand = (e) => {
-    if (e.value === "delete") {
+    if (e.value === 'delete') {
       setProduct({ ...product, brand: null });
     }
     setProduct({ ...product, brand: e.value });
@@ -409,24 +391,24 @@ export const Product = () => {
     try {
       const data = await request(
         `/api/products/product/register`,
-        "POST",
+        'POST',
         { ...product },
         {
           Authorization: `Bearer ${auth.token}`,
         }
       );
       notify({
-        title: `${data.name} ${t("mahsuloti yaratildi!")}`,
-        description: "",
-        status: "success",
+        title: `${data.name} ${t('mahsuloti yaratildi!')}`,
+        description: '',
+        status: 'success',
       });
       getProducts();
       clearInputs();
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [auth, request, product, notify, clearInputs, getProducts]);
@@ -435,7 +417,7 @@ export const Product = () => {
     try {
       const data = await request(
         `/api/products/product/update`,
-        "PUT",
+        'PUT',
         { ...product },
 
         {
@@ -444,17 +426,17 @@ export const Product = () => {
       );
 
       notify({
-        title: `${data.name} ${t("mahsuloti yangilandi!")}`,
-        description: "",
-        status: "success",
+        title: `${data.name} ${t('mahsuloti yangilandi!')}`,
+        description: '',
+        status: 'success',
       });
       getProducts();
       clearInputs();
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [auth, request, product, notify, clearInputs, getProducts]);
@@ -470,7 +452,7 @@ export const Product = () => {
     }
   };
   const keyPressed = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       return saveHandler();
     }
   };
@@ -479,7 +461,7 @@ export const Product = () => {
     try {
       const data = await request(
         `/api/products/product/delete`,
-        "DELETE",
+        'DELETE',
         { ...remove, market: auth.market && auth.market._id },
         {
           Authorization: `Bearer ${auth.token}`,
@@ -487,8 +469,8 @@ export const Product = () => {
       );
       notify({
         title: `${data.name} ${t("mahsuloti o'chirildi!")}`,
-        description: "",
-        status: "success",
+        description: '',
+        status: 'success',
       });
       getProducts();
       clearInputs();
@@ -496,8 +478,8 @@ export const Product = () => {
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [auth, request, remove, notify, clearInputs, getProducts]);
@@ -518,16 +500,16 @@ export const Product = () => {
     try {
       const data = await request(
         `/api/products/product/registerall`,
-        "POST",
+        'POST',
         { market: auth.market, products: [...changeImports] },
         {
           Authorization: `Bearer ${auth.token}`,
         }
       );
       notify({
-        title: `${t("Barcha mahsulolar yuklandi!")}`,
-        description: "",
-        status: "success",
+        title: `${t('Barcha mahsulolar yuklandi!')}`,
+        description: '',
+        status: 'success',
       });
       setProducts(data);
       setSearchStrorage(data);
@@ -541,8 +523,8 @@ export const Product = () => {
     } catch (e) {
       notify({
         title: e,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [
@@ -570,13 +552,11 @@ export const Product = () => {
   // SEARCH
 
   const searchProducts = (e) => {
-    if (e.target.name === "category") {
-      setSearchingEl({
-        type: "category",
-        search: e.target.value,
-        searchcategory: e.target.value,
-        searchproducttype: "",
-        searchbrand: "",
+    if (e.target.name === 'category') {
+      setSearch({
+        ...search,
+        categorycode: e.target.value,
+        productcode: e.target.value,
       });
 
       const searching = searchStorage.filter(
@@ -586,14 +566,13 @@ export const Product = () => {
       );
       setCurrentProducts(searching);
     }
-    if (e.target.name === "producttype") {
-      setSearchingEl({
-        type: "producttype",
-        search: e.target.value,
-        searchproducttype: e.target.value,
-        searchcategory: "",
-        searchbrand: "",
+    if (e.target.name === 'producttype') {
+      setSearch({
+        ...search,
+        producttype: e.target.value,
+        productname: e.target.value,
       });
+
       const searching = searchStorage.filter(
         (item) =>
           (item.producttype &&
@@ -604,14 +583,8 @@ export const Product = () => {
       );
       setCurrentProducts(searching);
     }
-    if (e.target.name === "brand") {
-      setSearchingEl({
-        type: "brand",
-        search: e.target.value,
-        searchbrand: e.target.value,
-        searchproducttype: "",
-        searchcategory: "",
-      });
+    if (e.target.name === 'brand') {
+      setSearch({ ...search, brand: e.target.value });
       const searching = searchStorage.filter(
         (item) =>
           item.brand &&
@@ -619,21 +592,13 @@ export const Product = () => {
       );
       setCurrentProducts(searching);
     }
-    if (e.target.value === "") {
-      setSearchingEl(null);
-    }
   };
-
   const searchKeypress = (e) => {
-    setCurrentPage(0);
-    if (e.key === "Enter") {
-      if (searchingEl) {
-        return getSearchedProducts();
-      }
-      return getProducts();
+    if (e.key === 'Enter') {
+      setCurrentPage(0);
+      setSendingSearch({ ...search });
     }
   };
-
   //====================================================================
   //====================================================================
   const setPageSize = useCallback(
@@ -649,10 +614,12 @@ export const Product = () => {
 
   //====================================================================
   //====================================================================
-
+  // const [changedCurrentPage, setChangedCurrentPage] = useState(currentPage);
   useEffect(() => {
+    // if (currentPage > changedCurrentPage || currentPage < changedCurrentPage) {
     getProducts();
-  }, [getProducts, currentPage, countPage]);
+    // setChangedCurrentPage(currentPage);
+  }, [getProducts, currentPage, countPage, sendingsearch]);
 
   const [n, setN] = useState();
   useEffect(() => {
@@ -662,17 +629,18 @@ export const Product = () => {
       getProductTypes();
       getUnits();
       getBrand();
+      getProducts();
     }
-  }, [getUnits, getCategories, getProductTypes, getBrand, n]);
+  }, [getUnits, getCategories, getProductTypes, getBrand, n, getProducts]);
   //====================================================================
   //====================================================================
   return (
     <>
-      {loading ? <Loader /> : ""}
+      {loading ? <Loader /> : ''}
       <div className='content-wrapper px-lg-5 px-3'>
         <div className='row gutters'>
           <div className='col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12'>
-            <InputProduct
+            <CreateProduct
               changeCategory={changeCategory}
               producttypes={producttypes}
               changeProductType={changeProductType}

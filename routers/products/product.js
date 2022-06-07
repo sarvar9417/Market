@@ -13,6 +13,7 @@ const {
   FilialProduct,
   validateFilialProduct,
 } = require('../../models/FilialProducts/FilialProduct');
+const { search } = require('./category_products');
 const ObjectId = require('mongodb').ObjectId;
 
 //Product registerall
@@ -350,12 +351,12 @@ module.exports.register = async (req, res) => {
     const createdProduct = await Product.findOne({ newProduct })
       .sort({ _id: -1 })
 
-      .select("name code unit category producttype brand price total market")
-      .populate("category", "name code")
-      .populate("producttype", "name")
-      .populate("unit", "name")
-      .populate("brand", "name")
-      .populate("price", "incomingprice sellingprice");
+      .select('name code unit category producttype brand price total market')
+      .populate('category', 'name code')
+      .populate('producttype', 'name')
+      .populate('unit', 'name')
+      .populate('brand', 'name')
+      .populate('price', 'incomingprice sellingprice');
 
     res.status(201).send(createdProduct);
   } catch (error) {
@@ -594,7 +595,7 @@ module.exports.getAll = async (req, res) => {
 
 module.exports.getProducts = async (req, res) => {
   try {
-    const { market, currentPage, countPage, searching } = req.body;
+    const { market, currentPage, countPage, search } = req.body;
 
     const marke = await Market.findById(market);
     if (!marke) {
@@ -602,150 +603,69 @@ module.exports.getProducts = async (req, res) => {
         .status(401)
         .json({ message: "Diqqat! Do'kon malumotlari topilmadi" });
     }
-    if (searching) {
-      let response;
-      let responseCount;
-      if (searching.type === "category") {
-        const category = await Category.findOne({
-          market,
-          code: searching.search,
-        });
-        const productsCount = await Product.find({
-          market,
-          code: searching.search,
-        }).count();
 
-        const categoryCount = await Product.find({
-          market,
-          category: category && category._id,
-        }).count();
-        const searchedCategory = await Product.find({
-          market,
-          category: category && category._id,
-        })
-          .sort({ _id: -1 })
-          .skip(currentPage * countPage)
-          .limit(countPage)
-          .select(
-            "code name market category producttype brand unit price total"
-          )
-          .populate("category", "code")
-          .populate("producttype", "name")
-          .populate("brand", "name")
-          .populate("unit", "name")
-          .populate("price", "incomingprice sellingprice");
+    const categorycode = new RegExp(
+      '.*' + search ? search.categorycode : '' + '.*',
+      'i'
+    );
+    const productcode = new RegExp(
+      '.*' + search ? search.productcode : '' + '.*',
+      'i'
+    );
+    const producttype = new RegExp(
+      '.*' + search ? search.producttype : '' + '.*',
+      'i'
+    );
+    const productname = new RegExp(
+      '.*' + search ? search.productname : '' + '.*',
+      'i'
+    );
+    const brandname = new RegExp('.*' + search ? search.brand : '' + '.*', 'i');
+    const count = await Product.find({
+      code: productcode,
+      name: productname,
+      market,
+    })
+      .sort({ _id: -1 })
+      .select('name category market producttype brand code')
+      // .populate({ path: 'category', match: { code: categorycode } })
+      // .populate({ path: 'producttype', match: { name: producttype } })
+      .populate({ path: 'brand', match: { name: brandname } });
 
-        const searchedProducts = await Product.find({
-          market,
-          code: searching.search,
-        })
-          .sort({ _id: -1 })
-          .skip(currentPage * countPage)
-          .limit(countPage)
-          .select(
-            "code name market category producttype brand unit price total"
-          )
-          .populate("category", "code")
-          .populate("producttype", "name")
-          .populate("brand", "name")
-          .populate("unit", "name")
-          .populate("price", "incomingprice sellingprice");
+    const filterCount = count.filter((item) => {
+      return (
+        // item.category !== null &&
+        // item.producttype !== null &&
+        item.brand !== null
+      );
+    });
 
-        response = [...searchedCategory, ...searchedProducts];
-        responseCount = categoryCount + productsCount;
-      }
-      if (searching.type === "producttype") {
-        const name = new RegExp(".*" + searching.search + ".*", "i");
-        const producttype = await ProductType.findOne({
-          market,
-          name: name,
-        });
-
-        const producttypeCount = await Product.find({
-          market,
-          producttype: producttype && producttype._id,
-        }).count();
-        const productsCount = await Product.find({
-          market,
-          name: name,
-        }).count();
-        const searchedProducttype = await Product.find({
-          market,
-          producttype: producttype && producttype._id,
-        })
-          .sort({ _id: -1 })
-          .skip(currentPage * countPage)
-          .limit(countPage)
-          .select(
-            "code name market category producttype brand unit price total"
-          )
-          .populate("category", "code")
-          .populate("producttype", "name")
-          .populate("brand", "name")
-          .populate("unit", "name")
-          .populate("price", "incomingprice sellingprice");
-
-        const searchedProducts = await Product.find({
-          market,
-          name: name,
-        })
-          .sort({ _id: -1 })
-          .skip(currentPage * countPage)
-          .limit(countPage)
-          .select(
-            "code name market category producttype brand unit price total"
-          )
-          .populate("category", "code")
-          .populate("producttype", "name")
-          .populate("brand", "name")
-          .populate("unit", "name")
-          .populate("price", "incomingprice sellingprice");
-
-        response = [...searchedProducttype, ...searchedProducts];
-        responseCount = producttypeCount + productsCount;
-      }
-      if (searching.type === "brand") {
-        const name = new RegExp(".*" + searching.search + ".*", "i");
-        const brand = await Brand.findOne({ market, name: name });
-        const productsCount = await Product.find({
-          market,
-          brand: brand && brand._id,
-        }).count();
-
-        const products = await Product.find({ market, brand: brand._id })
-          .sort({ _id: -1 })
-          .skip(currentPage * countPage)
-          .limit(countPage)
-          .select(
-            "code name market category producttype brand unit price total"
-          )
-          .populate("category", "code")
-          .populate("producttype", "name")
-          .populate("brand", "name")
-          .populate("unit", "name")
-          .populate("price", "incomingprice sellingprice");
-
-        response = [...products];
-        responseCount = productsCount;
-      }
-      res.status(201).json({ products: response, count: responseCount });
-    } else {
-      const productsCount = await Product.find({ market }).count();
-
-      const products = await Product.find({ market })
-        .sort({ _id: -1 })
-        .skip(currentPage * countPage)
-        .limit(countPage)
-        .select("code name market category producttype brand unit price total")
-        .populate("category", "code")
-        .populate("producttype", "name")
-        .populate("brand", "name")
-        .populate("unit", "name")
-        .populate("price", "incomingprice sellingprice");
-      res.status(201).json({ products: products, count: productsCount });
-    }
+    const products = await Product.find({
+      code: productcode,
+      name: productname,
+      market,
+    })
+      .sort({ _id: -1 })
+      .select('name category market producttype code unit total brand price')
+      // .populate({ path: 'category', match: { code: categorycode } })
+      // .populate({ path: 'producttype', match: { name: producttype } })
+      .populate({ path: 'brand', match: { name: brandname } })
+      .populate('category', 'code')
+      .populate('producttype', 'name')
+      .populate('unit', 'name')
+      .populate('price', 'incomingprice sellingprice')
+      .skip(currentPage * countPage)
+      .limit(countPage);
+    const filter = products.filter((item) => {
+      return (
+        // item.category !== null &&
+        // item.producttype !== null &&
+        item.brand !== null
+      );
+    });
+    res.status(201).json({ products: filter, count: filterCount.length });
   } catch (error) {
-    res.status(401).json({ message: "Serverda xatolik yuz berdi..." });
+    res.status(401).json({ message: 'Serverda xatolik yuz berdi...' });
   }
 };
 
@@ -773,6 +693,27 @@ module.exports.getCategory = async (req, res) => {
       .populate('price', 'sellingprice');
 
     res.send(products);
+  } catch (error) {
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
+  }
+};
+
+module.exports.getAllProducttypes = async (req, res) => {
+  try {
+    const { market } = req.body;
+    const marke = await Market.findById(market);
+
+    if (!marke) {
+      return res
+        .status(401)
+        .json({ message: "Diqqat! Do'kon malumotlari topilmadi." });
+    }
+
+    const producttypes = await ProductType.find({ market }).select(
+      'name category market'
+    );
+
+    res.status(201).json(producttypes);
   } catch (error) {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }

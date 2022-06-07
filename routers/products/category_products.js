@@ -74,6 +74,10 @@ router.post('/product/getproducts', auth, (req, res) => {
   require('./product').getProducts(req, res);
 });
 
+router.post('/product/getproducttypes', auth, (req, res) => {
+  require('./product').getAllProducttypes(req, res);
+});
+
 router.delete('/product/deleteall', auth, (req, res) => {
   require('./product').deleteAll(req, res);
 });
