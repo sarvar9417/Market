@@ -11,12 +11,17 @@ import { CreateHeader } from './ProductType/CreateHeader';
 import { TableHeader } from './ProductType/TableHeader';
 import { TableHead } from './ProductType/TableHead';
 import { Rows } from './ProductType/Rows';
+import { ExcelTable } from './ProductType/ExcelTable';
 
 export const ProductType = () => {
   //====================================================================
   //====================================================================
   const [modal, setModal] = useState(false);
   const [search, setSearch] = useState({
+    categorycode: '',
+    name: '',
+  });
+  const [sendingsearch, setSendingSearch] = useState({
     categorycode: '',
     name: '',
   });
@@ -98,16 +103,21 @@ export const ProductType = () => {
 
   //====================================================================
   //====================================================================
-
   const [currentProductTypes, setCurrentProductTypes] = useState([]);
   const [searchStorage, setSearchStorage] = useState([]);
+  const [tableExcel, setTableExcel] = useState([]);
 
   const getProductTypes = useCallback(async () => {
     try {
       const data = await request(
         `/api/products/producttype/getproducttypes`,
         'POST',
-        { market: auth.market._id, currentPage, countPage, search },
+        {
+          market: auth.market._id,
+          currentPage,
+          countPage,
+          search: sendingsearch,
+        },
         {
           Authorization: `Bearer ${auth.token}`,
         }
@@ -122,20 +132,23 @@ export const ProductType = () => {
         status: 'error',
       });
     }
-  }, [request, auth, notify, currentPage, countPage, search]);
+  }, [request, auth, notify, currentPage, countPage, sendingsearch]);
 
-  const getAllProductType = useCallback(async () => {
+  const getSearchedProductType = async () => {
     try {
       const data = await request(
-        '/api/products/producttype/getall',
+        '/api/products/producttype/getproducttypesexcel',
         'POST',
-        { market: auth.market._id, currentPage, countPage },
+        {
+          market: auth.market._id,
+          search: sendingsearch,
+        },
         {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      setCurrentProductTypes(data.producttypes);
-      setProductTypeCount(data.count);
+      setTableExcel(data);
+      document.getElementById('reacthtmltoexcel').click();
     } catch (error) {
       notify({
         title: error,
@@ -143,7 +156,7 @@ export const ProductType = () => {
         status: 'error',
       });
     }
-  }, [notify, auth, currentPage, countPage, request]);
+  };
   //====================================================================
   //====================================================================
 
@@ -160,7 +173,7 @@ export const ProductType = () => {
 
   const searchProductType = (e) => {
     if (e.target.name === 'code') {
-      setSearch({ name: '', categorycode: e.target.value });
+      setSearch({ ...search, categorycode: e.target.value });
 
       const searched = searchStorage.filter(
         (item) => item.category && item.category.code.includes(e.target.value)
@@ -168,7 +181,7 @@ export const ProductType = () => {
       setCurrentProductTypes(searched);
     }
     if (e.target.name === 'name') {
-      setSearch({ categorycode: '', name: e.target.value });
+      setSearch({ ...search, name: e.target.value });
 
       const searched = searchStorage.filter(
         (item) =>
@@ -182,15 +195,13 @@ export const ProductType = () => {
   const searchKeypress = (e) => {
     if (e.key === 'Enter') {
       setCurrentPage(0);
-      setChangedCurrentPage(0);
-      getProductTypes();
+      setSendingSearch(search);
     }
   };
 
   const setPageSize = (e) => {
     setCurrentPage(0);
     setCountPage(e.target.value);
-    setCurrentProductTypes(currentProductTypes.slice(0, e.target.value));
   };
 
   //====================================================================
@@ -308,22 +319,13 @@ export const ProductType = () => {
 
   //====================================================================
   //====================================================================
-  const [changedCurrentPage, setChangedCurrentPage] = useState(currentPage);
   useEffect(() => {
-    if (currentPage > changedCurrentPage || currentPage < changedCurrentPage) {
-      getProductTypes();
-      setChangedCurrentPage(currentPage);
-    }
-  }, [currentPage, countPage, getProductTypes, changedCurrentPage]);
+    getProductTypes();
+  }, [currentPage, countPage, getProductTypes]);
 
-  const [n, setN] = useState();
   useEffect(() => {
-    if (!n) {
-      setN(1);
-      getCategories();
-      getAllProductType();
-    }
-  }, [getCategories, n, getAllProductType]);
+    getCategories();
+  }, [getCategories]);
   //====================================================================
   //====================================================================
 
@@ -344,6 +346,8 @@ export const ProductType = () => {
         />
         <br />
         <TableHeader
+          currentPage={currentPage}
+          getSearchedProductType={getSearchedProductType}
           searchProductType={searchProductType}
           setPageSize={setPageSize}
           setCurrentPage={setCurrentPage}
@@ -373,27 +377,7 @@ export const ProductType = () => {
           })}
       </div>
 
-      <div className='d-none'>
-        <table className='table m-0' id='data-excel-table'>
-          <thead>
-            <tr>
-              <th>№</th>
-              <th>{t('Kategoriya')}</th>
-              <th>{t('Mahsulot turi')}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentProductTypes &&
-              currentProductTypes.map((item, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{item.category.code}</td>
-                  <td>{item.name}</td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-      </div>
+      <ExcelTable datas={tableExcel} />
 
       <Modal
         modal={modal}

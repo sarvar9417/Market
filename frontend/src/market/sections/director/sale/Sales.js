@@ -1,9 +1,10 @@
-import React from "react";
-import { TableHeader } from "./Sales/TableHeader";
-import { TableHead } from "./Sales/TableHead";
-import { Rows } from "./Sales/Rows";
+import React from 'react';
+import { TableHeader } from './Sales/TableHeader';
+import { TableHead } from './Sales/TableHead';
+import { Rows } from './Sales/Rows';
 
 export const Sales = ({
+  getSaleConnectorsExcel,
   changePrepayment,
   changeDate,
   startDate,
@@ -23,8 +24,10 @@ export const Sales = ({
 }) => {
   return (
     <div className='overflow-x-auto'>
-      <div className={tableCard ? "min-w-[992px]" : "hidden"}>
+      <div className={tableCard ? 'min-w-[992px]' : 'hidden'}>
         <TableHeader
+          getSaleConnectorsExcel={getSaleConnectorsExcel}
+          currentPage={currentPage}
           changeDate={changeDate}
           startDate={startDate}
           endDate={endDate}

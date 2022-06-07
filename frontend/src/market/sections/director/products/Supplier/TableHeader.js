@@ -7,14 +7,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileExcel } from '@fortawesome/free-solid-svg-icons';
 
 export const TableHeader = ({
-  getBrandsExcel,
+  getSuppliersExcel,
   currentPage,
   setPageSize,
-  searchBrand,
+  searchSupplier,
   setCurrentPage,
-  brandsCount,
   countPage,
   keyPressed,
+  suppliersCount,
 }) => {
   return (
     <ul className='tbody border-b border-t-2 border-blue-800'>
@@ -23,9 +23,9 @@ export const TableHeader = ({
       </li>
       <li className='th-h col-span-5'>
         <SearchInput
-          changeHandler={searchBrand}
+          changeHandler={searchSupplier}
           type={'text'}
-          placeholder={'Brand nomi'}
+          placeholder={'Yetkazib beruvchi nomi'}
           name='name'
           keyPressed={keyPressed}
         />
@@ -35,16 +35,16 @@ export const TableHeader = ({
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
           countPage={countPage}
-          totalDatas={brandsCount}
+          totalDatas={suppliersCount}
         />
       </li>
       <li className='text-center flex justify-center items-center font-bold border-r py-2 col-span-2 bg-white'>
         <button
           className='px-4 bg-green-700 hover:bg-green-800 text-white rounded'
-          onClick={getBrandsExcel}>
+          onClick={getSuppliersExcel}>
           <FontAwesomeIcon icon={faFileExcel} />
         </button>
-        <ExcelDownload filename={'Brandlar'} />
+        <ExcelDownload filename={'Yetkazib beruvchilar'} />
       </li>
     </ul>
   );

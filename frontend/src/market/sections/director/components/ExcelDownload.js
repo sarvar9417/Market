@@ -1,10 +1,10 @@
-import { t } from "i18next";
-import React from "react";
-import ReactHtmlTableToExcel from "react-html-table-to-excel";
+import { t } from 'i18next';
+import React from 'react';
+import ReactHtmlTableToExcel from 'react-html-table-to-excel';
 
 export const ExcelDownload = ({ filename }) => {
   return (
-    <div className='excel'>
+    <div className='excel hidden'>
       <ReactHtmlTableToExcel
         id='reacthtmltoexcel'
         table='data-excel-table'

@@ -1,7 +1,12 @@
-import React, { useCallback } from "react";
-import ReactPaginate from "react-paginate";
+import React, { useCallback } from 'react';
+import ReactPaginate from 'react-paginate';
 
-export const Pagination = ({ countPage, totalDatas, setCurrentPage }) => {
+export const Pagination = ({
+  countPage,
+  totalDatas,
+  setCurrentPage,
+  currentPage,
+}) => {
   const pageNumbers = [];
 
   for (let i = 1; i <= Math.ceil(totalDatas / countPage); i++) {
@@ -18,23 +23,24 @@ export const Pagination = ({ countPage, totalDatas, setCurrentPage }) => {
   return (
     <nav className='float-right'>
       <ReactPaginate
-        previousLabel={"<<"}
+        previousLabel={'<<'}
+        forcePage={currentPage}
         nextLabel='>>'
-        breakLabel={"..."}
+        breakLabel={'...'}
         pageCount={pageNumbers.length}
         marginPagesDisplayed={1}
         pageRangeDisplayed={2}
         onPageChange={pageHandle}
-        containerClassName={"pagination justify-content-right"}
-        pageClassName={"page-item"}
-        pageLinkClassName={"page-link"}
-        previousClassName={"page-item"}
-        previousLinkClassName={"page-link"}
-        nextClassName={"page-item"}
-        nextLinkClassName={"page-link"}
-        breakClassName={"page-item"}
-        breakLinkClassName={"page-link"}
-        activeClassName={"active"}
+        containerClassName={'pagination justify-content-right'}
+        pageClassName={'page-item'}
+        pageLinkClassName={'page-link'}
+        previousClassName={'page-item'}
+        previousLinkClassName={'page-link'}
+        nextClassName={'page-item'}
+        nextLinkClassName={'page-link'}
+        breakClassName={'page-item'}
+        breakLinkClassName={'page-link'}
+        activeClassName={'active'}
       />
     </nav>
   );

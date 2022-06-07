@@ -1,22 +1,22 @@
-import { t } from "i18next";
-import { useToast } from "@chakra-ui/react";
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../../context/AuthContext";
-import { useHttp } from "../../../hooks/http.hook";
-import { Modal } from "../components/Modal";
-import { InputProduct } from "./components/InputProduct";
-import { Products } from "./ProductsSelling/Products";
-import { Selling } from "./ProductsSelling/Selling";
-import { Card } from "./PaymentCard/Card";
-import { Sales } from "./Sales";
-import { Cheque } from "./PaymentCard/Cheque";
-import { ChequeConnectors } from "./Sales/ChequeConnectors";
-import { EditSelling } from "./EditSelling";
-import { discountProcient, returnProduct } from "./returnProduct/returnProduct";
-import { CardEdit } from "./EditPaymentCard/CardEdit";
-import { RouterBtns } from "./RouterBtns/RouterBtns";
-import { ExcelTable } from "./Sales/ExcelTable";
-import { PrePaymentCard } from "./PrePaymentCard/PrepaymentCard";
+import { t } from 'i18next';
+import { useToast } from '@chakra-ui/react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../../../context/AuthContext';
+import { useHttp } from '../../../hooks/http.hook';
+import { Modal } from '../components/Modal';
+import { InputProduct } from './components/InputProduct';
+import { Products } from './ProductsSelling/Products';
+import { Selling } from './ProductsSelling/Selling';
+import { Card } from './PaymentCard/Card';
+import { Sales } from './Sales';
+import { Cheque } from './PaymentCard/Cheque';
+import { ChequeConnectors } from './Sales/ChequeConnectors';
+import { EditSelling } from './EditSelling';
+import { discountProcient, returnProduct } from './returnProduct/returnProduct';
+import { CardEdit } from './EditPaymentCard/CardEdit';
+import { RouterBtns } from './RouterBtns/RouterBtns';
+import { ExcelTable } from './Sales/ExcelTable';
+import { PrePaymentCard } from './PrePaymentCard/PrepaymentCard';
 
 export const Sale = () => {
   //====================================================================
@@ -53,7 +53,7 @@ export const Sale = () => {
         duration: 5000,
         isClosable: true,
 
-        position: "top-right",
+        position: 'top-right',
       });
     },
     [toast]
@@ -112,8 +112,8 @@ export const Sale = () => {
   // Categories
   const [categories, setCategories] = useState([
     {
-      label: t("Barcha kategoriyalar"),
-      value: "all",
+      label: t('Barcha kategoriyalar'),
+      value: 'all',
     },
   ]);
 
@@ -122,7 +122,7 @@ export const Sale = () => {
       const data = await request(
         `/api/products/category/getall`,
 
-        "POST",
+        'POST',
         { market: auth.market._id },
         {
           Authorization: `Bearer ${auth.token}`,
@@ -130,14 +130,14 @@ export const Sale = () => {
       );
       let c = [
         {
-          label: t("Barcha kategoriyalar"),
-          value: "all",
+          label: t('Barcha kategoriyalar'),
+          value: 'all',
         },
       ];
       data.map((category) => {
         return c.push({
           label: category.code,
-          type: "Category",
+          type: 'Category',
           value: category,
         });
       });
@@ -145,14 +145,14 @@ export const Sale = () => {
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [request, auth, notify]);
 
   const changeCategory = (e) => {
-    if (e.value === "all") {
+    if (e.value === 'all') {
       return setProductTypes(allproducttypes);
     }
     const filter = allproducttypes.filter((producttype) => {
@@ -192,7 +192,7 @@ export const Sale = () => {
     try {
       const data = await request(
         `/api/products/producttype/getall`,
-        "POST",
+        'POST',
         { market: auth.market._id },
         {
           Authorization: `Bearer ${auth.token}`,
@@ -202,7 +202,7 @@ export const Sale = () => {
       data.map((type) => {
         return c.push({
           label: type.name,
-          type: "ProductType",
+          type: 'ProductType',
           value: type,
         });
       });
@@ -211,8 +211,8 @@ export const Sale = () => {
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [request, auth, notify]);
@@ -232,7 +232,7 @@ export const Sale = () => {
     try {
       const data = await request(
         `/api/products/brand/getall`,
-        "POST",
+        'POST',
         { market: auth.market._id },
         {
           Authorization: `Bearer ${auth.token}`,
@@ -242,7 +242,7 @@ export const Sale = () => {
       data.map((type) => {
         return c.push({
           label: type.name,
-          type: "Brand",
+          type: 'Brand',
           value: type,
         });
       });
@@ -250,8 +250,8 @@ export const Sale = () => {
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [request, auth, notify]);
@@ -272,7 +272,7 @@ export const Sale = () => {
       const data = await request(
         `/api/exchangerate/get`,
 
-        "POST",
+        'POST',
         { market: auth.market._id },
         {
           Authorization: `Bearer ${auth.token}`,
@@ -282,39 +282,11 @@ export const Sale = () => {
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [request, auth, notify]);
-
-  //====================================================================
-  //====================================================================
-
-  //====================================================================
-  //====================================================================
-  // Saleconnecter counts
-  const [saleCounts, setSaleCounts] = useState(0);
-
-  const getSaleCounts = useCallback(async () => {
-    try {
-      const data = await request(
-        `/api/sales/saleproducts/checknumber`,
-        "POST",
-        { market: auth.market._id, startDate, endDate },
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
-      );
-      setSaleCounts(data);
-    } catch (error) {
-      notify({
-        title: error,
-        description: "",
-        status: "error",
-      });
-    }
-  }, [request, auth, notify, startDate, endDate]);
 
   //====================================================================
   //====================================================================
@@ -333,20 +305,20 @@ export const Sale = () => {
     debt: {},
     discount: {},
   });
-
   const [allSales, setAllSales] = useState({
     products: [],
     payments: [],
     debts: [],
     discounts: [],
   });
+  const [saleCounts, setSaleCounts] = useState(0);
 
   const getProducts = useCallback(
     async (type) => {
       try {
         const data = await request(
           `/api/products/product/getsale`,
-          "POST",
+          'POST',
           { market: auth.market._id, type: type.type, typeid: type.value._id },
           {
             Authorization: `Bearer ${auth.token}`,
@@ -357,11 +329,11 @@ export const Sale = () => {
           return c.push({
             label: (
               <span className='flex justify-between'>
-                <span>{type.code + " " + type.name}</span>{" "}
+                <span>{type.code + ' ' + type.name}</span>{' '}
                 <span className='font-bold'>{type.total}</span>
               </span>
             ),
-            type: "product",
+            type: 'product',
             value: type,
           });
         });
@@ -369,22 +341,23 @@ export const Sale = () => {
       } catch (error) {
         notify({
           title: error,
-          description: "",
-          status: "error",
+          description: '',
+          status: 'error',
         });
       }
     },
     [request, auth, notify]
   );
+  const [excelTable, setExcelTable] = useState([]);
 
   const changeProduct = (e) => {
     if (e.value.price.sellingprice === 0) {
       return notify({
         title:
-          "Diqqat! Ushbu mahsulotga narx belgilanmagan. Mahsulotni sotish imkoni mavjud emas. ",
+          'Diqqat! Ushbu mahsulotga narx belgilanmagan. Mahsulotni sotish imkoni mavjud emas. ',
         description:
           "Sotuvdan oldin mahsulotga sotuv narxini belgilashingizni so'raymiz.",
-        status: "warning",
+        status: 'warning',
       });
     }
 
@@ -393,7 +366,7 @@ export const Sale = () => {
         return notify({
           title: "Diqqat! Ushbu mahsulot ro'yxatga qo'shilgan. ",
           description: "Qayta qo'shmasdan qiymatini o'zgartirishingiz mumkin.",
-          status: "warning",
+          status: 'warning',
         });
       }
     }
@@ -414,13 +387,13 @@ export const Sale = () => {
     let pieces = saleproduct.pieces;
     let unitprice = saleproduct.unitprice;
     let totalprice = saleproduct.totalprice;
-    if (e.target.name === "pieces") {
+    if (e.target.name === 'pieces') {
       if (parseFloat(e.target.value) > saleproduct.total) {
         return notify({
           title:
-            "Diqqat! Ushbu mahsulot soni omborda mavjud mahsulot sonidan oshmasligi lozim.",
+            'Diqqat! Ushbu mahsulot soni omborda mavjud mahsulot sonidan oshmasligi lozim.',
           description: `Omborda mavjud mahsulot soni ${saleproduct.total}`,
-          status: "warning",
+          status: 'warning',
         });
       }
       totalprice =
@@ -429,30 +402,30 @@ export const Sale = () => {
         ) / 100;
       setSaleProduct({
         ...saleproduct,
-        pieces: e.target.value === "" ? "" : parseFloat(e.target.value),
-        totalprice: e.target.value === "" ? 0 : totalprice,
+        pieces: e.target.value === '' ? '' : parseFloat(e.target.value),
+        totalprice: e.target.value === '' ? 0 : totalprice,
         totalpriceuzs:
-          e.target.value === ""
+          e.target.value === ''
             ? 0
             : Math.round(totalprice * exchangerate.exchangerate * 100) / 100,
       });
     }
-    if (e.target.name === "unitprice") {
+    if (e.target.name === 'unitprice') {
       totalprice =
         Math.round((!pieces ? 0 : pieces) * parseFloat(e.target.value) * 100) /
         100;
       setSaleProduct({
         ...saleproduct,
-        unitprice: e.target.value === "" ? "" : parseFloat(e.target.value),
+        unitprice: e.target.value === '' ? '' : parseFloat(e.target.value),
         unitpriceuzs:
-          e.target.value === ""
-            ? ""
+          e.target.value === ''
+            ? ''
             : Math.round(
                 parseFloat(e.target.value) * exchangerate.exchangerate * 100
               ) / 100,
-        totalprice: e.target.value === "" ? 0 : totalprice,
+        totalprice: e.target.value === '' ? 0 : totalprice,
         totalpriceuzs:
-          e.target.value === ""
+          e.target.value === ''
             ? 0
             : Math.round(totalprice * exchangerate.exchangerate * 100) / 100,
       });
@@ -481,7 +454,7 @@ export const Sale = () => {
       ...payment,
       totalprice: Math.round(total * 100) / 100,
       totalpriceuzs: Math.round(totaluzs * 100) / 100,
-      type: "cash",
+      type: 'cash',
       cash: Math.round(total * 100) / 100,
       cashuzs: Math.round(totaluzs * 100) / 100,
       discount: 0,
@@ -492,7 +465,7 @@ export const Sale = () => {
   const editProducts = (product, index, type) => {
     let sales = [...saleproducts];
     sales.splice(index, 1);
-    if (type === "edit") {
+    if (type === 'edit') {
       setSaleProduct(product);
       setModal(true);
     }
@@ -512,7 +485,7 @@ export const Sale = () => {
       ...payment,
       totalprice: Math.round(total * 100) / 100,
       totalpriceuzs: Math.round(totaluzs * 100) / 100,
-      type: "cash",
+      type: 'cash',
       cash: Math.round(total * 100) / 100,
       cashuzs: Math.round(totaluzs * 100) / 100,
       discount: 0,
@@ -523,9 +496,9 @@ export const Sale = () => {
   const saleHandler = () => {
     if (saleproducts.length === 0) {
       return notify({
-        title: "Diqqat! Mahsulotlar kiritilmagan",
-        description: "",
-        status: "warning",
+        title: 'Diqqat! Mahsulotlar kiritilmagan',
+        description: '',
+        status: 'warning',
       });
     }
     setVisible(true);
@@ -538,59 +511,59 @@ export const Sale = () => {
   // ===================================================================
   // Saleconnectors
   const [saleconnectors, setSaleConnectors] = useState([]);
-  // const [saleconnectorsexcel, setSaleConnectorsExcel] = useState([]);
 
   const getSaleConnectors = useCallback(async () => {
     try {
       const data = await request(
         `/api/sales/saleproducts/getconnectors`,
-        "POST",
+        'POST',
         { market: auth.market._id, currentPage, countPage, startDate, endDate },
         {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-
-      setCurrentProducts(data);
-      setSaleConnectors(data);
+      setSaleCounts(data.count);
+      setCurrentProducts(data.saleconnectors);
+      setSaleConnectors(data.saleconnectors);
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [request, auth, notify, countPage, currentPage, startDate, endDate]);
 
-  // const getSaleConnectorsExcel = useCallback(async () => {
-  //   try {
-  //     const data = await request(
-  //       `/api/sales/saleproducts/getconnectors`,
-  //       "POST",
-  //       { market: auth.market._id, currentPage, countPage, startDate, endDate },
-  //       {
-  //         Authorization: `Bearer ${auth.token}`,
-  //       }
-  //     );
+  const getSaleConnectorsExcel = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/sales/saleproducts/getconnectorsexcel`,
+        'POST',
+        {
+          market: auth.market._id,
+          startDate,
+          endDate,
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      console.log(data);
+      setExcelTable(data);
+      document.getElementById('reacthtmltoexcel').click();
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [request, auth, notify, startDate, endDate]);
 
-  //     setSaleConnectorsExcel(data);
-  //   } catch (error) {
-  //     notify({
-  //       title: error,
-  //       description: "",
-  //       status: "error",
-  //     });
-  //   }
-  // }, [request, auth, notify, countPage, currentPage, startDate, endDate]);
-
-  const setPageSize = useCallback(
-    (e) => {
-      setCurrentPage(0);
-      setCountPage(e.target.value);
-      setCurrentProducts(saleconnectors.slice(0, e.target.value));
-    },
-    [saleconnectors]
-  );
+  const setPageSize = useCallback((e) => {
+    setCurrentPage(0);
+    setCountPage(e.target.value);
+  }, []);
   //====================================================================
   //====================================================================
 
@@ -606,7 +579,7 @@ export const Sale = () => {
       try {
         const data = await request(
           `/api/sales/client/getall`,
-          "POST",
+          'POST',
           { market: auth.market._id },
           {
             Authorization: `Bearer ${auth.token}`,
@@ -614,8 +587,8 @@ export const Sale = () => {
         );
         let v = [
           {
-            label: t("Barcha mijozlar"),
-            value: "all",
+            label: t('Barcha mijozlar'),
+            value: 'all',
           },
         ];
 
@@ -631,8 +604,8 @@ export const Sale = () => {
       } catch (error) {
         notify({
           title: error,
-          description: "",
-          status: "error",
+          description: '',
+          status: 'error',
         });
       }
     },
@@ -665,7 +638,7 @@ export const Sale = () => {
     try {
       const data = await request(
         `/api/sales/packman/getall`,
-        "POST",
+        'POST',
         { market: auth.market._id },
         {
           Authorization: `Bearer ${auth.token}`,
@@ -683,8 +656,8 @@ export const Sale = () => {
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [request, auth, notify]);
@@ -694,7 +667,7 @@ export const Sale = () => {
       name: e.label,
       _id: e.value,
     });
-    if (e.value === "all") {
+    if (e.value === 'all') {
       setClients(storageClients);
     } else {
       const filter = storageClients.filter((item) => item.packman === e.value);
@@ -718,13 +691,13 @@ export const Sale = () => {
   const [debt, setDebt] = useState({
     debt: 0,
     debtuzs: 0,
-    comment: "",
+    comment: '',
   });
 
   const [payment, setPayment] = useState({
     totalprice: 0,
     totalpriceuzs: 0,
-    type: "cash",
+    type: 'cash',
     cash: totalprice,
     card: 0,
     transfer: 0,
@@ -739,7 +712,7 @@ export const Sale = () => {
     setPayment({
       totalprice: 0,
       totalpriceuzs: 0,
-      type: "cash",
+      type: 'cash',
       cash: 0,
       card: 0,
       transfer: 0,
@@ -752,7 +725,7 @@ export const Sale = () => {
     setDebt({
       debt: 0,
       debtuzs: 0,
-      comment: "",
+      comment: '',
     });
     setDiscount({
       discount: 0,
@@ -765,10 +738,9 @@ export const Sale = () => {
     setTotalPriceUzs(0);
     setPackman({});
     setClient({});
-    getSaleCounts();
     setPaymentType({
-      type: "cash",
-      name: "Naqt",
+      type: 'cash',
+      name: 'Naqt',
     });
 
     setEditTotalPrice(0);
@@ -787,7 +759,7 @@ export const Sale = () => {
     setPrePayment({
       totalprice: 0,
       totalpriceuzs: 0,
-      type: "cash",
+      type: 'cash',
       cash: 0,
       card: 0,
       transfer: 0,
@@ -798,39 +770,39 @@ export const Sale = () => {
       discountuzs: 0,
     });
     setPrePaymentType({
-      type: "cash",
-      name: "Naqt",
+      type: 'cash',
+      name: 'Naqt',
     });
     setPrePaymentDebt({
       debt: 0,
       debtuzs: 0,
-      comment: "",
+      comment: '',
     });
-  }, [getSaleCounts]);
+  }, []);
 
-  let types = ["cash", "card", "transfer"];
+  let types = ['cash', 'card', 'transfer'];
 
   const changeDiscount = (e, p) => {
     if (discount.isProcient && e.target.value > 100) {
       return notify({
         title: t(
-          "Diqqat! Umumiy summadan yuqori chegirma kiritish mumkin emas!"
+          'Diqqat! Umumiy summadan yuqori chegirma kiritish mumkin emas!'
         ),
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
     if (Math.round(e.target.value * 100) / 100 > totalprice) {
       return notify({
         title: t(
-          "Diqqat! Umumiy summadan yuqori chegirma kiritish mumkin emas!"
+          'Diqqat! Umumiy summadan yuqori chegirma kiritish mumkin emas!'
         ),
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
     p.discount =
-      e.target.value === "" ? "" : Math.round(e.target.value * 100) / 100;
+      e.target.value === '' ? '' : Math.round(e.target.value * 100) / 100;
     p.discountuzs =
       Math.round(e.target.value * exchangerate.exchangerate * 100) / 100;
     p.cash = 0;
@@ -884,10 +856,10 @@ export const Sale = () => {
     if (discount.isProcient && e.target.value > 100) {
       return notify({
         title: t(
-          "Diqqat! Umumiy summadan yuqori chegirma kiritish mumkin emas!"
+          'Diqqat! Umumiy summadan yuqori chegirma kiritish mumkin emas!'
         ),
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
     if (
@@ -896,15 +868,15 @@ export const Sale = () => {
     ) {
       return notify({
         title: t(
-          "Diqqat! Umumiy summadan yuqori chegirma kiritish mumkin emas!"
+          'Diqqat! Umumiy summadan yuqori chegirma kiritish mumkin emas!'
         ),
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
     p.discount =
       Math.round((e.target.value / exchangerate.exchangerate) * 100) / 100;
-    p.discountuzs = e.target.value === "" ? "" : e.target.value;
+    p.discountuzs = e.target.value === '' ? '' : e.target.value;
     p.cash = 0;
     p.card = 0;
     p.transfer = 0;
@@ -960,32 +932,32 @@ export const Sale = () => {
 
   const changeType = (e, p) => {
     let total =
-      (e.target.dataset.type === "cash"
-        ? e.target.value === ""
+      (e.target.dataset.type === 'cash'
+        ? e.target.value === ''
           ? 0
           : Math.round(e.target.value * 100) / 100
         : payment.cash) +
-      (e.target.dataset.type === "card"
-        ? e.target.value === ""
+      (e.target.dataset.type === 'card'
+        ? e.target.value === ''
           ? 0
           : Math.round(e.target.value * 100) / 100
         : payment.card) +
-      (e.target.dataset.type === "transfer"
-        ? e.target.value === ""
+      (e.target.dataset.type === 'transfer'
+        ? e.target.value === ''
           ? 0
           : Math.round(e.target.value * 100) / 100
         : payment.transfer);
 
     if (Math.round((total + discount.discount) * 100) / 100 > totalprice) {
       return notify({
-        title: t("Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!"),
-        description: "",
-        status: "error",
+        title: t('Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!'),
+        description: '',
+        status: 'error',
       });
     }
     p[e.target.dataset.type] =
-      e.target.value === "" ? "" : Math.round(e.target.value * 100) / 100;
-    p[e.target.dataset.type + "uzs"] =
+      e.target.value === '' ? '' : Math.round(e.target.value * 100) / 100;
+    p[e.target.dataset.type + 'uzs'] =
       Math.round(e.target.value * 100 * exchangerate.exchangerate) / 100;
     setDebt({
       ...debt,
@@ -1001,33 +973,33 @@ export const Sale = () => {
 
   const changeTypeUzs = (e, p) => {
     let total =
-      (e.target.dataset.type === "cash"
-        ? e.target.value === ""
+      (e.target.dataset.type === 'cash'
+        ? e.target.value === ''
           ? 0
           : Math.round((e.target.value / exchangerate.exchangerate) * 100) / 100
         : payment.cash) +
-      (e.target.dataset.type === "card"
-        ? e.target.value === ""
+      (e.target.dataset.type === 'card'
+        ? e.target.value === ''
           ? 0
           : Math.round((e.target.value / exchangerate.exchangerate) * 100) / 100
         : payment.card) +
-      (e.target.dataset.type === "transfer"
-        ? e.target.value === ""
+      (e.target.dataset.type === 'transfer'
+        ? e.target.value === ''
           ? 0
           : Math.round((e.target.value / exchangerate.exchangerate) * 100) / 100
         : payment.transfer);
 
     if (Math.round((total + discount.discount) * 100) / 100 > totalprice) {
       return notify({
-        title: t("Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!"),
-        description: "",
-        status: "error",
+        title: t('Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!'),
+        description: '',
+        status: 'error',
       });
     }
     p[e.target.dataset.type] =
       Math.round((e.target.value / exchangerate.exchangerate) * 100) / 100;
-    p[e.target.dataset.type + "uzs"] =
-      e.target.value === "" ? "" : Math.round(e.target.value * 100) / 100;
+    p[e.target.dataset.type + 'uzs'] =
+      e.target.value === '' ? '' : Math.round(e.target.value * 100) / 100;
     setDebt({
       ...debt,
       debt: Math.round((totalprice - (total + discount.discount)) * 100) / 100,
@@ -1042,11 +1014,11 @@ export const Sale = () => {
 
   const changeHandler = (e) => {
     let p = { ...payment };
-    if (e.target.dataset.type === "discount") {
-      if (e.target.dataset.money === "UZS") changeDiscountUzs(e, p);
+    if (e.target.dataset.type === 'discount') {
+      if (e.target.dataset.money === 'UZS') changeDiscountUzs(e, p);
       else changeDiscount(e, p);
     } else {
-      if (e.target.dataset.money === "UZS") {
+      if (e.target.dataset.money === 'UZS') {
         changeTypeUzs(e, p);
       } else changeType(e, p);
     }
@@ -1054,16 +1026,16 @@ export const Sale = () => {
   };
 
   const [paymentType, setPaymentType] = useState({
-    type: "cash",
-    name: "Naqt",
+    type: 'cash',
+    name: 'Naqt',
   });
 
   const typeHandler = (e) => {
-    if (e.target.dataset.type === "debt") return;
+    if (e.target.dataset.type === 'debt') return;
     let p = { ...payment };
     if (
-      e.target.dataset.type === "mixed" ||
-      e.target.dataset.type === "discount"
+      e.target.dataset.type === 'mixed' ||
+      e.target.dataset.type === 'discount'
     ) {
       setDebt({
         ...debt,
@@ -1077,7 +1049,7 @@ export const Sale = () => {
     types.map((type) => {
       return type === e.target.dataset.type
         ? ((p[type] = Math.round((totalprice - discount.discount) * 100) / 100),
-          (p[type + "uzs"] =
+          (p[type + 'uzs'] =
             Math.round(
               (totalprice - discount.discount) * exchangerate.exchangerate * 100
             ) / 100),
@@ -1087,7 +1059,7 @@ export const Sale = () => {
             debt: 0,
             debtuzs: 0,
           }))
-        : ((p[type] = 0), (p[type + "uzs"] = 0));
+        : ((p[type] = 0), (p[type + 'uzs'] = 0));
     });
     setPayment(p);
     setPaymentType({
@@ -1142,8 +1114,8 @@ export const Sale = () => {
       alert(totalprice);
       return notify({
         title: t("Diqqat! To'lov hisobida xatolik yuz bergan!"),
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
     if (debt.debt > 0) {
@@ -1169,7 +1141,7 @@ export const Sale = () => {
       setModal3(false);
       const data = await request(
         `/api/sales/saleproducts/register`,
-        "POST",
+        'POST',
         {
           market: auth.market._id,
           saleproducts,
@@ -1192,8 +1164,8 @@ export const Sale = () => {
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [
@@ -1218,7 +1190,6 @@ export const Sale = () => {
   // Add products
   const [saleconnectorid, setSaleConnectorId] = useState();
   const addProducts = (e) => {
-    setSaleCounts({ count: (e.id % 1000000) - 1 });
     setSaleConnectorId(e._id);
     setTableCard(false);
     setSellingCard(true);
@@ -1231,7 +1202,7 @@ export const Sale = () => {
       setModal3(false);
       const data = await request(
         `/api/sales/saleproducts/addproducts`,
-        "POST",
+        'POST',
         {
           market: auth.market._id,
           saleconnectorid,
@@ -1256,8 +1227,8 @@ export const Sale = () => {
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [
@@ -1287,7 +1258,7 @@ export const Sale = () => {
   const [paymentEdit, setPaymentEdit] = useState({
     totalprice: 0,
     totalpriceuzs: 0,
-    type: "cash",
+    type: 'cash',
     cash: 0,
     card: 0,
     transfer: 0,
@@ -1298,8 +1269,8 @@ export const Sale = () => {
     discountuzs: 0,
   });
   const [paymentTypeEdit, setPaymentTypeEdit] = useState({
-    type: "cash",
-    name: "Naqt",
+    type: 'cash',
+    name: 'Naqt',
   });
   const [editSaleProducts, setEditSaleProducts] = useState([]);
   const [editSaleConnectorId, setEditSaleConnectorId] = useState({ _id: 0 });
@@ -1336,11 +1307,11 @@ export const Sale = () => {
   };
 
   const typeHandlerEdit = (e) => {
-    if (e.target.dataset.type === "debt") return;
+    if (e.target.dataset.type === 'debt') return;
 
     let p = { ...paymentEdit };
     p.type = e.target.dataset.type;
-    if (e.target.dataset.type === "mixed") {
+    if (e.target.dataset.type === 'mixed') {
       setDebt({
         ...debt,
         debt:
@@ -1380,7 +1351,7 @@ export const Sale = () => {
                 }, 0)) *
                 100
             ) / 100),
-          (p[type + "uzs"] =
+          (p[type + 'uzs'] =
             Math.round(
               (editTotalPriceUzs -
                 editDiscounts.reduce((summ, discount) => {
@@ -1397,7 +1368,7 @@ export const Sale = () => {
             debt: 0,
             debtuzs: 0,
           }))
-        : ((p[type] = 0), (p[type + "uzs"] = 0));
+        : ((p[type] = 0), (p[type + 'uzs'] = 0));
     });
     setPaymentEdit(p);
     setPaymentTypeEdit({
@@ -1408,18 +1379,18 @@ export const Sale = () => {
 
   const changeTypeEdit = (e, p) => {
     let total =
-      (e.target.dataset.type === "cash"
-        ? e.target.value === ""
+      (e.target.dataset.type === 'cash'
+        ? e.target.value === ''
           ? 0
           : Math.round(e.target.value * 100) / 100
         : paymentEdit.cash) +
-      (e.target.dataset.type === "card"
-        ? e.target.value === ""
+      (e.target.dataset.type === 'card'
+        ? e.target.value === ''
           ? 0
           : Math.round(e.target.value * 100) / 100
         : paymentEdit.card) +
-      (e.target.dataset.type === "transfer"
-        ? e.target.value === ""
+      (e.target.dataset.type === 'transfer'
+        ? e.target.value === ''
           ? 0
           : Math.round(e.target.value * 100) / 100
         : paymentEdit.transfer);
@@ -1440,14 +1411,14 @@ export const Sale = () => {
       (totals > 0 && Math.round(total * 100) / 100 > totals)
     ) {
       return notify({
-        title: t("Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!"),
-        description: "",
-        status: "error",
+        title: t('Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!'),
+        description: '',
+        status: 'error',
       });
     }
     p[e.target.dataset.type] =
-      e.target.value === "" ? "" : Math.round(e.target.value * 100) / 100;
-    p[e.target.dataset.type + "uzs"] =
+      e.target.value === '' ? '' : Math.round(e.target.value * 100) / 100;
+    p[e.target.dataset.type + 'uzs'] =
       Math.round(e.target.value * 100 * editExchanrate.exchangerate) / 100;
     setDebt({
       ...debt,
@@ -1484,20 +1455,20 @@ export const Sale = () => {
 
   const changeTypeUzsEdit = (e, p) => {
     let total =
-      (e.target.dataset.type === "cash"
-        ? e.target.value === ""
+      (e.target.dataset.type === 'cash'
+        ? e.target.value === ''
           ? 0
           : Math.round((e.target.value / editExchanrate.exchangerate) * 100) /
             100
         : payment.cash) +
-      (e.target.dataset.type === "card"
-        ? e.target.value === ""
+      (e.target.dataset.type === 'card'
+        ? e.target.value === ''
           ? 0
           : Math.round((e.target.value / editExchanrate.exchangerate) * 100) /
             100
         : payment.card) +
-      (e.target.dataset.type === "transfer"
-        ? e.target.value === ""
+      (e.target.dataset.type === 'transfer'
+        ? e.target.value === ''
           ? 0
           : Math.round((e.target.value / editExchanrate.exchangerate) * 100) /
             100
@@ -1519,15 +1490,15 @@ export const Sale = () => {
       (totals > 0 && Math.round(total * 100) / 100 > totals)
     ) {
       return notify({
-        title: t("Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!"),
-        description: "",
-        status: "error",
+        title: t('Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!'),
+        description: '',
+        status: 'error',
       });
     }
     p[e.target.dataset.type] =
       Math.round((e.target.value / editExchanrate.exchangerate) * 100) / 100;
-    p[e.target.dataset.type + "uzs"] =
-      e.target.value === "" ? "" : Math.round(e.target.value * 100) / 100;
+    p[e.target.dataset.type + 'uzs'] =
+      e.target.value === '' ? '' : Math.round(e.target.value * 100) / 100;
     setDebt({
       ...debt,
       debt:
@@ -1563,7 +1534,7 @@ export const Sale = () => {
 
   const changeHandlerEdit = (e) => {
     let p = { ...paymentEdit };
-    if (e.target.dataset.money === "UZS") {
+    if (e.target.dataset.money === 'UZS') {
       changeTypeUzsEdit(e, p);
     } else changeTypeEdit(e, p);
 
@@ -1578,9 +1549,9 @@ export const Sale = () => {
     ) {
       return notify({
         title:
-          "Diqqat! Xarid qilingan mahsulotdan ortiq mahsulot qaytarishning imkoni mavjud emas!",
-        description: "",
-        status: "warning",
+          'Diqqat! Xarid qilingan mahsulotdan ortiq mahsulot qaytarishning imkoni mavjud emas!',
+        description: '',
+        status: 'warning',
       });
     }
 
@@ -1649,7 +1620,7 @@ export const Sale = () => {
       ...paymentEdit,
       cash: Math.round(cash * 100) / 100,
       cashuzs: Math.round(cashuzs * 100) / 100,
-      type: "cash",
+      type: 'cash',
     });
     setEditExchanrate({
       exchangerate:
@@ -1683,8 +1654,8 @@ export const Sale = () => {
     ) {
       return notify({
         title: t("Diqqat! To'lov hisobida xatolik yuz bergan!"),
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
     if (debt.debt > 0) {
@@ -1698,7 +1669,7 @@ export const Sale = () => {
     try {
       const data = await request(
         `/api/sales/saleproducts/registeredit`,
-        "POST",
+        'POST',
         {
           market: auth.market._id,
           saleproducts: editSaleProducts,
@@ -1723,8 +1694,8 @@ export const Sale = () => {
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [
@@ -1758,7 +1729,7 @@ export const Sale = () => {
   //====================================================================
   // Search
   const changeDate = (e) => {
-    e.target.name === "startDate"
+    e.target.name === 'startDate'
       ? setStartDate(new Date(e.target.value).toISOString())
       : setEndDate(new Date(e.target.value).toISOString());
   };
@@ -1776,7 +1747,7 @@ export const Sale = () => {
   const [prePayment, setPrePayment] = useState({
     totalprice: 0,
     totalpriceuzs: 0,
-    type: "cash",
+    type: 'cash',
     cash: totalprice,
     card: 0,
     transfer: 0,
@@ -1787,14 +1758,14 @@ export const Sale = () => {
     discountuzs: 0,
   });
   const [prePaymentType, setPrePaymentType] = useState({
-    type: "cash",
-    name: "Naqt",
+    type: 'cash',
+    name: 'Naqt',
   });
 
   const [prePaymentDebt, setPrePaymentDebt] = useState({
     debt: 0,
     debtuzs: 0,
-    comment: "",
+    comment: '',
   });
 
   const changePrepayment = (e) => {
@@ -1842,11 +1813,11 @@ export const Sale = () => {
   };
 
   const typeHandlerPrePayment = (e) => {
-    if (e.target.dataset.type === "debt") return;
+    if (e.target.dataset.type === 'debt') return;
 
     let p = { ...prePayment };
     p.type = e.target.dataset.type;
-    if (e.target.dataset.type === "mixed") {
+    if (e.target.dataset.type === 'mixed') {
       setPrePaymentDebt({
         ...prePayment,
         debt:
@@ -1886,7 +1857,7 @@ export const Sale = () => {
                 }, 0)) *
                 100
             ) / 100),
-          (p[type + "uzs"] =
+          (p[type + 'uzs'] =
             Math.round(
               (prePaymentTotalPriceUzs -
                 prePaymentSaleConnector.discounts.reduce((summ, discount) => {
@@ -1903,7 +1874,7 @@ export const Sale = () => {
             debt: 0,
             debtuzs: 0,
           }))
-        : ((p[type] = 0), (p[type + "uzs"] = 0));
+        : ((p[type] = 0), (p[type + 'uzs'] = 0));
     });
     setPrePayment(p);
     setPrePaymentType({
@@ -1914,18 +1885,18 @@ export const Sale = () => {
 
   const changeTypePrePayment = (e, p) => {
     let total =
-      (e.target.dataset.type === "cash"
-        ? e.target.value === ""
+      (e.target.dataset.type === 'cash'
+        ? e.target.value === ''
           ? 0
           : Math.round(e.target.value * 100) / 100
         : prePayment.cash) +
-      (e.target.dataset.type === "card"
-        ? e.target.value === ""
+      (e.target.dataset.type === 'card'
+        ? e.target.value === ''
           ? 0
           : Math.round(e.target.value * 100) / 100
         : prePayment.card) +
-      (e.target.dataset.type === "transfer"
-        ? e.target.value === ""
+      (e.target.dataset.type === 'transfer'
+        ? e.target.value === ''
           ? 0
           : Math.round(e.target.value * 100) / 100
         : prePayment.transfer);
@@ -1946,14 +1917,14 @@ export const Sale = () => {
       (totals > 0 && Math.round(total * 100) / 100 > totals)
     ) {
       return notify({
-        title: t("Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!"),
-        description: "",
-        status: "error",
+        title: t('Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!'),
+        description: '',
+        status: 'error',
       });
     }
     p[e.target.dataset.type] =
-      e.target.value === "" ? "" : Math.round(e.target.value * 100) / 100;
-    p[e.target.dataset.type + "uzs"] =
+      e.target.value === '' ? '' : Math.round(e.target.value * 100) / 100;
+    p[e.target.dataset.type + 'uzs'] =
       Math.round(e.target.value * 100 * exchangerate.exchangerate) / 100;
     setPrePaymentDebt({
       ...prePaymentDebt,
@@ -1990,18 +1961,18 @@ export const Sale = () => {
 
   const changeTypePrePaymentUzs = (e, p) => {
     let total =
-      (e.target.dataset.type === "cash"
-        ? e.target.value === ""
+      (e.target.dataset.type === 'cash'
+        ? e.target.value === ''
           ? 0
           : Math.round((e.target.value / exchangerate.exchangerate) * 100) / 100
         : prePayment.cash) +
-      (e.target.dataset.type === "card"
-        ? e.target.value === ""
+      (e.target.dataset.type === 'card'
+        ? e.target.value === ''
           ? 0
           : Math.round((e.target.value / exchangerate.exchangerate) * 100) / 100
         : prePayment.card) +
-      (e.target.dataset.type === "transfer"
-        ? e.target.value === ""
+      (e.target.dataset.type === 'transfer'
+        ? e.target.value === ''
           ? 0
           : Math.round((e.target.value / exchangerate.exchangerate) * 100) / 100
         : prePayment.transfer);
@@ -2024,15 +1995,15 @@ export const Sale = () => {
       (totals > 0 && Math.round(total * 100) / 100 > totals)
     ) {
       return notify({
-        title: t("Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!"),
-        description: "",
-        status: "error",
+        title: t('Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!'),
+        description: '',
+        status: 'error',
       });
     }
     p[e.target.dataset.type] =
       Math.round((e.target.value / exchangerate.exchangerate) * 100) / 100;
-    p[e.target.dataset.type + "uzs"] =
-      e.target.value === "" ? "" : Math.round(e.target.value * 100) / 100;
+    p[e.target.dataset.type + 'uzs'] =
+      e.target.value === '' ? '' : Math.round(e.target.value * 100) / 100;
 
     setPrePaymentDebt({
       ...prePaymentDebt,
@@ -2069,7 +2040,7 @@ export const Sale = () => {
 
   const changeHandlerPrePayment = (e) => {
     let p = { ...prePayment };
-    if (e.target.dataset.money === "UZS") {
+    if (e.target.dataset.money === 'UZS') {
       changeTypePrePaymentUzs(e, p);
     } else changeTypePrePayment(e, p);
     setPrePayment(p);
@@ -2079,8 +2050,8 @@ export const Sale = () => {
     if (prePayment.card + prePayment.cash + prePayment.transfer === 0) {
       return notify({
         title: "Diqqat! To'lov summasi kiritilmagan",
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
 
@@ -2091,7 +2062,7 @@ export const Sale = () => {
     try {
       const data = await request(
         `/api/sales/saleproducts/payment`,
-        "POST",
+        'POST',
         {
           market: auth.market._id,
           payment: prePayment,
@@ -2112,8 +2083,8 @@ export const Sale = () => {
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [
@@ -2134,8 +2105,7 @@ export const Sale = () => {
   const [n, setN] = useState();
   useEffect(() => {
     getSaleConnectors();
-    getSaleCounts();
-  }, [currentPage, getSaleConnectors, countPage, getSaleCounts]);
+  }, [currentPage, getSaleConnectors, countPage]);
 
   useEffect(() => {
     if (!n) {
@@ -2147,7 +2117,6 @@ export const Sale = () => {
       getClients();
       // getBaseUrl();
       getExchangerate();
-      getSaleCounts();
     }
   }, [
     getCategories,
@@ -2158,7 +2127,6 @@ export const Sale = () => {
     n,
     // getBaseUrl,
     getExchangerate,
-    getSaleCounts,
     getSaleConnectors,
   ]);
   //====================================================================
@@ -2169,13 +2137,13 @@ export const Sale = () => {
       {/* <div className={`${editVisible ? "" : "hidden"}`}>
         <EditSaleProducts />
       </div> */}
-      <div className={`${check ? "" : "hidden"}`}>
+      <div className={`${check ? '' : 'hidden'}`}>
         <Cheque sales={sales} setCheck={setCheck} />
       </div>
-      <div className={`${checkConnectors ? "" : "hidden"}`}>
+      <div className={`${checkConnectors ? '' : 'hidden'}`}>
         <ChequeConnectors sales={allSales} setCheck={setCheckConnectors} />
       </div>
-      <div className={visible ? "" : "hidden"}>
+      <div className={visible ? '' : 'hidden'}>
         <Card
           totalpriceuzs={totalpriceuzs}
           client={client}
@@ -2194,7 +2162,7 @@ export const Sale = () => {
           debt={debt}
         />
       </div>
-      <div className={visibleEdit ? "" : "hidden"}>
+      <div className={visibleEdit ? '' : 'hidden'}>
         <CardEdit
           totalpriceuzs={totalpriceuzs}
           client={client}
@@ -2213,7 +2181,7 @@ export const Sale = () => {
         />
       </div>
 
-      <div className={prePaymentVisible ? "" : "hidden"}>
+      <div className={prePaymentVisible ? '' : 'hidden'}>
         <PrePaymentCard
           checkHandler={checkPrePayment}
           changeHandler={changeHandlerPrePayment}
@@ -2236,7 +2204,7 @@ export const Sale = () => {
         changeTableCard={changeTableCard}
       />
 
-      <div className={sellingCard ? "" : "hidden"}>
+      <div className={sellingCard ? '' : 'hidden'}>
         <Products
           changeProduct={changeProduct}
           changeBrand={changeBrand}
@@ -2268,6 +2236,7 @@ export const Sale = () => {
       </div>
 
       <Sales
+        getSaleConnectorsExcel={getSaleConnectorsExcel}
         changePrepayment={changePrepayment}
         changeDate={changeDate}
         startDate={startDate}
@@ -2319,16 +2288,16 @@ export const Sale = () => {
       <Modal
         modal={modal2}
         setModal={setModal2}
-        basic={`${t("Diqqat! Iltimos")} ${debt.debt.toLocaleString(
-          "de-DE"
+        basic={`${t('Diqqat! Iltimos')} ${debt.debt.toLocaleString(
+          'de-DE'
         )}$ (${(debt.debt * exchangerate.exchangerate).toLocaleString(
-          "de-DE"
+          'de-DE'
         )} ${t("so'm)  qarzdorlik uchun izoh kiriting")}`}
         text={
           <input
             onChange={changeComment}
             className='block border w-full px-2 rounded'
-            placeholder={t("Izoh")}
+            placeholder={t('Izoh')}
           />
         }
         handler={saleconnectorid ? addHandler : createHandler}
@@ -2344,16 +2313,16 @@ export const Sale = () => {
       <Modal
         modal={modal4}
         setModal={setModal4}
-        basic={`${t("Diqqat! Iltimos")} ${debt.debt.toLocaleString(
-          "de-DE"
+        basic={`${t('Diqqat! Iltimos')} ${debt.debt.toLocaleString(
+          'de-DE'
         )}$ (${(debt.debt * editExchanrate.exchangerate).toLocaleString(
-          "de-DE"
+          'de-DE'
         )} ${t("so'm)  qarzdorlik uchun izoh kiriting")}`}
         text={
           <input
             onChange={changeComment}
             className='block border w-full px-2 rounded'
-            placeholder={t("Izoh")}
+            placeholder={t('Izoh')}
           />
         }
         handler={createHandlerEdit}
