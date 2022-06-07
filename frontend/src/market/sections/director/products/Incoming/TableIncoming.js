@@ -1,10 +1,10 @@
 import React from 'react';
-import { ExcelTable } from './components/ExcelTable';
 import { TableHeader } from './TableIncoming/TableHeader';
 import { TableHead } from './TableIncoming/TableHead';
 import { Rows } from './TableIncoming/Rows';
 
 export const TableIncoming = ({
+  getImportsExcel,
   countData,
   changeDate,
   startDate,
@@ -23,6 +23,8 @@ export const TableIncoming = ({
   return (
     <div className=''>
       <TableHeader
+        getImportsExcel={getImportsExcel}
+        currentPage={currentPage}
         setPageSize={setPageSize}
         countData={countData}
         changeDate={changeDate}
@@ -49,7 +51,6 @@ export const TableIncoming = ({
           />
         );
       })}
-      <ExcelTable data={currentImports} />
     </div>
   );
 };

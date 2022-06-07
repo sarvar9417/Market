@@ -1,7 +1,7 @@
-import { faClose } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { t } from "i18next";
-import React from "react";
+import { faClose } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { t } from 'i18next';
+import React from 'react';
 
 export const CardHeader = ({
   checkNumber,
@@ -19,21 +19,19 @@ export const CardHeader = ({
               KP
             </button>
             <div>
-              <h1 className='font-semibold text-xl  '>
-                {t("Buyurtma")}: A{1000000 + checkNumber.count}
-              </h1>
+              <h1 className='font-semibold text-xl  '>{t('Buyurtma')}</h1>
               <p className='text-lg font-semibold flex flex-col  justify-between'>
                 <span className='flex justify-between'>
-                  {t("Jami")}:{" "}
-                  <span>{totalprice.toLocaleString("de-DE")} USD</span>{" "}
+                  {t('Jami')}:{' '}
+                  <span>{totalprice.toLocaleString('de-DE')} USD</span>{' '}
                 </span>
                 <span className='flex justify-between text-sm'>
                   <span></span>
-                  <span>{totalpriceuzs.toLocaleString("de-DE")} UZS</span>{" "}
+                  <span>{totalpriceuzs.toLocaleString('de-DE')} UZS</span>{' '}
                 </span>
               </p>
               <p className='font-light'>
-                {t("Mijoz")}: {client.name}
+                {t('Mijoz')}: {client.name}
               </p>
             </div>
           </div>

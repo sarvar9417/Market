@@ -2255,7 +2255,7 @@ export const Sale = () => {
         saleconnectors={saleconnectors}
         changeCheck={changeCheck}
       />
-      <ExcelTable saleconnectors={currentProducts} />
+      <ExcelTable saleconnectors={excelTable} />
 
       <EditSelling
         sellingEditCard={sellingEditCard}

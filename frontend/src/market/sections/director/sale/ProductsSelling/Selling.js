@@ -1,8 +1,8 @@
-import { t } from "i18next";
-import React, { useState } from "react";
-import { AddClient } from "./Selling/AddClient";
-import { Table } from "./Selling/Table";
-import { Footer } from "./Selling/Footer";
+import { t } from 'i18next';
+import React, { useState } from 'react';
+import { AddClient } from './Selling/AddClient';
+import { Table } from './Selling/Table';
+import { Footer } from './Selling/Footer';
 
 export const Selling = ({
   saleconnectorid,
@@ -25,11 +25,9 @@ export const Selling = ({
   const [btn, setBtn] = useState(true);
   return (
     <div className='shadow-xl mb-3'>
-      <p className='card-header'>
-        {t("CHEK")}: № A{1000001 + checkNumber.count}
-      </p>
+      <p className='card-header'>{t('Sotilayotgan mahsulotlar')} </p>
       {saleconnectorid ? (
-        ""
+        ''
       ) : (
         <AddClient
           client={client}

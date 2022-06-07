@@ -112,6 +112,10 @@ router.post('/producttype/getproducttypes', auth, (req, res) => {
   require('./producttype').getProductType(req, res);
 });
 
+router.post('/producttype/getincoming', auth, (req, res) => {
+  require('./producttype').getProductTypeIncoming(req, res);
+});
+
 router.post('/producttype/getproducttypesexcel', auth, (req, res) => {
   require('./producttype').getProductTypeExcel(req, res);
 });
@@ -160,6 +164,10 @@ router.post('/incoming/register', auth, (req, res) => {
 
 router.post('/incoming/get', auth, (req, res) => {
   require('./incoming').get(req, res);
+});
+
+router.post('/incoming/getexcel', auth, (req, res) => {
+  require('./incoming').getexcel(req, res);
 });
 
 router.put('/incoming/update', auth, (req, res) => {

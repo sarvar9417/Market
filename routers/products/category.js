@@ -153,7 +153,9 @@ module.exports.getAll = async (req, res) => {
         .json({ message: "Diqqat! Do'kon ma'lumotlari topilmadi." });
     }
 
-    const categories = await Category.find({ market }).select('code market');
+    const categories = await Category.find({ market }).select(
+      'code market name'
+    );
     res.status(201).json(categories);
   } catch (error) {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });

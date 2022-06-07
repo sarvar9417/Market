@@ -7,13 +7,11 @@ import { t } from 'i18next';
 const animatedComponents = makeAnimated();
 
 export const ReportIncomings = ({
+  changeIncomingCard,
   setBeginDay,
   setEndDay,
-  getImports,
-  getIncomingConnectors,
   dailyConnectors,
   suppliers,
-  // totalproducts,
   totalprice,
   totalproducttypes,
   sortSuppliers,
@@ -54,7 +52,7 @@ export const ReportIncomings = ({
                 key={index}
                 className='col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3 m-2'>
                 <button
-                  onClick={() => getImports(connector.day)}
+                  onClick={() => changeIncomingCard(connector.day)}
                   className='bg-[#216BA5] font-bold rounded text-white text-left py-2 px-3 inline-block w-100'>
                   <p className='font-bold  text-right  flex justify-between'>
                     <span className='font-bold text-orange-700'>

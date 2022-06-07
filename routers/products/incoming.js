@@ -157,7 +157,7 @@ module.exports.registerAll = async (req, res) => {
       market,
       createdAt: {
         $gte: beginDay,
-        $lt: endDay,
+        $lt: new Date(),
       },
     })
       .sort({ _id: -1 })
@@ -267,7 +267,6 @@ module.exports.get = async (req, res) => {
   try {
     const { market, beginDay, endDay, currentPage, countPage } = req.body;
     const marke = await Market.findById(market);
-
     if (!marke) {
       return res.status(400).json({
         message: "Diqqat! Do'kon ma'lumotlari topilmadi.",
@@ -305,6 +304,38 @@ module.exports.get = async (req, res) => {
   }
 };
 
+//Incoming getall
+module.exports.getexcel = async (req, res) => {
+  try {
+    const { market, beginDay, endDay } = req.body;
+    const marke = await Market.findById(market);
+    if (!marke) {
+      return res.status(400).json({
+        message: "Diqqat! Do'kon ma'lumotlari topilmadi.",
+      });
+    }
+
+    const incomings = await Incoming.find({
+      market,
+      createdAt: {
+        $gte: beginDay,
+        $lt: endDay,
+      },
+    })
+      .sort({ _id: -1 })
+      .select('-isArchive -updatedAt -market -user -__v')
+      .populate('supplier', 'name')
+      .populate('category', 'code name')
+      .populate('producttype', 'name')
+      .populate('product', 'name code')
+      .populate('unit', 'name')
+      .populate('brand', 'name');
+    res.status(201).send(incomings);
+  } catch (error) {
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
+  }
+};
+
 //Incoming registerall
 module.exports.getConnectors = async (req, res) => {
   try {
@@ -316,7 +347,7 @@ module.exports.getConnectors = async (req, res) => {
         $lt: endDay,
       },
     })
-      .sort({ _id: -1 })
+      .sort({ _id: -1, supplier: -1 })
       .select('supplier incoming total createdAt')
       .populate('supplier', 'name')
       .populate('incoming', 'pieces');
@@ -326,28 +357,6 @@ module.exports.getConnectors = async (req, res) => {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
-
-//Incoming delete
-// module.exports.delete = async (req, res) => {
-//   try {
-//     const { _id } = req.body
-
-//     const incoming = await Incoming.findById(_id)
-
-//     if (incoming.products.length > 0) {
-//       return res.status(400).json({
-//         message:
-//           "Diqqat! Ushbu bo'limda mahsulotlar mavjud bo'lganligi sababli bo'limni o'chirish mumkin emas.",
-//       })
-//     }
-
-//     await Incoming.findByIdAndDelete(_id)
-
-//     res.send(incoming)
-//   } catch (error) {
-//     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' })
-//   }
-// }
 
 // Pagination
 module.exports.getCount = async (req, res) => {

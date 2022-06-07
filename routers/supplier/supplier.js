@@ -117,7 +117,7 @@ module.exports.getAll = async (req, res) => {
 
     const suppliers = await Supplier.find({
       market,
-    }).select('name, market');
+    }).select('name market');
 
     res.send(suppliers);
   } catch (error) {

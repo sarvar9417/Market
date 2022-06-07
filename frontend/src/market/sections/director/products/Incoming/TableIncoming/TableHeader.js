@@ -4,8 +4,11 @@ import { PaginationSize } from '../../../components/PaginationSize';
 import { Pagination } from '../../../components/Pagination';
 import { ExcelDownload } from '../../../components/ExcelDownload';
 import { t } from 'i18next';
+import { faFileExcel } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const TableHeader = ({
+  getImportsExcel,
   countData,
   changeDate,
   startDate,
@@ -16,6 +19,7 @@ export const TableHeader = ({
   searchProduct,
   searchBrand,
   countPage,
+  currentPage,
   setCurrentPage,
 }) => {
   return (
@@ -51,6 +55,7 @@ export const TableHeader = ({
           aria-controls='basicExample'
         />
         <Pagination
+          currentPage={currentPage}
           setCurrentPage={setCurrentPage}
           countPage={countPage}
           totalDatas={countData}
@@ -69,19 +74,24 @@ export const TableHeader = ({
       <li className='th-h border-r col-span-4   '>
         <input
           onChange={changeDate}
-          defaultValue={new Date(startDate).toISOString().slice(0, 10)}
+          value={new Date(startDate).toISOString().slice(0, 10)}
           type='date'
           name='startDate'
           className='border rounded p-1 focus:outline-green-800'
         />
         <input
           onChange={changeDate}
-          defaultValue={new Date(endDate).toISOString().slice(0, 10)}
+          value={new Date(endDate).toISOString().slice(0, 10)}
           type='date'
           name='endDate'
           className='border rounded p-1 focus:outline-green-800 mx-2 '
         />
 
+        <button
+          className='px-4 bg-green-700 hover:bg-green-800 text-white rounded'
+          onClick={getImportsExcel}>
+          <FontAwesomeIcon icon={faFileExcel} />
+        </button>
         <ExcelDownload filename={'Keltirilgan mahsulotlar'} />
       </li>
     </ul>

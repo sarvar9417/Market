@@ -9,10 +9,7 @@ import { ClearBtn, ClearBtnLoad } from '../../components/TableButtons';
 export const RegisterIncoming = ({
   createHandler,
   removeIncoming,
-  addIncoming,
-  searchCategory,
   incomings,
-  incoming,
   editIncoming,
   changeProduct,
   changeCategory,
@@ -24,9 +21,6 @@ export const RegisterIncoming = ({
   setSupplier,
   changeProductType,
   productType,
-  brand,
-  changeBrand,
-  setModal,
   selectRef,
   clearSelect,
 }) => {

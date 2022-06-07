@@ -14,6 +14,7 @@ import { ReportIncomings } from './Incoming/ReportIncomings';
 import { Modal } from './modal/Modal';
 import { RouterBtns } from './Incoming/RouterBtns';
 import { ModalTable } from './Incoming/ModalTable';
+import { ExcelTable } from './Incoming/ExcelTable';
 
 export const Incoming = () => {
   const [beginDay, setBeginDay] = useState(
@@ -38,10 +39,8 @@ export const Incoming = () => {
 
   //====================================================================
   //====================================================================
-
   // MODAL
   const [modal, setModal] = useState(false);
-  //   const [modal1, setModal1] = useState(false)
   //====================================================================
   //====================================================================
 
@@ -69,7 +68,7 @@ export const Incoming = () => {
   };
 
   const changeVisibleReport = () => {
-    if (!visible) {
+    if (!visibleReport) {
       setVisibleTable(false);
       setVisible(false);
     }
@@ -169,10 +168,12 @@ export const Incoming = () => {
       ];
       data.map((category) => {
         return s.push({
-          label:
-            category && category.name
-              ? category.code + ' - ' + category.name
-              : category.code,
+          label: (
+            <span className='flex justify-between font-bold'>
+              <span>{category.code}</span>
+              <span>{category.name && category.name}</span>
+            </span>
+          ),
           value: category._id,
         });
       });
@@ -191,12 +192,12 @@ export const Incoming = () => {
       setProductType(productTypes);
       setProducts(allproducts);
     } else {
-      const filter = productTypes.filter(
-        (producttype) =>
-          producttype &&
-          producttype.producttype &&
-          producttype.producttype.category._id === e.value
-      );
+      const filter = productTypes.filter((producttype) => {
+        return (
+          producttype.value !== 'all' &&
+          producttype.producttype.category === e.value
+        );
+      });
       const filter2 = allproducts.filter(
         (product) => product.category === e.value
       );
@@ -204,7 +205,6 @@ export const Incoming = () => {
       setProducts(filter2);
     }
   };
-
   //====================================================================
   //====================================================================
 
@@ -213,11 +213,10 @@ export const Incoming = () => {
   // PRODUCTTYPE
   const [productType, setProductType] = useState([]);
   const [productTypes, setProductTypes] = useState([]);
-
   const getProductType = useCallback(async () => {
     try {
       const data = await request(
-        `/api/products/producttype/getall`,
+        `/api/products/producttype/getincoming`,
         'POST',
         { market: auth.market._id },
         {
@@ -411,7 +410,6 @@ export const Incoming = () => {
   //====================================================================
   //====================================================================
   // CONNECTORS
-
   const [totalprice, setTotalPrice] = useState(0);
   const [totalproducts, setTotalProducts] = useState(0);
   const [totalproducttypes, setTotalProductTypes] = useState(0);
@@ -515,10 +513,22 @@ export const Incoming = () => {
       daily(filter);
     }
   };
+
+  const changeIncomingCard = useCallback((e) => {
+    setCurrentPage(0);
+    setStartDate(new Date(new Date(e).setHours(0, 0, 0, 0)).toISOString());
+    setEndDate(new Date(new Date(e).setHours(23, 59, 59, 0)).toISOString());
+    setVisibleReport(false);
+    setVisibleTable(true);
+  }, []);
+  //====================================================================
+  //====================================================================
+
   //====================================================================
   //====================================================================
   // IMPORTS
   const [imports, setImports] = useState([]);
+  const [excelTable, setExcelTable] = useState([]);
   const [searchStorage, setSearchStorage] = useState([]);
 
   const getImports = useCallback(async () => {
@@ -529,11 +539,7 @@ export const Incoming = () => {
         {
           market: auth.market._id,
           beginDay: startDate,
-          endDay: new Date(
-            new Date(
-              new Date().setDate(new Date(endDate).getDate() + 1)
-            ).toISOString()
-          ),
+          endDay: endDate,
           currentPage,
           countPage,
         },
@@ -553,15 +559,38 @@ export const Incoming = () => {
     }
   }, [request, auth, notify, currentPage, countPage, startDate, endDate]);
 
+  const getImportsExcel = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/products/incoming/getexcel`,
+        'POST',
+        {
+          market: auth.market._id,
+          beginDay: startDate,
+          endDay: endDate,
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setExcelTable(data);
+      document.getElementById('reacthtmltoexcel').click();
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [request, auth, notify, startDate, endDate]);
+
   useEffect(() => {
     getImports();
   }, [currentPage, countPage, getImports, startDate, endDate]);
 
   //====================================================================
   //====================================================================
-
   const [connectorCount, setConnectorCount] = useState(0);
-
   const getConnectorCount = useCallback(async () => {
     try {
       const data = await request(
@@ -581,14 +610,12 @@ export const Incoming = () => {
       });
     }
   }, [auth, request, notify]);
-
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
   // SEARCH
-
   const searchCategory = (e) => {
     const searching = allproducts.filter(
       (item) =>
@@ -641,20 +668,13 @@ export const Incoming = () => {
 
   //====================================================================
   //====================================================================
-
-  const setPageSize = useCallback(
-    (e) => {
-      setCurrentPage(0);
-      setCountPage(e.target.value);
-      setCurrentImports(imports.slice(0, e.target.value));
-    },
-    [imports]
-  );
-
+  const setPageSize = useCallback((e) => {
+    setCurrentPage(0);
+    setCountPage(e.target.value);
+  }, []);
   //====================================================================
   //====================================================================
   // InputHandler
-
   const inputHandler = (e) => {
     if (e.target.name === 'pieces') {
       let val = e.target.value;
@@ -726,17 +746,6 @@ export const Incoming = () => {
 
   //====================================================================
   //====================================================================
-
-  const changeConnectors = useCallback(
-    (data) => {
-      daily([...data]);
-      setConnectors([...data]);
-    },
-    [daily]
-  );
-
-  //====================================================================
-  //====================================================================
   // CreateHandler
   const createHandler = useCallback(async () => {
     try {
@@ -754,8 +763,8 @@ export const Incoming = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      getIncomingConnectors(beginDay, endDay);
-      changeConnectors(data);
+      setConnectors(data);
+      daily(data);
       clearSelect();
       setIncomings([]);
       setIncoming({
@@ -795,8 +804,7 @@ export const Incoming = () => {
     incomings,
     notify,
     clearSelect,
-    changeConnectors,
-    getIncomingConnectors,
+    daily,
   ]);
 
   //====================================================================
@@ -807,8 +815,14 @@ export const Incoming = () => {
   // Search
   const changeDate = (e) => {
     e.target.name === 'startDate'
-      ? setStartDate(new Date(e.target.value).toISOString())
-      : setEndDate(new Date(e.target.value).toISOString());
+      ? setStartDate(
+          new Date(new Date(e.target.value).setHours(0, 0, 0, 0)).toISOString()
+        )
+      : setEndDate(
+          new Date(
+            new Date(e.target.value).setHours(23, 59, 59, 0)
+          ).toISOString()
+        );
   };
   //====================================================================
   //====================================================================
@@ -820,7 +834,6 @@ export const Incoming = () => {
   // useEffect
 
   const [n, setN] = useState(0);
-
   useEffect(() => {
     if (auth.market && !n) {
       setN(1);
@@ -830,7 +843,6 @@ export const Incoming = () => {
       getProductType();
       // getBrand();
       getConnectorCount();
-      getIncomingConnectors(beginDay, endDay);
     }
   }, [
     auth,
@@ -839,12 +851,9 @@ export const Incoming = () => {
     getCategorys,
     getProducts,
     getProductType,
-    // getBrand,
     getConnectorCount,
     beginDay,
     endDay,
-    // getProductType,
-    getIncomingConnectors,
   ]);
 
   useEffect(() => {
@@ -854,74 +863,78 @@ export const Incoming = () => {
   //====================================================================
 
   return (
-    <div className='m-3'>
-      <RouterBtns
-        changeVisible={changeVisible}
-        changeVisibleTable={changeVisibleTable}
-        changeVisibleReport={changeVisibleReport}
-      />
-      <div className={visible ? '' : 'd-none'}>
-        <RegisterIncoming
-          createHandler={createHandler}
-          removeIncoming={removeIncoming}
-          addIncoming={addIncoming}
-          inputHandler={inputHandler}
-          clearSelect={clearSelect}
-          searchCategory={searchCategory}
-          incomings={incomings}
-          editIncoming={editIncoming}
-          incoming={incoming}
-          changeProduct={changeProduct}
-          changeCategory={changeCategory}
-          changeProductType={changeProductType}
-          products={products}
-          categorys={categorys}
-          productType={productType}
-          loading={loading}
-          suppliers={suppliers}
-          supplier={supplier}
-          setSupplier={setSupplier}
-          setModal={setModal}
-          selectRef={selectRef}
+    <div className='overflow-x-auto'>
+      <div className='m-3 min-w-[1100px]'>
+        <RouterBtns
+          changeVisible={changeVisible}
+          changeVisibleTable={changeVisibleTable}
+          changeVisibleReport={changeVisibleReport}
         />
+        <div className={visible ? '' : 'd-none'}>
+          <RegisterIncoming
+            createHandler={createHandler}
+            removeIncoming={removeIncoming}
+            addIncoming={addIncoming}
+            inputHandler={inputHandler}
+            clearSelect={clearSelect}
+            searchCategory={searchCategory}
+            incomings={incomings}
+            editIncoming={editIncoming}
+            incoming={incoming}
+            changeProduct={changeProduct}
+            changeCategory={changeCategory}
+            changeProductType={changeProductType}
+            products={products}
+            categorys={categorys}
+            productType={productType}
+            loading={loading}
+            suppliers={suppliers}
+            supplier={supplier}
+            setSupplier={setSupplier}
+            setModal={setModal}
+            selectRef={selectRef}
+          />
+        </div>
+        <div className={visibleReport ? '' : 'hidden'}>
+          <ReportIncomings
+            changeIncomingCard={changeIncomingCard}
+            setBeginDay={setBeginDay}
+            setEndDay={setEndDay}
+            totalproducts={totalproducts}
+            totalprice={totalprice}
+            totalproducttypes={totalproducttypes}
+            dailyConnectors={dailyConnectors}
+            suppliers={suppliers}
+            sortSuppliers={sortSuppliers}
+          />
+        </div>
+        <div className={visibleTable ? '' : 'hidden'}>
+          <TableIncoming
+            getImportsExcel={getImportsExcel}
+            countData={countData}
+            changeDate={changeDate}
+            startDate={startDate}
+            endDate={endDate}
+            currentImports={currentImports}
+            imports={imports}
+            setCurrentImports={setCurrentImports}
+            setImports={setImports}
+            searchCategoryTable={searchCategoryTable}
+            searchSupplier={searchSupplier}
+            searchProduct={searchProduct}
+            searchBrand={searchBrand}
+            countPage={countPage}
+            setCountPage={setCountPage}
+            currentPage={currentPage}
+            setPageSize={setPageSize}
+            loading={loading}
+            setCurrentPage={setCurrentPage}
+            connectorCount={connectorCount}
+          />
+        </div>
       </div>
-      <div className={visibleReport ? '' : 'hidden'}>
-        <ReportIncomings
-          setBeginDay={setBeginDay}
-          setEndDay={setEndDay}
-          getImports={getImports}
-          getIncomingConnectors={getIncomingConnectors}
-          totalproducts={totalproducts}
-          totalprice={totalprice}
-          totalproducttypes={totalproducttypes}
-          dailyConnectors={dailyConnectors}
-          suppliers={suppliers}
-          sortSuppliers={sortSuppliers}
-        />
-      </div>
-      <div className={visibleTable ? '' : 'hidden'}>
-        <TableIncoming
-          countData={countData}
-          changeDate={changeDate}
-          startDate={startDate}
-          endDate={endDate}
-          currentImports={currentImports}
-          imports={imports}
-          setCurrentImports={setCurrentImports}
-          setImports={setImports}
-          searchCategoryTable={searchCategoryTable}
-          searchSupplier={searchSupplier}
-          searchProduct={searchProduct}
-          searchBrand={searchBrand}
-          countPage={countPage}
-          setCountPage={setCountPage}
-          currentPage={currentPage}
-          setPageSize={setPageSize}
-          loading={loading}
-          setCurrentPage={setCurrentPage}
-          connectorCount={connectorCount}
-        />
-      </div>
+
+      <ExcelTable datas={excelTable} />
 
       <Modal
         modal={modal}
