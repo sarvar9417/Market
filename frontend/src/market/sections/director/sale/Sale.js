@@ -1730,8 +1730,14 @@ export const Sale = () => {
   // Search
   const changeDate = (e) => {
     e.target.name === 'startDate'
-      ? setStartDate(new Date(e.target.value).toISOString())
-      : setEndDate(new Date(e.target.value).toISOString());
+      ? setStartDate(
+          new Date(new Date(e.target.value).setHours(0, 0, 0, 0)).toISOString()
+        )
+      : setEndDate(
+          new Date(
+            new Date(e.target.value).setHours(23, 59, 59, 0)
+          ).toISOString()
+        );
   };
   //====================================================================
   //====================================================================

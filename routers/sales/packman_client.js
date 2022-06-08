@@ -79,4 +79,32 @@ router.post('/saleproducts/getconnectorsexcel', (req, res) => {
 router.post('/saleproducts/payment', (req, res) => {
   require('./saleproduct').payment(req, res);
 });
+
+// Discounts
+router.post('/discounts/get', (req, res) => {
+  require('./discount').get(req, res);
+});
+
+router.post('/discounts/getexcel', (req, res) => {
+  require('./discount').getexcel(req, res);
+});
+
+// Payments
+router.post('/payments/get', (req, res) => {
+  require('./payment').get(req, res);
+});
+
+router.post('/payments/getexcel', (req, res) => {
+  require('./payment').getexcel(req, res);
+});
+
+// Debt
+router.post('/debts/get', (req, res) => {
+  require('./debt').get(req, res);
+});
+
+router.post('/payments/getexcel', (req, res) => {
+  require('./payment').getexcel(req, res);
+});
+
 module.exports = router;

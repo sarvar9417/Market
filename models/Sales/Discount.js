@@ -5,17 +5,18 @@ const discount = new Schema(
   {
     totalprice: { type: Number, required: true },
     totalpriceuzs: { type: Number, required: true },
-    products: [{ type: Schema.Types.ObjectId, ref: "Product", required: true }],
+    products: [{ type: Schema.Types.ObjectId, ref: 'Product', required: true }],
     procient: { type: Number },
     discount: { type: Number },
     discountuzs: { type: Number },
     comment: { type: String, min: 5 },
     saleconnector: {
       type: Schema.Types.ObjectId,
-      ref: "SaleConnector",
+      ref: 'SaleConnector',
     },
-    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    market: { type: Schema.Types.ObjectId, ref: "Market", required: true },
+    client: { type: Schema.Types.ObjectId, ref: 'Client' },
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    market: { type: Schema.Types.ObjectId, ref: 'Market', required: true },
     isArchive: { type: Boolean, default: false },
   },
   {
