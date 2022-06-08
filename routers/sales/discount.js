@@ -45,10 +45,31 @@ module.exports.get = async (req, res) => {
           select: 'name',
           match: { name: client },
         },
-      })
-      .skip(currentPage * countPage)
-      .limit(countPage);
-    res.status(200).send({ discounts, count });
+      });
+
+    const discount = discounts.reduce((summ, discount) => {
+      return summ + discount.discount;
+    }, 0);
+
+    const discountuzs = discounts.reduce((summ, discount) => {
+      return summ + discount.discountuzs;
+    }, 0);
+
+    const totalprice = discounts.reduce((summ, discount) => {
+      return summ + discount.totalprice;
+    }, 0);
+
+    const totalpriceuzs = discounts.reduce((summ, discount) => {
+      return summ + discount.totalpriceuzs;
+    }, 0);
+
+    res
+      .status(200)
+      .send({
+        discounts,
+        count,
+        total: { discount, discountuzs, totalprice, totalpriceuzs },
+      });
   } catch (error) {
     res.status(400).json({ error: 'Serverda xatolik yuz berdi...' });
   }
