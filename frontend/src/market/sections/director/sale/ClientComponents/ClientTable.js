@@ -4,7 +4,7 @@ import { SearchInput } from '../../components/Input';
 import { PaginationSize } from '../../components/PaginationSize';
 import { Sort } from '../../components/Sort';
 import { SortDoubleProperty } from '../../components/SortDoubleProperty';
-import { Pagination } from '../components/Pagination';
+import { Pagination } from '../../components/Pagination';
 import { Rows } from './Rows';
 
 export const ClientTable = ({
