@@ -36,6 +36,8 @@ module.exports.get = async (req, res) => {
 
     const alldebts = [];
 
+    let total = 0;
+
     debts.map((debt) => {
       const totalprice = debt.products.reduce((summ, product) => {
         return summ + product.totalprice;
@@ -64,14 +66,18 @@ module.exports.get = async (req, res) => {
           debt: Math.round(d * 100) / 100,
         });
       }
+
+      total += Math.round(d * 100) / 100;
     });
+
     const count = alldebts.length;
+
     res.status(200).send({
       debts: alldebts.splice(countPage * currentPage, countPage),
       count,
+      total,
     });
   } catch (error) {
-    console.log(error);
     res.status(400).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };

@@ -25,7 +25,7 @@ export const Debts = () => {
     new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString()
   );
   const [endDate, setEndDate] = useState(new Date().toISOString());
-
+  const [totalDebts, setTotalDebts] = useState(0);
   //TOAST
   const toast = useToast();
   const notify = useCallback(
@@ -60,7 +60,7 @@ export const Debts = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      console.log(data);
+      setTotalDebts(data.total);
       setCurrentDebts(data.debts);
       setSearchStorage(data.debts);
       setDebtsCount(data.count);
@@ -179,6 +179,13 @@ export const Debts = () => {
             />
           );
         })}
+        <ul className='tr font-bold text-base'>
+          <li className='td col-span-9 text-right border-r'>Jami</li>
+          <li className='td text-right col-span-3 border-r-2 border-orange-600'>
+            {(Math.round(totalDebts * 100) / 100).toLocaleString('de-DE')}{' '}
+            <span className='text-orange-600'>USD</span>
+          </li>
+        </ul>
       </div>
 
       <ExcelTable datas={tableExcel} />
