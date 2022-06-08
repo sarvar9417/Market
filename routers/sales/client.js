@@ -1,6 +1,6 @@
-const { Client, validateClient } = require("../../models/Sales/Client.js");
-const { Market } = require("../../models/MarketAndBranch/Market");
-const { Packman } = require("../../models/Sales/Packman.js");
+const { Client, validateClient } = require('../../models/Sales/Client.js');
+const { Market } = require('../../models/MarketAndBranch/Market');
+const { Packman } = require('../../models/Sales/Packman.js');
 
 module.exports.register = async (req, res) => {
   try {
@@ -47,12 +47,12 @@ module.exports.register = async (req, res) => {
     }
 
     const sendingClient = await Client.findById(newClient._id)
-      .select("name")
-      .populate("packman", "name");
+      .select('name')
+      .populate('packman', 'name');
 
     res.status(201).send(sendingClient);
   } catch (error) {
-    res.status(400).json({ error: "Serverda xatolik yuz berdi..." });
+    res.status(400).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
 
@@ -67,12 +67,12 @@ module.exports.getAll = async (req, res) => {
     }
 
     const client = await Client.find({ market })
-      .select("name")
-      .populate("packman", "name");
+      .select('name')
+      .populate('packman', 'name');
 
     res.status(201).send(client);
   } catch (error) {
-    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
 
@@ -122,12 +122,12 @@ module.exports.updateClient = async (req, res) => {
     });
 
     const sendingClient = await Client.findById(_id)
-      .select("name")
-      .populate("packman name");
+      .select('name')
+      .populate('packman name');
 
     res.status(201).send(sendingClient);
   } catch (error) {
-    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
 
@@ -161,50 +161,46 @@ module.exports.deleteClient = async (req, res) => {
 
     res.status(201).send(client);
   } catch (error) {
-    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
 
-// Pagination
-
-module.exports.getClientCount = async (req, res) => {
+module.exports.getClients = async (req, res) => {
   try {
-    const { market } = req.body;
-
-    const marke = await Market.findById(market);
-
-    if (!marke) {
-      return res
-        .status(400)
-        .json({ message: "Diqqat! Do'kon malumotlari topilmadi" });
-    }
-
-    const count = await Packman.find({ market }).count();
-
-    res.status(201).json({ count });
-  } catch (error) {
-    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
-  }
-};
-
-module.exports.getClientConnectors = async (req, res) => {
-  try {
-    const { market, currentPage, countPage } = req.body;
+    const { market, currentPage, countPage, search } = req.body;
     const marke = await Market.findById(market);
     if (!marke) {
       return res
-        .status(400)
-        .send({ message: "Diqqat! Do'kon malumotlari topilmadi!" });
+        .status(401)
+        .json({ message: "Diqqat! Do'kon malumotlari topilmadi." });
     }
 
-    const connector = await Client.find({ market })
+    const name = new RegExp('.*' + search ? search.client : '' + '.*', 'i');
+    const packman = new RegExp('.*' + search ? search.packman : '' + '.*', 'i');
+
+    const clientsCount = await Client.find({ market, name: name })
       .sort({ _id: -1 })
-      .skip(currentPage * countPage)
-      .limit(countPage)
-      .select("name");
+      .select('name market packman')
+      .populate({ path: 'packman', match: { name: packman } });
 
-    res.status(201).send(connector);
+    const filterCount = clientsCount.filter((item) => {
+      return item.packman !== null;
+    });
+
+    const clients = await Client.find({ market, name: name })
+      .sort({ _id: -1 })
+      .select('name market packman')
+      .populate({ path: 'packman', match: { name: packman } })
+      .populate('packman', 'name')
+      .skip(currentPage * countPage)
+      .limit(countPage);
+
+    const filter = clients.filter((item) => {
+      return item.packman !== null;
+    });
+
+    res.status(201).json({ clients: filter, count: filterCount.length });
   } catch (error) {
-    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
