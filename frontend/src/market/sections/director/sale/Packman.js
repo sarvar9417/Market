@@ -158,7 +158,6 @@ export const Packman = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      console.log(data);
       setSearchStorage(data.packmans);
       setCurrentPackmans(data.packmans);
       setPackmansCount(data.count);
@@ -184,7 +183,6 @@ export const Packman = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      getPackmans();
       clearInputs();
       setPackman({
         market: auth.market && auth.market._id,
@@ -194,6 +192,7 @@ export const Packman = () => {
         description: '',
         status: 'success',
       });
+      getPackmans();
     } catch (error) {
       notify({
         title: error,

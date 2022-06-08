@@ -3,7 +3,7 @@ import React from 'react';
 import { SearchInput } from '../../components/Input';
 import { PaginationSize } from '../../components/PaginationSize';
 import { Sort } from '../../components/Sort';
-import { Pagination } from '../components/Pagination';
+import { Pagination } from '../../components/Pagination';
 import { Rows } from './Rows';
 
 export const PackmanTable = ({
