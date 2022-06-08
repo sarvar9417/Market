@@ -1,5 +1,5 @@
-const { Packman, validatePackman } = require("../../models/Sales/Packman.js");
-const { Market } = require("../../models/MarketAndBranch/Market");
+const { Packman, validatePackman } = require('../../models/Sales/Packman.js');
+const { Market } = require('../../models/MarketAndBranch/Market');
 
 module.exports.register = async (req, res) => {
   try {
@@ -36,7 +36,7 @@ module.exports.register = async (req, res) => {
     await newPackman.save();
     res.status(201).send(newPackman);
   } catch (error) {
-    res.status(400).json({ error: "Serverda xatolik yuz berdi..." });
+    res.status(400).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
 
@@ -50,11 +50,11 @@ module.exports.getAll = async (req, res) => {
       });
     }
 
-    const packman = await Packman.find({ market });
+    const packman = await Packman.find({ market }).select('name market');
 
     res.status(201).send(packman);
   } catch (error) {
-    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
 
@@ -77,10 +77,10 @@ module.exports.updatePackman = async (req, res) => {
     await Packman.findByIdAndUpdate(_id, {
       name: name,
     });
-    const updatePackman = await Packman.findById(_id).select("name market");
+    const updatePackman = await Packman.findById(_id).select('name market');
     res.status(201).send(updatePackman);
   } catch (error) {
-    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
 
@@ -104,50 +104,31 @@ module.exports.deletePackman = async (req, res) => {
 
     res.status(201).send(packman);
   } catch (error) {
-    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
 
-// Pagination
-
-module.exports.getPackmanCount = async (req, res) => {
+module.exports.getPackmans = async (req, res) => {
   try {
-    const { market } = req.body;
-
-    const marke = await Market.findById(market);
-
-    if (!marke) {
-      return res
-        .status(400)
-        .json({ message: "Diqqat! Do'kon malumotlari topilmadi" });
-    }
-
-    const count = await Packman.find({ market }).count();
-
-    res.status(201).json({ count });
-  } catch (error) {
-    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
-  }
-};
-
-module.exports.getPackmanConnectors = async (req, res) => {
-  try {
-    const { market, currentPage, countPage } = req.body;
+    const { market, currentPage, countPage, search } = req.body;
     const marke = await Market.findById(market);
     if (!marke) {
       return res
-        .status(400)
-        .send({ message: "Diqqat! Do'kon malumotlari topilmadi!" });
+        .status(401)
+        .json({ message: "Diqqat! Do'kon malumotlari topilmadi." });
     }
 
-    const connector = await Packman.find({ market })
+    const name = new RegExp('.*' + search ? search.name : '' + '.*', 'i');
+
+    const packmansCount = await Packman.find({ market, name: name }).count();
+
+    const packmans = await Packman.find({ market, name: name })
       .sort({ _id: -1 })
+      .select('name market')
       .skip(currentPage * countPage)
-      .limit(countPage)
-      .select("name");
-
-    res.status(201).send(connector);
+      .limit(countPage);
+    res.status(201).json({ packmans: packmans, count: packmansCount });
   } catch (error) {
-    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };

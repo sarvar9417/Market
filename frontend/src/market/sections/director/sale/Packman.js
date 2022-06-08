@@ -1,19 +1,12 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { useToast } from "@chakra-ui/react";
-import { Modal } from "../products/modal/Modal";
-import {
-  faFloppyDisk,
-  faPenAlt,
-  faRepeat,
-  faTrashCan,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { AuthContext } from "../../../context/AuthContext";
-import { useHttp } from "../../../hooks/http.hook";
-import { Pagination } from "./components/Pagination";
-import { Sort } from "../components/Sort";
-import { checkPackman } from "./checkData";
-import { t } from "i18next";
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { useToast } from '@chakra-ui/react';
+import { Modal } from '../products/modal/Modal';
+import { AuthContext } from '../../../context/AuthContext';
+import { useHttp } from '../../../hooks/http.hook';
+import { checkPackman } from './checkData';
+import { t } from 'i18next';
+import { CreatePackman } from './PackmanComponents/CreatePackman';
+import { PackmanTable } from './PackmanComponents/PackmanTable';
 
 export const Packman = () => {
   //====================================================================
@@ -35,7 +28,7 @@ export const Packman = () => {
         status: data.status && data.status,
         duration: 5000,
         isClosable: true,
-        position: "top-right",
+        position: 'top-right',
       });
     },
     [toast]
@@ -52,9 +45,6 @@ export const Packman = () => {
 
   const [currentPage, setCurrentPage] = useState(0);
   const [countPage, setCountPage] = useState(10);
-
-  const indexLastPackman = (currentPage + 1) * countPage;
-  const indexFirstPackman = indexLastPackman - countPage;
 
   //====================================================================
   //====================================================================
@@ -91,7 +81,7 @@ export const Packman = () => {
   //====================================================================
 
   const keyPressed = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       return saveHandler();
     }
   };
@@ -101,18 +91,30 @@ export const Packman = () => {
   const setPageSize = (e) => {
     setCurrentPage(0);
     setCountPage(e.target.value);
-    setCurrentPackmans(packmans.slice(0, e.target.value));
   };
 
   //====================================================================
 
+  const [search, setSearch] = useState({
+    name: '',
+  });
+  const [sendingsearch, setSendingSearch] = useState({});
+
   const searchPackman = (e) => {
+    setSearch({ name: e.target.value });
+
     const searching = searchStorage.filter((item) =>
       item.name.toLowerCase().includes(e.target.value.toLowerCase())
     );
 
-    setPackmans(searching);
     setCurrentPackmans(searching);
+  };
+
+  const searchKeypress = (e) => {
+    if (e.key === 'Enter') {
+      setCurrentPage(0);
+      setSendingSearch(search);
+    }
   };
 
   //====================================================================
@@ -136,80 +138,37 @@ export const Packman = () => {
   //====================================================================
   //====================================================================
 
-  const [packmans, setPackmans] = useState([]);
   const [currentPackmans, setCurrentPackmans] = useState([]);
   const [searchStorage, setSearchStorage] = useState([]);
+  const [packmansCount, setPackmansCount] = useState(0);
 
   const getPackmans = useCallback(async () => {
     try {
       const data = await request(
-        "/api/sales/packman/getall",
-        "POST",
-        { market: auth.market && auth.market._id },
+        '/api/sales/packman/getpackmans',
+        'POST',
+        {
+          market: auth.market._id,
+          currentPage,
+          countPage,
+          search: sendingsearch,
+        },
         {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      setPackmans(data);
-      setSearchStorage(data);
-      setCurrentPackmans(data.slice(indexFirstPackman, indexLastPackman));
+      console.log(data);
+      setSearchStorage(data.packmans);
+      setCurrentPackmans(data.packmans);
+      setPackmansCount(data.count);
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
-  }, [auth, notify, indexFirstPackman, indexLastPackman, request]);
-
-  //====================================================================
-  //====================================================================
-
-  const [connectorCount, setConnectorCount] = useState(0);
-
-  const getConnectorsCount = useCallback(async () => {
-    try {
-      const data = await request(
-        "/api/sales/packman/getcount",
-        "POST",
-        { market: auth.market && auth.market._id },
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
-      );
-      setConnectorCount(data);
-    } catch (error) {
-      notify({
-        title: error,
-        description: "",
-        status: "error",
-      });
-    }
-  }, [auth, notify, request]);
-
-  const getConnectors = useCallback(async () => {
-    try {
-      const data = await request(
-        "/api/sales/packman/getconnectors",
-        "POST",
-        { market: auth.market._id, currentPage, countPage },
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
-      );
-      setCurrentPackmans(data);
-    } catch (error) {
-      notify({
-        title: error,
-        description: "",
-        status: "error",
-      });
-    }
-  }, [auth, request, notify, currentPage, countPage]);
-
-  useEffect(() => {
-    getConnectors();
-  }, [getConnectors, currentPage, countPage]);
+  }, [auth, request, notify, currentPage, countPage, sendingsearch]);
 
   //====================================================================
   //====================================================================
@@ -217,28 +176,28 @@ export const Packman = () => {
   const createPackman = async () => {
     try {
       const data = await request(
-        "/api/sales/packman/register",
-        "POST",
+        '/api/sales/packman/register',
+        'POST',
         { ...packman },
         {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      getConnectors();
+      getPackmans();
       clearInputs();
       setPackman({
         market: auth.market && auth.market._id,
       });
       notify({
-        title: `${data.name} ${t("degan yetkazuvchi yaratildi!")}`,
-        description: "",
-        status: "success",
+        title: `${data.name} ${t('degan yetkazuvchi yaratildi!')}`,
+        description: '',
+        status: 'success',
       });
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   };
@@ -249,8 +208,8 @@ export const Packman = () => {
   const updatePackman = async () => {
     try {
       const data = await request(
-        "/api/sales/packman/update",
-        "PUT",
+        '/api/sales/packman/update',
+        'PUT',
         { ...packman },
         {
           Authorization: `Bearer ${auth.token}`,
@@ -260,17 +219,17 @@ export const Packman = () => {
       setPackman({
         market: auth.market && auth.market._id,
       });
-      getConnectors();
+      getPackmans();
       notify({
-        title: `${data.name} ${t("degan yetkazuvchi yangilandi!")}`,
-        description: "",
-        status: "success",
+        title: `${data.name} ${t('degan yetkazuvchi yangilandi!')}`,
+        description: '',
+        status: 'success',
       });
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   };
@@ -281,8 +240,8 @@ export const Packman = () => {
   const deletePackman = async () => {
     try {
       const data = await request(
-        "/api/sales/packman/delete",
-        "DELETE",
+        '/api/sales/packman/delete',
+        'DELETE',
         { ...remove },
         {
           Authorization: `Bearer ${auth.token}`,
@@ -291,18 +250,18 @@ export const Packman = () => {
       setRemove({
         market: auth.market && auth.market._id,
       });
-      getConnectors();
+      getPackmans();
       notify({
         title: `${data.name} ${t("degan yetkazuvchi o'chirildi!")}`,
-        description: "",
-        status: "success",
+        description: '',
+        status: 'success',
       });
       setModal(false);
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   };
@@ -310,198 +269,52 @@ export const Packman = () => {
   //====================================================================
   //====================================================================
 
-  const [n, setN] = useState(false);
   useEffect(() => {
-    if (!n) {
-      getPackmans();
-      getConnectorsCount();
-      setN(true);
-    }
-  }, [getPackmans, n, getConnectorsCount]);
+    getPackmans();
+  }, [currentPage, getPackmans, countPage, sendingsearch]);
+
+  // const [n, setN] = useState(false);
+  // useEffect(() => {
+  //   if (!n) {
+  //     getPackmans();
+  //     setN(true);
+  //   }
+  // }, [getPackmans, n]);
 
   //====================================================================
-  //====================================================================
+  //===================== ===============================================
 
   //====================================================================
   //====================================================================
 
   return (
     <>
-      <div className='content-wrapper px-lg-5 px-3'>
-        <div className='row gutters'>
-          <div className='col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12'>
-            <div className='table-container'>
-              <div className='table-responsive'>
-                <table className='table m-0'>
-                  <thead>
-                    <tr>
-                      <th className='border text-center'>{t("Yetkazuvchi")}</th>
-                      <th className='border text-center'>{t("Saqlash")}</th>
-                      <th className='border text-center'>{t("Tozalash")}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className='border text-center'>
-                      <td className='border text-center'>
-                        <input
-                          name='name'
-                          value={packman.name || ""}
-                          onKeyUp={keyPressed}
-                          onChange={changeHandler}
-                          type='text'
-                          className='focus: outline-none focus:ring focus:border-blue-500 rounded py-1 px-3'
-                          id='name'
-                          placeholder={t("Yetkazuvchini kiriting")}
-                        />
-                      </td>
-                      <td className='border text-center'>
-                        {loading ? (
-                          <button className='btn btn-success' disabled>
-                            <span className='spinner-border spinner-border-sm'></span>
-                            Loading...
-                          </button>
-                        ) : (
-                          <button
-                            onClick={saveHandler}
-                            className='btn btn-success py-1 px-4'>
-                            <FontAwesomeIcon
-                              className='text-base'
-                              icon={faFloppyDisk}
-                            />
-                          </button>
-                        )}
-                      </td>
-                      <td className='border text-center'>
-                        {loading ? (
-                          <button className='btn btn-success' disabled>
-                            <span className='spinner-border spinner-border-sm'></span>
-                            Loading...
-                          </button>
-                        ) : (
-                          <button
-                            onClick={clearInputs}
-                            className='btn btn-secondary py-1 px-4'>
-                            <FontAwesomeIcon
-                              className='text-base'
-                              icon={faRepeat}
-                            />
-                          </button>
-                        )}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <div className='table-container'>
-              <div className='table-responsive'>
-                <table className='table m-0'>
-                  <thead className='bg-white'>
-                    <tr>
-                      <th>
-                        <select
-                          className='form-control form-control-sm selectpicker'
-                          placeholder={t("Bo'limni tanlang")}
-                          onChange={setPageSize}
-                          style={{ minWidth: "50px" }}>
-                          <option value={10}>10</option>
-                          <option value={25}>25</option>
-                          <option value={50}>50</option>
-                          <option value={100}>100</option>
-                        </select>
-                      </th>
-                      <th>
-                        <input
-                          className='form-control'
-                          type='search'
-                          onChange={searchPackman}
-                          style={{ maxWidth: "100px" }}
-                          placeholder={t("Yetkazuvchilar")}
-                        />
-                      </th>
-                      <th className='text-center'>
-                        <Pagination
-                          setCurrentPage={setCurrentPage}
-                          countPage={countPage}
-                          totalDatas={connectorCount.count}
-                        />
-                      </th>
-                      {/* <th className="text-center">
-                        <div className="btn btn-primary">
-                          <ReactHtmlTableToExcel
-                            id="reacthtmltoexcel"
-                            table="brand-excel-table"
-                            sheet="Sheet"
-                            buttonText="Excel"
-                            filename="Brendlar"
-                          />
-                        </div>
-                      </th> */}
-                    </tr>
-                  </thead>
-                  <thead>
-                    <tr className='border text-center'>
-                      <th className='border text-center'>№</th>
-                      <th className='border text-center'>
-                        {t("Yetkazuvchi")}{" "}
-                        <Sort
-                          data={packmans}
-                          setData={setPackmans}
-                          property={"name"}
-                        />
-                      </th>
-                      <th className='border text-center'>{t("Tahrirlash")}</th>
-                      <th className='border text-center'>{t("O'chirish")}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {currentPackmans &&
-                      currentPackmans.map((s, key) => {
-                        return (
-                          <tr className='border text-center' key={key}>
-                            <td className='border text-center font-bold text-bold text-black'>
-                              {currentPage * countPage + key + 1}
-                            </td>
-                            <td className='border text-center font-bold text-bold text-black'>
-                              {s.name}
-                            </td>
-                            <td className='border text-center'>
-                              <button
-                                onClick={() => {
-                                  setPackman({ ...s });
-                                }}
-                                className='btn btn-success py-1 px-4'
-                                style={{ fontSize: "75%" }}>
-                                <FontAwesomeIcon
-                                  className='text-base'
-                                  icon={faPenAlt}
-                                />
-                              </button>
-                            </td>
-                            <td className='border text-center'>
-                              <button
-                                onClick={() => {
-                                  setRemove({ ...s });
-                                  setModal(true);
-                                }}
-                                className='btn btn-secondary py-1 px-4'>
-                                <FontAwesomeIcon
-                                  className='text-base'
-                                  icon={faTrashCan}
-                                />
-                              </button>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+      <div className='overflow-x-auto'>
+        <div className='m-3 min-w-[700px]'>
+          <CreatePackman
+            packman={packman}
+            changeHandler={changeHandler}
+            keyPressed={keyPressed}
+            saveHandler={saveHandler}
+            clearInputs={clearInputs}
+            loading={loading}
+          />
+          <PackmanTable
+            setPageSize={setPageSize}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            searchPackman={searchPackman}
+            countPage={countPage}
+            totalDatas={packmansCount}
+            currentPackmans={currentPackmans}
+            setCurrentPackmans={setCurrentPackmans}
+            setModal={setModal}
+            setPackman={setPackman}
+            setRemove={setRemove}
+            searchKeypress={searchKeypress}
+          />
         </div>
       </div>
-
       <Modal
         modal={modal}
         setModal={setModal}

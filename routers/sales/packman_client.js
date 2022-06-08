@@ -18,12 +18,8 @@ router.delete('/packman/delete', (req, res) => {
   require('./packman').deletePackman(req, res);
 });
 
-router.post('/packman/getconnectors', (req, res) => {
-  require('./packman').getPackmanConnectors(req, res);
-});
-
-router.post('/packman/getcount', (req, res) => {
-  require('./packman').getPackmanCount(req, res);
+router.post('/packman/getpackmans', (req, res) => {
+  require('./packman').getPackmans(req, res);
 });
 
 // Client CRUD
@@ -43,12 +39,8 @@ router.delete('/client/delete', (req, res) => {
   require('./client').deleteClient(req, res);
 });
 
-router.post('/client/getconnectors', (req, res) => {
-  require('./client').getClientConnectors(req, res);
-});
-
-router.post('/client/getcount', (req, res) => {
-  require('./client').getClientCount(req, res);
+router.post('/client/getclients', (req, res) => {
+  require('./client').getClients(req, res);
 });
 
 // CRUD sale product
