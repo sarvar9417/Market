@@ -8,10 +8,10 @@ export const CreateInput = ({ product, keyPressed, inputHandler }) => {
         <li className='td text-center bg-white font-bold col-span-3'>
           <input
             name='code'
-            value={product.code || ''}
+            value={(product && product.code) || ''}
             onKeyUp={keyPressed}
             onChange={inputHandler}
-            type='number'
+            type='text'
             className='form-control'
             id='price'
             placeholder={t('Mahsulot kodini kiriting')}
@@ -20,7 +20,7 @@ export const CreateInput = ({ product, keyPressed, inputHandler }) => {
         <li className='td text-center bg-white font-bold col-span-3'>
           <input
             name='name'
-            value={product.name || ''}
+            value={(product && product.name) || ''}
             onKeyUp={keyPressed}
             onChange={inputHandler}
             type='text'
@@ -32,10 +32,10 @@ export const CreateInput = ({ product, keyPressed, inputHandler }) => {
         <li className='td text-center bg-white font-bold col-span-3'>
           <input
             name='total'
-            value={product.total || ''}
+            value={(product && product.total) || ''}
             onKeyUp={keyPressed}
             onChange={inputHandler}
-            type='number'
+            type='text'
             className='form-control'
             id='shortname'
             placeholder={t('Sonini kiriting')}
@@ -45,7 +45,7 @@ export const CreateInput = ({ product, keyPressed, inputHandler }) => {
           <div>
             <input
               name='incomingprice'
-              value={product.incomingprice || ''}
+              value={(product && product.incomingprice) || 0}
               onKeyUp={keyPressed}
               onChange={inputHandler}
               type='number'
@@ -57,7 +57,7 @@ export const CreateInput = ({ product, keyPressed, inputHandler }) => {
           <div>
             <input
               name='sellingprice'
-              value={product.sellingprice || ''}
+              value={(product && product.sellingprice) || 0}
               onKeyUp={keyPressed}
               onChange={inputHandler}
               type='number'

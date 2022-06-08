@@ -379,6 +379,7 @@ module.exports.update = async (req, res) => {
       priceid,
       incomingprice,
       sellingprice,
+      total,
     } = req.body;
     const marke = await Market.findById(market);
 
@@ -405,6 +406,7 @@ module.exports.update = async (req, res) => {
     }
 
     await ProductPrice.findByIdAndUpdate(priceid, {
+      incomingprice: incomingprice ? incomingprice : 0,
       sellingprice: sellingprice ? sellingprice : 0,
     });
 
@@ -421,6 +423,7 @@ module.exports.update = async (req, res) => {
     product.unit = unit;
     product.brand = brand;
     product.price = priceid;
+    product.total = total;
 
     if (product.category !== category) {
       const removeCategory = await Category.findByIdAndUpdate(
