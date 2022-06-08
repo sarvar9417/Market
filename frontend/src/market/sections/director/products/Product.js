@@ -30,7 +30,7 @@ export const Product = () => {
 
   //====================================================================
   //====================================================================
-  const btn = useRef();
+  const excelRef = useRef();
   //====================================================================
   //====================================================================
   const [modal, setModal] = useState(false);
@@ -185,7 +185,6 @@ export const Product = () => {
     countPage,
     sendingsearch,
   ]);
-
   const [excelDatas, setExcelDatas] = useState([]);
 
   const getProductExcel = useCallback(async () => {
@@ -202,7 +201,6 @@ export const Product = () => {
         }
       );
       setExcelDatas(data);
-      document.getElementById('reacthtmltoexcel').click();
     } catch (error) {
       notify({
         title: error,
@@ -214,7 +212,7 @@ export const Product = () => {
 
   //====================================================================
   //====================================================================
-  // console.log(document.getElementById('excel-btn'));
+
   //====================================================================
   //====================================================================
 
@@ -711,6 +709,7 @@ export const Product = () => {
               selectRef={selectRef}
               market={auth.market}
               productsCount={productsCount}
+              excelRef={excelRef}
             />
           </div>
         </div>

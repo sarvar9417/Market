@@ -2,15 +2,16 @@ import { t } from 'i18next';
 import React from 'react';
 import ReactHtmlTableToExcel from 'react-html-table-to-excel';
 
-export const ExcelDownloadBtn = ({ filename }) => {
+export const ExcelDownloadBtn = ({ filename, excelRef }) => {
   return (
     <div className='excel hidden'>
       <ReactHtmlTableToExcel
-        id='reacthtmltoexcel'
+        id='exceltotable'
         table='excel-product-table'
-        sheet='Sheet'
-        buttonText='Excel'
+        sheet='seet'
+        buttonText='excel'
         filename={t(filename)}
+        ref={excelRef}
       />
     </div>
   );

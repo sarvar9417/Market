@@ -17,6 +17,7 @@ export const TableHeader = ({
   setModal2,
   loading,
   getProductExcel,
+  excelRef,
 }) => {
   return (
     <ul className='tbody border-b border-t-2 border-blue-800'>
@@ -69,16 +70,16 @@ export const TableHeader = ({
           totalDatas={productsCount}
         />
       </li>
-      <li className='th-h border-r col-span-1'>
+      <li className='th-h border-r col-span-1 flex justify-center'>
         <button
           className='px-4 bg-green-700 hover:bg-green-800 text-white rounded'
           onClick={getProductExcel}
         >
           <FontAwesomeIcon icon={faFileExcel} />
         </button>
-        <ExcelDownloadBtn filename={'Mahsulotlar'} />
+        <ExcelDownloadBtn excelRef={excelRef} filename={'Mahsulotlar'} />
       </li>
-      <li className='th-h border-r col-span-1'>
+      <li className='th-h border-r col-span-1 flex justify-center'>
         <ExcelUpload
           setData={setImports}
           setModal={setModal2}

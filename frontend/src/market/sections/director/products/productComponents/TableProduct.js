@@ -23,6 +23,7 @@ export const TableProduct = ({
   productsCount,
   keyPress,
   getProductExcel,
+  excelRef,
 }) => {
   const edit = (p) => {
     selectRef.category.current.selectOption({
@@ -43,12 +44,12 @@ export const TableProduct = ({
     });
     setProduct({
       market: market && market._id,
-      _id: p._id,
-      name: p.name,
-      code: p.code,
-      category: p.category._id,
-      unit: p.unit._id,
-      producttype: p.producttype._id,
+      _id: p && p._id,
+      name: p && p.name,
+      code: p && p.code,
+      category: p.category && p.category._id,
+      unit: p.unit && p.unit._id,
+      producttype: p.producttype && p.producttype._id,
       brand: p.brand ? p.brand._id : '',
       total: p.total || 0,
       priceid: (p.price && p.price._id) || 0,
@@ -70,6 +71,7 @@ export const TableProduct = ({
         setModal2={setModal2}
         loading={loading}
         getProductExcel={getProductExcel}
+        excelRef={excelRef}
       />
 
       <TableHead
