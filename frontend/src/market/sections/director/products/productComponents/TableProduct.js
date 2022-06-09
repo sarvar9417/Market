@@ -31,8 +31,8 @@ export const TableProduct = ({
       value: p.category._id,
     });
     selectRef.producttype.current.selectOption({
-      label: p.producttype.name,
-      value: p.producttype._id,
+      label: p.producttype && p.producttype.name,
+      value: p.producttype && p.producttype._id,
     });
     selectRef.brand.current.selectOption({
       label: p.brand ? p.brand.name : '',
