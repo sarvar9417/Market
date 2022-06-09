@@ -1,10 +1,10 @@
-import { useToast } from '@chakra-ui/react';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../../context/AuthContext';
 import { useHttp } from '../../../hooks/http.hook';
 import { TableHead } from './Inventory/TableHead';
 import { TableHeader } from './Inventory/TableHeader';
 import { Rows } from './Inventory/Rows';
+import { useToast } from '@chakra-ui/react';
 
 export const Inventory = () => {
   // ===========================================================
@@ -15,7 +15,7 @@ export const Inventory = () => {
   const [currentProducts, setCurrentProducts] = useState([]);
 
   // Products
-  const [searchStorage, setSearchStrorage] = useState([]);
+  const [searchStorage, setSearchStorage] = useState([]);
   const [search, setSearch] = useState({
     categorycode: '',
     productcode: '',
@@ -25,6 +25,9 @@ export const Inventory = () => {
   });
   const [sendingsearch, setSendingSearch] = useState(search);
   const [productsCount, setProductsCount] = useState(0);
+
+  //Inventoies
+  const [inventories, setInventories] = useState([]);
 
   //Context
   const { request } = useHttp();
@@ -49,11 +52,11 @@ export const Inventory = () => {
   );
 
   // ===========================================================
-  // GET METHODS
+  // API METHODS
   const getProducts = useCallback(async () => {
     try {
       const data = await request(
-        `/api/products/product/getproductsinventory`,
+        `/api/inventory/getproducts`,
         'POST',
         {
           market: auth.market._id,
@@ -65,8 +68,8 @@ export const Inventory = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      console.log(data.products);
-      setSearchStrorage(data.products);
+      setInventories(data.inventories);
+      setSearchStorage(data.products);
       setCurrentProducts(data.products);
       setProductsCount(data.count);
     } catch (error) {
@@ -81,11 +84,42 @@ export const Inventory = () => {
     auth,
     notify,
     setCurrentProducts,
-    setSearchStrorage,
+    setSearchStorage,
     currentPage,
     countPage,
     sendingsearch,
   ]);
+
+  const updateInventory = useCallback(
+    async (e, i) => {
+      try {
+        const data = await request(
+          `/api/inventory/update`,
+          'POST',
+          {
+            market: auth.market._id,
+            inventory: e,
+          },
+          {
+            Authorization: `Bearer ${auth.token}`,
+          }
+        );
+        localStorage.setItem('data', data);
+        notify({
+          title: `${currentProducts[i].name} mahsuloti inventarizatsiyasi saqlandi`,
+          description: '',
+          status: 'success',
+        });
+      } catch (error) {
+        notify({
+          title: error,
+          description: '',
+          status: 'error',
+        });
+      }
+    },
+    [request, auth, notify, currentProducts]
+  );
 
   // ===========================================================
   // HANDLAERS
@@ -120,6 +154,14 @@ export const Inventory = () => {
     }
 
     setCurrentProducts(filter);
+  };
+
+  const countHandler = (e) => {
+    let s = [...inventories];
+    s[parseInt(e.target.name)].inventorycount = e.target.value;
+    s[parseInt(e.target.name)].productcount =
+      currentProducts[parseInt(e.target.name)].total;
+    setInventories(s);
   };
 
   const keyPressed = (e) => {
@@ -157,6 +199,9 @@ export const Inventory = () => {
         {currentProducts.map((product, index) => {
           return (
             <Rows
+              updateInventory={updateInventory}
+              countHandler={countHandler}
+              inventory={inventories[index]}
               key={index}
               index={index}
               currentPage={currentPage}

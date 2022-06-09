@@ -22,7 +22,7 @@ const inventory = new Schema(
   }
 );
 
-function validateInvertory(inventory) {
+function validateInventory(inventory) {
   const schema = Joi.object({
     unit: Joi.string(),
     code: Joi.string(),
@@ -38,5 +38,5 @@ function validateInvertory(inventory) {
   return schema.validate(inventory);
 }
 
-module.exports.validateInvertory = validateInvertory;
-module.exports.Invertory = model('Invertory', inventory);
+module.exports.validateInventory = validateInventory;
+module.exports.Inventory = model('Inventory', inventory);

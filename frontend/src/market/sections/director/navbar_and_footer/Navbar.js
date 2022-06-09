@@ -26,6 +26,8 @@ export const Navbar = ({ baseUrl }) => {
   );
 
   const [activePage, setActivePage] = useState(window.location.pathname);
+
+  const [currentPage, setCurrentPage] = useState('Bosh sahifa');
   //====================================================================
   //====================================================================
 
@@ -258,9 +260,10 @@ export const Navbar = ({ baseUrl }) => {
                           }`}
                           onClick={() => {
                             setActivePage('/alo24/inventory');
+                            setCurrentPage('Inventorizatsiya');
                           }}
                           to='/alo24/inventory'>
-                          {t('Invertarizatsiya')}
+                          {t('Invertorizatsiya')}
                         </Link>
                       </li>
                       <li>
@@ -505,7 +508,7 @@ export const Navbar = ({ baseUrl }) => {
           {/* Page header start */}
           <div className='page-header'>
             <ol className='breadcrumb'>
-              <li className='breadcrumb-item active'>{t('Bosh sahifa')}</li>
+              <li className='breadcrumb-item active'>{t(currentPage)}</li>
             </ol>
           </div>
           {/* Page header end */}

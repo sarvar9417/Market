@@ -1,7 +1,15 @@
 import React from 'react';
-import { EditBtn } from '../../components/TableButtons';
+import { SaveBtn } from '../../components/TableButtons';
 
-export const Rows = ({ currentPage, index, product, countPage }) => {
+export const Rows = ({
+  currentPage,
+  index,
+  product,
+  countPage,
+  inventory,
+  countHandler,
+  updateInventory,
+}) => {
   return (
     <ul className='tr font-bold'>
       <li className='no'>{currentPage * countPage + 1 + index}</li>
@@ -15,15 +23,45 @@ export const Rows = ({ currentPage, index, product, countPage }) => {
       <li className='td text-center col-span-2 border-r'>
         {product.brand && product.brand.name}
       </li>
-      <li className='td col-span-2 border-r text-right'>
-        <span>{Math.round(product.total * 100) / 100}</span>{' '}
-        <span>{product.unit && product.unit.name}</span>
+      <li className='td border-r text-right'>
+        <span>
+          {inventory && inventory.productcount
+            ? inventory.productcount
+            : Math.round(product.total * 100) / 100}
+        </span>{' '}
+      </li>
+      <li className='td  border-r text-right '>
+        <input
+          onChange={countHandler}
+          name={index}
+          className='text-right font-bold w-full focus:outline-1 outline-green-800 px-1'
+          type='number'
+          defaultValue={
+            inventory && inventory.inventorycount ? inventory.inventorycount : 0
+          }
+        />
       </li>
       <li className='td  border-r text-right col-span-2'>
-        <span>{Math.round(product.total * 100) / 100}</span>{' '}
-        <span>{product.unit && product.unit.name}</span>
+        <span>
+          {inventory && inventory.inventorycount
+            ? Math.round(
+                (inventory.productcount - inventory.inventorycount) * 100
+              ) / 100
+            : 0}
+        </span>
+        <span className='text-red-600 w-1/4 inline-block'>
+          {product.unit && product.unit.name}
+        </span>
       </li>
-      <li className='td-btn'>{<EditBtn />}</li>
+      <li className='td-btn'>
+        {
+          <SaveBtn
+            saveHandler={() => {
+              updateInventory(inventory, index);
+            }}
+          />
+        }
+      </li>
     </ul>
   );
 };

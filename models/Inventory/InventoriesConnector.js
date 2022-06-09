@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 const Joi = require('joi');
 
-const inventoriesConnector = new Schema(
+const inventoryConnector = new Schema(
   {
     id: { type: String, required: true },
     inventories: [{ type: Schema.Types.ObjectId, ref: 'Inventory' }],
@@ -15,20 +15,20 @@ const inventoriesConnector = new Schema(
   }
 );
 
-function validateInvertoriesConnector(inventoriesConnector) {
+function validateInventoryConnector(inventoryConnector) {
   const schema = Joi.object({
     id: Joi.string(),
-    inventories: Joi.array(),
+    inventory: Joi.array(),
     completed: Joi.boolean(),
     user: Joi.string(),
     market: Joi.string().required(),
   });
 
-  return schema.validate(inventoriesConnector);
+  return schema.validate(inventoryConnector);
 }
 
-module.exports.validateInvertoriesConnector = validateInvertoriesConnector;
-module.exports.InvertoriesConnector = model(
-  'InvertoriesConnector',
-  inventoriesConnector
+module.exports.validateInventoryConnector = validateInventoryConnector;
+module.exports.InventoryConnector = model(
+  'InventoryConnector',
+  inventoryConnector
 );
