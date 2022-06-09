@@ -50,7 +50,7 @@ export const TableProduct = ({
       category: p.category && p.category._id,
       unit: p.unit && p.unit._id,
       producttype: p.producttype && p.producttype._id,
-      brand: p.brand ? p.brand._id : '',
+      brand: p.brand && p.brand._id,
       total: p.total || 0,
       priceid: (p.price && p.price._id) || 0,
       incomingprice: p.price.incomingprice || 0,

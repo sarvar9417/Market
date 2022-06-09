@@ -19,7 +19,7 @@ export const TableRow = ({
     <ul className='tr'>
       <li className='no'>{currentPage * 10 + 1 + index}</li>
       <li className='no flex justify-between'>
-        <span className='w-1/2'>{p.category.code}</span>{' '}
+        <span className='w-1/2'>{p.category && p.category.code}</span>{' '}
         <span className='w-1/2'>{p.code}</span>
       </li>
       <li className='col-span-3 td no flex justify-between'>
