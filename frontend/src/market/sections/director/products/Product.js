@@ -663,56 +663,54 @@ export const Product = () => {
   return (
     <>
       {loading ? <Loader /> : ''}
-      <div className='content-wrapper px-lg-5 px-3'>
-        <div className='row gutters'>
-          <div className='col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12'>
-            <CreateProduct
-              changeCategory={changeCategory}
-              producttypes={producttypes}
-              changeProductType={changeProductType}
-              categories={categories}
-              setProduct={setProduct}
-              product={product}
-              keyPressed={keyPressed}
-              inputHandler={inputHandler}
-              saveHandler={saveHandler}
-              loading={loading}
-              units={units}
-              brands={brands}
-              clearInputs={clearInputs}
-              changeBrand={changeBrand}
-              changeUnit={changeUnit}
-              selectRef={selectRef}
-            />
-            <TableProduct
-              getProductExcel={getProductExcel}
-              producttypes={producttypes}
-              keyPress={searchKeypress}
-              setImports={setImports}
-              product={product}
-              changeHandler={searchProducts}
-              categories={categories}
-              products={products}
-              tableExcel={tableExcel}
-              setRemove={setRemove}
-              setModal={setModal}
-              setProducts={setProducts}
-              setProduct={setProduct}
-              setCurrentPage={setCurrentPage}
-              countPage={countPage}
-              setCountPage={setCountPage}
-              currentProducts={currentProducts}
-              setCurrentProducts={setCurrentProducts}
-              currentPage={currentPage}
-              setPageSize={setPageSize}
-              loading={loading}
-              setModal2={setModal2}
-              selectRef={selectRef}
-              market={auth.market}
-              productsCount={productsCount}
-              excelRef={excelRef}
-            />
-          </div>
+      <div className='overflow-x-auto'>
+        <div className='m-3 min-w-[800px]'>
+          <CreateProduct
+            changeCategory={changeCategory}
+            producttypes={producttypes}
+            changeProductType={changeProductType}
+            categories={categories}
+            setProduct={setProduct}
+            product={product}
+            keyPressed={keyPressed}
+            inputHandler={inputHandler}
+            saveHandler={saveHandler}
+            loading={loading}
+            units={units}
+            brands={brands}
+            clearInputs={clearInputs}
+            changeBrand={changeBrand}
+            changeUnit={changeUnit}
+            selectRef={selectRef}
+          />
+          <TableProduct
+            getProductExcel={getProductExcel}
+            producttypes={producttypes}
+            keyPress={searchKeypress}
+            setImports={setImports}
+            product={product}
+            changeHandler={searchProducts}
+            categories={categories}
+            products={products}
+            tableExcel={tableExcel}
+            setRemove={setRemove}
+            setModal={setModal}
+            setProducts={setProducts}
+            setProduct={setProduct}
+            setCurrentPage={setCurrentPage}
+            countPage={countPage}
+            setCountPage={setCountPage}
+            currentProducts={currentProducts}
+            setCurrentProducts={setCurrentProducts}
+            currentPage={currentPage}
+            setPageSize={setPageSize}
+            loading={loading}
+            setModal2={setModal2}
+            selectRef={selectRef}
+            market={auth.market}
+            productsCount={productsCount}
+            excelRef={excelRef}
+          />
         </div>
       </div>
 
