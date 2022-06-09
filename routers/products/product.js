@@ -413,9 +413,12 @@ module.exports.update = async (req, res) => {
     product.name = name;
     product.code = code;
     product.unit = unit;
-    product.brand = brand;
     product.price = priceid;
     product.total = total;
+
+    if (product.brand) {
+      product.brand = brand;
+    }
 
     if (product.category !== category) {
       const removeCategory = await Category.findByIdAndUpdate(
