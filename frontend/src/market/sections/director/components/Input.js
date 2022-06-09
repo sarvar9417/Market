@@ -1,5 +1,5 @@
-import { t } from "i18next";
-import React from "react";
+import { t } from 'i18next';
+import React from 'react';
 
 export const Input = ({
   classes,
@@ -13,7 +13,7 @@ export const Input = ({
   return (
     <div>
       <input
-        value={data ? data : ""}
+        value={data ? data : ''}
         onKeyUp={keyPressed}
         onChange={changeHandler}
         type={type}
@@ -26,6 +26,7 @@ export const Input = ({
 };
 
 export const SearchInput = ({
+  className,
   keyPressed,
   changeHandler,
   type,
@@ -39,7 +40,7 @@ export const SearchInput = ({
         onKeyUp={keyPressed}
         onChange={changeHandler}
         type={type}
-        className="input"
+        className={`input ${className}`}
         name={name}
         placeholder={t(placeholder)}
         value={value}

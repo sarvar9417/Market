@@ -13,7 +13,6 @@ const {
   FilialProduct,
   validateFilialProduct,
 } = require('../../models/FilialProducts/FilialProduct');
-const { search } = require('./category_products');
 const ObjectId = require('mongodb').ObjectId;
 
 //Product registerall
@@ -924,5 +923,78 @@ module.exports.deleteAll = async (req, res) => {
     res.send(all);
   } catch (error) {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
+  }
+};
+
+//Product for Inventory
+module.exports.getProductsInventory = async (req, res) => {
+  try {
+    const { market, currentPage, countPage, search } = req.body;
+
+    const marke = await Market.findById(market);
+    if (!marke) {
+      return res
+        .status(401)
+        .json({ message: "Diqqat! Do'kon malumotlari topilmadi" });
+    }
+
+    const categorycode = new RegExp(
+      '.*' + search ? search.categorycode : '' + '.*',
+      'i'
+    );
+    const productcode = new RegExp(
+      '.*' + search ? search.productcode : '' + '.*',
+      'i'
+    );
+    const producttype = new RegExp(
+      '.*' + search ? search.producttype : '' + '.*',
+      'i'
+    );
+    const productname = new RegExp(
+      '.*' + search ? search.productname : '' + '.*',
+      'i'
+    );
+    const brandname = new RegExp('.*' + search ? search.brand : '' + '.*', 'i');
+
+    const products = await Product.find({
+      code: productcode,
+      name: productname,
+      market,
+    })
+      .sort({ _id: -1 })
+      .select('name category producttype brand code total unit')
+      .populate({
+        path: 'category',
+        match: { code: categorycode },
+        select: 'code',
+      })
+      .populate({
+        path: 'producttype',
+        match: { name: producttype },
+        select: 'name',
+      })
+      .populate({ path: 'brand', match: { name: brandname }, select: 'name' })
+      .populate('unit', 'name');
+
+    const filter = products.filter((item) => {
+      return (
+        ((search.categorycode.length > 0 && item.category !== null) ||
+          search.categorycode.length === 0) &&
+        ((search.producttype.length > 0 &&
+          item.producttype &&
+          item.producttype !== null) ||
+          search.producttype.length === 0) &&
+        ((search.brand.length > 0 && item.brand && item.brand !== null) ||
+          search.brand.length === 0)
+      );
+    });
+    const count = filter.length;
+
+    res.status(201).json({
+      products: filter.splice(countPage * currentPage, countPage),
+      count,
+    });
+  } catch (error) {
+    res.status(401).json({ message: 'Serverda xatolik yuz berdi...' });
   }
 };

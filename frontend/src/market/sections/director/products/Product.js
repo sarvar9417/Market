@@ -20,7 +20,7 @@ import { ExcelTable } from './Category/ExcelTable';
 export const Product = () => {
   //====================================================================
   //====================================================================
-  // Pagenation
+  // Pagination
   const [currentPage, setCurrentPage] = useState(0);
   const [countPage, setCountPage] = useState(10);
 
@@ -165,6 +165,7 @@ export const Product = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+      console.log(data.products);
       setSearchStrorage(data.products);
       setCurrentProducts(data.products);
       setProductsCount(data.count);

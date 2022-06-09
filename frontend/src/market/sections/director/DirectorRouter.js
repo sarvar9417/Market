@@ -20,6 +20,8 @@ import { FilialDirector } from './filials/FilialDirector';
 import { Discounts } from './sale/Discounts';
 import { Payments } from './sale/Payments';
 import { Debts } from './sale/Debts';
+import { Inventory } from './inventory/Inventory';
+import { Inventories } from './inventory/Inventories';
 
 export const DirectorRouter = () => {
   return (
@@ -87,6 +89,12 @@ export const DirectorRouter = () => {
         </Route>
         <Route path='/alo24/debts'>
           <Debts />
+        </Route>
+        <Route path='/alo24/inventory'>
+          <Inventory />
+        </Route>
+        <Route path='/alo24/inventories'>
+          <Inventories />
         </Route>
 
         <Redirect to='/alo24' />

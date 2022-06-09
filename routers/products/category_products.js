@@ -94,6 +94,10 @@ router.post('/product/getallincoming', auth, (req, res) => {
   require('./product').getAllIncoming(req, res);
 });
 
+router.post('/product/getproductsinventory', auth, (req, res) => {
+  require('./product').getProductsInventory(req, res);
+});
+
 //========================================================
 // PRODUCTTYPE
 router.post('/producttype/register', auth, (req, res) => {

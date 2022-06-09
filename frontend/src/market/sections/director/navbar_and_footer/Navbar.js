@@ -128,7 +128,9 @@ export const Navbar = ({ baseUrl }) => {
                     activePage === '/alo24/brand' ||
                     activePage === '/alo24/unit' ||
                     activePage === '/alo24/supplier' ||
-                    activePage === '/alo24/incoming'
+                    activePage === '/alo24/incoming' ||
+                    activePage === '/alo24/inventory' ||
+                    activePage === '/alo24/inventories'
                       ? 'active-page'
                       : ''
                   }`}>
@@ -221,7 +223,6 @@ export const Navbar = ({ baseUrl }) => {
                       </li>
                     </ul>
                   </li>
-
                   <li>
                     <Link
                       className={`dropdown-item ${
@@ -233,6 +234,50 @@ export const Navbar = ({ baseUrl }) => {
                       to='/alo24/incoming'>
                       {t('Qabul qilish')}
                     </Link>
+                  </li>
+                  <li>
+                    <span
+                      className='dropdown-toggle sub-nav-link'
+                      to='#'
+                      id='buttonsDropdown'
+                      role='button'
+                      data-toggle='dropdown'
+                      aria-haspopup='true'
+                      aria-expanded='false'>
+                      {t('Invertarizatsiya')}
+                    </span>
+                    <ul
+                      className='dropdown-menu dropdown-menu-right'
+                      aria-labelledby='buttonsDropdown'>
+                      <li>
+                        <Link
+                          className={`dropdown-item ${
+                            activePage === '/alo24/inventory'
+                              ? 'active-page'
+                              : ''
+                          }`}
+                          onClick={() => {
+                            setActivePage('/alo24/inventory');
+                          }}
+                          to='/alo24/inventory'>
+                          {t('Invertarizatsiya')}
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={`dropdown-item ${
+                            activePage === '/alo24/inventories'
+                              ? 'active-page'
+                              : ''
+                          }`}
+                          onClick={() => {
+                            setActivePage('/alo24/inventories');
+                          }}
+                          to='/alo24/inventories'>
+                          {t('Invertarizatsiyalar')}
+                        </Link>
+                      </li>
+                    </ul>
                   </li>
                 </ul>
               </li>
@@ -246,7 +291,10 @@ export const Navbar = ({ baseUrl }) => {
                   className={`nav-link dropdown-toggle ${
                     activePage === '/alo24/sales' ||
                     activePage === '/alo24/sales/packman' ||
-                    activePage === '/alo24/sales/client'
+                    activePage === '/alo24/sales/client' ||
+                    activePage === '/alo24/payments' ||
+                    activePage === '/alo24/discounts' ||
+                    activePage === '/alo24/debts'
                       ? 'active-page'
                       : ''
                   }`}>
