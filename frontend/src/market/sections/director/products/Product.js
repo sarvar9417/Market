@@ -85,8 +85,9 @@ export const Product = () => {
     { name: t('Mahsulot kodi'), value: 'code' },
     { name: t('Mahsulot nomi'), value: 'name' },
     { name: t("O'lchov birligi"), value: 'unit' },
-    { name: t('Narxi'), value: 'price' },
     { name: t('Soni'), value: 'total' },
+    { name: 'Olish', value: 'incomingprice' },
+    { name: 'Sotish', value: 'sellingprice' },
   ];
 
   //====================================================================
@@ -165,7 +166,6 @@ export const Product = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      console.log(data.products);
       setSearchStrorage(data.products);
       setCurrentProducts(data.products);
       setProductsCount(data.count);

@@ -11,7 +11,7 @@ export const CreateInput = ({ product, keyPressed, inputHandler }) => {
             value={(product && product.code) || ''}
             onKeyUp={keyPressed}
             onChange={inputHandler}
-            type='text'
+            type='number'
             className='form-control'
             id='price'
             placeholder={t('Mahsulot kodini kiriting')}
@@ -32,20 +32,20 @@ export const CreateInput = ({ product, keyPressed, inputHandler }) => {
         <li className='td text-center bg-white font-bold col-span-3'>
           <input
             name='total'
-            value={(product && product.total) || ''}
+            value={parseFloat(product && product.total) || ''}
             onKeyUp={keyPressed}
             onChange={inputHandler}
-            type='text'
+            type='number'
             className='form-control'
             id='shortname'
             placeholder={t('Sonini kiriting')}
           />
         </li>
-        <li className='td text-center bg-white font-bold col-span-3 flex'>
-          <div>
+        <li className='td text-center bg-white font-bold col-span-3 flex justify-between'>
+          <div className='w-1/2 px-1'>
             <input
               name='incomingprice'
-              value={(product && product.incomingprice) || 0}
+              value={parseFloat(product && product.incomingprice) || ''}
               onKeyUp={keyPressed}
               onChange={inputHandler}
               type='number'
@@ -54,10 +54,10 @@ export const CreateInput = ({ product, keyPressed, inputHandler }) => {
               placeholder='Olish narxi'
             />
           </div>
-          <div>
+          <div className='w-1/2 px-1'>
             <input
               name='sellingprice'
-              value={(product && product.sellingprice) || 0}
+              value={parseFloat(product && product.sellingprice) || ''}
               onKeyUp={keyPressed}
               onChange={inputHandler}
               type='number'

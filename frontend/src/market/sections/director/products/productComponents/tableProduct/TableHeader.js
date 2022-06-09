@@ -33,7 +33,7 @@ export const TableHeader = ({
           <option value={100}>100</option>
         </select>
       </li>
-      <li className='th-h border-r col-span-2'>
+      <li className='th-h border-r col-span-1'>
         <input
           onChange={changeHandler}
           type='search'
@@ -43,7 +43,7 @@ export const TableHeader = ({
           onKeyUp={keyPress}
         />
       </li>
-      <li className='th-h border-r col-span-2'>
+      <li className='th-h border-r col-span-3'>
         <input
           onChange={changeHandler}
           type='search'
