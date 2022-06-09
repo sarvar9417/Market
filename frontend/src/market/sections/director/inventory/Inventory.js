@@ -4,7 +4,9 @@ import { useHttp } from '../../../hooks/http.hook';
 import { TableHead } from './Inventory/TableHead';
 import { TableHeader } from './Inventory/TableHeader';
 import { Rows } from './Inventory/Rows';
+import { Modal } from '../components/Modal';
 import { useToast } from '@chakra-ui/react';
+import { useHistory } from 'react-router-dom';
 
 export const Inventory = () => {
   // ===========================================================
@@ -25,6 +27,7 @@ export const Inventory = () => {
   });
   const [sendingsearch, setSendingSearch] = useState(search);
   const [productsCount, setProductsCount] = useState(0);
+  const [modal, setModal] = useState(false);
 
   //Inventoies
   const [inventories, setInventories] = useState([]);
@@ -32,7 +35,7 @@ export const Inventory = () => {
   //Context
   const { request } = useHttp();
   const auth = useContext(AuthContext);
-
+  const history = useHistory();
   // ===========================================================
   // TOAST
   const toast = useToast();
@@ -121,6 +124,36 @@ export const Inventory = () => {
     [request, auth, notify, currentProducts]
   );
 
+  const completeInventory = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/inventory/completed`,
+        'POST',
+        {
+          market: auth.market._id,
+          inventory: inventories[0],
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+
+      localStorage.setItem('data', data);
+      notify({
+        title: `Inventarizatsiya jarayoni yakunlandi`,
+        description: '',
+        status: 'success',
+      });
+      history.push('/alo24/inventories');
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [request, auth, notify, inventories, history]);
+
   // ===========================================================
   // HANDLAERS
   const changeHandler = (e) => {
@@ -186,6 +219,7 @@ export const Inventory = () => {
     <div className='overflow-x-auto'>
       <div className='m-3 min-w[990px]'>
         <TableHeader
+          setModal={setModal}
           keyPressed={keyPressed}
           changeHandler={changeHandler}
           productsCount={productsCount}
@@ -211,6 +245,13 @@ export const Inventory = () => {
           );
         })}
       </div>
+
+      <Modal
+        modal={modal}
+        setModal={setModal}
+        basic='Diqqat! Inventarizatsiya jarayoni yakunlanganiini tasdiqlaysizmi?'
+        handler={completeInventory}
+      />
     </div>
   );
 };

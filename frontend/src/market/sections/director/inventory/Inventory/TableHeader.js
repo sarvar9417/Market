@@ -5,6 +5,7 @@ import { Pagination } from '../../components/Pagination';
 import { SearchInput } from '../../components/Input';
 
 export const TableHeader = ({
+  setModal,
   currentPage,
   setPageSize,
   changeHandler,
@@ -56,7 +57,12 @@ export const TableHeader = ({
           keyPressed={keyPressed}
         />
       </li>
-      <li className='th-h border-r col-span-5 '>
+      <li className='th-h border-r col-span-5 flex justify-between'>
+        <button
+          onClick={() => setModal(true)}
+          className='bg-orange-700 text-white px-3 rounded font-bold hover:bg-orange-600'>
+          Yakunlash
+        </button>
         <Pagination
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}

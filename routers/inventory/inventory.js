@@ -94,7 +94,6 @@ module.exports.getProductsInventory = async (req, res) => {
     }
 
     let inventories = [];
-    let inventoriesConnector = [];
 
     for (const product of sendingProducts) {
       let inventory = await Inventory.findOne({
@@ -113,12 +112,10 @@ module.exports.getProductsInventory = async (req, res) => {
         });
 
         await inventory.save();
-        inventoryConnector.inventories.push(inventory._id);
       }
       inventories.push(inventory);
     }
 
-    await inventoryConnector.save();
     res.status(201).json({
       products: sendingProducts,
       count,
@@ -137,12 +134,52 @@ module.exports.updateInventory = async (req, res) => {
     if (!marke) {
       return res
         .status(401)
-        .json({ message: "Diqqat! Do'kon malumotlari topilmadi" });
+        .json({ message: "Diqqat! Do'kon ma'lumotlari topilmadi" });
     }
 
     await Inventory.findByIdAndUpdate(inventory._id, inventory);
 
     res.status(201).json(inventory);
+  } catch (error) {
+    res.status(401).json({ message: 'Serverda xatolik yuz berdi...' });
+  }
+};
+
+//Product for Inventory
+module.exports.completed = async (req, res) => {
+  try {
+    const { market, inventory } = req.body;
+    const marke = await Market.findById(market);
+    if (!marke) {
+      return res
+        .status(401)
+        .json({ message: "Diqqat! Do'kon malumotlari topilmadi" });
+    }
+    await InventoryConnector.findByIdAndUpdate(inventory.inventoryConnector, {
+      completed: true,
+    });
+
+    res.status(201).json(inventory);
+
+    const inventoryConnector = await InventoryConnector.findById(
+      inventory.inventoryConnector
+    )
+      .select('inventories')
+      .populate('inventories', 'inventorycount inventoryConnector');
+
+    inventoryConnector.inventories.map(async (inventory) => {
+      if (!inventory.inventorycount) {
+        await Inventory.findByIdAndDelete(inventory._id);
+        await InventoryConnector.findByIdAndUpdate(
+          inventory.inventoryConnector,
+          {
+            $push: {
+              products: inventory._id,
+            },
+          }
+        );
+      }
+    });
   } catch (error) {
     res.status(401).json({ message: 'Serverda xatolik yuz berdi...' });
   }
