@@ -69,43 +69,34 @@ export const checkUnit = (unit) => {
 export const checkProduct = (product) => {
   if (!product.market)
     return {
-      title: t("Diqqat! Avtorzatsiyadan o'tilmagan."),
-      description: t("Iltimos bo'limdan chiqib qayta kiring."),
+      title: "Diqqat! Avtorzatsiyadan o'tilmagan.",
+      description: "Iltimos bo'limdan chiqib qayta kiring.",
       status: 'error',
     };
   if (!product.category)
     return {
-      title: t('Diqqat! Mahsulot kategoriyasi tanlanmagan.'),
-      description: t('Iltimos kategoriya nomini yoki kodini tanlang.'),
+      title: 'Diqqat! Mahsulot kategoriyasi tanlanmagan.',
+      description: 'Iltimos kategoriya nomini yoki kodini tanlang.',
       status: 'error',
     };
-
-  if (!product.producttype)
+  if (!product.unit)
     return {
-      title: t('Diqqat! Mahsulot turin kiritilmagan.'),
-      description: t('Iltimos mahsulot turini kiriting.'),
+      title: "Diqqat! O'lchov birliki kiritilmagan.",
+      description: "Iltimos o'lchov birlikini kiriting.",
       status: 'error',
     };
   if (!product.code)
     return {
-      title: t('Diqqat! Mahsulot kodi kiritilmagan.'),
-      description: t('Iltimos kodini kiriting.'),
+      title: 'Diqqat! Mahsulot kodi kiritilmagan.',
+      description: 'Iltimos kodini kiriting.',
       status: 'error',
     };
   if (!product.name)
     return {
-      title: t('Diqqat! Mahsulot nomi kiritilmagan.'),
-      description: t('Iltimos mahsulot nomini kiriting.'),
+      title: 'Diqqat! Mahsulot nomi kiritilmagan.',
+      description: 'Iltimos mahsulot nomini kiriting.',
       status: 'error',
     };
-
-  if (!product.unit)
-    return {
-      title: t("Diqqat! O'lchov birliki kiritilmagan."),
-      description: t("Iltimos o'lchov birlikini kiriting."),
-      status: 'error',
-    };
-
   if (!product.incomingprice) {
     return {
       title: 'Diqqat! Olish narxi kiritilmagan.',
@@ -117,6 +108,13 @@ export const checkProduct = (product) => {
   if (!product.sellingprice) {
     return {
       title: 'Diqqat! Sotish narxi kiritilmagan.',
+      description: 'Iltimos sotish narxni kiriting.',
+      status: 'error',
+    };
+  }
+  if (parseFloat(product.incomingprice) > parseFloat(product.sellingprice)) {
+    return {
+      title: 'Diqqat! Sotish narxi olish dan katta bulish kerak.',
       description: 'Iltimos sotish narxni kiriting.',
       status: 'error',
     };

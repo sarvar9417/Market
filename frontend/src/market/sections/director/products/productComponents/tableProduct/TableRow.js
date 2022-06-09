@@ -28,17 +28,17 @@ export const TableRow = ({
         </span>{' '}
         <span className='w-1/2 text-right'>{p.name}</span>
       </li>
-      <li className='col-span-2 td no px-1 flex justify-end px-1'>
+      <li className='col-span-2 td no px-1 flex justify-center px-1'>
         {p.brand && p.brand.name}
       </li>
       <li className='col-span-1 td no flex justify-end px-1'>
         <span>{p.total}</span> <span className='ml-1'>{p.unit.name}</span>
       </li>
       <li className='col-span-1 td no flex justify-end px-1'>
-        {p.price && p.price.incomingprice} $
+        {p.price && p.price.incomingprice} USD
       </li>
       <li className='col-span-1 td no flex justify-end px-1'>
-        {p.price && p.price.sellingprice} $
+        {p.price && p.price.sellingprice} USD
       </li>
       <li className='td-btn col-span-1 border-r'>
         {loading ? <SaveBtnLoad /> : <EditBtn editHandler={() => edit(p)} />}

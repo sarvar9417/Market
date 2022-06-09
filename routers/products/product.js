@@ -238,11 +238,6 @@ module.exports.register = async (req, res) => {
       sellingprice,
     } = req.body;
 
-    const price = {
-      incomingprice,
-      sellingprice,
-    };
-
     const product = await Product.findOne({
       market,
       code,
@@ -271,14 +266,6 @@ module.exports.register = async (req, res) => {
       });
     }
 
-    const Producttype = await ProductType.findById(producttype);
-
-    if (!Producttype && producttype) {
-      return res.status(400).json({
-        message: `Diqqat! Ko'rsatilgan mahsulot turi mavjud emas.`,
-      });
-    }
-
     const unitt = await Unit.findById(unit);
 
     if (!unitt) {
@@ -292,19 +279,32 @@ module.exports.register = async (req, res) => {
       code,
       category,
       market,
-      brand,
       unit,
       total,
-      producttype: Producttype._id,
     });
 
+    const Producttype = await ProductType.findById(producttype);
+
+    if (Producttype) {
+      await ProductType.findByIdAndUpdate(Producttype._id, {
+        $push: {
+          products: newProduct._id,
+        },
+      });
+      newProduct.producttype = Producttype._id;
+      await newProduct.save();
+    }
+
+    const productBrand = await Brand.findById(brand);
+
+    if (productBrand) {
+      newProduct.brand = productBrand._id;
+      await newProduct.save();
+    }
+
     const newPrice = new ProductPrice({
-      incomingprice: incomingprice
-        ? Math.round(price.incomingprice * 100) / 100
-        : 0,
-      sellingprice: sellingprice
-        ? Math.round(price.sellingprice * 100) / 100
-        : 0,
+      incomingprice: incomingprice ? Math.round(incomingprice * 100) / 100 : 0,
+      sellingprice: sellingprice ? Math.round(sellingprice * 100) / 100 : 0,
       market,
     });
 
@@ -320,13 +320,6 @@ module.exports.register = async (req, res) => {
         products: newProduct._id,
       },
     });
-    if (Producttype) {
-      await ProductType.findByIdAndUpdate(Producttype._id, {
-        $push: {
-          products: newProduct._id,
-        },
-      });
-    }
 
     for (const f of marke.filials) {
       const filialproduct = new FilialProduct({
@@ -623,24 +616,6 @@ module.exports.getProducts = async (req, res) => {
       'i'
     );
     const brandname = new RegExp('.*' + search ? search.brand : '' + '.*', 'i');
-    const count = await Product.find({
-      code: productcode,
-      name: productname,
-      market,
-    })
-      .sort({ _id: -1 })
-      .select('name category market producttype brand code')
-      // .populate({ path: 'category', match: { code: categorycode } })
-      // .populate({ path: 'producttype', match: { name: producttype } })
-      .populate({ path: 'brand', match: { name: brandname } });
-
-    const filterCount = count.filter((item) => {
-      return (
-        // item.category !== null &&
-        // item.producttype !== null &&
-        item.brand !== null
-      );
-    });
 
     const products = await Product.find({
       code: productcode,
@@ -648,18 +623,25 @@ module.exports.getProducts = async (req, res) => {
       market,
     })
       .sort({ _id: -1 })
-      .select('name category market producttype code unit total brand price')
-      .populate({ path: 'brand', match: { name: brandname } })
+      .select('name category producttype brand code total unit')
       .populate('category', 'code')
       .populate('producttype', 'name')
-      .populate('unit', 'name')
       .populate('price', 'incomingprice sellingprice')
-      .skip(currentPage * countPage)
-      .limit(countPage);
+      .populate({ path: 'brand', match: { name: brandname }, select: 'name' })
+      .populate('unit', 'name');
+
     const filter = products.filter((item) => {
-      return item.brand !== null;
+      if (search && search.brand && search.brand.length > 0) {
+        return item && item.brand;
+      }
+      return item;
     });
-    res.status(201).json({ products: filter, count: filterCount.length });
+    const count = filter.length;
+
+    res.status(201).json({
+      products: filter.splice(countPage * currentPage, countPage),
+      count,
+    });
   } catch (error) {
     res.status(401).json({ message: 'Serverda xatolik yuz berdi...' });
   }
@@ -962,7 +944,7 @@ module.exports.getProductsInventory = async (req, res) => {
       market,
     })
       .sort({ _id: -1 })
-      .select('name category producttype brand code total unit')
+      .select('name market category producttype brand code total unit')
       .populate({
         path: 'category',
         match: { code: categorycode },
