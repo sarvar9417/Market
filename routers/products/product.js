@@ -402,13 +402,13 @@ module.exports.update = async (req, res) => {
       sellingprice: sellingprice ? sellingprice : 0,
     });
 
-    const c = await Product.findOne({ market, code });
+    // const c = await Product.findOne({ market, code });
 
-    if (c && c._id.toString() !== _id) {
-      return res.status(400).json({
-        message: `Diqqat! ${code} kodli mahsulot tizimda avval ro'yxatga olinmagan.`,
-      });
-    }
+    // if (c && c._id.toString() !== _id) {
+    //   return res.status(400).json({
+    //     message: `Diqqat! ${code} kodli mahsulot tizimda avval ro'yxatga olinmagan.`,
+    //   });
+    // }
 
     product.name = name;
     product.code = code;
@@ -416,7 +416,7 @@ module.exports.update = async (req, res) => {
     product.price = priceid;
     product.total = total;
 
-    if (product.brand) {
+    if (brand) {
       product.brand = brand;
     }
 
