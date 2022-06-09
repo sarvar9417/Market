@@ -140,7 +140,7 @@ module.exports.updateInventory = async (req, res) => {
         .json({ message: "Diqqat! Do'kon malumotlari topilmadi" });
     }
 
-    const update = await Inventory.findByIdAndUpdate(inventory._id, inventory);
+    await Inventory.findByIdAndUpdate(inventory._id, inventory);
 
     res.status(201).json(inventory);
   } catch (error) {
