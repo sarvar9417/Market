@@ -112,10 +112,11 @@ module.exports.getProductsInventory = async (req, res) => {
         });
 
         await inventory.save();
+        inventoryConnector.inventories.push(inventory._id);
       }
       inventories.push(inventory);
     }
-
+    await inventoryConnector.save();
     res.status(201).json({
       products: sendingProducts,
       count,
@@ -136,7 +137,11 @@ module.exports.updateInventory = async (req, res) => {
         .status(401)
         .json({ message: "Diqqat! Do'kon ma'lumotlari topilmadi" });
     }
-
+    if (!inventory.inventorycount || inventory.inventorycount < 0) {
+      return res.status(401).json({
+        message: 'Diqqat! Inventarizatsiya qiymatlari xato kiritilmoqda',
+      });
+    }
     await Inventory.findByIdAndUpdate(inventory._id, inventory);
 
     res.status(201).json(inventory);
@@ -165,7 +170,7 @@ module.exports.completed = async (req, res) => {
       inventory.inventoryConnector
     )
       .select('inventories')
-      .populate('inventories', 'inventorycount inventoryConnector');
+      .populate('inventories', 'inventorycount inventoryConnector product');
 
     inventoryConnector.inventories.map(async (inventory) => {
       if (!inventory.inventorycount) {
@@ -173,13 +178,79 @@ module.exports.completed = async (req, res) => {
         await InventoryConnector.findByIdAndUpdate(
           inventory.inventoryConnector,
           {
-            $push: {
-              products: inventory._id,
+            $pull: {
+              inventories: inventory._id,
             },
           }
         );
+      } else {
+        await Product.findByIdAndUpdate(inventory.product, {
+          total: inventory.inventorycount,
+        });
       }
     });
+  } catch (error) {
+    res.status(401).json({ message: 'Serverda xatolik yuz berdi...' });
+  }
+};
+
+//Product for Inventory
+module.exports.inventoryconnetors = async (req, res) => {
+  try {
+    const { market, startDate, endDate, currentPage, countPage } = req.body;
+    const marke = await Market.findById(market);
+    if (!marke) {
+      return res
+        .status(401)
+        .json({ message: "Diqqat! Do'kon malumotlari topilmadi" });
+    }
+
+    const count = await InventoryConnector.find({
+      market,
+      createdAt: {
+        $gte: startDate,
+        $lt: endDate,
+      },
+    }).count();
+
+    const inventoryConnectors = await InventoryConnector.find({
+      market,
+      createdAt: {
+        $gte: startDate,
+        $lt: endDate,
+      },
+    })
+      .select('inventories createdAt completed id')
+      .sort({ _id: -1 })
+      .skip(currentPage * countPage)
+      .limit(countPage);
+    res.status(201).json({ connectors: inventoryConnectors, count });
+  } catch (error) {
+    res.status(401).json({ message: 'Serverda xatolik yuz berdi...' });
+  }
+};
+
+//Product for Inventory
+module.exports.inventoryproducts = async (req, res) => {
+  try {
+    const { market, id } = req.body;
+    const marke = await Market.findById(market);
+    if (!marke) {
+      return res
+        .status(401)
+        .json({ message: "Diqqat! Do'kon malumotlari topilmadi" });
+    }
+    const inventoryConnector = await InventoryConnector.findById(id);
+
+    const inventories = await Inventory.find({
+      inventoryConnector: id,
+      market,
+    })
+      .select('product category inventorycount productcount createdAt')
+      .populate('product', 'name code')
+      .populate('category', 'name code');
+
+    res.status(201).json({ inventories, inventoryConnector });
   } catch (error) {
     res.status(401).json({ message: 'Serverda xatolik yuz berdi...' });
   }

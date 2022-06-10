@@ -14,4 +14,12 @@ router.post('/completed', auth, (req, res) => {
   require('./inventory').completed(req, res);
 });
 
+router.post('/connectors', auth, (req, res) => {
+  require('./inventory').inventoryconnetors(req, res);
+});
+
+router.post('/inventories', auth, (req, res) => {
+  require('./inventory').inventoryproducts(req, res);
+});
+
 module.exports = router;

@@ -230,20 +230,21 @@ export const Inventory = () => {
         />
         <TableHead />
 
-        {currentProducts.map((product, index) => {
-          return (
-            <Rows
-              updateInventory={updateInventory}
-              countHandler={countHandler}
-              inventory={inventories[index]}
-              key={index}
-              index={index}
-              currentPage={currentPage}
-              countPage={countPage}
-              product={product}
-            />
-          );
-        })}
+        {currentProducts.length === inventories.length &&
+          currentProducts.map((product, index) => {
+            return (
+              <Rows
+                updateInventory={updateInventory}
+                countHandler={countHandler}
+                inventory={inventories[index]}
+                key={index}
+                index={index}
+                currentPage={currentPage}
+                countPage={countPage}
+                product={product}
+              />
+            );
+          })}
       </div>
 
       <Modal

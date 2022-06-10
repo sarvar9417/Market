@@ -11,7 +11,10 @@ export const Rows = ({
   updateInventory,
 }) => {
   return (
-    <ul className='tr font-bold'>
+    <ul
+      className={`tr font-bold  ${
+        inventory && inventory.inventorycount ? 'bg-[#e8f8dba6]' : ''
+      }`}>
       <li className='no'>{currentPage * countPage + 1 + index}</li>
       <li className='td border-r font-bold text-right'>
         {product.category.code}
@@ -24,11 +27,7 @@ export const Rows = ({
         {product.brand && product.brand.name}
       </li>
       <li className='td border-r text-right'>
-        <span>
-          {inventory && inventory.productcount
-            ? inventory.productcount
-            : Math.round(product.total * 100) / 100}
-        </span>{' '}
+        <span>{Math.round(product.total * 100) / 100}</span>{' '}
       </li>
       <li className='td  border-r text-right '>
         <input
@@ -45,7 +44,7 @@ export const Rows = ({
         <span>
           {inventory && inventory.inventorycount
             ? Math.round(
-                (inventory.productcount - inventory.inventorycount) * 100
+                -(inventory.productcount - inventory.inventorycount) * 100
               ) / 100
             : 0}
         </span>
