@@ -22,6 +22,7 @@ import { Payments } from './sale/Payments';
 import { Debts } from './sale/Debts';
 import { Inventory } from './inventory/Inventory';
 import { Inventories } from './inventory/Inventories';
+import { HomePage } from './homepage/HomePage';
 
 export const DirectorRouter = () => {
   return (
@@ -29,7 +30,7 @@ export const DirectorRouter = () => {
       <Switch>
         {/* Services */}
         <Route path='/alo24' exact>
-          <h1> {t('Bosh sahifa')}</h1>
+          <HomePage />
         </Route>
         <Route path='/alo24/editdirector'>
           <EditDirector />
