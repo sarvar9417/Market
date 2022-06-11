@@ -78,29 +78,6 @@ export const HomePage = () => {
   //=============================================================
   //=============================================================
 
-  const sortIncomingData = useCallback((data) => {
-    const currentDate = new Date();
-    let arr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    data.map((item) => {
-      let indx = new Date(item.createdAt).getMonth();
-      return (arr[indx] =
-        arr[indx] > 0 ? arr[indx] + item.totalprice : item.totalprice);
-    });
-    setIncomingPrice(arr.slice(0, currentDate.getMonth() + 1));
-  }, []);
-
-  const sortSellingData = useCallback((data) => {
-    const currentDate = new Date();
-    let arr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    data.map((item) => {
-      let indx = new Date(item.createdAt).getMonth();
-      return (arr[indx] =
-        arr[indx] > 0 ? arr[indx] + item.totalprice : item.totalprice);
-    });
-
-    setSellingPrice(arr.slice(0, currentDate.getMonth() + 1));
-  }, []);
-
   //=============================================================
   //=============================================================
 
@@ -119,7 +96,13 @@ export const HomePage = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      sortIncomingData(data);
+      let arr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+      data.map((item) => {
+        let indx = new Date(item.createdAt).getMonth();
+        return (arr[indx] =
+          arr[indx] > 0 ? arr[indx] + item.totalprice : item.totalprice);
+      });
+      setIncomingPrice(arr.slice(0, new Date().getMonth() + 1));
     } catch (error) {
       notify({
         title: error,
@@ -127,7 +110,7 @@ export const HomePage = () => {
         status: 'error',
       });
     }
-  }, [auth, request, notify, sortIncomingData]);
+  }, [auth, request, notify]);
 
   const getSellingCharts = useCallback(async () => {
     try {
@@ -141,8 +124,14 @@ export const HomePage = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+      let arr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+      data.map((item) => {
+        let indx = new Date(item.createdAt).getMonth();
+        return (arr[indx] =
+          arr[indx] > 0 ? arr[indx] + item.totalprice : item.totalprice);
+      });
 
-      sortSellingData(data);
+      setSellingPrice(arr.slice(0, new Date().getMonth() + 1));
     } catch (error) {
       notify({
         title: error,
@@ -150,7 +139,7 @@ export const HomePage = () => {
         status: 'error',
       });
     }
-  }, [auth, request, notify, sortSellingData]);
+  }, [auth, request, notify]);
 
   //=============================================================
   //=============================================================
