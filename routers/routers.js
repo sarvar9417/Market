@@ -18,4 +18,5 @@ module.exports.routers = (app) => {
     require('./filialproducts/filialproducts.route')
   );
   app.use('/api/inventory', require('./inventory/inventory.routes'));
+  app.use('/api', require('./charts/chars.routes'));
 };
