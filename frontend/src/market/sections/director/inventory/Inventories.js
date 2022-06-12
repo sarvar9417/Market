@@ -1,6 +1,6 @@
 import { useToast } from '@chakra-ui/react';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 import { AuthContext } from '../../../context/AuthContext';
 import { useHttp } from '../../../hooks/http.hook';
 import { TableHead } from './Invertories/TableHead';
@@ -16,10 +16,10 @@ export const Inventories = () => {
   const [currentConnectors, setCurrentConnectors] = useState([]);
 
   const [connectorsCount, setConnectorsCount] = useState(0);
-  const [modal, setModal] = useState(false);
+  // const [modal, setModal] = useState(false);
 
   //Inventoies
-  const [connectors, setConnectors] = useState([]);
+  // const [connectors, setConnectors] = useState([]);
 
   // SearchData
   const [startDate, setStartDate] = useState(
@@ -30,7 +30,7 @@ export const Inventories = () => {
   //Context
   const { request } = useHttp();
   const auth = useContext(AuthContext);
-  const history = useHistory();
+  // const history = useHistory();
   // ===========================================================
   // TOAST
   const toast = useToast();
