@@ -1,10 +1,10 @@
-const { User, validateUser, validateUserLogin } = require("../../models/Users");
-const bcrypt = require("bcryptjs");
-const { Market } = require("../../models/MarketAndBranch/Market");
-const { Department } = require("../../models/Products/Category");
-const config = require("config");
-const jwt = require("jsonwebtoken");
-const ObjectId = require("mongodb").ObjectId;
+const { User, validateUser, validateUserLogin } = require('../../models/Users');
+const bcrypt = require('bcryptjs');
+const { Market } = require('../../models/MarketAndBranch/Market');
+const { Department } = require('../../models/Products/Category');
+const config = require('config');
+const jwt = require('jsonwebtoken');
+const ObjectId = require('mongodb').ObjectId;
 
 module.exports.register = async (req, res) => {
   try {
@@ -88,9 +88,9 @@ module.exports.register = async (req, res) => {
 
     res
       .status(201)
-      .send({ message: "Foydalanuvchi muvaffaqqiyatli yaratildi!" });
+      .send({ message: 'Foydalanuvchi muvaffaqqiyatli yaratildi!' });
   } catch (error) {
-    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
 
@@ -151,8 +151,8 @@ module.exports.registerDirector = async (req, res) => {
       {
         userId: newUser._id,
       },
-      config.get("jwtSecret"),
-      { expiresIn: "12h" }
+      config.get('jwtSecret'),
+      { expiresIn: '12h' }
     );
 
     res.status(201).send({
@@ -162,7 +162,7 @@ module.exports.registerDirector = async (req, res) => {
       market: newUser.market,
     });
   } catch (error) {
-    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
 
@@ -180,7 +180,7 @@ module.exports.login = async (req, res) => {
 
     const user = await User.findOne({
       login,
-    }).populate("market");
+    }).populate('market');
 
     if (!user) {
       return res
@@ -199,8 +199,8 @@ module.exports.login = async (req, res) => {
       {
         userId: user._id,
       },
-      config.get("jwtSecret"),
-      { expiresIn: "12h" }
+      config.get('jwtSecret'),
+      { expiresIn: '12h' }
     );
 
     res.send({
@@ -210,7 +210,7 @@ module.exports.login = async (req, res) => {
       market: user.market,
     });
   } catch (e) {
-    res.status(500).json({ message: "Serverda xatolik yuz berdi" });
+    res.status(500).json({ message: 'Serverda xatolik yuz berdi' });
   }
 };
 
@@ -224,7 +224,7 @@ module.exports.getUser = async (req, res) => {
       });
     }
 
-    const user = await User.findById(userId).populate("market");
+    const user = await User.findById(userId).populate('market');
 
     if (!user) {
       return res.status(400).json({
@@ -268,8 +268,8 @@ module.exports.getUsers = async (req, res) => {
       market,
       isArchive: false,
     })
-      .populate("specialty", "name")
-      .select("-password -isArchive -createdAt -updatedAt -__v ")
+      .populate('specialty', 'name')
+      .select('-password -isArchive -createdAt -updatedAt -__v ')
       .sort({ _id: -1 });
 
     res.status(201).send(users);
@@ -288,7 +288,7 @@ module.exports.removeUser = async (req, res) => {
       });
     }
 
-    const user = await User.findById(userId).populate("market");
+    const user = await User.findById(userId).populate('market');
 
     if (!user) {
       return res.status(400).json({
