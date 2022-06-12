@@ -11,8 +11,8 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../../context/AuthContext';
 import { useHttp } from '../../../hooks/http.hook';
 import { FileUpload } from '../../../loginAndRegister/fileUpLoad/FileUpload';
-import { FilialTable } from './filialComponenets/FilialTable';
-import { Rows } from './filialComponenets/Rows';
+import { FilialTable } from './filialComponents/FilialTable';
+import { Rows } from './filialComponents/Rows';
 
 const styleDefault = {
   border: '1.5px solid #eee',

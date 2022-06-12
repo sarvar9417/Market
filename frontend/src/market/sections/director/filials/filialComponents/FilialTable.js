@@ -1,5 +1,5 @@
-import { TableHead } from "./TableHead";
-import { TableHeader } from "./TableHeader";
+import { TableHead } from './TableHead';
+import { TableHeader } from './TableHeader';
 
 export const FilialTable = ({
   setPageSize,
@@ -16,7 +16,7 @@ export const FilialTable = ({
       <TableHeader
         setPageSize={setPageSize}
         branchInputChange={branchInputChange}
-        filename={"Filiallar"}
+        filename={'Filiallar'}
         countPage={countPage}
         totalDatas={totalDatas}
         setCurrentPage={setCurrentPage}
