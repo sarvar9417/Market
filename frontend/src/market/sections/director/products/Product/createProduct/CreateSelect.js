@@ -1,17 +1,17 @@
-import Select from 'react-select';
 import React from 'react';
+import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 const animatedComponents = makeAnimated();
 
 export const CreateSelect = ({
   selectRef,
-  categories,
-  producttypes,
-  brands,
+  // categories,
+  // producttypes,
+  // brands,
   units,
-  changeCategory,
-  changeProductType,
-  changeBrand,
+  // changeCategory,
+  // changeProductType,
+  // changeBrand,
   changeUnit,
   loading,
 }) => {
@@ -21,7 +21,7 @@ export const CreateSelect = ({
         <li className='th col-span-12'>Mahsulotlar</li>
       </ul>
       <ul className='tbody'>
-        <li className='td text-center bg-white font-bold col-span-3'>
+        {/* <li className='td text-center bg-white font-bold col-span-3'>
           <div className='p-1'>
             <Select
               id='select'
@@ -40,8 +40,8 @@ export const CreateSelect = ({
               })}
             />
           </div>
-        </li>
-        <li className='td text-center bg-white font-bold col-span-3'>
+        </li> */}
+        {/* <li className='td text-center bg-white font-bold col-span-3'>
           <div className='p-1'>
             <Select
               id='select'
@@ -61,8 +61,8 @@ export const CreateSelect = ({
               })}
             />
           </div>
-        </li>
-        <li className='td text-center bg-white font-bold col-span-3'>
+        </li> */}
+        {/* <li className='td text-center bg-white font-bold col-span-3'>
           <div className='p-1'>
             <Select
               id='select'
@@ -81,7 +81,7 @@ export const CreateSelect = ({
               })}
             />
           </div>
-        </li>
+        </li> */}
         <li className='td text-center bg-white font-bold col-span-3'>
           <div className='p-1'>
             <Select

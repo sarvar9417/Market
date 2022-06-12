@@ -1,6 +1,6 @@
 import { t } from "i18next";
 import React from "react";
-import { Sort } from "../productComponents/Sort";
+import { Sort } from "../Product/Sort";
 
 export const TableHead = ({ currentCategories, setCurrentCategories }) => {
   return (

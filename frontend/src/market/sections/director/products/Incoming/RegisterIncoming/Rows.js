@@ -7,7 +7,6 @@ import {
 } from '../../../components/TableButtons';
 
 export const Rows = ({
-  currentPage,
   loading,
   index,
   product,
@@ -17,7 +16,7 @@ export const Rows = ({
   return (
     <ul className='tr font-bold'>
       <li className='no'>{1 + index}</li>
-      <li className='no'>{product.category.code}</li>
+      <li className='no'>{product.product.code}</li>
       <li className='col-span-3 td border-r'>{product.product.name}</li>
       <li className='td border-r text-right'>{product.pieces}</li>
       <li className='col-span-2 td border-r text-right'>

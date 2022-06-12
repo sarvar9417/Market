@@ -12,15 +12,15 @@ export const RegisterIncoming = ({
   incomings,
   editIncoming,
   changeProduct,
-  changeCategory,
+  // changeCategory,
   products,
-  categorys,
+  // categorys,
   loading,
   suppliers,
   supplier,
   setSupplier,
-  changeProductType,
-  productType,
+  // changeProductType,
+  // productType,
   selectRef,
   clearSelect,
 }) => {
@@ -31,36 +31,42 @@ export const RegisterIncoming = ({
         setSupplier={setSupplier}
         suppliers={suppliers}
         selectRef={selectRef}
-        categorys={categorys}
-        changeProductType={changeProductType}
+        // categorys={categorys}
+        // changeProductType={changeProductType}
         changeProduct={changeProduct}
-        changeCategory={changeCategory}
-        productType={productType}
+        // changeCategory={changeCategory}
+        // productType={productType}
         products={products}
         clearSelect={clearSelect}
       />
       <div className='rounded-t overflow-x-auto shadow-xl'>
-        <div className='font-bold text-lg p-2  bg-white flex justify-between min-w-[991px]'>
-          <span>
-            {t(' Yetkazib beruvchi:')} {supplier && supplier.name}
-          </span>
-          <span className='text-sm flex items-center'>
-            {loading ? <ClearBtnLoad /> : <ClearBtn clearDatas={clearSelect} />}
-          </span>
+        <div className='min-w-[991px]'>
+          <div className='font-bold text-lg p-2  bg-white flex justify-between'>
+            <span>
+              {t(' Yetkazib beruvchi:')} {supplier && supplier.name}
+            </span>
+            <span className='text-sm flex items-center'>
+              {loading ? (
+                <ClearBtnLoad />
+              ) : (
+                <ClearBtn clearDatas={clearSelect} />
+              )}
+            </span>
+          </div>
+          <TableHead />
+          {incomings &&
+            incomings.map((product, key) => {
+              return (
+                <Rows
+                  product={product}
+                  key={key}
+                  index={key}
+                  editIncoming={editIncoming}
+                  removeIncoming={removeIncoming}
+                />
+              );
+            })}
         </div>
-        <TableHead />
-        {incomings &&
-          incomings.map((product, key) => {
-            return (
-              <Rows
-                product={product}
-                key={key}
-                index={key}
-                editIncoming={editIncoming}
-                removeIncoming={removeIncoming}
-              />
-            );
-          })}
         <div className='text-right px-3 py-2 rounded  bg-white shadow-xl'>
           {loading ? (
             <button className='btn btn-primary' disabled>

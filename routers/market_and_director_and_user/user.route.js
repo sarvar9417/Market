@@ -90,7 +90,6 @@ module.exports.register = async (req, res) => {
       .status(201)
       .send({ message: "Foydalanuvchi muvaffaqqiyatli yaratildi!" });
   } catch (error) {
-    console.log(error);
     res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
   }
 };
@@ -115,7 +114,6 @@ module.exports.registerDirector = async (req, res) => {
       market,
       type,
     } = req.body;
-    console.log(req.body);
     const marke = await Market.findById(market);
 
     if (!marke) {
@@ -164,7 +162,6 @@ module.exports.registerDirector = async (req, res) => {
       market: newUser.market,
     });
   } catch (error) {
-    console.log(error);
     res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
   }
 };

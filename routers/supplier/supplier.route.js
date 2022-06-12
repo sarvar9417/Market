@@ -29,4 +29,8 @@ router.post('/getsuppliersexcel', auth, (req, res) => {
   require('./supplier').getSuppliersExcel(req, res);
 });
 
+router.post('/getincoming', auth, (req, res) => {
+  require('./supplier').getincoming(req, res);
+});
+
 module.exports = router;

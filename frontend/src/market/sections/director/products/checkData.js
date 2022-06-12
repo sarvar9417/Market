@@ -73,22 +73,23 @@ export const checkProduct = (product) => {
       description: "Iltimos bo'limdan chiqib qayta kiring.",
       status: 'error',
     };
-  if (!product.category)
-    return {
-      title: 'Diqqat! Mahsulot kategoriyasi tanlanmagan.',
-      description: 'Iltimos kategoriya nomini yoki kodini tanlang.',
-      status: 'error',
-    };
-  if (!product.unit)
-    return {
-      title: "Diqqat! O'lchov birliki kiritilmagan.",
-      description: "Iltimos o'lchov birlikini kiriting.",
-      status: 'error',
-    };
+  // if (!product.category)
+  //   return {
+  //     title: 'Diqqat! Mahsulot kategoriyasi tanlanmagan.',
+  //     description: 'Iltimos kategoriya nomini yoki kodini tanlang.',
+  //     status: 'error',
+  //   };
   if (!product.code)
     return {
       title: 'Diqqat! Mahsulot kodi kiritilmagan.',
       description: 'Iltimos kodini kiriting.',
+      status: 'error',
+    };
+
+  if (product.code.length !== 6)
+    return {
+      title: "Diqqat! Mahsulot kodi 6 ta raqamdan iborat bo'shi kerak.",
+      description: "Iltimos kodi to'g'ri kiriting.",
       status: 'error',
     };
   if (!product.name)
@@ -114,11 +115,17 @@ export const checkProduct = (product) => {
   }
   if (parseFloat(product.incomingprice) > parseFloat(product.sellingprice)) {
     return {
-      title: 'Diqqat! Sotish narxi olish dan katta bulish kerak.',
-      description: 'Iltimos sotish narxni kiriting.',
+      title: "Diqqat! Sotish narxi olish dan katta bo'lish kerak.",
+      description: "Iltimos sotish narxini to'g'ri kiriting.",
       status: 'error',
     };
   }
+  if (!product.unit || product.unit === 'delete')
+    return {
+      title: "Diqqat! O'lchov birligi kiritilmagan.",
+      description: "Iltimos o'lchov birlikini kiriting.",
+      status: 'error',
+    };
 
   return false;
 };
@@ -373,20 +380,26 @@ export const checkProducts = (products) => {
   let k = 0;
   for (const product of products) {
     k++;
-    if (!product.category) {
-      return {
-        title: `${t('Diqqat!')} ${k}-${t(
-          'qatorda kategoriya kodi kiritilmagan.'
-        )}`,
-        description: 'Iltimos kategoriya kodini kiriting.',
-        status: 'error',
-      };
-    }
+    // if (!product.category) {
+    //   return {
+    //     title: `${'Diqqat!'} ${k}-${'qatorda kategoriya kodi kiritilmagan.'}`,
+    //     description: 'Iltimos kategoriya kodini kiriting.',
+    //     status: 'error',
+    //   };
+    // }
 
     if (!product.code) {
       return {
         title: `Diqqat! ${k}-qatorda mahsulot kodi kiritilmagan.`,
         description: 'Iltimos mahsulot kodini kiriting.',
+        status: 'error',
+      };
+    }
+    if (product.code.toString().length < 6) {
+      return {
+        title: `Diqqat! ${k}-qatorda mahsulot kodi noto'g'ri kiritilgan.`,
+        description:
+          "Iltimos mahsulot kodi kamida 6 ta raqamdan iborat bo'lishi kerak.",
         status: 'error',
       };
     }
@@ -399,13 +412,13 @@ export const checkProducts = (products) => {
       };
     }
 
-    if (!product.producttype) {
-      return {
-        title: `Diqqat! ${k}-qatorda mahsulot turi kiritilmagan.`,
-        description: 'Iltimos mahsulot turini kiriting.',
-        status: 'error',
-      };
-    }
+    // if (!product.producttype) {
+    //   return {
+    //     title: `Diqqat! ${k}-qatorda mahsulot turi kiritilmagan.`,
+    //     description: 'Iltimos mahsulot turini kiriting.',
+    //     status: 'error',
+    //   };
+    // }
 
     if (!product.unit) {
       return {

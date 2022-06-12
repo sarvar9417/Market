@@ -8,6 +8,8 @@ import { faFileExcel } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const TableHeader = ({
+  searchKeypress,
+  searchProductCode,
   getImportsExcel,
   countData,
   changeDate,
@@ -15,9 +17,7 @@ export const TableHeader = ({
   endDate,
   setPageSize,
   searchSupplier,
-  searchCategoryTable,
   searchProduct,
-  searchBrand,
   countPage,
   currentPage,
   setCurrentPage,
@@ -29,6 +29,7 @@ export const TableHeader = ({
       </li>
       <li className='th-h border-r'>
         <input
+          onKeyUp={searchKeypress}
           onChange={searchSupplier}
           type='search'
           className='input'
@@ -37,38 +38,26 @@ export const TableHeader = ({
       </li>
       <li className='th-h border-r'>
         <input
-          onChange={searchCategoryTable}
-          style={{ maxWidth: '100px' }}
+          onKeyUp={searchKeypress}
+          onChange={searchProductCode}
           type='search'
           className='input'
-          placeholder={t('Kategoriya')}
-          aria-controls='basicExample'
+          placeholder={t('Kodi')}
         />
       </li>
-      <li className='th-h border-r col-span-4'>
+      <li className='th-h border-r col-span-5 flex justify-between'>
         <input
+          onKeyUp={searchKeypress}
           onChange={searchProduct}
-          style={{ maxWidth: '100px' }}
           type='search'
           className='input'
           placeholder={t('Mahsulot')}
-          aria-controls='basicExample'
         />
         <Pagination
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
           countPage={countPage}
           totalDatas={countData}
-        />
-      </li>
-      <li className='th-h border-r'>
-        <input
-          onChange={searchBrand}
-          style={{ maxWidth: '100px' }}
-          type='search'
-          className='input'
-          placeholder={t('Brend')}
-          aria-controls='basicExample'
         />
       </li>
       <li className='th-h border-r col-span-4   '>

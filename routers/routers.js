@@ -1,7 +1,7 @@
 const express = require('express');
 module.exports.routers = (app) => {
-  app.use(express.json({ extended: true }));
-  app.use(express.urlencoded({ extended: true }));
+  app.use(express.json({ extended: true, limit: '50mb' }));
+  app.use(express.urlencoded({ extended: true, limit: '50mb' }));
   app.use(
     '/api',
     require('./market_and_director_and_user/market_and_director_and_user')

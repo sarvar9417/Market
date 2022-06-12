@@ -5,9 +5,9 @@ import { Sort } from '../../../components/Sort';
 export const TableHead = ({ currentImport, setCurrentInports }) => {
   return (
     <ul className='thead shadow-xl'>
-      <li className='th border-r'>№</li>
-      <li className='th border-r'>
-        {t('Yetkazib beruvchi')}
+      <li className='th border-r flex justify-center items-center'>№</li>
+      <li className='th border-r flex justify-center items-center'>
+        {t('Brand')}
         <SortDoubleProperty
           property={'supplier'}
           innnerProperty={'name'}
@@ -15,17 +15,17 @@ export const TableHead = ({ currentImport, setCurrentInports }) => {
           setData={setCurrentInports}
         />
       </li>
-      <li className='th border-r'>
+      <li className='th border-r flex justify-center items-center'>
         {t('Kodi')}
         <SortDoubleProperty
-          property={'category'}
+          property={'product'}
           innnerProperty={'code'}
           data={currentImport}
           setData={setCurrentInports}
         />
       </li>
-      <li className='th border-r col-span-4'>
-        {t('Mahsulot turi va nomi')}{' '}
+      <li className='th border-r col-span-3 flex justify-center items-center'>
+        {t('Mahsulot nomi')}{' '}
         <SortDoubleProperty
           property={'product'}
           innnerProperty={'name'}
@@ -33,16 +33,7 @@ export const TableHead = ({ currentImport, setCurrentInports }) => {
           setData={setCurrentInports}
         />
       </li>
-      <li className='th border-r'>
-        {t('Brand')}{' '}
-        <SortDoubleProperty
-          property={'brand'}
-          innnerProperty={'name'}
-          data={currentImport}
-          setData={setCurrentInports}
-        />
-      </li>
-      <li className='th border-r'>
+      <li className='th border-r col-span-2 flex justify-center items-center'>
         {t('Soni')}{' '}
         <Sort
           property={'pieces'}
@@ -50,7 +41,7 @@ export const TableHead = ({ currentImport, setCurrentInports }) => {
           setData={setCurrentInports}
         />
       </li>
-      <li className='th border-r'>
+      <li className='th border-r col-span-2 flex justify-center items-center'>
         {t('Narxi')}
         <Sort
           property={'unitprice'}
@@ -58,7 +49,7 @@ export const TableHead = ({ currentImport, setCurrentInports }) => {
           setData={setCurrentInports}
         />
       </li>
-      <li className='th border-r col-span-2'>
+      <li className='th border-r col-span-2 flex justify-center items-center'>
         {t('Jami')}{' '}
         <Sort
           property={'totalprice'}

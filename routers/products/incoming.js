@@ -19,9 +19,10 @@ const router = require('./category_products');
 //Incoming registerall
 module.exports.registerAll = async (req, res) => {
   try {
-    const { market, beginDay, endDay, products, user } = req.body;
+    const { market, startDate, endDate, products, user } = req.body;
     const all = [];
     for (const newproduct of products) {
+      delete newproduct.oldprice;
       const { error } = validateIncomingAll(newproduct);
       if (error) {
         return res.status(400).json({
@@ -29,39 +30,14 @@ module.exports.registerAll = async (req, res) => {
         });
       }
 
-      const {
-        product,
-        unit,
-        category,
-        producttype,
-        brand,
-        supplier,
-        pieces,
-        unitprice,
-        totalprice,
-      } = newproduct;
+      const { product, unit, supplier, pieces, unitprice, totalprice } =
+        newproduct;
 
       const marke = await Market.findById(market);
 
       if (!marke) {
         return res.status(400).json({
           message: "Diqqat! Do'kon ma'lumotlari topilmadi.",
-        });
-      }
-
-      const categor = await Category.findById(category._id);
-
-      if (!categor) {
-        return res.status(400).json({
-          message: `Diqqat! ${category.code} kodli kategoriya mavjud emas.`,
-        });
-      }
-
-      const productstyp = await ProductType.findById(producttype._id);
-
-      if (!productstyp) {
-        return res.status(400).json({
-          message: `Diqqat! ${producttype.name} nomli mahsulot turi tizimda mavjud emas.`,
         });
       }
 
@@ -83,8 +59,6 @@ module.exports.registerAll = async (req, res) => {
 
       const newProduct = new Incoming({
         product: product._id,
-        category: category._id,
-        producttype: producttype._id,
         supplier: supplier._id,
         unit: unit._id,
         pieces,
@@ -95,19 +69,9 @@ module.exports.registerAll = async (req, res) => {
         user,
       });
 
-      if (brand) {
-        const bran = await Brand.findById(brand._id);
-
-        if (!bran) {
-          return res.status(400).json({
-            message: `Diqqat! ${brand.name} nomli brand turi tizimda mavjud emas.`,
-          });
-        }
-        newProduct.brand = brand._id;
-      }
-
       all.push(newProduct);
     }
+
     let p = [];
     let t = 0;
 
@@ -128,7 +92,7 @@ module.exports.registerAll = async (req, res) => {
             ) / 100
           : 0;
       const newProductPrice = new ProductPrice({
-        procient: productprice.procient,
+        // procient: productprice.procient,
         product: product.product,
         incomingprice: Math.round(product.unitprice * 100) / 100,
         sellingprice: price,
@@ -156,8 +120,8 @@ module.exports.registerAll = async (req, res) => {
     const connectors = await IncomingConnector.find({
       market,
       createdAt: {
-        $gte: beginDay,
-        $lt: new Date(),
+        $gte: startDate,
+        $lt: endDate,
       },
     })
       .sort({ _id: -1 })
@@ -167,6 +131,7 @@ module.exports.registerAll = async (req, res) => {
 
     res.status(201).send(connectors);
   } catch (error) {
+    console.log(error);
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
@@ -289,15 +254,13 @@ module.exports.get = async (req, res) => {
       },
     })
       .sort({ _id: -1 })
-      .skip(currentPage * countPage)
-      .limit(countPage)
       .select('-isArchive -updatedAt -market -user -__v')
       .populate('supplier', 'name')
-      .populate('category', 'code')
-      .populate('producttype', 'name')
       .populate('product', 'name code')
       .populate('unit', 'name')
-      .populate('brand', 'name');
+      .skip(currentPage * countPage)
+      .limit(countPage);
+
     res.status(201).send({ incomings, count });
   } catch (error) {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
@@ -325,11 +288,8 @@ module.exports.getexcel = async (req, res) => {
       .sort({ _id: -1 })
       .select('-isArchive -updatedAt -market -user -__v')
       .populate('supplier', 'name')
-      .populate('category', 'code name')
-      .populate('producttype', 'name')
       .populate('product', 'name code')
-      .populate('unit', 'name')
-      .populate('brand', 'name');
+      .populate('unit', 'name');
     res.status(201).send(incomings);
   } catch (error) {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });

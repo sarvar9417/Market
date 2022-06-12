@@ -4,6 +4,8 @@ import { TableHead } from './TableIncoming/TableHead';
 import { Rows } from './TableIncoming/Rows';
 
 export const TableIncoming = ({
+  searchKeypress,
+  searchProductCode,
   getImportsExcel,
   countData,
   changeDate,
@@ -15,14 +17,14 @@ export const TableIncoming = ({
   currentPage,
   setCurrentPage,
   setPageSize,
-  searchCategoryTable,
   searchSupplier,
   searchProduct,
-  searchBrand,
 }) => {
   return (
     <div className=''>
       <TableHeader
+        searchKeypress={searchKeypress}
+        searchProductCode={searchProductCode}
         getImportsExcel={getImportsExcel}
         currentPage={currentPage}
         setPageSize={setPageSize}
@@ -30,8 +32,6 @@ export const TableIncoming = ({
         changeDate={changeDate}
         startDate={startDate}
         endDate={endDate}
-        searchBrand={searchBrand}
-        searchCategoryTable={searchCategoryTable}
         searchProduct={searchProduct}
         searchSupplier={searchSupplier}
         setCurrentPage={setCurrentPage}
@@ -44,6 +44,7 @@ export const TableIncoming = ({
       {currentImports.map((product, index) => {
         return (
           <Rows
+            countPage={countPage}
             index={index}
             key={index}
             product={product}

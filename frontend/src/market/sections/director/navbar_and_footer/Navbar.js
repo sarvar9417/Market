@@ -125,9 +125,9 @@ export const Navbar = ({ baseUrl }) => {
                   aria-expanded='false'
                   className={`nav-link dropdown-toggle ${
                     activePage === '/alo24/category' ||
-                    activePage === '/alo24/producttypes' ||
+                    // activePage === '/alo24/producttypes' ||
                     activePage === '/alo24/product' ||
-                    activePage === '/alo24/brand' ||
+                    // activePage === '/alo24/brand' ||
                     activePage === '/alo24/unit' ||
                     activePage === '/alo24/supplier' ||
                     activePage === '/alo24/incoming' ||
@@ -168,7 +168,7 @@ export const Navbar = ({ baseUrl }) => {
                           {t('Mahsulot kategoriyalari')}
                         </Link>
                       </li>
-                      <li>
+                      {/* <li>
                         <Link
                           className={`dropdown-item ${
                             activePage === '/alo24/producttypes'
@@ -181,8 +181,8 @@ export const Navbar = ({ baseUrl }) => {
                           to='/alo24/producttypes'>
                           {t('Mahsulotlar turlari')}
                         </Link>
-                      </li>
-                      <li>
+                      </li> */}
+                      {/* <li>
                         <Link
                           className={`dropdown-item ${
                             activePage === '/alo24/brand' ? 'active-page' : ''
@@ -193,7 +193,7 @@ export const Navbar = ({ baseUrl }) => {
                           to='/alo24/brand'>
                           {t('Brendlar')}
                         </Link>
-                      </li>
+                      </li> */}
                       <li>
                         <Link
                           className={`dropdown-item ${

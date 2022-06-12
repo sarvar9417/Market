@@ -1,7 +1,8 @@
 export const returnProduct = (products, e) => {
+  console.log(e.target);
   products[parseInt(e.target.id)].pieces = e.target.value;
   products[parseInt(e.target.id)].totalprice =
-    e.target.value === ""
+    e.target.value === ''
       ? 0
       : Math.round(
           products[parseInt(e.target.id)].unitprice *
@@ -9,7 +10,7 @@ export const returnProduct = (products, e) => {
             100
         ) / 100;
   products[parseInt(e.target.id)].totalpriceuzs =
-    e.target.value === ""
+    e.target.value === ''
       ? 0
       : Math.round(
           products[parseInt(e.target.id)].unitpriceuzs *

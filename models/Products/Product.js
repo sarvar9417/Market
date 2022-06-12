@@ -1,17 +1,17 @@
-const { Schema, model, Types } = require("mongoose");
-const Joi = require("joi");
+const { Schema, model, Types } = require('mongoose');
+const Joi = require('joi');
 
 const product = new Schema(
   {
     name: { type: String, required: true },
-    unit: { type: Schema.Types.ObjectId, ref: "Unit" },
+    unit: { type: Schema.Types.ObjectId, ref: 'Unit' },
     code: { type: String, required: true },
-    price: { type: Schema.Types.ObjectId, ref: "ProductPrice" },
+    price: { type: Schema.Types.ObjectId, ref: 'ProductPrice' },
     total: { type: Number, default: 0 },
-    category: { type: Schema.Types.ObjectId, ref: "Category" },
-    producttype: { type: Schema.Types.ObjectId, ref: "ProductType" },
-    brand: { type: Schema.Types.ObjectId, ref: "Brand" },
-    market: { type: Schema.Types.ObjectId, ref: "Market", required: true },
+    category: { type: Schema.Types.ObjectId, ref: 'Category' },
+    producttype: { type: Schema.Types.ObjectId, ref: 'ProductType' },
+    brand: { type: Schema.Types.ObjectId, ref: 'Brand' },
+    market: { type: Schema.Types.ObjectId, ref: 'Market', required: true },
     isArchive: { type: Boolean, default: false },
   },
   {
@@ -40,7 +40,7 @@ function validateProductExcel(product) {
   const schema = Joi.object({
     name: Joi.string().required(),
     unit: Joi.string(),
-    producttype: Joi.string().required(),
+    producttype: Joi.string(),
     code: Joi.string().required(),
     category: Joi.number(),
     brand: Joi.string(),
@@ -54,4 +54,4 @@ function validateProductExcel(product) {
 
 module.exports.validateProduct = validateProduct;
 module.exports.validateProductExcel = validateProductExcel;
-module.exports.Product = model("Product", product);
+module.exports.Product = model('Product', product);

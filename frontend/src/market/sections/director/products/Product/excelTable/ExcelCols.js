@@ -1,5 +1,5 @@
-import { t } from "i18next";
-import React, { useEffect, useState } from "react";
+import { t } from 'i18next';
+import React, { useEffect, useState } from 'react';
 
 export const ExcelCols = ({ sections, data, setData, createdData }) => {
   const [cols, setCols] = useState([]);
@@ -7,7 +7,7 @@ export const ExcelCols = ({ sections, data, setData, createdData }) => {
   const changeHanler = (value, val) => {
     let k = [...createdData];
     for (const d in data) {
-      if (data[d][val]) {
+      if (data[d][val] || data[d][val] === 0) {
         k[d][value] = data[d][val];
       } else {
         delete k[d][value];
@@ -23,7 +23,7 @@ export const ExcelCols = ({ sections, data, setData, createdData }) => {
       k.push({});
       for (const [key, value] of Object.entries(d)) {
         s.push(key);
-        localStorage.setItem("del", value);
+        localStorage.setItem('del', value);
       }
     }
     setCols(s.filter((v, i) => s.indexOf(v) === i));
@@ -33,20 +33,19 @@ export const ExcelCols = ({ sections, data, setData, createdData }) => {
     <div>
       {sections.map((section, index) => {
         return (
-          <div className="row my-2" key={index}>
-            <div className="col-6 ">
-              <span className="form-control form-control-sm text-right">
+          <div className='row my-2' key={index}>
+            <div className='col-6 '>
+              <span className='form-control form-control-sm text-right'>
                 {section.name}
               </span>
             </div>
-            <div className="col-6 ">
+            <div className='col-6 '>
               <select
-                className="form-control form-control-sm selectpicker"
+                className='form-control form-control-sm selectpicker'
                 onChange={(e) => {
                   changeHanler(section.value, e.target.value);
-                }}
-              >
-                <option value="delete">{t("Bo'limni belgilang")}</option>
+                }}>
+                <option value='delete'>{t("Bo'limni belgilang")}</option>
                 {cols.map((col, index) => {
                   return (
                     <option key={index} value={col}>

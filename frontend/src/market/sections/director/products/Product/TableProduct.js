@@ -4,6 +4,7 @@ import { TableHeader } from './tableProduct/TableHeader';
 import { TableHead } from './tableProduct/TableHead';
 
 export const TableProduct = ({
+  search,
   changeHandler,
   setRemove,
   setModal,
@@ -15,52 +16,43 @@ export const TableProduct = ({
   currentPage,
   setPageSize,
   loading,
-  tableExcel,
   setImports,
   setModal2,
   selectRef,
-  market,
   productsCount,
   keyPress,
   getProductExcel,
-  excelRef,
 }) => {
   const edit = (p) => {
-    selectRef.category.current.selectOption({
-      label: p.category.code,
-      value: p.category._id,
-    });
-    selectRef.producttype.current.selectOption({
-      label: p.producttype && p.producttype.name,
-      value: p.producttype && p.producttype._id,
-    });
-    selectRef.brand.current.selectOption({
-      label: p.brand ? p.brand.name : '',
-      value: p.brand ? p.brand._id : '',
-    });
+    // selectRef.category.current.selectOption({
+    //   label: p.category.code,
+    //   value: p.category._id,
+    // });
+    // selectRef.producttype.current.selectOption({
+    //   label: p.producttype && p.producttype.name,
+    //   value: p.producttype && p.producttype._id,
+    // });
+    // selectRef.brand.current.selectOption({
+    //   label: p.brand ? p.brand.name : '',
+    //   value: p.brand ? p.brand._id : '',
+    // });
     selectRef.unit.current.selectOption({
       label: p.unit.name,
       value: p.unit._id,
     });
     setProduct({
-      market: market && market._id,
-      _id: p && p._id,
-      name: p && p.name,
-      code: p && p.code,
-      category: p.category && p.category._id,
-      unit: p.unit && p.unit._id,
-      producttype: p.producttype && p.producttype._id,
-      brand: p.brand && p.brand._id,
-      total: p.total || 0,
-      priceid: (p.price && p.price._id) || 0,
-      incomingprice: p.price.incomingprice || 0,
-      sellingprice: p.price.sellingprice || 0,
+      ...p,
+      priceid: p.price._id,
+      incomingprice: p.price.incomingprice,
+      sellingprice: p.price.sellingprice,
     });
   };
 
   return (
     <>
       <TableHeader
+        search={search}
+        currentPage={currentPage}
         setPageSize={setPageSize}
         changeHandler={changeHandler}
         keyPress={keyPress}
@@ -71,7 +63,6 @@ export const TableProduct = ({
         setModal2={setModal2}
         loading={loading}
         getProductExcel={getProductExcel}
-        excelRef={excelRef}
       />
 
       <TableHead
@@ -82,6 +73,7 @@ export const TableProduct = ({
       {currentProducts &&
         currentProducts.map((p, index) => (
           <TableRow
+            countPage={countPage}
             key={index}
             currentPage={currentPage}
             p={p}

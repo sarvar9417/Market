@@ -2,11 +2,14 @@ import { faFileExcel } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { t } from 'i18next';
 import React from 'react';
-import { ExcelDownloadBtn } from '../ExcelDownloadBtn';
 import { ExcelUpload } from '../excelTable/ExcelUpload';
-import { Pagination } from '../Pagination';
+import { Pagination } from '../../../components/Pagination';
+import { SearchInput } from '../../../components/Input';
+import { ExcelDownload } from '../../../components/ExcelDownload';
 
 export const TableHeader = ({
+  search,
+  currentPage,
   setPageSize,
   changeHandler,
   keyPress,
@@ -17,7 +20,6 @@ export const TableHeader = ({
   setModal2,
   loading,
   getProductExcel,
-  excelRef,
 }) => {
   return (
     <ul className='tbody border-b border-t-2 border-blue-800'>
@@ -25,8 +27,7 @@ export const TableHeader = ({
         <select
           className='form-control form-control-sm selectpicker'
           placeholder={t("Bo'limni tanlang")}
-          onChange={setPageSize}
-        >
+          onChange={setPageSize}>
           <option value={10}>10</option>
           <option value={25}>25</option>
           <option value={50}>50</option>
@@ -34,26 +35,28 @@ export const TableHeader = ({
         </select>
       </li>
       <li className='th-h border-r col-span-1'>
-        <input
-          onChange={changeHandler}
-          type='search'
-          className='form-control form-control-sm selectpicker'
-          placeholder={t('Kategoriya')}
-          name='category'
-          onKeyUp={keyPress}
+        <SearchInput
+          changeHandler={changeHandler}
+          type={'number'}
+          placeholder={'Kodi'}
+          name='code'
+          value={search.code}
+          keyPressed={keyPress}
+          className='text-right'
         />
       </li>
-      <li className='th-h border-r col-span-3'>
-        <input
-          onChange={changeHandler}
-          type='search'
-          className='w-100 form-control form-control-sm selectpicker'
-          placeholder={t('Mahsulot turi')}
-          name='producttype'
-          onKeyUp={keyPress}
+      <li className='th-h border-r col-span-8 flex justify-between'>
+        <SearchInput
+          changeHandler={changeHandler}
+          type={'text'}
+          placeholder={'Mahsulot nomi'}
+          name='name'
+          value={search.name}
+          keyPressed={keyPress}
+          className={'w-[200px]'}
         />
-      </li>
-      <li className='th-h border-r col-span-2'>
+        {/* </li> */}
+        {/* <li className='th-h border-r col-span-2'>
         <input
           onChange={changeHandler}
           type='search'
@@ -62,9 +65,10 @@ export const TableHeader = ({
           name='brand'
           onKeyUp={keyPress}
         />
-      </li>
-      <li className='th-h border-r col-span-3 flex justify-center'>
+      </li> */}
+        {/* <li className='th-h border-r col-span-3 flex justify-center'> */}
         <Pagination
+          currentPage={currentPage}
           setCurrentPage={setCurrentPage}
           countPage={countPage}
           totalDatas={productsCount}
@@ -73,11 +77,10 @@ export const TableHeader = ({
       <li className='th-h border-r col-span-1 flex justify-center'>
         <button
           className='px-4 bg-green-700 hover:bg-green-800 text-white rounded'
-          onClick={getProductExcel}
-        >
+          onClick={getProductExcel}>
           <FontAwesomeIcon icon={faFileExcel} />
         </button>
-        <ExcelDownloadBtn excelRef={excelRef} filename={'Mahsulotlar'} />
+        <ExcelDownload filename={'Mahsulotlar'} />
       </li>
       <li className='th-h border-r col-span-1 flex justify-center'>
         <ExcelUpload

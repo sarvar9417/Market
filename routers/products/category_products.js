@@ -50,20 +50,8 @@ router.post('/product/getallcategory', auth, (req, res) => {
   require('./product').getAllCategory(req, res);
 });
 
-router.post('/product/getsale', auth, (req, res) => {
-  switch (req.body.type) {
-    case 'Category':
-      require('./product').getAllCategory(req, res);
-      break;
-    case 'ProductType':
-      require('./product').getAllType(req, res);
-      break;
-    case 'Brand':
-      require('./product').getAllBrand(req, res);
-      break;
-    default:
-      break;
-  }
+router.post('/product/getproductsale', auth, (req, res) => {
+  require('./product').getproductsale(req, res);
 });
 
 router.post('/product/getall', auth, (req, res) => {

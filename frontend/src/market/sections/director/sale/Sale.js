@@ -25,7 +25,9 @@ export const Sale = () => {
   const [startDate, setStartDate] = useState(
     new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString()
   );
-  const [endDate, setEndDate] = useState(new Date().toISOString());
+  const [endDate, setEndDate] = useState(
+    new Date(new Date().setHours(23, 59, 59, 0)).toISOString()
+  );
 
   //====================================================================
   //====================================================================
@@ -82,27 +84,21 @@ export const Sale = () => {
   const [tableCard, setTableCard] = useState(true);
 
   const changeSellingCard = () => {
-    if (!sellingCard) {
-      setTableCard(false);
-      setSellingEditCard(false);
-    }
-    setSellingCard(!sellingCard);
+    setTableCard(false);
+    setSellingEditCard(false);
+    setSellingCard(true);
   };
 
   const changeTableCard = () => {
-    if (!tableCard) {
-      setSellingCard(false);
-      setSellingEditCard(false);
-    }
-    setTableCard(!tableCard);
+    setSellingCard(false);
+    setSellingEditCard(false);
+    setTableCard(true);
   };
 
   const changeSellingEditCard = () => {
-    if (!sellingEditCard) {
-      setSellingCard(false);
-      setTableCard(false);
-    }
-    setSellingEditCard(!sellingEditCard);
+    setSellingCard(false);
+    setTableCard(false);
+    setSellingEditCard(true);
   };
   //====================================================================
   //====================================================================
@@ -110,57 +106,57 @@ export const Sale = () => {
   //====================================================================
   //====================================================================
   // Categories
-  const [categories, setCategories] = useState([
-    {
-      label: t('Barcha kategoriyalar'),
-      value: 'all',
-    },
-  ]);
+  // const [categories, setCategories] = useState([
+  //   {
+  //     label: t('Barcha kategoriyalar'),
+  //     value: 'all',
+  //   },
+  // ]);
 
-  const getCategories = useCallback(async () => {
-    try {
-      const data = await request(
-        `/api/products/category/getall`,
+  // const getCategories = useCallback(async () => {
+  //   try {
+  //     const data = await request(
+  //       `/api/products/category/getall`,
 
-        'POST',
-        { market: auth.market._id },
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
-      );
-      let c = [
-        {
-          label: t('Barcha kategoriyalar'),
-          value: 'all',
-        },
-      ];
-      data.map((category) => {
-        return c.push({
-          label: category.code,
-          type: 'Category',
-          value: category,
-        });
-      });
-      setCategories(c);
-    } catch (error) {
-      notify({
-        title: error,
-        description: '',
-        status: 'error',
-      });
-    }
-  }, [request, auth, notify]);
+  //       'POST',
+  //       { market: auth.market._id },
+  //       {
+  //         Authorization: `Bearer ${auth.token}`,
+  //       }
+  //     );
+  //     let c = [
+  //       {
+  //         label: t('Barcha kategoriyalar'),
+  //         value: 'all',
+  //       },
+  //     ];
+  //     data.map((category) => {
+  //       return c.push({
+  //         label: category.code,
+  //         type: 'Category',
+  //         value: category,
+  //       });
+  //     });
+  //     setCategories(c);
+  //   } catch (error) {
+  //     notify({
+  //       title: error,
+  //       description: '',
+  //       status: 'error',
+  //     });
+  //   }
+  // }, [request, auth, notify]);
 
-  const changeCategory = (e) => {
-    if (e.value === 'all') {
-      return setProductTypes(allproducttypes);
-    }
-    const filter = allproducttypes.filter((producttype) => {
-      return producttype.value.category._id === e.value._id;
-    });
-    setProductTypes(filter);
-    getProducts(e);
-  };
+  // const changeCategory = (e) => {
+  //   if (e.value === 'all') {
+  //     return setProductTypes(allproducttypes);
+  //   }
+  //   const filter = allproducttypes.filter((producttype) => {
+  //     return producttype.value.category._id === e.value._id;
+  //   });
+  //   setProductTypes(filter);
+  //   getProducts(e);
+  // };
   //====================================================================
   //====================================================================
 
@@ -185,80 +181,80 @@ export const Sale = () => {
   //====================================================================
   //====================================================================
   // Producttypes
-  const [allproducttypes, setAllProductTypes] = useState([]);
-  const [producttypes, setProductTypes] = useState([]);
+  // const [allproducttypes, setAllProductTypes] = useState([]);
+  // const [producttypes, setProductTypes] = useState([]);
 
-  const getProductTypes = useCallback(async () => {
-    try {
-      const data = await request(
-        `/api/products/producttype/getall`,
-        'POST',
-        { market: auth.market._id },
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
-      );
-      let c = [];
-      data.map((type) => {
-        return c.push({
-          label: type.name,
-          type: 'ProductType',
-          value: type,
-        });
-      });
-      setProductTypes(c);
-      setAllProductTypes(c);
-    } catch (error) {
-      notify({
-        title: error,
-        description: '',
-        status: 'error',
-      });
-    }
-  }, [request, auth, notify]);
+  // const getProductTypes = useCallback(async () => {
+  //   try {
+  //     const data = await request(
+  //       `/api/products/producttype/getall`,
+  //       'POST',
+  //       { market: auth.market._id },
+  //       {
+  //         Authorization: `Bearer ${auth.token}`,
+  //       }
+  //     );
+  //     let c = [];
+  //     data.producttypes.map((type) => {
+  //       return c.push({
+  //         label: type.name,
+  //         type: 'ProductType',
+  //         value: type,
+  //       });
+  //     });
+  //     setProductTypes(c);
+  //     setAllProductTypes(c);
+  //   } catch (error) {
+  //     notify({
+  //       title: error,
+  //       description: '',
+  //       status: 'error',
+  //     });
+  //   }
+  // }, [request, auth, notify]);
 
-  const changeProductType = (e) => {
-    getProducts(e);
-  };
+  // const changeProductType = (e) => {
+  //   getProducts(e);
+  // };
   //====================================================================
   //====================================================================
 
   //====================================================================
   //====================================================================
   // Brands
-  const [brands, setBrands] = useState([]);
+  // const [brands, setBrands] = useState([]);
 
-  const getBrand = useCallback(async () => {
-    try {
-      const data = await request(
-        `/api/products/brand/getall`,
-        'POST',
-        { market: auth.market._id },
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
-      );
-      let c = [];
-      data.map((type) => {
-        return c.push({
-          label: type.name,
-          type: 'Brand',
-          value: type,
-        });
-      });
-      setBrands(c);
-    } catch (error) {
-      notify({
-        title: error,
-        description: '',
-        status: 'error',
-      });
-    }
-  }, [request, auth, notify]);
+  // const getBrand = useCallback(async () => {
+  //   try {
+  //     const data = await request(
+  //       `/api/products/brand/getall`,
+  //       'POST',
+  //       { market: auth.market._id },
+  //       {
+  //         Authorization: `Bearer ${auth.token}`,
+  //       }
+  //     );
+  //     let c = [];
+  //     data.map((type) => {
+  //       return c.push({
+  //         label: type.name,
+  //         type: 'Brand',
+  //         value: type,
+  //       });
+  //     });
+  //     setBrands(c);
+  //   } catch (error) {
+  //     notify({
+  //       title: error,
+  //       description: '',
+  //       status: 'error',
+  //     });
+  //   }
+  // }, [request, auth, notify]);
 
-  const changeBrand = (e) => {
-    getProducts(e);
-  };
+  // const changeBrand = (e) => {
+  //   getProducts(e);
+  // };
   //====================================================================
   //====================================================================
 
@@ -313,41 +309,40 @@ export const Sale = () => {
   });
   const [saleCounts, setSaleCounts] = useState(0);
 
-  const getProducts = useCallback(
-    async (type) => {
-      try {
-        const data = await request(
-          `/api/products/product/getsale`,
-          'POST',
-          { market: auth.market._id, type: type.type, typeid: type.value._id },
-          {
-            Authorization: `Bearer ${auth.token}`,
-          }
-        );
-        let c = [];
-        data.map((type) => {
-          return c.push({
-            label: (
-              <span className='flex justify-between'>
-                <span>{type.code + ' ' + type.name}</span>{' '}
-                <span className='font-bold'>{type.total}</span>
-              </span>
-            ),
-            type: 'product',
-            value: type,
-          });
+  const getProducts = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/products/product/getproductsale`,
+        'POST',
+        { market: auth.market._id },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      let c = [];
+      data.map((product) => {
+        return c.push({
+          label: '(' + product.total + ') ' + product.code + ' ' + product.name,
+          type: 'product',
+          value: product,
+          // (
+          // <span className='flex justify-between'>
+          //   <span>{type.code + ' ' + type.name}</span>{' '}
+          //   <span className='font-bold'>{type.total}</span>
+          // </span>
+          // )
         });
-        setProducts(c);
-      } catch (error) {
-        notify({
-          title: error,
-          description: '',
-          status: 'error',
-        });
-      }
-    },
-    [request, auth, notify]
-  );
+      });
+      setProducts(c);
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [request, auth, notify]);
+
   const [excelTable, setExcelTable] = useState([]);
 
   const changeProduct = (e) => {
@@ -548,7 +543,6 @@ export const Sale = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      console.log(data);
       setExcelTable(data);
       document.getElementById('reacthtmltoexcel').click();
     } catch (error) {
@@ -2116,20 +2110,22 @@ export const Sale = () => {
   useEffect(() => {
     if (!n) {
       setN(1);
-      getCategories();
-      getProductTypes();
-      getBrand();
       getPackmans();
       getClients();
-      // getBaseUrl();
       getExchangerate();
+      getProducts();
+      // getCategories();
+      // getProductTypes();
+      // getBrand();
+      // getBaseUrl();
     }
   }, [
-    getCategories,
-    getProductTypes,
-    getBrand,
+    // getCategories,
+    // getProductTypes,
+    // getBrand,
     getPackmans,
     getClients,
+    getProducts,
     n,
     // getBaseUrl,
     getExchangerate,
@@ -2186,7 +2182,6 @@ export const Sale = () => {
           debt={debt}
         />
       </div>
-
       <div className={prePaymentVisible ? '' : 'hidden'}>
         <PrePaymentCard
           checkHandler={checkPrePayment}
@@ -2213,13 +2208,13 @@ export const Sale = () => {
       <div className={sellingCard ? '' : 'hidden'}>
         <Products
           changeProduct={changeProduct}
-          changeBrand={changeBrand}
-          changeProductType={changeProductType}
-          changeCategory={changeCategory}
-          categories={categories}
-          producttypes={producttypes}
-          brands={brands}
           products={products}
+          // changeBrand={changeBrand}
+          // changeProductType={changeProductType}
+          // changeCategory={changeCategory}
+          // categories={categories}
+          // producttypes={producttypes}
+          // brands={brands}
         />
         <Selling
           saleconnectorid={saleconnectorid}

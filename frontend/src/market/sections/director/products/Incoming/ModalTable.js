@@ -16,6 +16,7 @@ export const ModalTable = ({ incoming, inputHandler }) => {
               <th className='border p-1'>{t('Soni')}</th>
               <th className='border p-1'>{t('Narx')}</th>
               <th className='border p-1'>{t('Umumiy narx')}</th>
+              <th className='border p-1'>{t('Avvalgi narxi')}</th>
             </tr>
           </thead>
           <tbody>
@@ -50,6 +51,9 @@ export const ModalTable = ({ incoming, inputHandler }) => {
                   className='outline-none text-right w-full font-bold text-black'
                   name='totalprice'
                 />
+              </td>
+              <td className='border m-0 px-3 py-2 font-bold text-center text-red-600'>
+                {Math.round(incoming.oldprice * 100) / 100} USD
               </td>
             </tr>
           </tbody>

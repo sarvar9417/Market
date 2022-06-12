@@ -21,14 +21,15 @@ export const Incoming = () => {
     new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString()
   );
   const [endDay, setEndDay] = useState(
-    new Date(new Date().setDate(new Date().getDate())).toISOString()
+    new Date(new Date().setHours(23, 59, 59, 0)).toISOString()
   );
 
   const [startDate, setStartDate] = useState(
-    new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString()
+    new Date(new Date().setHours(0, 0, 0, 0)).toISOString()
   );
-  const [endDate, setEndDate] = useState(new Date().toISOString());
-
+  const [endDate, setEndDate] = useState(
+    new Date(new Date().setHours(23, 59, 59, 0)).toISOString()
+  );
   //====================================================================
   //====================================================================
 
@@ -52,27 +53,21 @@ export const Incoming = () => {
   const [visibleReport, setVisibleReport] = useState(true);
 
   const changeVisibleTable = () => {
-    if (!visibleTable) {
-      setVisible(false);
-      setVisibleReport(false);
-    }
-    setVisibleTable(!visibleTable);
+    setVisible(false);
+    setVisibleReport(false);
+    setVisibleTable(true);
   };
 
   const changeVisible = () => {
-    if (!visible) {
-      setVisibleTable(false);
-      setVisibleReport(false);
-    }
-    setVisible(!visible);
+    setVisibleTable(false);
+    setVisibleReport(false);
+    setVisible(true);
   };
 
   const changeVisibleReport = () => {
-    if (!visibleReport) {
-      setVisibleTable(false);
-      setVisible(false);
-    }
-    setVisibleReport(!visibleReport);
+    setVisibleTable(false);
+    setVisible(false);
+    setVisibleReport(true);
   };
 
   //====================================================================
@@ -112,7 +107,7 @@ export const Incoming = () => {
   const getSuppliers = useCallback(async () => {
     try {
       const data = await request(
-        `/api/supplier/getall`,
+        `/api/supplier/getincoming`,
         'POST',
         { market: auth.market._id },
         {
@@ -148,116 +143,116 @@ export const Incoming = () => {
   //====================================================================
   //====================================================================
   // CATEGORYS
-  const [categorys, setCategorys] = useState([]);
+  // const [categorys, setCategorys] = useState([]);
 
-  const getCategorys = useCallback(async () => {
-    try {
-      const data = await request(
-        `/api/products/category/getall`,
-        'POST',
-        { market: auth.market._id },
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
-      );
-      let s = [
-        {
-          label: 'Barcha kategriyalar',
-          value: 'all',
-        },
-      ];
-      data.map((category) => {
-        return s.push({
-          label: (
-            <span className='flex justify-between font-bold'>
-              <span>{category.code}</span>
-              <span>{category.name && category.name}</span>
-            </span>
-          ),
-          value: category._id,
-        });
-      });
-      setCategorys(s);
-    } catch (error) {
-      notify({
-        title: error,
-        description: '',
-        status: 'error',
-      });
-    }
-  }, [request, auth, notify]);
+  // const getCategorys = useCallback(async () => {
+  //   try {
+  //     const data = await request(
+  //       `/api/products/category/getall`,
+  //       'POST',
+  //       { market: auth.market._id },
+  //       {
+  //         Authorization: `Bearer ${auth.token}`,
+  //       }
+  //     );
+  //     let s = [
+  //       {
+  //         label: 'Barcha kategriyalar',
+  //         value: 'all',
+  //       },
+  //     ];
+  //     data.map((category) => {
+  //       return s.push({
+  //         label: (
+  //           <span className='flex justify-between font-bold'>
+  //             <span>{category.code}</span>
+  //             <span>{category.name && category.name}</span>
+  //           </span>
+  //         ),
+  //         value: category._id,
+  //       });
+  //     });
+  //     setCategorys(s);
+  //   } catch (error) {
+  //     notify({
+  //       title: error,
+  //       description: '',
+  //       status: 'error',
+  //     });
+  //   }
+  // }, [request, auth, notify]);
 
-  const changeCategory = (e) => {
-    if (e.value === 'all') {
-      setProductType(productTypes);
-      setProducts(allproducts);
-    } else {
-      const filter = productTypes.filter((producttype) => {
-        return (
-          producttype.value !== 'all' &&
-          producttype.producttype.category === e.value
-        );
-      });
-      const filter2 = allproducts.filter(
-        (product) => product.category === e.value
-      );
-      setProductType(filter);
-      setProducts(filter2);
-    }
-  };
-  //====================================================================
-  //====================================================================
+  // const changeCategory = (e) => {
+  //   if (e.value === 'all') {
+  //     setProductType(productTypes);
+  //     setProducts(allproducts);
+  //   } else {
+  //     const filter = productTypes.filter((producttype) => {
+  //       return (
+  //         producttype.value !== 'all' &&
+  //         producttype.producttype.category === e.value
+  //       );
+  //     });
+  //     const filter2 = allproducts.filter(
+  //       (product) => product.category === e.value
+  //     );
+  //     setProductType(filter);
+  //     setProducts(filter2);
+  //   }
+  // };
+  // //====================================================================
+  // //====================================================================
 
-  //====================================================================
-  //====================================================================
-  // PRODUCTTYPE
-  const [productType, setProductType] = useState([]);
-  const [productTypes, setProductTypes] = useState([]);
-  const getProductType = useCallback(async () => {
-    try {
-      const data = await request(
-        `/api/products/producttype/getincoming`,
-        'POST',
-        { market: auth.market._id },
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
-      );
-      let s = [
-        {
-          label: 'Barcha mahsulot turlari',
-          value: 'all',
-        },
-      ];
-      data.map((producttype) => {
-        return s.push({
-          label: producttype.name,
-          value: producttype._id,
-          producttype: { ...producttype },
-        });
-      });
-      setProductType(s);
-      setProductTypes(s);
-    } catch (error) {
-      notify({
-        title: error,
-        description: '',
-        status: 'error',
-      });
-    }
-  }, [request, auth, notify]);
+  // //====================================================================
+  // //====================================================================
+  // // PRODUCTTYPE
+  // const [productType, setProductType] = useState([]);
+  // const [productTypes, setProductTypes] = useState([]);
+  // const getProductType = useCallback(async () => {
+  //   try {
+  //     const data = await request(
+  //       `/api/products/producttype/getincoming`,
+  //       'POST',
+  //       { market: auth.market._id },
+  //       {
+  //         Authorization: `Bearer ${auth.token}`,
+  //       }
+  //     );
+  //     let s = [
+  //       {
+  //         label: 'Barcha mahsulot turlari',
+  //         value: 'all',
+  //       },
+  //     ];
+  //     data.map((producttype) => {
+  //       return s.push({
+  //         label: producttype.name,
+  //         value: producttype._id,
+  //         producttype: { ...producttype },
+  //       });
+  //     });
+  //     setProductType(s);
+  //     setProductTypes(s);
+  //   } catch (error) {
+  //     notify({
+  //       title: error,
+  //       description: '',
+  //       status: 'error',
+  //     });
+  //   }
+  // }, [request, auth, notify]);
 
-  const changeProductType = (e) => {
-    if (e.value === 'all') {
-      setProducts(allproducts);
-    } else {
-      const filter = allproducts.filter(
-        (produc) =>
-          produc && produc.product && produc.product.producttype === e.value
-      );
-      setProducts(filter);
-    }
-  };
+  // const changeProductType = (e) => {
+  //   if (e.value === 'all') {
+  //     setProducts(allproducts);
+  //   } else {
+  //     const filter = allproducts.filter(
+  //       (produc) =>
+  //         produc && produc.product && produc.product.producttype === e.value
+  //     );
+  //     setProducts(filter);
+  //   }
+  // };
   //====================================================================
   //====================================================================
 
@@ -298,17 +293,8 @@ export const Incoming = () => {
       ];
       data.map((product) => {
         return s.push({
-          label: (
-            <span className='font-bold grid grid-cols-6'>
-              <span>{product.code}</span>
-              <span className='col-span-3'>{product.name}</span>
-              <span className='col-span-2'>
-                {product.brand && product.brand.name}
-              </span>
-            </span>
-          ),
+          label: product.code + ' ' + product.name,
           value: product._id,
-          category: product.category._id,
           product: { ...product },
         });
       });
@@ -332,11 +318,23 @@ export const Incoming = () => {
         user: auth.userId,
         supplier: '',
         product: {},
-        category: '',
-        producttype: '',
-        brand: '',
         unit: '',
+        // category: '',
+        // producttype: '',
+        // brand: '',
       });
+    }
+    for (const i in incomings) {
+      if (incomings[i].product._id === e.product._id) {
+        return notify({
+          title: `Diqqat! Ushbu mahsulot ro'yxatga ${
+            parseInt(i) + 1
+          } raqamda kiritilgan.`,
+          description:
+            "Qiymatlarini o'zgartirish uchun tahrirlash tugmasini bosishingiz mumkin",
+          status: 'warning',
+        });
+      }
     }
     setIncoming({
       totalprice: 0,
@@ -349,14 +347,14 @@ export const Incoming = () => {
         name: e.product.name && e.product.name,
         code: e.product && e.product.code,
       },
-      category: e.product.category && e.product.category,
-      producttype: e.product.producttype && e.product.producttype,
-      brand: e.product.brand && e.product.brand,
       unit: e.product.unit && e.product.unit,
+      oldprice: e.product.price.incomingprice,
+      // category: e.product.category && e.product.category,
+      // producttype: e.product.producttype && e.product.producttype,
+      // brand: e.product.brand && e.product.brand,
     });
     setModal(true);
   };
-
   const addIncoming = () => {
     if (incoming.pieces === 0 || incoming.pieces === '') {
       return notify({
@@ -382,10 +380,10 @@ export const Incoming = () => {
       user: auth.userId,
       supplier: '',
       product: {},
-      category: '',
-      producttype: '',
-      brand: '',
       unit: '',
+      // category: '',
+      // producttype: '',
+      // brand: '',
     });
     setModal(false);
   };
@@ -420,7 +418,7 @@ export const Incoming = () => {
     if (connectors.length === 0) {
       setTotalPrice(0);
       setTotalProducts(0);
-      // setSupplier(supplier);
+      setSupplier({});
       setTotalProductTypes(0);
       setDailyConnectors([]);
       return;
@@ -477,7 +475,7 @@ export const Incoming = () => {
     connectorss.push(connector);
     setTotalPrice(price);
     setTotalProducts(product);
-    // setSupplier(supplier);
+    setSupplier({});
     setTotalProductTypes(producttype);
     setDailyConnectors(connectorss);
   }, []);
@@ -527,7 +525,13 @@ export const Incoming = () => {
   //====================================================================
   //====================================================================
   // IMPORTS
-  const [imports, setImports] = useState([]);
+
+  const [search, setSearch] = useState({ supplier: '', code: '', name: '' });
+  const [sendingsearch, setSendingSearch] = useState({
+    supplier: '',
+    code: '',
+    name: '',
+  });
   const [excelTable, setExcelTable] = useState([]);
   const [searchStorage, setSearchStorage] = useState([]);
 
@@ -542,6 +546,7 @@ export const Incoming = () => {
           endDay: endDate,
           currentPage,
           countPage,
+          search: sendingsearch,
         },
         {
           Authorization: `Bearer ${auth.token}`,
@@ -557,7 +562,16 @@ export const Incoming = () => {
         status: 'error',
       });
     }
-  }, [request, auth, notify, currentPage, countPage, startDate, endDate]);
+  }, [
+    request,
+    auth,
+    notify,
+    currentPage,
+    countPage,
+    startDate,
+    endDate,
+    sendingsearch,
+  ]);
 
   const getImportsExcel = useCallback(async () => {
     try {
@@ -584,9 +598,16 @@ export const Incoming = () => {
     }
   }, [request, auth, notify, startDate, endDate]);
 
+  const searchKeypress = (e) => {
+    if (e.key === 'Enter') {
+      setCurrentPage(0);
+      setSendingSearch({ ...search });
+    }
+  };
+
   useEffect(() => {
     getImports();
-  }, [currentPage, countPage, getImports, startDate, endDate]);
+  }, [currentPage, countPage, getImports, startDate, endDate, sendingsearch]);
 
   //====================================================================
   //====================================================================
@@ -632,39 +653,41 @@ export const Incoming = () => {
     const searching = searchStorage.filter((item) =>
       item.supplier.name.toLowerCase().includes(e.target.value.toLowerCase())
     );
-    setImports(searching);
-    setCurrentImports(searching.slice(0, countPage));
+    setCurrentImports(searching);
+    setSearch({ ...search, supplier: e.target.value });
   };
 
-  const searchCategoryTable = (e) => {
-    const searching = searchStorage.filter(
-      (item) =>
-        String(item.category.code).includes(e.target.value) ||
-        String(item.product.code).includes(e.target.value)
-    );
-    setImports(searching);
-    setCurrentImports(searching.slice(0, countPage));
-  };
+  // const searchCategoryTable = (e) => {
+  //   const searching = searchStorage.filter(
+  //     (item) =>
+  //       String(item.category.code).includes(e.target.value) ||
+  //       String(item.product.code).includes(e.target.value)
+  //   );
+  //   setCurrentImports(searching.slice(0, countPage));
+  // };
 
   const searchProduct = (e) => {
-    const searching = searchStorage.filter(
-      (item) =>
-        item.producttype.name
-          .toLowerCase()
-          .includes(e.target.value.toLowerCase()) ||
-        item.product.name.toLowerCase().includes(e.target.value.toLowerCase())
+    const searching = searchStorage.filter((item) =>
+      item.product.name.toLowerCase().includes(e.target.value.toLowerCase())
     );
-    setImports(searching);
-    setCurrentImports(searching.slice(0, countPage));
+    setCurrentImports(searching);
+    setSearch({ ...search, name: e.target.value });
   };
 
-  const searchBrand = (e) => {
+  const searchProductCode = (e) => {
     const searching = searchStorage.filter((item) =>
-      item.brand.name.toLowerCase().includes(e.target.value.toLowerCase())
+      item.product.code.toLowerCase().includes(e.target.value.toLowerCase())
     );
-    setImports(searching);
-    setCurrentImports(searching.slice(0, countPage));
+    setCurrentImports(searching);
+    setSearch({ ...search, code: e.target.value });
   };
+
+  // const searchBrand = (e) => {
+  //   const searching = searchStorage.filter((item) =>
+  //     item.brand.name.toLowerCase().includes(e.target.value.toLowerCase())
+  //   );
+  //   setCurrentImports(searching.slice(0, countPage));
+  // };
 
   //====================================================================
   //====================================================================
@@ -725,22 +748,22 @@ export const Incoming = () => {
       label: 'Yetkazib beruvchilar',
       value: 'all',
     });
-    selectRef.category.current.selectOption({
-      label: 'Barcha kategoriyalar',
-      value: 'all',
-    });
-    selectRef.producttype.current.selectOption({
-      label: 'Barcha mahsulot turlari',
-      value: 'all',
-    });
     selectRef.product.current.selectOption({
       label: 'Barcha mahsulotlar',
       value: 'all',
     });
+    // selectRef.category.current.selectOption({
+    //   label: 'Barcha kategoriyalar',
+    //   value: 'all',
+    // });
+    // selectRef.producttype.current.selectOption({
+    //   label: 'Barcha mahsulot turlari',
+    //   value: 'all',
+    // });
   }, [
-    selectRef.category,
     selectRef.supplier,
-    selectRef.producttype,
+    // selectRef.category,
+    // selectRef.producttype,
     selectRef.product,
   ]);
 
@@ -756,8 +779,8 @@ export const Incoming = () => {
           market: auth.market._id,
           user: auth.userId,
           products: [...incomings],
-          beginDay,
-          endDay,
+          startDate: beginDay,
+          endDate: endDay,
         },
         {
           Authorization: `Bearer ${auth.token}`,
@@ -774,9 +797,6 @@ export const Incoming = () => {
         user: auth.userId,
         supplier: '',
         product: {},
-        category: '',
-        producttype: '',
-        brand: '',
         unit: '',
       });
       setVisible(false);
@@ -836,22 +856,22 @@ export const Incoming = () => {
     if (auth.market && !n) {
       setN(1);
       getSuppliers();
-      getCategorys();
       getProducts();
-      getProductType();
-      // getBrand();
       getConnectorCount();
+      // getCategorys();
+      // getProductType();
+      // getBrand();
     }
   }, [
     auth,
     getSuppliers,
     n,
-    getCategorys,
     getProducts,
-    getProductType,
     getConnectorCount,
     beginDay,
     endDay,
+    // getProductType,
+    // getCategorys,
   ]);
 
   useEffect(() => {
@@ -862,37 +882,36 @@ export const Incoming = () => {
 
   return (
     <div className='overflow-x-auto'>
-      <div className='m-3 min-w-[1100px]'>
-        <RouterBtns
-          changeVisible={changeVisible}
-          changeVisibleTable={changeVisibleTable}
-          changeVisibleReport={changeVisibleReport}
+      <RouterBtns
+        changeVisible={changeVisible}
+        changeVisibleTable={changeVisibleTable}
+        changeVisibleReport={changeVisibleReport}
+      />
+      <div className={visible ? 'h-screen m-3' : 'd-none'}>
+        <RegisterIncoming
+          createHandler={createHandler}
+          removeIncoming={removeIncoming}
+          inputHandler={inputHandler}
+          clearSelect={clearSelect}
+          searchCategory={searchCategory}
+          incomings={incomings}
+          editIncoming={editIncoming}
+          incoming={incoming}
+          changeProduct={changeProduct}
+          // changeCategory={changeCategory}
+          // changeProductType={changeProductType}
+          products={products}
+          // categorys={categorys}
+          // productType={productType}
+          loading={loading}
+          suppliers={suppliers}
+          supplier={supplier}
+          setSupplier={setSupplier}
+          setModal={setModal}
+          selectRef={selectRef}
         />
-        <div className={visible ? '' : 'd-none'}>
-          <RegisterIncoming
-            createHandler={createHandler}
-            removeIncoming={removeIncoming}
-            addIncoming={addIncoming}
-            inputHandler={inputHandler}
-            clearSelect={clearSelect}
-            searchCategory={searchCategory}
-            incomings={incomings}
-            editIncoming={editIncoming}
-            incoming={incoming}
-            changeProduct={changeProduct}
-            changeCategory={changeCategory}
-            changeProductType={changeProductType}
-            products={products}
-            categorys={categorys}
-            productType={productType}
-            loading={loading}
-            suppliers={suppliers}
-            supplier={supplier}
-            setSupplier={setSupplier}
-            setModal={setModal}
-            selectRef={selectRef}
-          />
-        </div>
+      </div>
+      <div className='m-3'>
         <div className={visibleReport ? '' : 'hidden'}>
           <ReportIncomings
             changeIncomingCard={changeIncomingCard}
@@ -906,21 +925,19 @@ export const Incoming = () => {
             sortSuppliers={sortSuppliers}
           />
         </div>
-        <div className={visibleTable ? '' : 'hidden'}>
+        <div className={visibleTable ? 'min-w-[990px]' : 'hidden'}>
           <TableIncoming
+            searchKeypress={searchKeypress}
+            searchProductCode={searchProductCode}
             getImportsExcel={getImportsExcel}
             countData={countData}
             changeDate={changeDate}
             startDate={startDate}
             endDate={endDate}
             currentImports={currentImports}
-            imports={imports}
             setCurrentImports={setCurrentImports}
-            setImports={setImports}
-            searchCategoryTable={searchCategoryTable}
             searchSupplier={searchSupplier}
             searchProduct={searchProduct}
-            searchBrand={searchBrand}
             countPage={countPage}
             setCountPage={setCountPage}
             currentPage={currentPage}

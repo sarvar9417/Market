@@ -3,13 +3,13 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { EditDirector } from './editDirector/EditDirector';
 import { EditDirectorPassword } from './editDirector/EditDirectorPassword';
 import { Category } from './products/Categorys';
-import { ProductType } from './products/ProductType';
+// import { ProductType } from './products/ProductType';
 import { Unit } from './products/Unit';
 import { Exchangerate } from './products/Exchangerate';
 import { Product } from './products/Product';
 import { Incoming } from './products/Incoming';
 import { Supplier } from './products/Supplier';
-import { Brand } from './products/Brand';
+// import { Brand } from './products/Brand';
 import { Sale } from './sale/Sale';
 import { Packman } from './sale/Packman';
 import { Client } from './sale/Client';
@@ -40,9 +40,9 @@ export const DirectorRouter = () => {
         <Route path='/alo24/category'>
           <Category />
         </Route>
-        <Route path='/alo24/producttypes'>
+        {/* <Route path='/alo24/producttypes'>
           <ProductType />
-        </Route>
+        </Route> */}
         <Route path='/alo24/product'>
           <Product />
         </Route>
@@ -52,9 +52,9 @@ export const DirectorRouter = () => {
         <Route path='/alo24/supplier'>
           <Supplier />
         </Route>
-        <Route path='/alo24/brand'>
+        {/* <Route path='/alo24/brand'>
           <Brand />
-        </Route>
+        </Route> */}
         <Route path='/alo24/exchangerate'>
           <Exchangerate />
         </Route>
