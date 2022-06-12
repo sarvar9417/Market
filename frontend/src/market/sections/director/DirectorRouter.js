@@ -13,7 +13,6 @@ import { Supplier } from './products/Supplier';
 import { Sale } from './sale/Sale';
 import { Packman } from './sale/Packman';
 import { Client } from './sale/Client';
-import { t } from 'i18next';
 import { FilialRegister } from './filials/FilialRegister';
 import { Filials } from './filials/Filials';
 import { FilialDirector } from './filials/FilialDirector';
