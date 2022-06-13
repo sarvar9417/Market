@@ -291,7 +291,15 @@ export const Sale = () => {
   //====================================================================
   // Saleprducts
   const [products, setProducts] = useState([]);
-  const [saleproduct, setSaleProduct] = useState();
+  const [saleproduct, setSaleProduct] = useState({
+    total: 0,
+    product: {},
+    totalprice: 0,
+    totalpriceuzs: 0,
+    pieces: 0,
+    unitprice: 0,
+    unitpriceuzs: 0,
+  });
   const [saleproducts, setSaleProducts] = useState([]);
   const [totalprice, setTotalPrice] = useState(0);
   const [totalpriceuzs, setTotalPriceUzs] = useState(0);
@@ -370,11 +378,16 @@ export const Sale = () => {
     setSaleProduct({
       total: e.value.total,
       product: e.value,
-      totalprice: e.value.price.sellingprice,
-      totalpriceuzs: e.value.price.sellingprice * exchangerate.exchangerate,
+      totalprice: Math.round(e.value.price.sellingprice * 100) / 100,
+      totalpriceuzs:
+        Math.round(
+          e.value.price.sellingprice * exchangerate.exchangerate * 100
+        ) / 100,
       pieces: 1,
-      unitprice: e.value.price.sellingprice,
-      unitpriceuzs: e.value.price.sellingprice * exchangerate.exchangerate,
+      unitprice: Math.round(e.value.price.sellingprice * 100) / 100,
+      unitpriceuzs: Math.round(
+        (e.value.price.sellingprice * exchangerate.exchangerate) / 100
+      ),
     });
   };
 
@@ -430,7 +443,15 @@ export const Sale = () => {
   const pushSaleProduct = () => {
     let sales = [...saleproducts];
     sales.unshift(saleproduct);
-    setSaleProduct();
+    setSaleProduct({
+      total: 0,
+      product: 0,
+      totalprice: 0,
+      totalpriceuzs: 0,
+      pieces: 0,
+      unitprice: 0,
+      unitpriceuzs: 0,
+    });
     setModal(false);
     setSaleProducts(sales);
 
@@ -464,7 +485,9 @@ export const Sale = () => {
       setSaleProduct(product);
       setModal(true);
     }
+
     setSaleProducts(sales);
+
     let total = sales.reduce((summ, sale) => {
       return sale.totalprice + summ;
     }, 0);
@@ -1772,14 +1795,18 @@ export const Sale = () => {
     setPrePaymentVisible(true);
     setPrePaymentSaleConnector(e);
     setPrePaymentTotalPrice(
-      e.products.reduce((summ, product) => {
-        return summ + product.totalprice;
-      }, 0)
+      Math.round(
+        e.products.reduce((summ, product) => {
+          return summ + product.totalprice;
+        }, 0) * 100
+      ) / 100
     );
     setPrePaymentTotalPriceUzs(
-      e.products.reduce((summ, product) => {
-        return summ + product.totalpriceuzs;
-      }, 0)
+      Math.round(
+        e.products.reduce((summ, product) => {
+          return summ + product.totalpriceuzs;
+        }, 0) * 100
+      ) / 100
     );
     setPrePaymentDebt({
       ...prePaymentDebt,

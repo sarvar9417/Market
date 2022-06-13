@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export const Table = ({ sales }) => {
   return (
@@ -12,7 +12,7 @@ export const Table = ({ sales }) => {
             Sanasi
           </th>
           <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
-            Kategoriya
+            Kodi
           </th>
           <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
             Mahsulot
@@ -45,13 +45,13 @@ export const Table = ({ sales }) => {
                 {product.product.name}
               </td>
               <td className='font-bold text-right border border-black py-1 px-2'>
-                {product.pieces.toLocaleString("de-DE")}
+                {product.pieces.toLocaleString('de-DE')}
               </td>
               <td className='font-bold text-right border border-black py-1 px-2'>
-                {product.unitprice.toLocaleString("de-DE")} USD
+                {product.unitprice.toLocaleString('de-DE')} USD
               </td>
               <td className='font-bold text-right border border-black py-1 px-2 text-teal-900'>
-                {product.totalprice.toLocaleString("de-DE")} USD
+                {product.totalprice.toLocaleString('de-DE')} USD
               </td>
             </tr>
           );

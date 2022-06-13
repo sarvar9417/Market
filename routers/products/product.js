@@ -535,7 +535,7 @@ module.exports.getProducts = async (req, res) => {
       name: name,
       market,
     })
-      .sort({ _id: -1 })
+      .sort({ code: 1 })
       .select('name code total unit market category')
       .populate('price', 'incomingprice sellingprice')
       .populate('unit', 'name')
@@ -653,7 +653,7 @@ module.exports.getAllIncoming = async (req, res) => {
     const products = await Product.find({
       market,
     })
-      .sort({ _id: -1 })
+      .sort({ code: 1 })
       .select('name code unit')
       .populate('unit', 'name')
       .populate('price', 'incomingprice');

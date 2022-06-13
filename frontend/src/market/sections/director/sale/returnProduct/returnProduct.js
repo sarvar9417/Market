@@ -1,5 +1,4 @@
 export const returnProduct = (products, e) => {
-  console.log(e.target);
   products[parseInt(e.target.id)].pieces = e.target.value;
   products[parseInt(e.target.id)].totalprice =
     e.target.value === ''

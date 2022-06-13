@@ -175,21 +175,18 @@ module.exports.getCategories = async (req, res) => {
       });
     }
     const code = new RegExp('.*' + (search ? search.code : '') + '.*', 'i');
-    const name = new RegExp('.*' + (search ? search.name : '') + '.*', 'i');
 
     const categoryCount = await Category.find({
       market,
-      name: name,
       code: code,
     }).count();
 
     const categorys = await Category.find({
       market,
-      name: name,
       code: code,
     })
-      .sort({ _id: -1 })
-      .select('name code market')
+      .sort({ code: 1 })
+      .select('code market')
       .skip(currentPage * countPage)
       .limit(countPage);
 

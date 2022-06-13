@@ -110,6 +110,7 @@ export const Category = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+      console.log(data);
       setCurrentCategories(data.categories);
       setSearchStorage(data.categories);
       setCategoryCount(data.count);

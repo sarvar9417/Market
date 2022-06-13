@@ -7,7 +7,6 @@ import { Footer } from './Selling/Footer';
 export const Selling = ({
   saleconnectorid,
   totalpriceuzs,
-  checkNumber,
   payment,
   debt,
   discount,
