@@ -244,7 +244,7 @@ module.exports.register = async (req, res) => {
         options: { sort: { created_at: -1 } },
         populate: {
           path: 'product',
-          select: 'category name',
+          select: 'category name code',
           populate: { path: 'category', select: 'code' },
         },
       })
@@ -485,7 +485,7 @@ module.exports.addproducts = async (req, res) => {
         options: { sort: { created_at: -1 } },
         populate: {
           path: 'product',
-          select: 'category name',
+          select: 'category name code',
           populate: { path: 'category', select: 'code' },
         },
       })
@@ -559,7 +559,7 @@ module.exports.getsaleconnectors = async (req, res) => {
         options: { sort: { createdAt: -1 } },
         populate: {
           path: 'product',
-          select: 'category name',
+          select: 'category name code',
           populate: { path: 'category', select: 'code' },
         },
       })
@@ -604,7 +604,7 @@ module.exports.getsaleconnectorsexcel = async (req, res) => {
         options: { sort: { createdAt: -1 } },
         populate: {
           path: 'product',
-          select: 'category name',
+          select: 'category name code',
           populate: { path: 'category', select: 'code' },
         },
       })
@@ -782,7 +782,7 @@ module.exports.registeredit = async (req, res) => {
         options: { sort: { createdAt: -1 } },
         populate: {
           path: 'product',
-          select: 'category name',
+          select: 'category name code',
           populate: { path: 'category', select: 'code' },
         },
       })

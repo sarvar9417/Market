@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export const Table = ({ editSaleConnector, saleproducts, changeBack }) => {
   return (
@@ -6,7 +6,7 @@ export const Table = ({ editSaleConnector, saleproducts, changeBack }) => {
       <thead className='z-10 border text-center text-base  text-white py-4'>
         <tr>
           <th className='border sticky top-0 bg-blue-800'>№</th>
-          <th className='border sticky top-0 bg-blue-800'>Kategoriyasi</th>
+          <th className='border sticky top-0 bg-blue-800'>Kodi</th>
           <th className='border sticky top-0 bg-blue-800'>Nomi</th>
           <th className='border sticky top-0 bg-blue-800'>Xarid qilingan</th>
 
@@ -24,7 +24,7 @@ export const Table = ({ editSaleConnector, saleproducts, changeBack }) => {
                   {index + 1}
                 </td>
                 <td className='border font-bold text-black text-center w-10'>
-                  {product.product.category.code}
+                  {product.product.code}
                 </td>
                 <td className='border font-bold text-black px-1'>
                   {product.product.name}
@@ -33,7 +33,7 @@ export const Table = ({ editSaleConnector, saleproducts, changeBack }) => {
                   {product.pieces}
                 </td>
                 <td className='border font-bold text-black text-right px-2 w-36'>
-                  {product.totalprice.toLocaleString("de-DE")}{" "}
+                  {product.totalprice.toLocaleString('de-DE')}{' '}
                   <span className='text-teal-600'>USD</span>
                 </td>
                 <td className='border font-bold text-black text-right px-2 w-20'>
@@ -46,7 +46,7 @@ export const Table = ({ editSaleConnector, saleproducts, changeBack }) => {
                   />
                 </td>
                 <td className='border font-bold text-black text-right px-2 w-36'>
-                  {saleproducts[index].totalprice.toLocaleString("de-DE")}{" "}
+                  {saleproducts[index].totalprice.toLocaleString('de-DE')}{' '}
                   <span className='text-teal-600'>USD</span>
                 </td>
               </tr>

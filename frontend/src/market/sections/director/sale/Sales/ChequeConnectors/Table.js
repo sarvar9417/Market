@@ -39,7 +39,7 @@ export const Table = ({ sales }) => {
                 {new Date(product.createdAt).toLocaleDateString()}
               </td>
               <td className='font-bold text-right border border-black py-1 px-2'>
-                {product.product.category.code}
+                {product.product.code}
               </td>
               <td className='font-bold border border-black py-1 px-2'>
                 {product.product.name}
