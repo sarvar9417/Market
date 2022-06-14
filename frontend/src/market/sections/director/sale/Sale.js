@@ -585,7 +585,6 @@ export const Sale = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      console.log(data);
       setExcelTable(data.saleconnectors);
       document.getElementById('reacthtmltoexcel').click();
     } catch (error) {
@@ -2147,9 +2146,9 @@ export const Sale = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+      localStorage.setItem('data', data);
       setModal6(false);
       // setCheckConnectors(true);
-      console.log(data);
       window.scroll({ top: 0 });
       clearDatas();
       setPrePaymentVisible(false);

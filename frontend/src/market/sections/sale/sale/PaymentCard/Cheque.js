@@ -1,10 +1,10 @@
-import React, { useContext, useRef } from "react";
-import { useReactToPrint } from "react-to-print";
-import { AuthContext } from "../../../../context/AuthContext";
-import { Header } from "./Cheque/Header";
-import { Table } from "./Cheque/Table";
-import { Control } from "./Cheque//Control";
-import { TableFooter } from "./Cheque/TableFooter";
+import React, { useContext, useRef } from 'react';
+import { useReactToPrint } from 'react-to-print';
+import { AuthContext } from '../../../../context/AuthContext';
+import { Header } from './Cheque/Header';
+import { Table } from './Cheque/Table';
+import { Control } from './Cheque//Control';
+import { TableFooter } from './Cheque/TableFooter';
 // import QRCode from "qrcode";
 
 export const Cheque = ({ sales, setCheck }) => {
@@ -32,7 +32,7 @@ export const Cheque = ({ sales, setCheck }) => {
   const auth = useContext(AuthContext);
   return (
     <div className='absolute top-0 right-0 z-50 w-full min-h-screen bg-white overflow-auto font-mono'>
-      <div className='a4 m-auto w-[21cm]' ref={componentRef}>
+      <div className='a4 m-auto w-[27cm]' ref={componentRef}>
         <Header auth={auth} sales={sales} />
         <hr />
         <Table sales={sales} />

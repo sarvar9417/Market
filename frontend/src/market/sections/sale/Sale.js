@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { BrowserRouter as Router } from "react-router-dom";
-import { Navbar } from "./navbar_and_footer/Navbar";
-import { useToast } from "@chakra-ui/react";
-import { useHttp } from "../../hooks/http.hook";
-import { SaleRouter } from "./SaleRouter";
+import React, { useCallback, useEffect, useState } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { Navbar } from './navbar_and_footer/Navbar';
+import { useToast } from '@chakra-ui/react';
+import { useHttp } from '../../hooks/http.hook';
+import { SaleRouter } from './SaleRouter';
 
 export const Sale = () => {
   //====================================================================
@@ -18,7 +18,7 @@ export const Sale = () => {
         status: data.status && data.status,
         duration: 5000,
         isClosable: true,
-        position: "top-right",
+        position: 'top-right',
       });
     },
     [toast]
@@ -40,13 +40,13 @@ export const Sale = () => {
 
   const getBaseUrl = useCallback(async () => {
     try {
-      const data = await request("/api/baseurl", "GET", null);
+      const data = await request('/api/baseurl', 'GET', null);
       setBaseUrl(data.baseUrl);
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [request, notify]);

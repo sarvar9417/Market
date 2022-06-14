@@ -1,10 +1,10 @@
-import React, { useContext, useRef } from "react";
-import { useReactToPrint } from "react-to-print";
-import { AuthContext } from "../../../../context/AuthContext";
-import { Control } from "./ChequeConnectors/Control";
-import { Header } from "./ChequeConnectors/Header";
-import { Table } from "./ChequeConnectors/Table";
-import { TableFooter } from "./ChequeConnectors/TableFooter";
+import React, { useContext, useRef } from 'react';
+import { useReactToPrint } from 'react-to-print';
+import { AuthContext } from '../../../../context/AuthContext';
+import { Control } from './ChequeConnectors/Control';
+import { Header } from './ChequeConnectors/Header';
+import { Table } from './ChequeConnectors/Table';
+import { TableFooter } from './ChequeConnectors/TableFooter';
 // import QRCode from "qrcode";
 
 export const ChequeConnectors = ({ sales, setCheck }) => {
@@ -31,7 +31,7 @@ export const ChequeConnectors = ({ sales, setCheck }) => {
   const auth = useContext(AuthContext);
   return (
     <div className='absolute top-0 w-full bg-white font-mono h-full right-0 z-50'>
-      <div className='a4 m-auto w-[21cm]' ref={componentRef}>
+      <div className='a4 m-auto w-[27cm]' ref={componentRef}>
         <Header auth={auth} sales={sales} />
         <hr />
         <Table sales={sales} />

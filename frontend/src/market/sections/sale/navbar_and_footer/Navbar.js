@@ -1,9 +1,9 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import { AuthContext } from "../../../context/AuthContext";
-import { useHttp } from "../../../hooks/http.hook";
-import { useToast } from "@chakra-ui/react";
-import { t } from "i18next";
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { AuthContext } from '../../../context/AuthContext';
+import { useHttp } from '../../../hooks/http.hook';
+import { useToast } from '@chakra-ui/react';
+import { t } from 'i18next';
 
 export const Navbar = ({ baseUrl }) => {
   const history = useHistory();
@@ -19,11 +19,14 @@ export const Navbar = ({ baseUrl }) => {
         status: data.status && data.status,
         duration: 5000,
         isClosable: true,
-        position: "top-right",
+        position: 'top-right',
       });
     },
     [toast]
   );
+
+  const [activePage, setActivePage] = useState(window.location.pathname);
+
   //====================================================================
   //====================================================================
 
@@ -43,8 +46,8 @@ export const Navbar = ({ baseUrl }) => {
   const getDirector = useCallback(async () => {
     try {
       const data = await request(
-        "/api/user",
-        "POST",
+        '/api/user',
+        'POST',
         {
           userId: auth.userId,
         },
@@ -54,7 +57,7 @@ export const Navbar = ({ baseUrl }) => {
       );
       setUser(data);
     } catch (error) {
-      notify({ title: error, description: "", status: "error" });
+      notify({ title: error, description: '', status: 'error' });
     }
   }, [request, auth, notify]);
 
@@ -93,9 +96,37 @@ export const Navbar = ({ baseUrl }) => {
             id='royalHospitalsNavbar'>
             <ul className='navbar-nav'>
               <li className='nav-item mr-4 px-2'>
-                <span className='logo' style={{ fontSize: "26pt" }}>
+                <span className='logo' style={{ fontSize: '26pt' }}>
                   Alo24
                 </span>
+              </li>
+              <li className='nav-item'>
+                <Link
+                  className={`nav-link ${
+                    activePage === '/alo24' || activePage === '/'
+                      ? 'active-page'
+                      : ''
+                  }`}
+                  onClick={() => {
+                    setActivePage('/alo24');
+                  }}
+                  to='/'>
+                  <i className='icon-devices_other nav-icon' />
+                  {t('Mahsulotlar')}
+                </Link>
+              </li>
+              <li className='nav-item'>
+                <Link
+                  className={`nav-link ${
+                    activePage === '/alo24/sales' ? 'active-page' : ''
+                  }`}
+                  onClick={() => {
+                    setActivePage('/alo24/sales');
+                  }}
+                  to='/alo24/sales'>
+                  <i className='icon-devices_other nav-icon' />
+                  {t('Sotuv')}
+                </Link>
               </li>
             </ul>
 
@@ -140,10 +171,10 @@ export const Navbar = ({ baseUrl }) => {
                         />
                       </div>
                       {user.firstname} {user.lastname}
-                      <p>{t("Direktor")}</p>
+                      <p>{t('Sotuvchi')}</p>
                     </div>
                     <Link to='/alo24/editdirector'>
-                      <i className='icon-user1' /> {t("Tahrirlash")}
+                      <i className='icon-user1' /> {t('Tahrirlash')}
                     </Link>
                     <Link to='/alo24/editdirectorpassword'>
                       <i className='icon-vpn_key' /> {t("Parolni o'zgartirish")}
@@ -151,9 +182,9 @@ export const Navbar = ({ baseUrl }) => {
                     <button
                       onClick={() => {
                         auth.logout();
-                        history.push("/");
+                        history.push('/');
                       }}>
-                      <i className='icon-log-out1' /> {t("Tizimdan chiqish")}
+                      <i className='icon-log-out1' /> {t('Tizimdan chiqish')}
                     </button>
                   </div>
                 </div>

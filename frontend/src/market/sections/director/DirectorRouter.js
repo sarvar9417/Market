@@ -22,6 +22,7 @@ import { Debts } from './sale/Debts';
 import { Inventory } from './inventory/Inventory';
 import { Inventories } from './inventory/Inventories';
 import { HomePage } from './homepage/HomePage';
+import { Sellers } from './sale/Sellers';
 
 export const DirectorRouter = () => {
   return (
@@ -95,6 +96,9 @@ export const DirectorRouter = () => {
         </Route>
         <Route path='/alo24/inventories'>
           <Inventories />
+        </Route>
+        <Route path='/alo24/sellers'>
+          <Sellers />
         </Route>
 
         <Redirect to='/alo24' />

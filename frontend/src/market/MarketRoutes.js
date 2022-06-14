@@ -1,12 +1,11 @@
-import React from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
-import { Counter } from "./Counter";
-import { MarketRegister } from "./loginAndRegister/MarketRegister";
-import { DirectorRegistor } from "./loginAndRegister/DirectorRegistor";
-import { Login } from "./loginAndRegister/Login";
+import React from 'react';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import { Counter } from './Counter';
+import { MarketRegister } from './loginAndRegister/MarketRegister';
+import { DirectorRegistor } from './loginAndRegister/DirectorRegistor';
+import { Login } from './loginAndRegister/Login';
 
 export const MarketRoutes = (isAuthenticated, user) => {
-  console.log(isAuthenticated);
   return (
     <Switch>
       <Route path='/' exact>

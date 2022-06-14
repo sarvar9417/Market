@@ -293,6 +293,7 @@ export const Navbar = ({ baseUrl }) => {
                   aria-expanded='false'
                   className={`nav-link dropdown-toggle ${
                     activePage === '/alo24/sales' ||
+                    activePage === '/alo24/sallers' ||
                     activePage === '/alo24/sales/packman' ||
                     activePage === '/alo24/sales/client' ||
                     activePage === '/alo24/payments' ||
@@ -375,6 +376,18 @@ export const Navbar = ({ baseUrl }) => {
                       }}
                       to='/alo24/client'>
                       {t('Mijoz')}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={`dropdown-item ${
+                        activePage === '/alo24/sellers' ? 'active-page' : ''
+                      }`}
+                      onClick={() => {
+                        setActivePage('/alo24/sellers');
+                      }}
+                      to='/alo24/sellers'>
+                      {t('Sotuvchilar')}
                     </Link>
                   </li>
                 </ul>

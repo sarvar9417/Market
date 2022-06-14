@@ -1,13 +1,12 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from 'react';
 
-const storageName = "userData";
+const storageName = 'userData';
 export const useAuth = () => {
   const [token, setToken] = useState(null);
   const [userId, setUserId] = useState(null);
   const [user, setUser] = useState(null);
   const [market, setMarket] = useState(null);
   const login = useCallback((jwtToken, id, user, market) => {
-    console.log(user);
     setToken(jwtToken);
     setUserId(id);
     setUser(user);

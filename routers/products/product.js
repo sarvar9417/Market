@@ -519,7 +519,6 @@ module.exports.getAll = async (req, res) => {
 module.exports.getProducts = async (req, res) => {
   try {
     const { market, currentPage, countPage, search } = req.body;
-
     const marke = await Market.findById(market);
     if (!marke) {
       return res
