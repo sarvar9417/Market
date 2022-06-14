@@ -263,7 +263,7 @@ export const Navbar = ({ baseUrl }) => {
                             setCurrentPage('Inventorizatsiya');
                           }}
                           to='/alo24/inventory'>
-                          {t('Invertorizatsiya')}
+                          {t('Invertarizatsiya')}
                         </Link>
                       </li>
                       <li>

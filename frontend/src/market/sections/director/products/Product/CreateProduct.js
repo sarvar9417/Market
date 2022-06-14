@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { CreateBtn } from './createProduct/CreateBtn';
 import { CreateInput } from './createProduct/CreateInput';
 // import { CreateSelect } from './createProduct/CreateSelect';
@@ -33,7 +34,7 @@ export const CreateProduct = ({
         changeUnit={changeUnit}
         loading={loading}
       /> */}
-      <div className='card-header text-lg'>Mahsulot yaratish</div>
+      <div className='card-header text-lg'>{t("Mahsulot yaratish")}</div>
       <CreateInput
         units={units}
         loading={loading}

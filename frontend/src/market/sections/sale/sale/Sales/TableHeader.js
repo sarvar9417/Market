@@ -6,6 +6,7 @@ import { ExcelDownload } from '../../components/ExcelDownload';
 import { faFileExcel } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SearchInput } from '../../components/Input';
+import { t } from 'i18next';
 
 export const TableHeader = ({
   keyPressed,
@@ -38,7 +39,7 @@ export const TableHeader = ({
         <SearchInput
           changeHandler={changeSearch}
           name='client'
-          placeholder={'Mijoz'}
+          placeholder={t('Mijoz')}
           keyPressed={keyPressed}
         />
       </li>
@@ -78,7 +79,7 @@ export const TableHeader = ({
           onClick={getSaleConnectorsExcel}>
           <FontAwesomeIcon icon={faFileExcel} />
         </button>
-        <ExcelDownload filename={'Sutuvlar'} />
+        <ExcelDownload filename={t('Sotuvlar')} />
       </li>
     </ul>
   );

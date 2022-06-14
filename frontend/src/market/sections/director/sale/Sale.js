@@ -357,7 +357,7 @@ export const Sale = () => {
     if (e.value.price.sellingprice === 0) {
       return notify({
         title:
-          'Diqqat! Ushbu mahsulotga narx belgilanmagan. Mahsulotni sotish imkoni mavjud emas. ',
+          'Diqqat! Ushbu mahsulotga narx belgilanmagan. Mahsulotni sotish imkoni mavjud emas.',
         description:
           "Sotuvdan oldin mahsulotga sotuv narxini belgilashingizni so'raymiz.",
         status: 'warning',
