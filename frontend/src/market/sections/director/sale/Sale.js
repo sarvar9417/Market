@@ -17,6 +17,8 @@ import { CardEdit } from './EditPaymentCard/CardEdit';
 import { RouterBtns } from './RouterBtns/RouterBtns';
 import { ExcelTable } from './Sales/ExcelTable';
 import { PrePaymentCard } from './PrePaymentCard/PrepaymentCard';
+import { TemporayCheque } from './Temporary/TemporaryCheque';
+import { Temporaries } from './Temporary/Temporaries';
 
 export const Sale = () => {
   //====================================================================
@@ -76,6 +78,7 @@ export const Sale = () => {
   const [modal5, setModal5] = useState(false);
   const [modal6, setModal6] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [visibleTemporary, setVisibleTemporary] = useState(false);
   const [visibleEdit, setVisibleEdit] = useState(false);
   const [check, setCheck] = useState(false);
   const [checkConnectors, setCheckConnectors] = useState(false);
@@ -87,174 +90,29 @@ export const Sale = () => {
     setTableCard(false);
     setSellingEditCard(false);
     setSellingCard(true);
+    setVisibleTemporary(false);
   };
 
   const changeTableCard = () => {
     setSellingCard(false);
     setSellingEditCard(false);
     setTableCard(true);
+    setVisibleTemporary(false);
   };
 
   const changeSellingEditCard = () => {
     setSellingCard(false);
     setTableCard(false);
     setSellingEditCard(true);
+    setVisibleTemporary(false);
   };
-  //====================================================================
-  //====================================================================
 
-  //====================================================================
-  //====================================================================
-  // Categories
-  // const [categories, setCategories] = useState([
-  //   {
-  //     label: t('Barcha kategoriyalar'),
-  //     value: 'all',
-  //   },
-  // ]);
-
-  // const getCategories = useCallback(async () => {
-  //   try {
-  //     const data = await request(
-  //       `/api/products/category/getall`,
-
-  //       'POST',
-  //       { market: auth.market._id },
-  //       {
-  //         Authorization: `Bearer ${auth.token}`,
-  //       }
-  //     );
-  //     let c = [
-  //       {
-  //         label: t('Barcha kategoriyalar'),
-  //         value: 'all',
-  //       },
-  //     ];
-  //     data.map((category) => {
-  //       return c.push({
-  //         label: category.code,
-  //         type: 'Category',
-  //         value: category,
-  //       });
-  //     });
-  //     setCategories(c);
-  //   } catch (error) {
-  //     notify({
-  //       title: error,
-  //       description: '',
-  //       status: 'error',
-  //     });
-  //   }
-  // }, [request, auth, notify]);
-
-  // const changeCategory = (e) => {
-  //   if (e.value === 'all') {
-  //     return setProductTypes(allproducttypes);
-  //   }
-  //   const filter = allproducttypes.filter((producttype) => {
-  //     return producttype.value.category._id === e.value._id;
-  //   });
-  //   setProductTypes(filter);
-  //   getProducts(e);
-  // };
-  //====================================================================
-  //====================================================================
-
-  //====================================================================
-  //====================================================================
-  // const [baseUrl, setBaseUrl] = useState();
-  // const getBaseUrl = useCallback(async () => {
-  //   try {
-  //     const data = await request("/api/baseurl", "GET", null);
-  //     setBaseUrl(data.baseUrl);
-  //   } catch (error) {
-  //     notify({
-  //       title: error,
-  //       description: "",
-  //       status: "error",
-  //     });
-  //   }
-  // }, [request, notify]);
-  //====================================================================
-  //====================================================================
-
-  //====================================================================
-  //====================================================================
-  // Producttypes
-  // const [allproducttypes, setAllProductTypes] = useState([]);
-  // const [producttypes, setProductTypes] = useState([]);
-
-  // const getProductTypes = useCallback(async () => {
-  //   try {
-  //     const data = await request(
-  //       `/api/products/producttype/getall`,
-  //       'POST',
-  //       { market: auth.market._id },
-  //       {
-  //         Authorization: `Bearer ${auth.token}`,
-  //       }
-  //     );
-  //     let c = [];
-  //     data.producttypes.map((type) => {
-  //       return c.push({
-  //         label: type.name,
-  //         type: 'ProductType',
-  //         value: type,
-  //       });
-  //     });
-  //     setProductTypes(c);
-  //     setAllProductTypes(c);
-  //   } catch (error) {
-  //     notify({
-  //       title: error,
-  //       description: '',
-  //       status: 'error',
-  //     });
-  //   }
-  // }, [request, auth, notify]);
-
-  // const changeProductType = (e) => {
-  //   getProducts(e);
-  // };
-  //====================================================================
-  //====================================================================
-
-  //====================================================================
-  //====================================================================
-  // Brands
-  // const [brands, setBrands] = useState([]);
-
-  // const getBrand = useCallback(async () => {
-  //   try {
-  //     const data = await request(
-  //       `/api/products/brand/getall`,
-  //       'POST',
-  //       { market: auth.market._id },
-  //       {
-  //         Authorization: `Bearer ${auth.token}`,
-  //       }
-  //     );
-  //     let c = [];
-  //     data.map((type) => {
-  //       return c.push({
-  //         label: type.name,
-  //         type: 'Brand',
-  //         value: type,
-  //       });
-  //     });
-  //     setBrands(c);
-  //   } catch (error) {
-  //     notify({
-  //       title: error,
-  //       description: '',
-  //       status: 'error',
-  //     });
-  //   }
-  // }, [request, auth, notify]);
-
-  // const changeBrand = (e) => {
-  //   getProducts(e);
-  // };
+  const changeVisibleTemporary = () => {
+    setSellingCard(false);
+    setTableCard(false);
+    setSellingEditCard(false);
+    setVisibleTemporary(true);
+  };
   //====================================================================
   //====================================================================
 
@@ -740,6 +598,33 @@ export const Sale = () => {
   //====================================================================
   //====================================================================
   // Discount and Payment
+  const [currenttemporary, setCurrentTemporary] = useState();
+  const deleteTemporarys = useCallback(
+    async (id) => {
+      try {
+        const data = await request(
+          `/api/sales/temporary/delete`,
+          'POST',
+          {
+            market: auth.market._id,
+            _id: id,
+          },
+          {
+            Authorization: `Bearer ${auth.token}`,
+          }
+        );
+
+        setTemporarys(data);
+      } catch (error) {
+        notify({
+          title: error,
+          description: '',
+          status: 'error',
+        });
+      }
+    },
+    [request, notify, auth]
+  );
   const [discount, setDiscount] = useState({
     discount: 0,
     discountuzs: 0,
@@ -1220,6 +1105,10 @@ export const Sale = () => {
       clearDatas();
       setVisible(false);
       getSaleConnectors();
+      if (currenttemporary) {
+        deleteTemporarys(currenttemporary._id);
+      }
+      setCheckTemporary();
     } catch (error) {
       notify({
         title: error,
@@ -1239,6 +1128,8 @@ export const Sale = () => {
     saleproducts,
     clearDatas,
     getSaleConnectors,
+    currenttemporary,
+    deleteTemporarys,
   ]);
 
   //====================================================================
@@ -1283,6 +1174,10 @@ export const Sale = () => {
       setVisible(false);
       getSaleConnectors();
       setSaleConnectorId();
+      if (currenttemporary) {
+        deleteTemporarys(currenttemporary._id);
+      }
+      setCheckTemporary();
     } catch (error) {
       notify({
         title: error,
@@ -1303,6 +1198,8 @@ export const Sale = () => {
     clearDatas,
     getSaleConnectors,
     saleconnectorid,
+    currenttemporary,
+    deleteTemporarys,
   ]);
 
   //====================================================================
@@ -1340,7 +1237,6 @@ export const Sale = () => {
   const [editTotalPriceUzs, setEditTotalPriceUzs] = useState(0);
 
   const editHandler = (e) => {
-    console.log(e);
     setEditTotalPrice(
       e.products.reduce((summ, product) => {
         return summ + product.totalprice;
@@ -2180,6 +2076,144 @@ export const Sale = () => {
   };
 
   //====================================================================
+  // TEMPORARY
+  const [temporary, setTemporary] = useState({
+    saleconnectorid: '',
+    client: {},
+    packman: {},
+    discount: {},
+    payment: {},
+    debt: {},
+    products: [],
+  });
+  const [temporarys, setTemporarys] = useState([]);
+
+  const [checkTemporary, setCheckTemporary] = useState(false);
+
+  const saveTemporary = () => {
+    if (saleproducts.length === 0) {
+      return notify({
+        title:
+          "Diqqat! Sotuvni vaqtincha saqlash uchun kamida bitta mahsulot kiritilgan bo'lishi kerak.",
+        status: 'warning',
+      });
+    }
+
+    // if (!client.name) {
+    //   return notify({
+    //     title:
+    //       "Diqqat! Sotuvni vaqtincha saqlash uchun mijoz ma'lumotini kiriting",
+    //     status: 'warning',
+    //   });
+    // }
+
+    setTemporary({
+      saleconnectorid,
+      client,
+      packman,
+      discount,
+      payment,
+      debt,
+      products: saleproducts,
+    });
+    setCheckTemporary(true);
+
+    clearDatas();
+
+    createTemporary();
+    if (currenttemporary) {
+      deleteTemporarys(currenttemporary._id);
+      setCurrentTemporary();
+    }
+  };
+
+  const createTemporary = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/sales/temporary/register`,
+        'POST',
+        {
+          market: auth.market._id,
+          temporary: {
+            saleconnectorid,
+            client,
+            packman,
+            discount,
+            payment,
+            debt,
+            products: saleproducts,
+          },
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+
+      setTemporarys(data);
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [
+    request,
+    notify,
+    auth,
+    client,
+    debt,
+    discount,
+    saleconnectorid,
+    saleproducts,
+    packman,
+    payment,
+  ]);
+
+  const getTemporarys = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/sales/temporary/get`,
+        'POST',
+        {
+          market: auth.market._id,
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+
+      setTemporarys(data);
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [request, notify, auth]);
+
+  const changeTemporary = (e) => {
+    setVisibleTemporary(false);
+    setSellingCard(true);
+    setSaleConnectorId(e.temporary.saleconnectorid);
+    setClient(e.temporary.client ? e.temporary.client : {});
+    setDebt(e.temporary.debt);
+    setDiscount(e.temporary.discount);
+    setPayment(e.temporary.payment);
+    setSaleProducts(e.temporary.products);
+    setCurrentTemporary(e);
+    setTotalPrice(
+      e.temporary.products.reduce((summ, product) => {
+        return summ + product.totalprice;
+      }, 0)
+    );
+  };
+
+  useEffect(() => {
+    getTemporarys();
+  }, [getTemporarys]);
+  //====================================================================
   //====================================================================
   // UseEffect
   const [n, setN] = useState();
@@ -2216,9 +2250,14 @@ export const Sale = () => {
 
   return (
     <div className='m-3'>
-      {/* <div className={`${editVisible ? "" : "hidden"}`}>
-        <EditSaleProducts />
-      </div> */}
+      <div className={`${checkTemporary ? '' : 'hidden'}`}>
+        <TemporayCheque
+          sales={temporary}
+          client={client}
+          setCheck={setCheckTemporary}
+        />
+      </div>
+
       <div className={`${check ? '' : 'hidden'}`}>
         <Cheque sales={sales} setCheck={setCheck} />
       </div>
@@ -2280,23 +2319,21 @@ export const Sale = () => {
       </div>
 
       <RouterBtns
+        changeVisibleTemporary={changeVisibleTemporary}
         changeSellingCard={changeSellingCard}
         changeSellingEditCard={changeSellingEditCard}
         changeTableCard={changeTableCard}
       />
-
-      <div className={sellingCard ? '' : 'hidden'}>
-        <Products
-          changeProduct={changeProduct}
-          products={products}
-          // changeBrand={changeBrand}
-          // changeProductType={changeProductType}
-          // changeCategory={changeCategory}
-          // categories={categories}
-          // producttypes={producttypes}
-          // brands={brands}
+      <div className={`${visibleTemporary ? '' : 'hidden'}`}>
+        <Temporaries
+          temporarys={temporarys}
+          changeTemporary={changeTemporary}
         />
+      </div>
+      <div className={sellingCard ? '' : 'hidden'}>
+        <Products changeProduct={changeProduct} products={products} />
         <Selling
+          saveTemporary={saveTemporary}
           saleconnectorid={saleconnectorid}
           totalpriceuzs={totalpriceuzs}
           checkNumber={saleCounts}
