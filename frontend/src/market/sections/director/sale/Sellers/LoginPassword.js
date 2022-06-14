@@ -34,9 +34,9 @@ export const LoginPassword = ({ seller, changeHandler, checkData }) => {
           <Input
             type='password'
             changeHandler={changeHandler}
-            data={seller.repassword}
+            data={seller.confirmPassword}
             placeholder={'Parolni qayta kiriting'}
-            name='repassword'
+            name='confirmPassword'
           />
         </div>
       </div>

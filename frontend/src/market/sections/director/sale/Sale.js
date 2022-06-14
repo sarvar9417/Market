@@ -386,7 +386,7 @@ export const Sale = () => {
       pieces: 1,
       unitprice: Math.round(e.value.price.sellingprice * 100) / 100,
       unitpriceuzs: Math.round(
-        (e.value.price.sellingprice * exchangerate.exchangerate) / 100
+        (e.value.price.sellingprice * exchangerate.exchangerate * 100) / 100
       ),
     });
   };
@@ -1340,6 +1340,7 @@ export const Sale = () => {
   const [editTotalPriceUzs, setEditTotalPriceUzs] = useState(0);
 
   const editHandler = (e) => {
+    console.log(e);
     setEditTotalPrice(
       e.products.reduce((summ, product) => {
         return summ + product.totalprice;
@@ -2172,6 +2173,12 @@ export const Sale = () => {
   //====================================================================
   //====================================================================
 
+  const changeEnter = (e) => {
+    if (e.key === 'Enter') {
+      pushSaleProduct();
+    }
+  };
+
   //====================================================================
   //====================================================================
   // UseEffect
@@ -2356,7 +2363,13 @@ export const Sale = () => {
       <Modal
         modal={modal}
         setModal={setModal}
-        basic={<InputProduct setCounts={setCounts} product={saleproduct} />}
+        basic={
+          <InputProduct
+            setCounts={setCounts}
+            product={saleproduct}
+            changeEnter={changeEnter}
+          />
+        }
         // text={"mahsulotnti o'chirishni tasdiqlaysizmi?"}
         handler={pushSaleProduct}
       />
@@ -2365,9 +2378,9 @@ export const Sale = () => {
         modal={modal2}
         setModal={setModal2}
         basic={`${t('Diqqat! Iltimos')} ${debt.debt.toLocaleString(
-          'de-DE'
+          'ru-RU'
         )}$ (${(debt.debt * exchangerate.exchangerate).toLocaleString(
-          'de-DE'
+          'ru-RU'
         )} ${t("so'm)  qarzdorlik uchun izoh kiriting")}`}
         text={
           <input
@@ -2390,9 +2403,9 @@ export const Sale = () => {
         modal={modal4}
         setModal={setModal4}
         basic={`${t('Diqqat! Iltimos')} ${debt.debt.toLocaleString(
-          'de-DE'
+          'ru-RU'
         )}$ (${(debt.debt * editExchanrate.exchangerate).toLocaleString(
-          'de-DE'
+          'ru-RU'
         )} ${t("so'm)  qarzdorlik uchun izoh kiriting")}`}
         text={
           <input

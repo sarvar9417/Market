@@ -21,15 +21,15 @@ export const Footer = ({
       </div>
       <div className='col-span-2 flex flex-col text-right'>
         <span className=''>
-          {totalpriceuzs.toLocaleString("de-DE")}{" "}
+          {totalpriceuzs.toLocaleString("ru-RU")}{" "}
           <span className='text-green-800'>UZS</span>
         </span>
         <span className=''>
-          {discount.discountuzs.toLocaleString("de-DE")}{" "}
+          {discount.discountuzs.toLocaleString("ru-RU")}{" "}
           <span className='text-green-800'>UZS</span>
         </span>
         <span className=''>
-          {parseFloat(debt.debtuzs).toLocaleString("de-DE")}{" "}
+          {parseFloat(debt.debtuzs).toLocaleString("ru-RU")}{" "}
           <span className='text-green-800'>UZS</span>
         </span>
         <span className=''>
@@ -37,26 +37,26 @@ export const Footer = ({
             payment.cashuzs +
             payment.carduzs +
             payment.transferuzs
-          ).toLocaleString("de-DE")}{" "}
+          ).toLocaleString("ru-RU")}{" "}
           <span className='text-green-800'>UZS</span>
         </span>
       </div>
       <div className='col-span-2 flex flex-col text-right'>
         <span className=''>
-          {totalprice.toLocaleString("de-DE")}{" "}
+          {totalprice.toLocaleString("ru-RU")}{" "}
           <span className='text-green-800'>USD</span>
         </span>
         <span className=''>
-          {discount.discount.toLocaleString("de-DE")}{" "}
+          {discount.discount.toLocaleString("ru-RU")}{" "}
           <span className='text-green-800'>USD</span>
         </span>
         <span className=''>
-          {debt.debt.toLocaleString("de-DE")}{" "}
+          {debt.debt.toLocaleString("ru-RU")}{" "}
           <span className='text-green-800'>USD</span>
         </span>
         <span className=''>
           {(payment.cash + payment.card + payment.transfer).toLocaleString(
-            "de-DE"
+            "ru-RU"
           )}{" "}
           <span className='text-green-800'>USD</span>
         </span>

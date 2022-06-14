@@ -94,4 +94,8 @@ router.post('/user/createseller', auth, (req, res) => {
   require('./user.route').createseller(req, res);
 });
 
+router.post('/user/getsellers', auth, (req, res) => {
+  require('./user.route').getsellers(req, res);
+});
+
 module.exports = router;

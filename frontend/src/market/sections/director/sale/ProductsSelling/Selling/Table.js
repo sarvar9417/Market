@@ -40,10 +40,10 @@ export const Table = ({ saleproducts, editProducts }) => {
                   {product.product.name}
                 </td>
                 <td className='border font-bold text-black text-right px-2 w-14'>
-                  {product.pieces.toLocaleString('de-DE')}
+                  {product.pieces.toLocaleString('ru-RU')}
                 </td>
                 <td className='border font-bold text-black text-right px-2 w-1/6'>
-                  {product.totalprice.toLocaleString('de-DE')}{' '}
+                  {product.totalprice.toLocaleString('ru-RU')}{' '}
                   <span className='text-green-800'>USD</span>
                 </td>
                 <td className='font-bold text-black  px-2 text-center border'>

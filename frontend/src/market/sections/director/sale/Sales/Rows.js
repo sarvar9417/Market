@@ -32,7 +32,7 @@ export const Rows = ({
             .reduce((summ, product) => {
               return summ + product.totalprice;
             }, 0)
-            .toLocaleString('de-DE')}
+            .toLocaleString('ru-RU')}
           {'  '}
           <span className='text-green-900'>USD</span>
         </span>
@@ -49,7 +49,7 @@ export const Rows = ({
             saleconnector.discounts.reduce((summ, discount) => {
               return summ + discount.discount;
             }, 0)
-          ).toLocaleString('de-DE')}
+          ).toLocaleString('ru-RU')}
         </span>
         {'  '}
         <span className='text-red-600'>USD</span>
@@ -60,7 +60,7 @@ export const Rows = ({
             .reduce((summ, discount) => {
               return summ + discount.discount;
             }, 0)
-            .toLocaleString('de-DE')}
+            .toLocaleString('ru-RU')}
         </span>
         {'  '}
         <span className='text-orange-600'>USD</span>

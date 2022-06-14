@@ -25,11 +25,11 @@ export const CardHeader = ({
               <p className='text-lg font-semibold flex flex-col  justify-between'>
                 <span className='flex justify-between'>
                   {t("Jami")}:{" "}
-                  <span>{totalprice.toLocaleString("de-DE")} USD</span>{" "}
+                  <span>{totalprice.toLocaleString("ru-RU")} USD</span>{" "}
                 </span>
                 <span className='flex justify-between text-sm'>
                   <span></span>
-                  <span>{totalpriceuzs.toLocaleString("de-DE")} UZS</span>{" "}
+                  <span>{totalpriceuzs.toLocaleString("ru-RU")} UZS</span>{" "}
                 </span>
               </p>
               <p className='font-light'>

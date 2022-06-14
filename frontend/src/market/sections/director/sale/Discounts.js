@@ -187,13 +187,13 @@ export const Discounts = () => {
           <li className='td col-span-6 text-right border-r'>Jami</li>
           <li className='td text-right col-span-2 border-r-2 border-green-800'>
             {(Math.round(totalDiscounts.totalprice * 100) / 100).toLocaleString(
-              'de-DE'
+              'ru-RU'
             )}{' '}
             <span className='text-green-800'>USD</span>
           </li>
           <li className='td text-right col-span-2 border-r-2 border-orange-600'>
             {(Math.round(totalDiscounts.discount * 100) / 100).toLocaleString(
-              'de-DE'
+              'ru-RU'
             )}{' '}
             <span className='text-orange-600'>USD</span>
           </li>

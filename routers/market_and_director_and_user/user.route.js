@@ -313,7 +313,6 @@ module.exports.removeUser = async (req, res) => {
 module.exports.createseller = async (req, res) => {
   try {
     const { error } = validateUser(req.body);
-    console.log(req.body);
     if (error) {
       return res.status(400).json({
         error: error.message,
@@ -341,9 +340,11 @@ module.exports.createseller = async (req, res) => {
       }
       await User.findByIdAndUpdate(_id, req.body);
 
-      return res.status(201).send({
-        message: "Foydalanuvchi ma'lumotlari muvaffaqqiyatli o'zgartirildi!",
-      });
+      const sellers = await User.find({ type: 'Seller', market })
+        .select('firstname lastname market type login phone')
+        .sort({ _id: -1 });
+
+      res.status(201).send(sellers);
     }
 
     const marke = await Market.findById(market);
@@ -383,7 +384,31 @@ module.exports.createseller = async (req, res) => {
     });
     await newUser.save();
 
-    const sellers = await User.find({ type: 'Seller', market });
+    const sellers = await User.find({ type: 'Seller', market })
+      .select('firstname lastname market type login phone')
+      .sort({ _id: -1 });
+
+    res.status(201).send(sellers);
+  } catch (error) {
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
+  }
+};
+
+module.exports.getsellers = async (req, res) => {
+  try {
+    const { market } = req.body;
+    const marke = await Market.findById(market);
+
+    if (!marke) {
+      return res.status(400).json({
+        message:
+          "Diqqat! Foydalanuvchi ro'yxatga olinayotgan do'kon dasturda ro'yxatga olinmagan.",
+      });
+    }
+
+    const sellers = await User.find({ type: 'Seller', market })
+      .select('firstname lastname market type login phone')
+      .sort({ _id: -1 });
 
     res.status(201).send(sellers);
   } catch (error) {

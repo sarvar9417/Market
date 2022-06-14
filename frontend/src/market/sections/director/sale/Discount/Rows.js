@@ -11,15 +11,15 @@ export const Rows = ({ currentPage, index, discount }) => {
         {discount.saleconnector.client && discount.saleconnector.client.name}
       </li>
       <li className='td  col-span-2  text-right border-r-2 border-r-green-800'>
-        {(Math.round(discount.totalprice * 100) / 100).toLocaleString('de-DE')}{' '}
+        {(Math.round(discount.totalprice * 100) / 100).toLocaleString('ru-RU')}{' '}
         <span className='text-green-800'>USD</span>
       </li>
       <li className='td  col-span-2  text-right border-r-2 border-r-orange-600'>
-        {(Math.round(discount.discount * 100) / 100).toLocaleString('de-DE')}{' '}
+        {(Math.round(discount.discount * 100) / 100).toLocaleString('ru-RU')}{' '}
         <span className='text-orange-600'>USD</span>
       </li>
       <li className='td  col-span-2  text-right border-r-2 border-r-orange-600'>
-        {(Math.round(discount.procient * 100) / 100).toLocaleString('de-DE')}{' '}
+        {(Math.round(discount.procient * 100) / 100).toLocaleString('ru-RU')}{' '}
         <span className='text-orange-600'>%</span>
       </li>
     </ul>

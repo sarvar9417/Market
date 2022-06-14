@@ -35,7 +35,7 @@ export const ExcelTable = ({ saleconnectors }) => {
                       .reduce((summ, product) => {
                         return summ + product.totalprice;
                       }, 0)
-                      .toLocaleString('de-DE')}
+                      .toLocaleString('ru-RU')}
                   </span>
                 </td>
                 <td>
@@ -44,7 +44,7 @@ export const ExcelTable = ({ saleconnectors }) => {
                       .reduce((summ, product) => {
                         return summ + product.totalpriceuzs;
                       }, 0)
-                      .toLocaleString('de-DE')}
+                      .toLocaleString('ru-RU')}
                   </span>
                 </td>
                 <td>
@@ -53,7 +53,7 @@ export const ExcelTable = ({ saleconnectors }) => {
                       .reduce((summ, payment) => {
                         return summ + payment.payment;
                       }, 0)
-                      .toLocaleString('de-DE')}
+                      .toLocaleString('ru-RU')}
                   </span>
                   {'  '}
                 </td>
@@ -63,7 +63,7 @@ export const ExcelTable = ({ saleconnectors }) => {
                       .reduce((summ, payment) => {
                         return summ + payment.paymentuzs;
                       }, 0)
-                      .toLocaleString('de-DE')}
+                      .toLocaleString('ru-RU')}
                   </span>
                   {'  '}
                 </td>
@@ -73,7 +73,7 @@ export const ExcelTable = ({ saleconnectors }) => {
                       .reduce((summ, discount) => {
                         return summ + discount.discount;
                       }, 0)
-                      .toLocaleString('de-DE')}
+                      .toLocaleString('ru-RU')}
                   </span>
                   {'  '}
                 </td>
@@ -83,7 +83,7 @@ export const ExcelTable = ({ saleconnectors }) => {
                       .reduce((summ, discount) => {
                         return summ + discount.discountuzs;
                       }, 0)
-                      .toLocaleString('de-DE')}
+                      .toLocaleString('ru-RU')}
                   </span>
                   {'  '}
                 </td>
@@ -99,7 +99,7 @@ export const ExcelTable = ({ saleconnectors }) => {
                       saleconnector.discounts.reduce((summ, discount) => {
                         return summ + discount.discount;
                       }, 0)
-                    ).toLocaleString('de-DE')}
+                    ).toLocaleString('ru-RU')}
                   </span>
                   {'  '}
                 </td>
@@ -115,7 +115,7 @@ export const ExcelTable = ({ saleconnectors }) => {
                       saleconnector.discounts.reduce((summ, discount) => {
                         return summ + discount.discountuzs;
                       }, 0)
-                    ).toLocaleString('de-DE')}
+                    ).toLocaleString('ru-RU')}
                   </span>
                   {'  '}
                 </td>
