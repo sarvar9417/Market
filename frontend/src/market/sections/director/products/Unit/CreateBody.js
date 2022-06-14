@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import React from 'react';
 import { Input } from '../../components/Input';
 import {
@@ -21,7 +22,7 @@ export const CreateBody = ({
         <Input
           name={'name'}
           data={unit.name}
-          placeholder={"O'lchov birligini kiriting"}
+          placeholder={t("O'lchov birligini kiriting")}
           type={'text'}
           keyPressed={keyPressed}
           changeHandler={inputHandler}

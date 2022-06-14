@@ -17,7 +17,7 @@ export const TableHead = ({ currentBrands, setCurrentBrands }) => {
         /> */}
       </li>
       <li className='th  border-r'>{t('Holati')}</li>
-      <li className='th col-span-2 border-r'>{t('Edit')}</li>
+      <li className='th col-span-2 border-r'>{t('Chop etish')}</li>
       <li className='th col-span-2 border-r'>{t('Batafsil')}</li>
     </ul>
   );
