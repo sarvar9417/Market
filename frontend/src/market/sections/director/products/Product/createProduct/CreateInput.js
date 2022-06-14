@@ -78,7 +78,7 @@ export const CreateInput = ({
         />
       </div>
       <div className='flex justify-between font-bold'>
-        <p className='font-bold w-50'>Sotish narxi:</p>
+        <p className='font-bold w-50'>O'lchov birligi narxi:</p>
         <Select
           className='w-full z-50'
           id='select'

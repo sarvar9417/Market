@@ -1,20 +1,20 @@
-const { Schema, model, Types } = require("mongoose");
-const Joi = require("joi");
+const { Schema, model, Types } = require('mongoose');
+const Joi = require('joi');
 
 const saleconnector = new Schema(
   {
-    id: { type: Number },
-    payments: [{ type: Schema.Types.ObjectId, ref: "Payment" }],
+    id: { type: String },
+    payments: [{ type: Schema.Types.ObjectId, ref: 'Payment' }],
     dailyconnectors: [
-      { type: Schema.Types.ObjectId, ref: "DailySaleConnector" },
+      { type: Schema.Types.ObjectId, ref: 'DailySaleConnector' },
     ],
-    products: [{ type: Schema.Types.ObjectId, ref: "SaleProduct" }],
-    discounts: [{ type: Schema.Types.ObjectId, ref: "Discount" }],
-    debts: [{ type: Schema.Types.ObjectId, ref: "Debt" }],
-    packman: { type: Schema.Types.ObjectId, ref: "Packman" },
-    client: { type: Schema.Types.ObjectId, ref: "Client" },
-    market: { type: Schema.Types.ObjectId, ref: "Market", required: true },
-    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    products: [{ type: Schema.Types.ObjectId, ref: 'SaleProduct' }],
+    discounts: [{ type: Schema.Types.ObjectId, ref: 'Discount' }],
+    debts: [{ type: Schema.Types.ObjectId, ref: 'Debt' }],
+    packman: { type: Schema.Types.ObjectId, ref: 'Packman' },
+    client: { type: Schema.Types.ObjectId, ref: 'Client' },
+    market: { type: Schema.Types.ObjectId, ref: 'Market', required: true },
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     isArchive: { type: Boolean, default: false },
   },
   {
@@ -39,4 +39,4 @@ function validateSaleConnector(saleconnector) {
 }
 
 module.exports.validateSaleConnector = validateSaleConnector;
-module.exports.SaleConnector = model("SaleConnector", saleconnector);
+module.exports.SaleConnector = model('SaleConnector', saleconnector);
