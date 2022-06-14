@@ -6,6 +6,7 @@ import { TableHead } from './Payment/TableHead';
 import { TableHeader } from './Payment/TableHeader';
 import { Rows } from './Payment/Rows';
 import { ExcelTable } from './Payment/ExcelTable';
+import { t } from 'i18next';
 
 export const Payments = () => {
   // STATES
@@ -187,7 +188,7 @@ export const Payments = () => {
         })}
 
         <ul className='tr font-bold text-base'>
-          <li className='td col-span-6 text-right border-r'>Jami</li>
+          <li className='td col-span-6 text-right border-r'>{t("Jami")}</li>
           <li className='td text-right col-span-2 border-r-2 border-green-800'>
             {(Math.round(totalPayments.cash * 100) / 100).toLocaleString(
               'de-DE'

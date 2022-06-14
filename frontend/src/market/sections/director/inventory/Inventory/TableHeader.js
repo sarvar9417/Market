@@ -3,6 +3,7 @@ import React from 'react';
 import { PaginationSize } from '../../components/PaginationSize';
 import { Pagination } from '../../components/Pagination';
 import { SearchInput } from '../../components/Input';
+import { t } from 'i18next';
 
 export const TableHeader = ({
   setModal,
@@ -23,7 +24,7 @@ export const TableHeader = ({
         <SearchInput
           changeHandler={changeHandler}
           type={'number'}
-          placeholder={'Kategoriya'}
+          placeholder={t('Kategoriya')}
           name='categorycode'
           keyPressed={keyPressed}
         />
@@ -33,7 +34,7 @@ export const TableHeader = ({
           <SearchInput
             changeHandler={changeHandler}
             type={'number'}
-            placeholder={'Kodi'}
+            placeholder={t('Kodi')}
             name='productcode'
             keyPressed={keyPressed}
           />
@@ -42,7 +43,7 @@ export const TableHeader = ({
           <SearchInput
             changeHandler={changeHandler}
             type={'text'}
-            placeholder={'Nomi'}
+            placeholder={t('Nomi')}
             name='productname'
             keyPressed={keyPressed}
           />
@@ -52,7 +53,7 @@ export const TableHeader = ({
         <SearchInput
           changeHandler={changeHandler}
           type={'text'}
-          placeholder={'Brand'}
+          placeholder={t('Brend')}
           name='brand'
           keyPressed={keyPressed}
         />
@@ -61,7 +62,7 @@ export const TableHeader = ({
         <button
           onClick={() => setModal(true)}
           className='bg-orange-700 text-white px-3 rounded font-bold hover:bg-orange-600'>
-          Yakunlash
+          {t("Yakunlash")}
         </button>
         <Pagination
           currentPage={currentPage}
