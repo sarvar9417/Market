@@ -95,7 +95,6 @@ export const Report = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-
       setSalesReport(data);
     } catch (error) {
       notify({
@@ -118,7 +117,6 @@ export const Report = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-
       setProductsReport(data);
     } catch (error) {
       notify({
@@ -143,7 +141,6 @@ export const Report = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-
       setIncomingsReport(data);
     } catch (error) {
       notify({
@@ -265,6 +262,7 @@ export const Report = () => {
 
   //========================================================
   //========================================================
+
   if (loading) {
     return <Loader />;
   }
@@ -296,7 +294,6 @@ export const Report = () => {
           </button>
         </div>
       </div>
-
       <div className='grid grid-cols-12 w-full mb-8 gap-4'>
         <div className='col-span-4 flex flex-column justify-between gap-y-3'>
           <Link
@@ -464,105 +461,3 @@ export const Report = () => {
     </div>
   );
 };
-
-/* <div className='grid grid-cols-12 w-full mb-8'>
-        <div className='col-start-5 col-span-4 border-2 border-blue-700 p-4 flex flex-column items-center rounded-2'>
-          <p className='text-xl font-bold text-black mb-4'>
-            Общая сумма продаж
-          </p>
-          <span className='text-3xl font-bold text-black'>
-            {salesReport.salescount}
-          </span>
-          <p className='text-base font-medium mb-4'>Количество</p>
-          <span className='text-3xl font-bold text-black'>
-            {salesReport.totalpayments.toLocaleString('ru-RU')} $
-          </span>
-          <p className='text-base font-medium mb-4'>Сумма</p>
-          <Link
-            to='/alo24/reports/payments'
-            className='px-4 py-2 bg-blue-700 text-base text-white flex justify-around items-center'
-          >
-            <p className='mr-2'>Подробно</p>
-            <FontAwesomeIcon icon={faCircleInfo} />
-          </Link>
-        </div>
-      </div>
-
-      <div className='grid grid-cols-12 gap-6 w-full mb-8'>
-        <Link
-          to='/alo24/reports/paymentstypes'
-          onClick={() => setPaymentType('cash')}
-          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
-        >
-          <p className='text-white font-bold text-xl mb-2 pointer-events-none'>
-            Наличными
-          </p>
-          <p className='text-white font-bold text-2xl pointer-events-none	'>
-            {salesReport.cashcount} {'-'}{' '}
-            {salesReport.totalcash &&
-              salesReport.totalcash.toLocaleString('ru-RU')}{' '}
-            $
-          </p>
-        </Link>
-        <Link
-          to='/alo24/reports/paymentstypes'
-          onClick={() => setPaymentType('card')}
-          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
-        >
-          <p className='text-white font-bold text-xl mb-2 pointer-events-none	'>
-            По карте
-          </p>
-          <p className='text-white font-bold text-2xl pointer-events-none	'>
-            {salesReport.cardcount} {'-'}{' '}
-            {salesReport.totalcard &&
-              salesReport.totalcard.toLocaleString('ru-RU')}{' '}
-            $
-          </p>
-        </Link>
-        <Link
-          to='/alo24/reports/paymentstypes'
-          onClick={() => setPaymentType('transfer')}
-          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
-        >
-          <p className='text-white font-bold text-xl mb-2 pointer-events-none	'>
-            Переводы
-          </p>
-          <p className='text-white font-bold text-2xl pointer-events-none	'>
-            {salesReport.transfercount} {'-'}{' '}
-            {salesReport.totaltransfer &&
-              salesReport.totaltransfer.toLocaleString('ru-RU')}{' '}
-            $
-          </p>
-        </Link>
-      </div>
-
-      <div className='grid grid-cols-12 w-full gap-6 mb-8'>
-        <Link
-          to='/alo24/reports/debts'
-          className='col-span-6 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
-        >
-          <p className='text-white font-bold text-xl mb-2 pointer-events-none	'>
-            Долги
-          </p>
-          <p className='text-white font-bold text-2xl pointer-events-none	'>
-            {debtsReport.debtcount} {'-'}{' '}
-            {debtsReport.debttotal &&
-              debtsReport.debttotal.toLocaleString('ru-RU')}{' '}
-            $
-          </p>
-        </Link>
-        <Link
-          to='/alo24/reports/discounts'
-          className='col-span-6 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
-        >
-          <p className='text-white font-bold text-xl mb-2 pointer-events-none'>
-            Скидки
-          </p>
-          <p className='text-white font-bold text-2xl pointer-events-none'>
-            {discountsReport.discountcount} {'-'}{' '}
-            {discountsReport.discounttotal &&
-              discountsReport.discounttotal.toLocaleString('ru-RU')}{' '}
-            $
-          </p>
-        </Link>
-      </div> */

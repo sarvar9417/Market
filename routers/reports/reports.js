@@ -72,7 +72,6 @@ module.exports.getProductsReport = async (req, res) => {
         .status(401)
         .json({ message: `Diqqat! Do'kon haqida malumotlar topilmadi!` });
     }
-
     const products = await Product.find({ market }).select('total market');
     const totalproducts = products.reduce((prev, product) => {
       return prev + product.total;
