@@ -85,7 +85,8 @@ export const Navbar = ({ baseUrl }) => {
             data-target='#royalHospitalsNavbar'
             aria-controls='royalHospitalsNavbar'
             aria-expanded='false'
-            aria-label='Toggle navigation'>
+            aria-label='Toggle navigation'
+          >
             <span className='navbar-toggler-icon'>
               <i />
               <i />
@@ -94,7 +95,8 @@ export const Navbar = ({ baseUrl }) => {
           </button>
           <div
             className='collapse navbar-collapse justify-content-between p-0'
-            id='royalHospitalsNavbar'>
+            id='royalHospitalsNavbar'
+          >
             <ul className='navbar-nav'>
               <li className='nav-item mr-4 px-2'>
                 <span className='logo' style={{ fontSize: '26pt' }}>
@@ -111,7 +113,8 @@ export const Navbar = ({ baseUrl }) => {
                   onClick={() => {
                     setActivePage('/alo24');
                   }}
-                  to='/'>
+                  to='/'
+                >
                   <i className='icon-devices_other nav-icon' />
                   {t('Bosh sahifa')}
                 </Link>
@@ -135,7 +138,8 @@ export const Navbar = ({ baseUrl }) => {
                     activePage === '/alo24/inventories'
                       ? 'active-page'
                       : ''
-                  }`}>
+                  }`}
+                >
                   <i className='icon-users nav-icon' />
                   {t('Mahsulotlar')}
                 </span>
@@ -148,12 +152,14 @@ export const Navbar = ({ baseUrl }) => {
                       role='button'
                       data-toggle='dropdown'
                       aria-haspopup='true'
-                      aria-expanded='false'>
+                      aria-expanded='false'
+                    >
                       {t('Yaratish')}
                     </span>
                     <ul
                       className='dropdown-menu dropdown-menu-right'
-                      aria-labelledby='buttonsDropdown'>
+                      aria-labelledby='buttonsDropdown'
+                    >
                       <li>
                         <Link
                           className={`dropdown-item ${
@@ -164,7 +170,8 @@ export const Navbar = ({ baseUrl }) => {
                           onClick={() => {
                             setActivePage('/alo24/category');
                           }}
-                          to='/alo24/category'>
+                          to='/alo24/category'
+                        >
                           {t('Mahsulot kategoriyalari')}
                         </Link>
                       </li>
@@ -202,7 +209,8 @@ export const Navbar = ({ baseUrl }) => {
                           onClick={() => {
                             setActivePage('/alo24/product');
                           }}
-                          to='/alo24/product'>
+                          to='/alo24/product'
+                        >
                           {t('Mahsulotlar')}
                         </Link>
                       </li>
@@ -214,7 +222,8 @@ export const Navbar = ({ baseUrl }) => {
                           onClick={() => {
                             setActivePage('/alo24/unit');
                           }}
-                          to='/alo24/unit'>
+                          to='/alo24/unit'
+                        >
                           {t("O'lchov birliklari")}
                         </Link>
                       </li>
@@ -233,7 +242,8 @@ export const Navbar = ({ baseUrl }) => {
                       onClick={() => {
                         setActivePage('/alo24/incoming');
                       }}
-                      to='/alo24/incoming'>
+                      to='/alo24/incoming'
+                    >
                       {t('Qabul qilish')}
                     </Link>
                   </li>
@@ -245,12 +255,14 @@ export const Navbar = ({ baseUrl }) => {
                       role='button'
                       data-toggle='dropdown'
                       aria-haspopup='true'
-                      aria-expanded='false'>
+                      aria-expanded='false'
+                    >
                       {t('Invertarizatsiya')}
                     </span>
                     <ul
                       className='dropdown-menu dropdown-menu-right'
-                      aria-labelledby='buttonsDropdown'>
+                      aria-labelledby='buttonsDropdown'
+                    >
                       <li>
                         <Link
                           className={`dropdown-item ${
@@ -262,7 +274,8 @@ export const Navbar = ({ baseUrl }) => {
                             setActivePage('/alo24/inventory');
                             setCurrentPage('Inventorizatsiya');
                           }}
-                          to='/alo24/inventory'>
+                          to='/alo24/inventory'
+                        >
                           {t('Invertorizatsiya')}
                         </Link>
                       </li>
@@ -276,7 +289,8 @@ export const Navbar = ({ baseUrl }) => {
                           onClick={() => {
                             setActivePage('/alo24/inventories');
                           }}
-                          to='/alo24/inventories'>
+                          to='/alo24/inventories'
+                        >
                           {t('Invertarizatsiyalar')}
                         </Link>
                       </li>
@@ -300,7 +314,8 @@ export const Navbar = ({ baseUrl }) => {
                     activePage === '/alo24/debts'
                       ? 'active-page'
                       : ''
-                  }`}>
+                  }`}
+                >
                   <i className='icon-users nav-icon' />
                   {t('Sotuv')}
                 </span>
@@ -313,7 +328,8 @@ export const Navbar = ({ baseUrl }) => {
                       onClick={() => {
                         setActivePage('/alo24/sales');
                       }}
-                      to='/alo24/sales'>
+                      to='/alo24/sales'
+                    >
                       {t('Sotuv')}
                     </Link>
                   </li>
@@ -325,7 +341,8 @@ export const Navbar = ({ baseUrl }) => {
                       onClick={() => {
                         setActivePage('/alo24/payments');
                       }}
-                      to='/alo24/payments'>
+                      to='/alo24/payments'
+                    >
                       {t('Tushumlar')}
                     </Link>
                   </li>
@@ -337,7 +354,8 @@ export const Navbar = ({ baseUrl }) => {
                       onClick={() => {
                         setActivePage('/alo24/discounts');
                       }}
-                      to='/alo24/discounts'>
+                      to='/alo24/discounts'
+                    >
                       {t('Chegirmalar')}
                     </Link>
                   </li>
@@ -349,7 +367,8 @@ export const Navbar = ({ baseUrl }) => {
                       onClick={() => {
                         setActivePage('/alo24/debts');
                       }}
-                      to='/alo24/debts'>
+                      to='/alo24/debts'
+                    >
                       {t('Qarzlar')}
                     </Link>
                   </li>
@@ -361,7 +380,8 @@ export const Navbar = ({ baseUrl }) => {
                       onClick={() => {
                         setActivePage('/alo24/packman');
                       }}
-                      to='/alo24/packman'>
+                      to='/alo24/packman'
+                    >
                       {t('Yetkazuvchi')}
                     </Link>
                   </li>
@@ -373,8 +393,39 @@ export const Navbar = ({ baseUrl }) => {
                       onClick={() => {
                         setActivePage('/alo24/client');
                       }}
-                      to='/alo24/client'>
+                      to='/alo24/client'
+                    >
                       {t('Mijoz')}
+                    </Link>
+                  </li>
+                </ul>
+              </li>
+              <li className='nav-item dropdown'>
+                <span
+                  id='doctoRs'
+                  role='button'
+                  data-toggle='dropdown'
+                  aria-haspopup='true'
+                  aria-expanded='false'
+                  className={`nav-link dropdown-toggle ${
+                    activePage === '/alo24/reports' ? 'active-page' : ''
+                  }`}
+                >
+                  <i className='icon-users nav-icon' />
+                  Kassa
+                </span>
+                <ul className='dropdown-menu' aria-labelledby='doctoRs'>
+                  <li>
+                    <Link
+                      className={`dropdown-item ${
+                        activePage === '/alo24/reports' ? 'active-page' : ''
+                      }`}
+                      onClick={() => {
+                        setActivePage('/alo24/reports');
+                      }}
+                      to='/alo24/reports'
+                    >
+                      Hisobot
                     </Link>
                   </li>
                 </ul>
@@ -389,7 +440,8 @@ export const Navbar = ({ baseUrl }) => {
                   onClick={() => {
                     setActivePage('/alo24/exchangerate');
                   }}
-                  to='/alo24/exchangerate'>
+                  to='/alo24/exchangerate'
+                >
                   <i className='icon-dollar-sign nav-icon'></i>
                   {t('Valyuta kursi')}
                 </Link>
@@ -406,7 +458,8 @@ export const Navbar = ({ baseUrl }) => {
                     activePage === '/alo24/branchregister'
                       ? 'active-page'
                       : ''
-                  }`}>
+                  }`}
+                >
                   <i className='icon-users nav-icon' />
                   Filial
                 </span>
@@ -421,7 +474,8 @@ export const Navbar = ({ baseUrl }) => {
                       onClick={() => {
                         setActivePage('/alo24/branchregister');
                       }}
-                      to='/alo24/branchregister'>
+                      to='/alo24/branchregister'
+                    >
                       Filial yaratish
                     </Link>
                   </li>
@@ -433,7 +487,8 @@ export const Navbar = ({ baseUrl }) => {
                       onClick={() => {
                         setActivePage('/alo24/branches');
                       }}
-                      to='/alo24/branches'>
+                      to='/alo24/branches'
+                    >
                       Filiallar
                     </Link>
                   </li>
@@ -447,7 +502,8 @@ export const Navbar = ({ baseUrl }) => {
                   id='userSettings'
                   className='user-settings'
                   data-toggle='dropdown'
-                  aria-haspopup='true'>
+                  aria-haspopup='true'
+                >
                   <span className='user-name'>
                     {user.firstname} {user.lastname}
                   </span>
@@ -469,7 +525,8 @@ export const Navbar = ({ baseUrl }) => {
                 </span>
                 <div
                   className='dropdown-menu dropdown-menu-right'
-                  aria-labelledby='userSettings'>
+                  aria-labelledby='userSettings'
+                >
                   <div className='header-profile-actions'>
                     <div className='header-user-profile'>
                       <div className='header-user'>
@@ -494,7 +551,8 @@ export const Navbar = ({ baseUrl }) => {
                       onClick={() => {
                         auth.logout();
                         history.push('/');
-                      }}>
+                      }}
+                    >
                       <i className='icon-log-out1' /> {t('Tizimdan chiqish')}
                     </button>
                   </div>
