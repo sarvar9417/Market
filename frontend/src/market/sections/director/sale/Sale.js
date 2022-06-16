@@ -77,6 +77,8 @@ export const Sale = () => {
   const [modal4, setModal4] = useState(false);
   const [modal5, setModal5] = useState(false);
   const [modal6, setModal6] = useState(false);
+  const [modal7, setModal7] = useState(false);
+  const [modal8, setModal8] = useState(false);
   const [visible, setVisible] = useState(false);
   const [visibleTemporary, setVisibleTemporary] = useState(false);
   const [visibleEdit, setVisibleEdit] = useState(false);
@@ -2098,7 +2100,6 @@ export const Sale = () => {
         status: 'warning',
       });
     }
-
     // if (!client.name) {
     //   return notify({
     //     title:
@@ -2106,7 +2107,11 @@ export const Sale = () => {
     //     status: 'warning',
     //   });
     // }
+    setModal7(true);
+  };
 
+  const confirmSaveTemporary = () => {
+    setModal7(false);
     setTemporary({
       saleconnectorid,
       client,
@@ -2117,9 +2122,7 @@ export const Sale = () => {
       products: saleproducts,
     });
     setCheckTemporary(true);
-
     clearDatas();
-
     createTemporary();
     if (currenttemporary) {
       deleteTemporarys(currenttemporary._id);
@@ -2208,6 +2211,22 @@ export const Sale = () => {
         return summ + product.totalprice;
       }, 0)
     );
+  };
+  const [delTemporary, setDelTemporary] = useState({});
+
+  const deleteTemporary = (e) => {
+    setDelTemporary(e);
+    setModal8(true);
+    setDelTemporary({});
+  };
+
+  const confirmDeleteTemporary = () => {
+    deleteTemporarys(delTemporary._id);
+    setModal8(false);
+    notify({
+      title: "Saqlangan sotuv amaliyoti muvaffaqqiyatli o'chirildi",
+      status: 'success',
+    });
   };
 
   useEffect(() => {
@@ -2326,6 +2345,7 @@ export const Sale = () => {
       />
       <div className={`${visibleTemporary ? '' : 'hidden'}`}>
         <Temporaries
+          deleteTemporary={deleteTemporary}
           temporarys={temporarys}
           changeTemporary={changeTemporary}
         />
@@ -2466,6 +2486,19 @@ export const Sale = () => {
         setModal={setModal6}
         basic={t(`Mijozdan to'lov qabul qilishni tasdiqlaysizmi?`)}
         handler={createHandlerPrePayment}
+      />
+
+      <Modal
+        modal={modal7}
+        setModal={setModal7}
+        handler={confirmSaveTemporary}
+        basic={t('Mijoz uchun sotuvni vaqtincha saqlashni tasdiqlaysizmi?')}
+      />
+      <Modal
+        modal={modal8}
+        setModal={setModal8}
+        handler={confirmDeleteTemporary}
+        basic={t("Diqqat! Saqlangan sotuvni o'chirishni tasdiqlaysizmi?")}
       />
     </div>
   );

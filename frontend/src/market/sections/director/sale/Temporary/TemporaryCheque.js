@@ -4,6 +4,7 @@ import { AuthContext } from '../../../../context/AuthContext';
 import { Header } from './Cheque/Header';
 import { Table } from './Cheque/Table';
 import { Control } from './Cheque/Control';
+import { TableFooter } from './Cheque/TableFooter';
 // import { TableFooter } from './Cheque/TableFooter';
 // import QRCode from "qrcode";
 
@@ -36,6 +37,7 @@ export const TemporayCheque = ({ sales, setCheck, client }) => {
         <Header auth={auth} sales={sales} client={client} />
         <hr />
         <Table sales={sales} />
+        <TableFooter sales={sales} />
         {/* <TableFooter sales={sales} /> */}
       </div>
       <div className='py-4 w-full'>

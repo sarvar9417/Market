@@ -56,7 +56,7 @@ module.exports.get = async (req, res) => {
         Math.round(payments * 100) / 100 -
         Math.round(discounts * 100) / 100;
 
-      if (d !== 0) {
+      if (d > 0.01 || d < -0.01) {
         debt.debt = Math.round(d * 100) / 100;
         alldebts.push({
           _id: debt._id,
@@ -128,7 +128,7 @@ module.exports.getexcel = async (req, res) => {
         Math.round(payments * 100) / 100 -
         Math.round(discounts * 100) / 100;
 
-      if (d !== 0) {
+      if (d > 0.1 || d < -0.1) {
         debt.debt = Math.round(d * 100) / 100;
         alldebts.push({
           _id: debt._id,

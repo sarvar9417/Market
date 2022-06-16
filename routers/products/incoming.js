@@ -195,15 +195,15 @@ module.exports.register = async (req, res) => {
 //Incoming update
 module.exports.update = async (req, res) => {
   try {
-    const marke = await Market.findById(req.body.market);
-
+    const { market, startDate, endDate, product } = req.body;
+    const marke = await Market.findById(market);
     if (!marke) {
       return res.status(400).json({
         message: "Diqqat! Do'kon ma'lumotlari topilmadi.",
       });
     }
 
-    const old = await Incoming.findById(req.body._id);
+    const old = await Incoming.findById(product._id);
 
     if (!old) {
       return res.status(400).json({
@@ -211,17 +211,29 @@ module.exports.update = async (req, res) => {
       });
     }
 
-    const produc = await Product.findById(req.body.product);
+    const produc = await Product.findById(product.product._id);
 
     produc.total -= old.pieces;
-    produc.total += req.body.pieces;
+    produc.total += product.pieces;
     await produc.save();
 
-    const update = await Incoming.findByIdAndUpdate(req.body._id, {
-      ...req.body,
+    const update = await Incoming.findByIdAndUpdate(product._id, {
+      ...product,
     });
 
-    res.send(update);
+    const connectors = await IncomingConnector.find({
+      market,
+      createdAt: {
+        $gte: startDate,
+        $lt: endDate,
+      },
+    })
+      .sort({ _id: -1 })
+      .select('supplier incoming total createdAt')
+      .populate('supplier', 'name')
+      .populate('incoming', 'pieces');
+
+    res.status(201).send(connectors);
   } catch (error) {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }

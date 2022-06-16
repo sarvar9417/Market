@@ -41,7 +41,7 @@ export const TableHead = ({ currentImport, setCurrentInports }) => {
           setData={setCurrentInports}
         />
       </li>
-      <li className='th border-r col-span-2 flex justify-center items-center'>
+      <li className='th border-r flex justify-center items-center'>
         {t('Narxi')}
         <Sort
           property={'unitprice'}
@@ -56,6 +56,9 @@ export const TableHead = ({ currentImport, setCurrentInports }) => {
           data={currentImport}
           setData={setCurrentInports}
         />
+      </li>
+      <li className='th border-r flex justify-center items-center'>
+        Tahrirlash
       </li>
     </ul>
   );

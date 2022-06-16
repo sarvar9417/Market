@@ -42,6 +42,7 @@ export const Incoming = () => {
   //====================================================================
   // MODAL
   const [modal, setModal] = useState(false);
+  const [modal2, setModal2] = useState(false);
   //====================================================================
   //====================================================================
 
@@ -717,11 +718,107 @@ export const Incoming = () => {
   };
   //====================================================================
   //====================================================================
+  const [editProduct, setEditProduct] = useState({});
 
+  const changeEditProduct = (e) => {
+    setEditProduct(e);
+    setModal2(true);
+  };
+
+  const editHandler = (e) => {
+    if (e.target.name === 'pieces') {
+      let val = e.target.value;
+      setEditProduct({
+        ...editProduct,
+        pieces: val === '' ? '' : Math.round(val * 100) / 100,
+        totalprice:
+          val === ''
+            ? ''
+            : Math.round(editProduct.unitprice * e.target.value * 100) / 100,
+      });
+    }
+    if (e.target.name === 'unitprice') {
+      let val = e.target.value;
+      setEditProduct({
+        ...editProduct,
+        unitprice: val === '' ? '' : Math.round(val * 100) / 100,
+        totalprice:
+          val === ''
+            ? '0'
+            : Math.round(e.target.value * editProduct.pieces * 100) / 100,
+      });
+    }
+    if (e.target.name === 'totalprice') {
+      let val = e.target.value;
+      setEditProduct({
+        ...editProduct,
+        unitprice:
+          val === '' || val === 0
+            ? ''
+            : Math.round((e.target.value / editProduct.pieces) * 100) / 100,
+        totalprice: val === '' ? '' : Math.round(val * 100) / 100,
+      });
+    }
+  };
+
+  const editProductHandler = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/products/incoming/update`,
+        'PUT',
+        {
+          market: auth.market._id,
+          product: editProduct,
+          startDate: beginDay,
+          endDate: endDay,
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setConnectors(data);
+      daily(data);
+      clearSelect();
+      setIncomings([]);
+      setIncoming({
+        totalprice: 0,
+        unitprice: 0,
+        pieces: 0,
+        user: auth.userId,
+        supplier: '',
+        product: {},
+        unit: '',
+      });
+      setModal2(false);
+      notify({
+        title: `Mahsulot tahrirlandi!`,
+        description: '',
+        status: 'success',
+      });
+      getImports();
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [
+    auth,
+    request,
+    beginDay,
+    endDay,
+    setIncomings,
+    setIncoming,
+    notify,
+    clearSelect,
+    daily,
+    getImports,
+    editProduct,
+  ]);
   //====================================================================
   //====================================================================
   // useEffect
-
   const [n, setN] = useState(0);
   useEffect(() => {
     if (auth.market && !n) {
@@ -769,11 +866,7 @@ export const Incoming = () => {
           editIncoming={editIncoming}
           incoming={incoming}
           changeProduct={changeProduct}
-          // changeCategory={changeCategory}
-          // changeProductType={changeProductType}
           products={products}
-          // categorys={categorys}
-          // productType={productType}
           loading={loading}
           suppliers={suppliers}
           supplier={supplier}
@@ -798,6 +891,7 @@ export const Incoming = () => {
         </div>
         <div className={visibleTable ? 'min-w-[990px]' : 'hidden'}>
           <TableIncoming
+            changeEditProduct={changeEditProduct}
             searchKeypress={searchKeypress}
             searchProductCode={searchProductCode}
             getImportsExcel={getImportsExcel}
@@ -827,6 +921,13 @@ export const Incoming = () => {
         setModal={setModal}
         handler={addIncoming}
         text={<ModalTable incoming={incoming} inputHandler={inputHandler} />}
+      />
+
+      <Modal
+        setModal={setModal2}
+        modal={modal2}
+        text={<ModalTable incoming={editProduct} inputHandler={editHandler} />}
+        handler={editProductHandler}
       />
     </div>
   );
