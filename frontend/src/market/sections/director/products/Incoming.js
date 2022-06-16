@@ -43,6 +43,7 @@ export const Incoming = () => {
   // MODAL
   const [modal, setModal] = useState(false);
   const [modal2, setModal2] = useState(false);
+  const [modal3, setModal3] = useState(false);
   //====================================================================
   //====================================================================
 
@@ -204,9 +205,6 @@ export const Incoming = () => {
         supplier: '',
         product: {},
         unit: '',
-        // category: '',
-        // producttype: '',
-        // brand: '',
       });
     }
     for (const i in incomings) {
@@ -438,6 +436,7 @@ export const Incoming = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+      console.log(data);
       setCountData(data.count);
       setSearchStorage(data.incomings);
       setCurrentImports(data.incomings);
@@ -719,10 +718,16 @@ export const Incoming = () => {
   //====================================================================
   //====================================================================
   const [editProduct, setEditProduct] = useState({});
+  const [deleteProduct, setDeleteProduct] = useState({});
 
   const changeEditProduct = (e) => {
     setEditProduct(e);
     setModal2(true);
+  };
+
+  const changeDeleteProduct = (e) => {
+    setDeleteProduct(e);
+    setModal3(true);
   };
 
   const editHandler = (e) => {
@@ -776,6 +781,7 @@ export const Incoming = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+      setEditProduct({});
       setConnectors(data);
       daily(data);
       clearSelect();
@@ -816,6 +822,63 @@ export const Incoming = () => {
     getImports,
     editProduct,
   ]);
+
+  const deleteProductHandler = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/products/incoming/delete`,
+        'DELETE',
+        {
+          market: auth.market._id,
+          product: deleteProduct,
+          startDate: beginDay,
+          endDate: endDay,
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setDeleteProduct({});
+      setConnectors(data);
+      daily(data);
+      clearSelect();
+      setIncomings([]);
+      setIncoming({
+        totalprice: 0,
+        unitprice: 0,
+        pieces: 0,
+        user: auth.userId,
+        supplier: '',
+        product: {},
+        unit: '',
+      });
+      setModal3(false);
+      notify({
+        title: `Mahsulot o'chirildi!`,
+        description: '',
+        status: 'success',
+      });
+      getImports();
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [
+    auth,
+    request,
+    beginDay,
+    endDay,
+    setIncomings,
+    setIncoming,
+    notify,
+    clearSelect,
+    daily,
+    getImports,
+    deleteProduct,
+  ]);
   //====================================================================
   //====================================================================
   // useEffect
@@ -826,21 +889,8 @@ export const Incoming = () => {
       getSuppliers();
       getProducts();
       getConnectorCount();
-      // getCategorys();
-      // getProductType();
-      // getBrand();
     }
-  }, [
-    auth,
-    getSuppliers,
-    n,
-    getProducts,
-    getConnectorCount,
-    beginDay,
-    endDay,
-    // getProductType,
-    // getCategorys,
-  ]);
+  }, [auth, getSuppliers, n, getProducts, getConnectorCount, beginDay, endDay]);
 
   useEffect(() => {
     getIncomingConnectors();
@@ -891,6 +941,7 @@ export const Incoming = () => {
         </div>
         <div className={visibleTable ? 'min-w-[990px]' : 'hidden'}>
           <TableIncoming
+            changeDeleteProduct={changeDeleteProduct}
             changeEditProduct={changeEditProduct}
             searchKeypress={searchKeypress}
             searchProductCode={searchProductCode}
@@ -928,6 +979,15 @@ export const Incoming = () => {
         modal={modal2}
         text={<ModalTable incoming={editProduct} inputHandler={editHandler} />}
         handler={editProductHandler}
+      />
+
+      <Modal
+        setModal={setModal3}
+        modal={modal3}
+        basic={`${
+          deleteProduct.product && deleteProduct.product.name
+        } qabul qilingan mahsulotini o'chirishni tasdiqlaysizmi?`}
+        handler={deleteProductHandler}
       />
     </div>
   );

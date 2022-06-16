@@ -4,6 +4,7 @@ import { TableHead } from './TableIncoming/TableHead';
 import { Rows } from './TableIncoming/Rows';
 
 export const TableIncoming = ({
+  changeDeleteProduct,
   changeEditProduct,
   searchKeypress,
   searchProductCode,
@@ -45,6 +46,7 @@ export const TableIncoming = ({
       {currentImports.map((product, index) => {
         return (
           <Rows
+            changeDeleteProduct={changeDeleteProduct}
             changeEditProduct={changeEditProduct}
             countPage={countPage}
             index={index}

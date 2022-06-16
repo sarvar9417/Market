@@ -50,7 +50,7 @@ export const TableHeader = ({
           onKeyUp={searchKeypress}
           onChange={searchProduct}
           type='search'
-          className='input'
+          className='input w-[150px] h-8'
           placeholder={t('Mahsulot')}
         />
         <Pagination

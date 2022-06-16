@@ -8,7 +8,11 @@ const incoming = new Schema(
     pieces: { type: Number, required: true },
     file: { type: String },
     product: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
-    category: { type: Schema.Types.ObjectId, ref: 'Category'},
+    incomingconnector: {
+      type: Schema.Types.ObjectId,
+      ref: 'IncomingConnector',
+    },
+    category: { type: Schema.Types.ObjectId, ref: 'Category' },
     producttype: {
       type: Schema.Types.ObjectId,
       ref: 'ProductType',
@@ -33,6 +37,7 @@ function validateIncoming(incoming) {
     product: Joi.string().required(),
     category: Joi.string(),
     producttype: Joi.string(),
+    incomingconnector: Joi.string(),
     unit: Joi.string().required(),
     supplier: Joi.string().required(),
     user: Joi.string().required(),

@@ -1,5 +1,5 @@
 import React from 'react';
-import { EditBtn } from '../../../components/TableButtons';
+import { DeleteBtn, EditBtn } from '../../../components/TableButtons';
 
 export const Rows = ({
   product,
@@ -7,6 +7,7 @@ export const Rows = ({
   index,
   countPage,
   changeEditProduct,
+  changeDeleteProduct,
 }) => {
   return (
     <ul className='tr font-bold'>
@@ -18,7 +19,7 @@ export const Rows = ({
       <li className='td-btn col-span-3 border-r flex justify-between'>
         {product.product.name}
       </li>
-      <li className='td border-r text-right col-span-2'>
+      <li className='td border-r text-right'>
         <span className=''>{product.pieces}</span>{' '}
         <span className='text-orange-700'>{product.unit.name}</span>
       </li>
@@ -28,6 +29,9 @@ export const Rows = ({
       </li>
       <li className='td border-r text-right'>
         <EditBtn editHandler={() => changeEditProduct(product)} />
+      </li>
+      <li className='td border-r text-right'>
+        <DeleteBtn deleteHandler={() => changeDeleteProduct(product)} />
       </li>
     </ul>
   );

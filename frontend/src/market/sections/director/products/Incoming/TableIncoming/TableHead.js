@@ -33,7 +33,7 @@ export const TableHead = ({ currentImport, setCurrentInports }) => {
           setData={setCurrentInports}
         />
       </li>
-      <li className='th border-r col-span-2 flex justify-center items-center'>
+      <li className='th border-r flex justify-center items-center'>
         {t('Soni')}{' '}
         <Sort
           property={'pieces'}
@@ -59,6 +59,9 @@ export const TableHead = ({ currentImport, setCurrentInports }) => {
       </li>
       <li className='th border-r flex justify-center items-center'>
         Tahrirlash
+      </li>
+      <li className='th border-r flex justify-center items-center'>
+        O'chirish
       </li>
     </ul>
   );
