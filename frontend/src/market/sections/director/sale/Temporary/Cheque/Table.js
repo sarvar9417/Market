@@ -8,9 +8,6 @@ export const Table = ({ sales }) => {
           <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
             №
           </th>
-          {/* <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
-            Sanasi
-          </th> */}
           <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
             Kodi
           </th>
@@ -20,12 +17,12 @@ export const Table = ({ sales }) => {
           <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
             Soni
           </th>
-          {/* <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
+          <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
             Narxi (dona)
           </th>
           <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
             Jami
-          </th> */}
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -35,9 +32,6 @@ export const Table = ({ sales }) => {
               <td className='font-bold text-center border border-black py-1 px-2'>
                 {index + 1}
               </td>
-              {/* <td className='font-bold text-right border border-black py-1 px-2'>
-                {new Date().toLocaleDateString()}
-              </td> */}
               <td className='font-bold text-right border border-black py-1 px-2'>
                 {product.product.code}
               </td>
@@ -47,12 +41,12 @@ export const Table = ({ sales }) => {
               <td className='font-bold text-right border border-black py-1 px-2'>
                 {product.pieces.toLocaleString('ru-RU')}
               </td>
-              {/* <td className='font-bold text-right border border-black py-1 px-2'>
+              <td className='font-bold text-right border border-black py-1 px-2'>
                 {product.unitprice.toLocaleString('ru-RU')} USD
               </td>
               <td className='font-bold text-right border border-black py-1 px-2 text-teal-900'>
                 {product.totalprice.toLocaleString('ru-RU')} USD
-              </td> */}
+              </td>
             </tr>
           );
         })}
