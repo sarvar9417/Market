@@ -142,122 +142,6 @@ export const Incoming = () => {
 
   //====================================================================
   //====================================================================
-  // CATEGORYS
-  // const [categorys, setCategorys] = useState([]);
-
-  // const getCategorys = useCallback(async () => {
-  //   try {
-  //     const data = await request(
-  //       `/api/products/category/getall`,
-  //       'POST',
-  //       { market: auth.market._id },
-  //       {
-  //         Authorization: `Bearer ${auth.token}`,
-  //       }
-  //     );
-  //     let s = [
-  //       {
-  //         label: 'Barcha kategriyalar',
-  //         value: 'all',
-  //       },
-  //     ];
-  //     data.map((category) => {
-  //       return s.push({
-  //         label: (
-  //           <span className='flex justify-between font-bold'>
-  //             <span>{category.code}</span>
-  //             <span>{category.name && category.name}</span>
-  //           </span>
-  //         ),
-  //         value: category._id,
-  //       });
-  //     });
-  //     setCategorys(s);
-  //   } catch (error) {
-  //     notify({
-  //       title: error,
-  //       description: '',
-  //       status: 'error',
-  //     });
-  //   }
-  // }, [request, auth, notify]);
-
-  // const changeCategory = (e) => {
-  //   if (e.value === 'all') {
-  //     setProductType(productTypes);
-  //     setProducts(allproducts);
-  //   } else {
-  //     const filter = productTypes.filter((producttype) => {
-  //       return (
-  //         producttype.value !== 'all' &&
-  //         producttype.producttype.category === e.value
-  //       );
-  //     });
-  //     const filter2 = allproducts.filter(
-  //       (product) => product.category === e.value
-  //     );
-  //     setProductType(filter);
-  //     setProducts(filter2);
-  //   }
-  // };
-  // //====================================================================
-  // //====================================================================
-
-  // //====================================================================
-  // //====================================================================
-  // // PRODUCTTYPE
-  // const [productType, setProductType] = useState([]);
-  // const [productTypes, setProductTypes] = useState([]);
-  // const getProductType = useCallback(async () => {
-  //   try {
-  //     const data = await request(
-  //       `/api/products/producttype/getincoming`,
-  //       'POST',
-  //       { market: auth.market._id },
-  //       {
-  //         Authorization: `Bearer ${auth.token}`,
-  //       }
-  //     );
-  //     let s = [
-  //       {
-  //         label: 'Barcha mahsulot turlari',
-  //         value: 'all',
-  //       },
-  //     ];
-  //     data.map((producttype) => {
-  //       return s.push({
-  //         label: producttype.name,
-  //         value: producttype._id,
-  //         producttype: { ...producttype },
-  //       });
-  //     });
-  //     setProductType(s);
-  //     setProductTypes(s);
-  //   } catch (error) {
-  //     notify({
-  //       title: error,
-  //       description: '',
-  //       status: 'error',
-  //     });
-  //   }
-  // }, [request, auth, notify]);
-
-  // const changeProductType = (e) => {
-  //   if (e.value === 'all') {
-  //     setProducts(allproducts);
-  //   } else {
-  //     const filter = allproducts.filter(
-  //       (produc) =>
-  //         produc && produc.product && produc.product.producttype === e.value
-  //     );
-  //     setProducts(filter);
-  //   }
-  // };
-  //====================================================================
-  //====================================================================
-
-  //====================================================================
-  //====================================================================
   // Product
   const [allproducts, setAllProducts] = useState([]);
   const [products, setProducts] = useState([]);
@@ -355,6 +239,7 @@ export const Incoming = () => {
     });
     setModal(true);
   };
+
   const addIncoming = () => {
     if (incoming.pieces === 0 || incoming.pieces === '') {
       return notify({
@@ -657,15 +542,6 @@ export const Incoming = () => {
     setSearch({ ...search, supplier: e.target.value });
   };
 
-  // const searchCategoryTable = (e) => {
-  //   const searching = searchStorage.filter(
-  //     (item) =>
-  //       String(item.category.code).includes(e.target.value) ||
-  //       String(item.product.code).includes(e.target.value)
-  //   );
-  //   setCurrentImports(searching.slice(0, countPage));
-  // };
-
   const searchProduct = (e) => {
     const searching = searchStorage.filter((item) =>
       item.product.name.toLowerCase().includes(e.target.value.toLowerCase())
@@ -681,13 +557,6 @@ export const Incoming = () => {
     setCurrentImports(searching);
     setSearch({ ...search, code: e.target.value });
   };
-
-  // const searchBrand = (e) => {
-  //   const searching = searchStorage.filter((item) =>
-  //     item.brand.name.toLowerCase().includes(e.target.value.toLowerCase())
-  //   );
-  //   setCurrentImports(searching.slice(0, countPage));
-  // };
 
   //====================================================================
   //====================================================================
@@ -806,6 +675,7 @@ export const Incoming = () => {
         description: '',
         status: 'success',
       });
+      getImports();
     } catch (error) {
       notify({
         title: error,
@@ -825,6 +695,7 @@ export const Incoming = () => {
     notify,
     clearSelect,
     daily,
+    getImports,
   ]);
 
   //====================================================================

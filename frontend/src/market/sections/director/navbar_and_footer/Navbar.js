@@ -1,14 +1,23 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { AuthContext } from '../../../context/AuthContext';
-import { useHttp } from '../../../hooks/http.hook';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleDown, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { useToast } from '@chakra-ui/react';
+import { useHttp } from '../../../hooks/http.hook';
+import { AuthContext } from '../../../context/AuthContext';
 import { t } from 'i18next';
 
 export const Navbar = ({ baseUrl }) => {
+
+
   const history = useHistory();
-  //====================================================================
-  //====================================================================
+  const [currentPage, setCurrentPage] = useState(window.location.pathname);
+
+  const { request } = useHttp();
+  const auth = useContext(AuthContext);
+
+  const [user, setUser] = useState(auth.user);
+
   const toast = useToast();
 
   const notify = useCallback(
@@ -25,26 +34,24 @@ export const Navbar = ({ baseUrl }) => {
     [toast]
   );
 
-  const [activePage, setActivePage] = useState(window.location.pathname);
+  const [menu, setMenu] = useState('');
+  const [submenu, setSubMenu] = useState('');
 
-  const [currentPage, setCurrentPage] = useState('Bosh sahifa');
-  //====================================================================
-  //====================================================================
+  const changeHeadMenu = (e) => {
+    e.target.id === menu ? setMenu('') : setMenu(e.target.id);
+    setSubMenu('');
+  };
 
-  //====================================================================
-  //====================================================================
+  const changeSubMenu = (e) => {
+    e.target.id === submenu ? setSubMenu('') : setSubMenu(e.target.id);
+  };
 
-  const { request } = useHttp();
-  const auth = useContext(AuthContext);
+  const changeLink = () => {
+    setMenu('');
+    setSubMenu('');
+  };
 
-  const [user, setUser] = useState(auth.user);
-  //====================================================================
-  //====================================================================
-
-  //====================================================================
-  //====================================================================
-
-  const getDirector = useCallback(async () => {
+  const getUser = useCallback(async () => {
     try {
       const data = await request(
         '/api/user',
@@ -52,9 +59,7 @@ export const Navbar = ({ baseUrl }) => {
         {
           userId: auth.userId,
         },
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
+        { Authorization: `Bearer ${auth.token}` }
       );
       setUser(data);
     } catch (error) {
@@ -62,471 +67,371 @@ export const Navbar = ({ baseUrl }) => {
     }
   }, [request, auth, notify]);
 
-  //====================================================================
-  //====================================================================
-
-  //====================================================================
-  //====================================================================
   useEffect(() => {
-    getDirector();
-  }, [getDirector]);
-  //====================================================================
-  //====================================================================
+    getUser();
+    window.addEventListener('click', () => {
+      setCurrentPage(window.location.pathname);
+    });
+  }, [getUser]);
 
   return (
-    <div>
-      <div className='container-fluid p-0'>
-        {/* Navigation start */}
-        <nav className='navbar navbar-expand-lg custom-navbar p-0'>
-          <button
-            className='navbar-toggler'
-            type='button'
-            data-toggle='collapse'
-            data-target='#royalHospitalsNavbar'
-            aria-controls='royalHospitalsNavbar'
-            aria-expanded='false'
-            aria-label='Toggle navigation'>
-            <span className='navbar-toggler-icon'>
-              <i />
-              <i />
-              <i />
-            </span>
-          </button>
-          <div
-            className='collapse navbar-collapse justify-content-between p-0'
-            id='royalHospitalsNavbar'>
-            <ul className='navbar-nav'>
-              <li className='nav-item mr-4 px-2'>
-                <span className='logo' style={{ fontSize: '26pt' }}>
-                  Alo24
-                </span>
-              </li>
-              <li className='nav-item'>
-                <Link
-                  className={`nav-link ${
-                    activePage === '/alo24' || activePage === '/'
-                      ? 'active-page'
-                      : ''
-                  }`}
-                  onClick={() => {
-                    setActivePage('/alo24');
-                  }}
-                  to='/'>
-                  <i className='icon-devices_other nav-icon' />
-                  {t('Bosh sahifa')}
-                </Link>
-              </li>
-              <li className='nav-item dropdown '>
-                <span
-                  id='doctoRs'
-                  role='button'
-                  data-toggle='dropdown'
-                  aria-haspopup='true'
-                  aria-expanded='false'
-                  className={`nav-link dropdown-toggle ${
-                    activePage === '/alo24/category' ||
-                    // activePage === '/alo24/producttypes' ||
-                    activePage === '/alo24/product' ||
-                    // activePage === '/alo24/brand' ||
-                    activePage === '/alo24/unit' ||
-                    activePage === '/alo24/supplier' ||
-                    activePage === '/alo24/incoming' ||
-                    activePage === '/alo24/inventory' ||
-                    activePage === '/alo24/inventories'
-                      ? 'active-page'
-                      : ''
-                  }`}>
-                  <i className='icon-users nav-icon' />
-                  {t('Mahsulotlar')}
-                </span>
-                <ul className='dropdown-menu' aria-labelledby='doctoRs'>
-                  <li>
-                    <span
-                      className='dropdown-toggle sub-nav-link'
-                      to='#'
-                      id='buttonsDropdown'
-                      role='button'
-                      data-toggle='dropdown'
-                      aria-haspopup='true'
-                      aria-expanded='false'>
-                      {t('Yaratish')}
-                    </span>
-                    <ul
-                      className='dropdown-menu dropdown-menu-right'
-                      aria-labelledby='buttonsDropdown'>
-                      <li>
-                        <Link
-                          className={`dropdown-item ${
-                            activePage === '/alo24/category'
-                              ? 'active-page'
-                              : ''
-                          }`}
-                          onClick={() => {
-                            setActivePage('/alo24/category');
-                          }}
-                          to='/alo24/category'>
-                          {t('Mahsulot kategoriyalari')}
-                        </Link>
-                      </li>
-                      {/* <li>
-                        <Link
-                          className={`dropdown-item ${
-                            activePage === '/alo24/producttypes'
-                              ? 'active-page'
-                              : ''
-                          }`}
-                          onClick={() => {
-                            setActivePage('/alo24/producttypes');
-                          }}
-                          to='/alo24/producttypes'>
-                          {t('Mahsulotlar turlari')}
-                        </Link>
-                      </li> */}
-                      {/* <li>
-                        <Link
-                          className={`dropdown-item ${
-                            activePage === '/alo24/brand' ? 'active-page' : ''
-                          }`}
-                          onClick={() => {
-                            setActivePage('/alo24/brand');
-                          }}
-                          to='/alo24/brand'>
-                          {t('Brendlar')}
-                        </Link>
-                      </li> */}
-                      <li>
-                        <Link
-                          className={`dropdown-item ${
-                            activePage === '/alo24/product' ? 'active-page' : ''
-                          }`}
-                          onClick={() => {
-                            setActivePage('/alo24/product');
-                          }}
-                          to='/alo24/product'>
-                          {t('Mahsulotlar')}
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          className={`dropdown-item ${
-                            activePage === '/alo24/unit' ? 'active-page' : ''
-                          }`}
-                          onClick={() => {
-                            setActivePage('/alo24/unit');
-                          }}
-                          to='/alo24/unit'>
-                          {t("O'lchov birliklari")}
-                        </Link>
-                      </li>
-                      <li>
-                        <Link className='dropdown-item' to='/alo24/supplier'>
-                          {t('Yetkazib beruvchilar')}
-                        </Link>
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <Link
-                      className={`dropdown-item ${
-                        activePage === '/alo24/incoming' ? 'active-page' : ''
-                      }`}
-                      onClick={() => {
-                        setActivePage('/alo24/incoming');
-                      }}
-                      to='/alo24/incoming'>
-                      {t('Qabul qilish')}
-                    </Link>
-                  </li>
-                  <li>
-                    <span
-                      className='dropdown-toggle sub-nav-link'
-                      to='#'
-                      id='buttonsDropdown'
-                      role='button'
-                      data-toggle='dropdown'
-                      aria-haspopup='true'
-                      aria-expanded='false'>
-                      {t('Invertarizatsiya')}
-                    </span>
-                    <ul
-                      className='dropdown-menu dropdown-menu-right'
-                      aria-labelledby='buttonsDropdown'>
-                      <li>
-                        <Link
-                          className={`dropdown-item ${
-                            activePage === '/alo24/inventory'
-                              ? 'active-page'
-                              : ''
-                          }`}
-                          onClick={() => {
-                            setActivePage('/alo24/inventory');
-                            setCurrentPage('Inventorizatsiya');
-                          }}
-                          to='/alo24/inventory'>
-                          {t('Invertarizatsiya')}
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          className={`dropdown-item ${
-                            activePage === '/alo24/inventories'
-                              ? 'active-page'
-                              : ''
-                          }`}
-                          onClick={() => {
-                            setActivePage('/alo24/inventories');
-                          }}
-                          to='/alo24/inventories'>
-                          {t('Invertarizatsiyalar')}
-                        </Link>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>
-              <li className='nav-item dropdown'>
-                <span
-                  id='doctoRs'
-                  role='button'
-                  data-toggle='dropdown'
-                  aria-haspopup='true'
-                  aria-expanded='false'
-                  className={`nav-link dropdown-toggle ${
-                    activePage === '/alo24/sales' ||
-                    activePage === '/alo24/sallers' ||
-                    activePage === '/alo24/sales/packman' ||
-                    activePage === '/alo24/sales/client' ||
-                    activePage === '/alo24/payments' ||
-                    activePage === '/alo24/discounts' ||
-                    activePage === '/alo24/debts'
-                      ? 'active-page'
-                      : ''
-                  }`}>
-                  <i className='icon-users nav-icon' />
-                  {t('Sotuv')}
-                </span>
-                <ul className='dropdown-menu' aria-labelledby='doctoRs'>
-                  <li>
-                    <Link
-                      className={`dropdown-item ${
-                        activePage === '/alo24/sales' ? 'active-page' : ''
-                      }`}
-                      onClick={() => {
-                        setActivePage('/alo24/sales');
-                      }}
-                      to='/alo24/sales'>
-                      {t('Sotuv')}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={`dropdown-item ${
-                        activePage === '/alo24/payments' ? 'active-page' : ''
-                      }`}
-                      onClick={() => {
-                        setActivePage('/alo24/payments');
-                      }}
-                      to='/alo24/payments'>
-                      {t('Tushumlar')}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={`dropdown-item ${
-                        activePage === '/alo24/discounts' ? 'active-page' : ''
-                      }`}
-                      onClick={() => {
-                        setActivePage('/alo24/discounts');
-                      }}
-                      to='/alo24/discounts'>
-                      {t('Chegirmalar')}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={`dropdown-item ${
-                        activePage === '/alo24/debts' ? 'active-page' : ''
-                      }`}
-                      onClick={() => {
-                        setActivePage('/alo24/debts');
-                      }}
-                      to='/alo24/debts'>
-                      {t('Qarzlar')}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={`dropdown-item ${
-                        activePage === '/alo24/packman' ? 'active-page' : ''
-                      }`}
-                      onClick={() => {
-                        setActivePage('/alo24/packman');
-                      }}
-                      to='/alo24/packman'>
-                      {t('Yetkazuvchi')}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={`dropdown-item ${
-                        activePage === '/alo24/client' ? 'active-page' : ''
-                      }`}
-                      onClick={() => {
-                        setActivePage('/alo24/client');
-                      }}
-                      to='/alo24/client'>
-                      {t('Mijoz')}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={`dropdown-item ${
-                        activePage === '/alo24/sellers' ? 'active-page' : ''
-                      }`}
-                      onClick={() => {
-                        setActivePage('/alo24/sellers');
-                      }}
-                      to='/alo24/sellers'>
-                      {t('Sotuvchilar')}
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-              <li className='nav-item dropdown'>
-                <Link
-                  className={`nav-link ${
-                    activePage === '/alo24/exchangerate' || activePage === '/'
-                      ? 'active-page'
-                      : ''
-                  }`}
-                  onClick={() => {
-                    setActivePage('/alo24/exchangerate');
-                  }}
-                  to='/alo24/exchangerate'>
-                  <i className='icon-dollar-sign nav-icon'></i>
-                  {t('Valyuta kursi')}
-                </Link>
-              </li>
-              <li className='nav-item dropdown'>
-                <span
-                  id='doctoRs'
-                  role='button'
-                  data-toggle='dropdown'
-                  aria-haspopup='true'
-                  aria-expanded='false'
-                  className={`nav-link dropdown-toggle ${
-                    activePage === '/alo24/branches' ||
-                    activePage === '/alo24/branchregister'
-                      ? 'active-page'
-                      : ''
-                  }`}>
-                  <i className='icon-users nav-icon' />
-                  Filial
-                </span>
-                <ul className='dropdown-menu' aria-labelledby='doctoRs'>
-                  <li>
-                    <Link
-                      className={`dropdown-item ${
-                        activePage === '/alo24/branchregister'
-                          ? 'active-page'
-                          : ''
-                      }`}
-                      onClick={() => {
-                        setActivePage('/alo24/branchregister');
-                      }}
-                      to='/alo24/branchregister'>
-                      Filial yaratish
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={`dropdown-item ${
-                        activePage === '/alo24/branches' ? 'active-page' : ''
-                      }`}
-                      onClick={() => {
-                        setActivePage('/alo24/branches');
-                      }}
-                      to='/alo24/branches'>
-                      Filiallar
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-
-            <ul className='header-actions py-1 mr-2'>
-              <li className='dropdown'>
-                <span
-                  id='userSettings'
-                  className='user-settings'
-                  data-toggle='dropdown'
-                  aria-haspopup='true'>
-                  <span className='user-name'>
-                    {user.firstname} {user.lastname}
-                  </span>
-                  <span className='avatar md'>
-                    {baseUrl ? (
-                      <img
-                        className='circle d-inline'
-                        src={
-                          baseUrl && `${baseUrl}/api/upload/file/${user.image}`
-                        }
-                        alt={user.firstname[0] + user.lastname[0]}
-                      />
-                    ) : (
-                      user.firstname[0] + user.lastname[0]
-                    )}
-
-                    <span className='status busy' />
-                  </span>
-                </span>
-                <div
-                  className='dropdown-menu dropdown-menu-right'
-                  aria-labelledby='userSettings'>
-                  <div className='header-profile-actions'>
-                    <div className='header-user-profile'>
-                      <div className='header-user'>
-                        <img
-                          src={
-                            baseUrl &&
-                            `${baseUrl}/api/upload/file/${user.image}`
-                          }
-                          alt={user.firstname[0] + user.lastname[0]}
-                        />
-                      </div>
-                      {user.firstname} {user.lastname}
-                      <p>{t('Direktor')}</p>
-                    </div>
-                    <Link to='/alo24/editdirector'>
-                      <i className='icon-user1' /> {t('Tahrirlash')}
-                    </Link>
-                    <Link to='/alo24/editdirectorpassword'>
-                      <i className='icon-vpn_key' /> {t("Parolni o'zgartirish")}
-                    </Link>
-                    <button
-                      onClick={() => {
-                        auth.logout();
-                        history.push('/');
-                      }}>
-                      <i className='icon-log-out1' /> {t('Tizimdan chiqish')}
-                    </button>
-                  </div>
-                </div>
-              </li>
-            </ul>
+    <nav className=''>
+      <div className='flex justify-between m-0 p-0'>
+        <div className='font-bold flex items-center'>
+          <div className='px-5 py-2 text-xl'>
+            <span className='text-blue-900'>PIPE</span> <span>HOUSE</span>
           </div>
-        </nav>
-        {/* Navigation end */}
-        <div className='main-container'>
-          {/* Page header start */}
-          <div className='page-header'>
-            <ol className='breadcrumb'>
-              <li className='breadcrumb-item active'>{t(currentPage)}</li>
-            </ol>
-          </div>
-          {/* Page header end */}
+          <ul className='text-xs'>
+            <li className='inline-block'>
+              <Link
+                id='HeadMenu'
+                onClick={changeHeadMenu}
+                to='/alo24'
+                className={
+                  currentPage === '/alo24' ||
+                  currentPage === '/' ||
+                  menu === 'HeadMenu'
+                    ? 'active-page'
+                    : 'unactive-page'
+                }>
+                {t('Bosh sahifa')}
+              </Link>
+            </li>
+
+            <li className='inline-block relative'>
+              <Link
+                to='#'
+                id='Products'
+                onClick={changeHeadMenu}
+                className={
+                  currentPage === '/alo24/category' ||
+                  currentPage === '/alo24/incoming' ||
+                  currentPage === '/alo24/unit' ||
+                  currentPage === '/alo24/supplier' ||
+                  currentPage === '/alo24/product' ||
+                  currentPage === '/alo24/inventory' ||
+                  currentPage === '/alo24/inventories' ||
+                  menu === 'Products'
+                    ? 'active-page'
+                    : 'unactive-page'
+                }>
+                {t('Mahsulotlar')}{' '}
+                <FontAwesomeIcon icon={faAngleDown} className='text-[10px]' />
+              </Link>
+
+              <ul
+                className={
+                  menu !== 'Products'
+                    ? 'hidden'
+                    : 'absolute z-50 top-9 bg-white w-[200px] animate-fadeInUp shadow-2xl'
+                }>
+                <div className='p-2 bg-white absolute -top-1 rotate-45 left-2 -z-10'></div>
+                <li className='relative'>
+                  <Link
+                    id='Create'
+                    onClick={changeSubMenu}
+                    to='#'
+                    className='w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] relative flex justify-between border-b'>
+                    <span className='pointer-events-none'>{t('Yaratish')}</span>
+                    <FontAwesomeIcon
+                      icon={faAngleRight}
+                      className='pointer-events-none text-[10px]'
+                    />
+                  </Link>
+
+                  <ul
+                    className={
+                      submenu === 'Create'
+                        ? 'left-52 absolute bg-white top-0 w-[200px] animate-fadeInRight shadow-2xl'
+                        : 'hidden'
+                    }>
+                    <div className='p-2 bg-white absolute top-1 rotate-45 -left-1 -z-10'></div>
+                    <li>
+                      <Link
+                        onClick={changeLink}
+                        to='/alo24/category'
+                        className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
+                        {t('Kategoriyalar')}
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        onClick={changeLink}
+                        to='/alo24/product'
+                        className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
+                        {t('Mahsulotlar')}
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        onClick={changeLink}
+                        to='/alo24/unit'
+                        className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
+                        {t("O'lchov birliklari")}
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        onClick={changeLink}
+                        to='/alo24/supplier'
+                        className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
+                        {t('Yetkazib beruvchilar')}
+                      </Link>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <Link
+                    onClick={changeLink}
+                    to='/alo24/incoming'
+                    className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
+                    {t('Qabul qilish')}
+                  </Link>
+                </li>
+                <li className='relative'>
+                  <Link
+                    id='Inventory'
+                    onClick={changeSubMenu}
+                    to='#'
+                    className='w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] relative flex justify-between'>
+                    <span className='pointer-events-none'>
+                      {t('Inventarizatsiya')}
+                    </span>
+                    <FontAwesomeIcon
+                      icon={faAngleRight}
+                      className='pointer-events-none text-[10px]'
+                    />
+                  </Link>
+                  <ul
+                    className={
+                      submenu === 'Inventory'
+                        ? 'left-52 absolute bg-white top-0 w-[200px] animate-fadeInRight shadow-2xl'
+                        : 'hidden'
+                    }>
+                    <div className='p-2 bg-white absolute top-1 rotate-45 -left-1 -z-10'></div>
+                    <li>
+                      <Link
+                        onClick={changeLink}
+                        to='/alo24/inventory'
+                        className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
+                        {t('Inventarizatsiya')}
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        onClick={changeLink}
+                        to='/alo24/inventories'
+                        className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
+                        {t('Inventarizatsiyalar')}
+                      </Link>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+
+            <li className='inline-block relative'>
+              <Link
+                to='#'
+                id='Sale'
+                onClick={changeHeadMenu}
+                className={
+                  currentPage === '/alo24/sales' ||
+                  currentPage === '/alo24/payments' ||
+                  currentPage === '/alo24/discounts' ||
+                  currentPage === '/alo24/debts' ||
+                  currentPage === '/alo24/sellers' ||
+                  currentPage === '/alo24/client' ||
+                  currentPage === '/alo24/packman' ||
+                  menu === 'Sale'
+                    ? 'active-page'
+                    : 'unactive-page'
+                }>
+                {t('Sotuv')}{' '}
+                <FontAwesomeIcon icon={faAngleDown} className='text-[10px]' />
+              </Link>
+              <ul
+                className={
+                  menu !== 'Sale'
+                    ? 'hidden'
+                    : 'absolute z-50 top-9 bg-white w-[200px] animate-fadeInUp shadow-2xl'
+                }>
+                <div className='p-2 bg-white absolute -top-1 rotate-45 left-2 -z-10'></div>
+                <li>
+                  <Link
+                    onClick={changeLink}
+                    to='/alo24/sales'
+                    className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
+                    {t('Sotuv')}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    onClick={changeLink}
+                    to='/alo24/payments'
+                    className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
+                    {t('Tushumlar')}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    onClick={changeLink}
+                    to='/alo24/discounts'
+                    className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
+                    {t('Chegirmalar')}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    onClick={changeLink}
+                    to='/alo24/debts'
+                    className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
+                    {t('Qarzlar')}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    onClick={changeLink}
+                    to='/alo24/packman'
+                    className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
+                    {t('Yetkazuvchilar')}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    onClick={changeLink}
+                    to='/alo24/client'
+                    className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
+                    {t('Mijozlar')}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    onClick={changeLink}
+                    to='/alo24/sellers'
+                    className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
+                    {t('Sotuvchilar')}
+                  </Link>
+                </li>
+              </ul>
+            </li>
+            <li className='inline-block relative'>
+              <Link
+                to='#'
+                id='Branch'
+                onClick={changeHeadMenu}
+                className={
+                  currentPage === '/alo24/branches' ||
+                  currentPage === '/alo24/branchregister' ||
+                  menu === 'Branch'
+                    ? 'active-page'
+                    : 'unactive-page'
+                }>
+                {t('Filial')}{' '}
+                <FontAwesomeIcon icon={faAngleDown} className='text-[10px]' />
+              </Link>
+              <ul
+                className={
+                  menu !== 'Branch'
+                    ? 'hidden'
+                    : 'absolute z-50 top-9 bg-white w-[200px] animate-fadeInUp shadow-2xl'
+                }>
+                <div className='p-2 bg-white absolute -top-1 rotate-45 left-2 -z-10'></div>
+                <li>
+                  <Link
+                    onClick={changeLink}
+                    to='/alo24/branchregister'
+                    className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
+                    {t('Filial yaratish')}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    onClick={changeLink}
+                    to='/alo24/branches'
+                    className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
+                    {t('Filiallar')}
+                  </Link>
+                </li>
+              </ul>
+            </li>
+            <li className='inline-block'>
+              <Link
+                onClick={changeHeadMenu}
+                id='exchangerate'
+                to='/alo24/exchangerate'
+                className={
+                  currentPage === '/alo24/exchangerate'
+                    ? 'active-page'
+                    : 'unactive-page'
+                }>
+                Valyuta kursi
+              </Link>
+            </li>
+          </ul>
         </div>
+
+        <ul className='header-actions py-0 mr-2'>
+          <li className='dropdown'>
+            <span
+              id='userSettings'
+              className='user-settings'
+              data-toggle='dropdown'
+              aria-haspopup='true'>
+              <span className='user-name'>
+                {user.firstname} {user.lastname}
+              </span>
+              <span className='avatar md'>
+                {baseUrl ? (
+                  <img
+                    className='circle d-inline'
+                    src={baseUrl && `${baseUrl}/api/upload/file/${user.image}`}
+                    alt={user.firstname[0] + user.lastname[0]}
+                  />
+                ) : (
+                  user.firstname[0] + user.lastname[0]
+                )}
+
+                <span className='status busy' />
+              </span>
+            </span>
+            <div
+              className='dropdown-menu dropdown-menu-right'
+              aria-labelledby='userSettings'>
+              <div className='header-profile-actions'>
+                <div className='header-user-profile'>
+                  <div className='header-user'>
+                    <img
+                      src={
+                        baseUrl && `${baseUrl}/api/upload/file/${user.image}`
+                      }
+                      alt={user.firstname[0] + user.lastname[0]}
+                    />
+                  </div>
+                  {user.firstname} {user.lastname}
+                  <p>{t('Direktor')}</p>
+                </div>
+                <Link to='/alo24/editdirector'>
+                  <i className='icon-user1' /> {t('Tahrirlash')}
+                </Link>
+                <Link to='/alo24/editdirectorpassword'>
+                  <i className='icon-vpn_key' /> {t("Parolni o'zgartirish")}
+                </Link>
+                <button
+                  onClick={() => {
+                    auth.logout();
+                    history.push('/');
+                  }}>
+                  <i className='icon-log-out1' /> {t('Tizimdan chiqish')}
+                </button>
+              </div>
+            </div>
+          </li>
+        </ul>
       </div>
-    </div>
+      <div className='bg-blue-900 py-2 px-3 text-white text-xl m-0'>
+        {t('Bosh sahifa')}
+      </div>
+    </nav>
   );
 };
