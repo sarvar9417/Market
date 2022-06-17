@@ -2217,7 +2217,6 @@ export const Sale = () => {
   const deleteTemporary = (e) => {
     setDelTemporary(e);
     setModal8(true);
-    setDelTemporary({});
   };
 
   const confirmDeleteTemporary = () => {
