@@ -22,7 +22,7 @@ export const ModalTable = ({ incoming, inputHandler }) => {
               <td className='border m-0 px-3 py-2 font-bold text-center'>
                 <input
                   onChange={inputHandler}
-                  value={(incoming.pieces && incoming.pieces) || ''}
+                  value={incoming.pieces}
                   type='number'
                   step={0.001}
                   className='outline-none text-right text-black font-bold'
@@ -33,7 +33,7 @@ export const ModalTable = ({ incoming, inputHandler }) => {
               <td className='border m-0 px-3 py-2 font-bolds text-center'>
                 <input
                   onChange={inputHandler}
-                  value={(incoming.unitprice && incoming.unitprice) || ''}
+                  value={incoming.unitprice}
                   type='number'
                   className='outline-none text-right text-black font-bold'
                   name='unitprice'
@@ -43,7 +43,7 @@ export const ModalTable = ({ incoming, inputHandler }) => {
               <td className='border m-0 px-3 py-2 font-bold text-center'>
                 <input
                   onChange={inputHandler}
-                  value={incoming.totalprice ? incoming.totalprice : 0}
+                  value={incoming.totalprice}
                   type='number'
                   style={{ maxWidth: '100px' }}
                   className='outline-none text-right w-full font-bold text-black'
@@ -57,14 +57,6 @@ export const ModalTable = ({ incoming, inputHandler }) => {
             </tr>
           </tbody>
         </table>
-        {/* <div className="">
-                <button
-                  onClick={addIncoming}
-                  className="bg-emerald-600 text-white px-4 py-1 rounded hover:bg-emerald-500"
-                >
-                  +
-                </button>
-              </div> */}
       </div>
     </>
   );

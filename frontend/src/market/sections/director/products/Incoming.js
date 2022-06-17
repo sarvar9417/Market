@@ -265,9 +265,6 @@ export const Incoming = () => {
       supplier: '',
       product: {},
       unit: '',
-      // category: '',
-      // producttype: '',
-      // brand: '',
     });
     setModal(false);
   };

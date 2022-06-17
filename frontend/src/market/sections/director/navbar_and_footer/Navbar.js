@@ -1,15 +1,17 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import {
+  faAngleDown,
+  faAngleRight,
+  faBars,
+} from '@fortawesome/free-solid-svg-icons';
 import { useToast } from '@chakra-ui/react';
 import { useHttp } from '../../../hooks/http.hook';
 import { AuthContext } from '../../../context/AuthContext';
 import { t } from 'i18next';
 
 export const Navbar = ({ baseUrl }) => {
-
-
   const history = useHistory();
   const [currentPage, setCurrentPage] = useState(window.location.pathname);
 
@@ -428,6 +430,12 @@ export const Navbar = ({ baseUrl }) => {
             </div>
           </li>
         </ul>
+        <div className='flex items-center md:hidden'>
+          <FontAwesomeIcon
+            icon={faBars}
+            className='p-2 text-lg text-blue-900'
+          />
+        </div>
       </div>
       <div className='bg-blue-900 py-2 px-3 text-white text-xl m-0'>
         {t('Bosh sahifa')}
