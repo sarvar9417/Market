@@ -25,7 +25,7 @@ export const Selling = ({
   const [btn, setBtn] = useState(true);
   return (
     <div className='shadow-xl mb-3'>
-      <p className='card-header'>{t('Sotilayotgan mahsulotlar')} </p>
+      <p className='card-header text-lg'>{t('Sotilayotgan mahsulotlar')} </p>
       {saleconnectorid ? (
         ''
       ) : (

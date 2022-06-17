@@ -1,11 +1,11 @@
-const { Schema, model, Types } = require("mongoose");
-const Joi = require("joi");
+const { Schema, model, Types } = require('mongoose');
+const Joi = require('joi');
 
 const payment = new Schema(
   {
     totalprice: { type: Number },
     totalpriceuzs: { type: Number },
-    products: [{ type: Schema.Types.ObjectId, ref: "Product", required: true }],
+    products: [{ type: Schema.Types.ObjectId, ref: 'Product', required: true }],
     payment: { type: Number, required: true },
     paymentuzs: { type: Number, required: true },
     cash: { type: Number, required: true },
@@ -15,12 +15,13 @@ const payment = new Schema(
     transfer: { type: Number, required: true },
     transferuzs: { type: Number, required: true },
     type: { type: String, required: true },
+    comment: { type: String },
     saleconnector: {
       type: Schema.Types.ObjectId,
-      ref: "SaleConnector",
+      ref: 'SaleConnector',
     },
-    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    market: { type: Schema.Types.ObjectId, ref: "Market", required: true },
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    market: { type: Schema.Types.ObjectId, ref: 'Market', required: true },
     isArchive: { type: Boolean, default: false },
   },
   {
@@ -42,6 +43,7 @@ function validatePayment(payment) {
     transfer: Joi.number(),
     transferuzs: Joi.number(),
     type: Joi.string(),
+    comment: Joi.string(),
     saleconnector: Joi.string(),
     user: Joi.string().required(),
     market: Joi.string().required(),
@@ -50,4 +52,4 @@ function validatePayment(payment) {
 }
 
 module.exports.validatePayment = validatePayment;
-module.exports.Payment = model("Payment", payment);
+module.exports.Payment = model('Payment', payment);

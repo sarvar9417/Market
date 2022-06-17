@@ -179,6 +179,7 @@ module.exports.register = async (req, res) => {
 
     if (payment.totalprice > 0) {
       const newPayment = new Payment({
+        comment: payment.comment,
         payment: payment.card + payment.cash + payment.transfer,
         paymentuzs: payment.carduzs + payment.cashuzs + payment.transferuzs,
         card: payment.card,
@@ -422,6 +423,7 @@ module.exports.addproducts = async (req, res) => {
 
     if (payment.totalprice > 0) {
       const newPayment = new Payment({
+        comment: payment.comment,
         payment: payment.card + payment.cash + payment.transfer,
         paymentuzs: payment.carduzs + payment.cashuzs + payment.transferuzs,
         card: payment.card,
@@ -762,6 +764,7 @@ module.exports.registeredit = async (req, res) => {
     }
     if (payment.carduzs + payment.cashuzs + payment.transferuzs !== 0) {
       const newPayment = new Payment({
+        comment: payment.comment,
         payment: payment.card + payment.cash + payment.transfer,
         paymentuzs: payment.carduzs + payment.cashuzs + payment.transferuzs,
         card: payment.card,
@@ -836,6 +839,7 @@ module.exports.payment = async (req, res) => {
     const saleconnector = await SaleConnector.findById(saleconnectorid);
 
     const newPayment = new Payment({
+      comment: payment.comment,
       payment: payment.card + payment.cash + payment.transfer,
       paymentuzs: payment.carduzs + payment.cashuzs + payment.transferuzs,
       card: payment.card,

@@ -1,9 +1,10 @@
-import React from "react";
-import { RightBodyEdit } from "./RightBodyEdit";
-import { LeftCardEdit } from "./LeftCardEdit";
-import { CardHeader } from "./CardHeader";
+import React from 'react';
+import { RightBodyEdit } from './RightBodyEdit';
+import { LeftCardEdit } from './LeftCardEdit';
+import { CardHeader } from './CardHeader';
 
 export const CardEdit = ({
+  editPaymentComment,
   totalpriceuzs,
   client,
   exchangerate,
@@ -30,6 +31,7 @@ export const CardEdit = ({
       />
       <div className='grid grid-cols-1 md:grid-cols-2'>
         <LeftCardEdit
+          editPaymentComment={editPaymentComment}
           exchangerate={exchangerate}
           checkHandler={checkHandler}
           discount={{ isProcient: true }}

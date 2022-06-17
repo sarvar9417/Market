@@ -1081,6 +1081,10 @@ export const Sale = () => {
     setDebt({ ...debt, comment: e.target.value });
   };
 
+  const paymentComment = (e) => {
+    setPayment({ ...payment, comment: e.target.value });
+  };
+
   const createHandler = useCallback(async () => {
     try {
       setModal2(false);
@@ -1627,6 +1631,10 @@ export const Sale = () => {
     return setModal5(true);
   };
 
+  const editPaymentComment = (e) => {
+    setPaymentEdit({ ...paymentEdit, comment: e.target.value });
+  };
+
   const createHandlerEdit = useCallback(async () => {
     try {
       const data = await request(
@@ -2018,6 +2026,10 @@ export const Sale = () => {
     setPrePayment(p);
   };
 
+  const prePaymentComment = (e) => {
+    setPrePayment({ ...prePayment, comment: e.target.value });
+  };
+
   const checkPrePayment = () => {
     if (prePayment.card + prePayment.cash + prePayment.transfer === 0) {
       return notify({
@@ -2284,6 +2296,7 @@ export const Sale = () => {
       </div>
       <div className={visible ? '' : 'hidden'}>
         <Card
+          paymentComment={paymentComment}
           totalpriceuzs={totalpriceuzs}
           client={client}
           exchangerate={exchangerate}
@@ -2303,6 +2316,7 @@ export const Sale = () => {
       </div>
       <div className={visibleEdit ? '' : 'hidden'}>
         <CardEdit
+          editPaymentComment={editPaymentComment}
           totalpriceuzs={totalpriceuzs}
           client={client}
           exchangerate={exchangerate}
@@ -2321,6 +2335,7 @@ export const Sale = () => {
       </div>
       <div className={prePaymentVisible ? '' : 'hidden'}>
         <PrePaymentCard
+          prePaymentComment={prePaymentComment}
           checkHandler={checkPrePayment}
           changeHandler={changeHandlerPrePayment}
           debt={prePaymentDebt}

@@ -188,7 +188,7 @@ export const Payments = () => {
         })}
 
         <ul className='tr font-bold text-base'>
-          <li className='td col-span-6 text-right border-r'>{t("Jami")}</li>
+          <li className='td col-span-5 text-right border-r'>{t('Jami')}</li>
           <li className='td text-right col-span-2 border-r-2 border-green-800'>
             {(Math.round(totalPayments.cash * 100) / 100).toLocaleString(
               'ru-RU'
@@ -201,7 +201,7 @@ export const Payments = () => {
             )}{' '}
             <span className='text-orange-600'>USD</span>
           </li>
-          <li className='td text-right col-span-2 border-r-2 border-red-600'>
+          <li className='td text-right border-r-2 border-red-600'>
             {(Math.round(totalPayments.transfer * 100) / 100).toLocaleString(
               'ru-RU'
             )}{' '}

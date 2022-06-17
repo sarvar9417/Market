@@ -15,7 +15,7 @@ export const TableHead = ({ currentPayments, setCurrentPayments }) => {
         />
       </li>
 
-      <li className='th border-r col-span-3 flex justify-center'>
+      <li className='th border-r col-span-2 flex justify-center'>
         {t('Mijoz')}{' '}
         <Sort
           property={'name'}
@@ -24,7 +24,7 @@ export const TableHead = ({ currentPayments, setCurrentPayments }) => {
         />
       </li>
       <li className='th col-span-2 border-r flex justify-center'>
-        {t('Naqt')} USD{' '}
+        {t('Naqt')}
         <Sort
           property={'cash'}
           data={currentPayments}
@@ -32,20 +32,23 @@ export const TableHead = ({ currentPayments, setCurrentPayments }) => {
         />
       </li>
       <li className='th col-span-2 border-r flex justify-center'>
-        {t('Plastik')} USD{' '}
+        {t('Plastik')}
         <Sort
           property={'card'}
           data={currentPayments}
           setData={setCurrentPayments}
         />
       </li>
-      <li className='th col-span-2 border-r flex justify-center'>
-        {t("O'tkazma")} USD{' '}
+      <li className='th border-r flex justify-center'>
+        {t("O'tkazma")}
         <Sort
           property={'transfer'}
           data={currentPayments}
           setData={setCurrentPayments}
         />
+      </li>
+      <li className='th col-span-2 border-r flex justify-center'>
+        {t('Izoh')}
       </li>
     </ul>
   );
