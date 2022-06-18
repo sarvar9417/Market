@@ -1,70 +1,30 @@
-import { faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { t } from "i18next";
-import React from "react";
-import { Sort } from "../../components/Sort";
-import { SortDoubleProperty } from "../../components/SortDoubleProperty";
+import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { t } from 'i18next';
+import React from 'react';
+import { Sort } from '../../components/Sort';
+import { SortDoubleProperty } from '../../components/SortDoubleProperty';
 
 export const TableHead = ({ sales, setSales }) => {
   return (
     <ul className='thead shadow-xl'>
       <li className='th border-r'>№</li>
       <li className='th border-r flex justify-center'>
-        {t("Sana")}
-        <Sort property={"createdAt"} data={sales} setData={setSales} />
+        {t('ID')}
+        <Sort property={'createdAt'} data={sales} setData={setSales} />
       </li>
       <li className='th border-r flex justify-center'>
-        {t("Mijoz")}
+        {t('Mijoz')}
         <SortDoubleProperty
-          innnerProperty={"name"}
-          property={"client"}
+          innnerProperty={'name'}
+          property={'client'}
           data={sales}
           setData={setSales}
         />
       </li>
-      <li className='th border-r flex justify-center col-span-2'>
-        {t("Jami")}
-        <div className='flex flex-col pl-2'>
-          <FontAwesomeIcon
-            onClick={() =>
-              setSales(
-                [...sales].sort((a, b) =>
-                  a.products.reduce((summ, product) => {
-                    return summ + product.totalprice;
-                  }, 0) >
-                  b.products.reduce((summ, product) => {
-                    return summ + product.totalprice;
-                  }, 0)
-                    ? 1
-                    : -1
-                )
-              )
-            }
-            icon={faAngleUp}
-            className='cursor-pointer p-0 m-0'
-          />
-          <FontAwesomeIcon
-            icon={faAngleDown}
-            className='cursor-pointer p-0 m-0'
-            onClick={() =>
-              setSales(
-                [...sales].sort((a, b) =>
-                  a.products.reduce((summ, product) => {
-                    return summ + product.totalprice;
-                  }, 0) <
-                  b.products.reduce((summ, product) => {
-                    return summ + product.totalprice;
-                  }, 0)
-                    ? 1
-                    : -1
-                )
-              )
-            }
-          />
-        </div>
-      </li>
-      <li className='th border-r flex justify-center col-span-2'>
-        {t("Qarz")}
+
+      <li className='th border-r flex justify-center'>
+        {t('Qarz')}
         <div className='flex flex-col pl-2'>
           <FontAwesomeIcon
             onClick={() =>
@@ -128,8 +88,8 @@ export const TableHead = ({ sales, setSales }) => {
           />
         </div>
       </li>
-      <li className='th border-r flex justify-center col-span-2'>
-        {t("Chegirma")}
+      <li className='th border-r flex justify-center'>
+        {t('Chegirma')}
         <div className='flex flex-col pl-2'>
           <FontAwesomeIcon
             onClick={() =>
@@ -169,10 +129,51 @@ export const TableHead = ({ sales, setSales }) => {
           />
         </div>
       </li>
-
-      <li className='th  border-r'>{t("Chek")}</li>
+      <li className='th border-r flex justify-center col-span-2'>
+        {t('Jami')}
+        <div className='flex flex-col pl-2'>
+          <FontAwesomeIcon
+            onClick={() =>
+              setSales(
+                [...sales].sort((a, b) =>
+                  a.products.reduce((summ, product) => {
+                    return summ + product.totalprice;
+                  }, 0) >
+                  b.products.reduce((summ, product) => {
+                    return summ + product.totalprice;
+                  }, 0)
+                    ? 1
+                    : -1
+                )
+              )
+            }
+            icon={faAngleUp}
+            className='cursor-pointer p-0 m-0'
+          />
+          <FontAwesomeIcon
+            icon={faAngleDown}
+            className='cursor-pointer p-0 m-0'
+            onClick={() =>
+              setSales(
+                [...sales].sort((a, b) =>
+                  a.products.reduce((summ, product) => {
+                    return summ + product.totalprice;
+                  }, 0) <
+                  b.products.reduce((summ, product) => {
+                    return summ + product.totalprice;
+                  }, 0)
+                    ? 1
+                    : -1
+                )
+              )
+            }
+          />
+        </div>
+      </li>
+      <li className='th col-span-2 border-r'>Izoh</li>
+      <li className='th  border-r'>{t('Chek')}</li>
       <li className='th  border-r'>{t("Qo'shish")}</li>
-      <li className='th  border-r'>{t("Qaytarish")}</li>
+      <li className='th  border-r'>{t('Qaytarish')}</li>
     </ul>
   );
 };

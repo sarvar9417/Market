@@ -5,6 +5,7 @@ import { Table } from './Selling/Table';
 import { Footer } from './Selling/Footer';
 
 export const Selling = ({
+  saveTemporary,
   saleconnectorid,
   totalpriceuzs,
   payment,
@@ -24,7 +25,7 @@ export const Selling = ({
   const [btn, setBtn] = useState(true);
   return (
     <div className='shadow-xl mb-3'>
-      <p className='card-header'>{t('Sotilayotgan mahsulotlar')} </p>
+      <p className='card-header text-lg'>{t('Sotilayotgan mahsulotlar')} </p>
       {saleconnectorid ? (
         ''
       ) : (
@@ -43,6 +44,7 @@ export const Selling = ({
       <div className='px-3 py-2 overflow-x-auto'>
         <Table saleproducts={saleproducts} editProducts={editProducts} />
         <Footer
+          saveTemporary={saveTemporary}
           totalpriceuzs={totalpriceuzs}
           totalprice={totalprice}
           discount={discount}

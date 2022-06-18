@@ -5,8 +5,11 @@ import { Pagination } from '../../components/Pagination';
 import { ExcelDownload } from '../../components/ExcelDownload';
 import { faFileExcel } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { SearchInput } from '../../components/Input';
 
 export const TableHeader = ({
+  keyPressed,
+  changeSearch,
   getSaleConnectorsExcel,
   currentPage,
   changeDate,
@@ -22,14 +25,22 @@ export const TableHeader = ({
       <li className='th-h border-r'>
         <PaginationSize setPageSize={setPageSize} />
       </li>
-      <li className='th-h border-r'></li>
       <li className='th-h border-r'>
-        {/* <SearchInput
-          // changeHandler={searchCategory}
-          type={"search"}
-          placeholder={"Mijoz"}
-          name='searchCategory'
-        /> */}
+        <SearchInput
+          changeHandler={changeSearch}
+          name='id'
+          placeholder={'ID'}
+          type='number'
+          keyPressed={keyPressed}
+        />
+      </li>
+      <li className='th-h border-r'>
+        <SearchInput
+          changeHandler={changeSearch}
+          name='client'
+          placeholder={'Mijoz'}
+          keyPressed={keyPressed}
+        />
       </li>
       {/* <li className='th-h border-r'>
         <SearchInput

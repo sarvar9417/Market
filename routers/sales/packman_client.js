@@ -99,4 +99,17 @@ router.post('/payments/getexcel', (req, res) => {
   require('./payment').getexcel(req, res);
 });
 
+//Temporary
+router.post('/temporary/register', (req, res) => {
+  require('./temporary').register(req, res);
+});
+
+router.post('/temporary/get', (req, res) => {
+  require('./temporary').getAll(req, res);
+});
+
+router.post('/temporary/delete', (req, res) => {
+  require('./temporary').deleteTemporary(req, res);
+});
+
 module.exports = router;

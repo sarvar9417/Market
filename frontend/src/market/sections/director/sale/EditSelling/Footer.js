@@ -21,7 +21,7 @@ export const Footer = ({
         </div>
         <div className='col-span-2 flex flex-col text-right'>
           <span className=''>
-            {totalpriceuzs.toLocaleString("de-DE")}{" "}
+            {totalpriceuzs.toLocaleString("ru-RU")}{" "}
             <span className='text-green-800'>UZS</span>
           </span>
           <span className=''>
@@ -29,9 +29,9 @@ export const Footer = ({
               Math.round(
                 discount.reduce((summ, discount) => {
                   return summ + discount.discountuzs;
-                }, 0) * 100
-              ) / 100
-            ).toLocaleString("de-DE")}{" "}
+                }, 0) * 10000
+              ) / 10000
+            ).toLocaleString("ru-RU")}{" "}
             <span className='text-green-800'>UZS</span>
           </span>
           <span className=''>
@@ -44,9 +44,9 @@ export const Footer = ({
                   payment.reduce((summ, payment) => {
                     return summ + payment.paymentuzs;
                   }, 0)) *
-                  100
-              ) / 100
-            ).toLocaleString("de-DE")}{" "}
+                  10000
+              ) / 10000
+            ).toLocaleString("ru-RU")}{" "}
             <span className='text-green-800'>UZS</span>
           </span>
           <span className=''>
@@ -54,15 +54,15 @@ export const Footer = ({
               Math.round(
                 payment.reduce((summ, payment) => {
                   return summ + payment.paymentuzs;
-                }, 0) * 100
-              ) / 100
-            ).toLocaleString("de-DE")}{" "}
+                }, 0) * 10000
+              ) / 10000
+            ).toLocaleString("ru-RU")}{" "}
             <span className='text-green-800'>UZS</span>
           </span>
         </div>
         <div className='col-span-2 flex flex-col text-right'>
           <span className=''>
-            {totalprice.toLocaleString("de-DE")}{" "}
+            {totalprice.toLocaleString("ru-RU")}{" "}
             <span className='text-green-800'>USD</span>
           </span>
           <span className=''>
@@ -70,9 +70,9 @@ export const Footer = ({
               Math.round(
                 discount.reduce((summ, discount) => {
                   return summ + discount.discount;
-                }, 0) * 100
-              ) / 100
-            ).toLocaleString("de-DE")}{" "}
+                }, 0) * 10000
+              ) / 10000
+            ).toLocaleString("ru-RU")}{" "}
             <span className='text-green-800'>USD</span>
           </span>
           <span className=''>
@@ -85,9 +85,9 @@ export const Footer = ({
                   payment.reduce((summ, payment) => {
                     return summ + payment.payment;
                   }, 0)) *
-                  100
-              ) / 100
-            ).toLocaleString("de-DE")}{" "}
+                  10000
+              ) / 10000
+            ).toLocaleString("ru-RU")}{" "}
             <span className='text-green-800'>USD</span>
           </span>
           <span className=''>
@@ -95,9 +95,9 @@ export const Footer = ({
               Math.round(
                 payment.reduce((summ, payment) => {
                   return summ + payment.payment;
-                }, 0) * 100
-              ) / 100
-            ).toLocaleString("de-DE")}{" "}
+                }, 0) * 10000
+              ) / 10000
+            ).toLocaleString("ru-RU")}{" "}
             <span className='text-green-800'>USD</span>
           </span>
         </div>

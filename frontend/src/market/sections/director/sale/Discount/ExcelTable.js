@@ -26,11 +26,11 @@ export const ExcelTable = ({ datas }) => {
                 <td>
                   {item.saleconnector.client && item.saleconnector.client.name}
                 </td>
-                <td>{Math.round(item.totalprice * 100) / 100}</td>
-                <td>{Math.round(item.totalpriceuzs * 100) / 100}</td>
-                <td>{Math.round(item.discount * 100) / 100}</td>
-                <td>{Math.round(item.discountuzs * 100) / 100}</td>
-                <td>{Math.round(item.procient * 100) / 100}</td>
+                <td>{Math.round(item.totalprice * 10000) / 10000}</td>
+                <td>{Math.round(item.totalpriceuzs * 10000) / 10000}</td>
+                <td>{Math.round(item.discount * 10000) / 10000}</td>
+                <td>{Math.round(item.discountuzs * 10000) / 10000}</td>
+                <td>{Math.round(item.procient * 10000) / 10000}</td>
               </tr>
             ))}
         </tbody>

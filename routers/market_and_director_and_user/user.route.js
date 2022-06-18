@@ -53,6 +53,7 @@ module.exports.register = async (req, res) => {
 
     const olduser = await User.findOne({
       login,
+      market,
     });
 
     if (olduser) {
@@ -306,5 +307,111 @@ module.exports.removeUser = async (req, res) => {
       .send({ message: "Foydalanuvchi muvaffaqqiyatli o'chirildi" });
   } catch (error) {
     res.status(501).json({ error: error });
+  }
+};
+
+module.exports.createseller = async (req, res) => {
+  try {
+    const { error } = validateUser(req.body);
+    if (error) {
+      return res.status(400).json({
+        error: error.message,
+      });
+    }
+
+    const {
+      _id,
+      login,
+      firstname,
+      lastname,
+      fathername,
+      image,
+      phone,
+      password,
+      market,
+      specialty,
+      user,
+    } = req.body;
+
+    if (_id) {
+      if (password) {
+        const hash = await bcrypt.hash(password, 8);
+        req.body.password = hash;
+      }
+      await User.findByIdAndUpdate(_id, req.body);
+
+      const sellers = await User.find({ type: 'Seller', market })
+        .select('firstname lastname market type login phone')
+        .sort({ _id: -1 });
+
+      res.status(201).send(sellers);
+    }
+
+    const marke = await Market.findById(market);
+
+    if (!marke) {
+      return res.status(400).json({
+        message:
+          "Diqqat! Foydalanuvchi ro'yxatga olinayotgan do'kon dasturda ro'yxatga olinmagan.",
+      });
+    }
+
+    const olduser = await User.findOne({
+      login,
+      market,
+    });
+
+    if (olduser) {
+      return res.status(400).json({
+        message:
+          "Diqqat! Ushbu nomdagi foydalanuvchi avval ro'yxatdan o'tkazilgan.",
+      });
+    }
+
+    const hash = await bcrypt.hash(password, 8);
+    const newUser = new User({
+      firstname,
+      lastname,
+      fathername,
+      image,
+      phone,
+      password: hash,
+      market,
+      type: 'Seller',
+      login,
+      specialty,
+      user,
+    });
+    await newUser.save();
+
+    const sellers = await User.find({ type: 'Seller', market })
+      .select('firstname lastname market type login phone')
+      .sort({ _id: -1 });
+
+    res.status(201).send(sellers);
+  } catch (error) {
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
+  }
+};
+
+module.exports.getsellers = async (req, res) => {
+  try {
+    const { market } = req.body;
+    const marke = await Market.findById(market);
+
+    if (!marke) {
+      return res.status(400).json({
+        message:
+          "Diqqat! Foydalanuvchi ro'yxatga olinayotgan do'kon dasturda ro'yxatga olinmagan.",
+      });
+    }
+
+    const sellers = await User.find({ type: 'Seller', market })
+      .select('firstname lastname market type login phone')
+      .sort({ _id: -1 });
+
+    res.status(201).send(sellers);
+  } catch (error) {
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };

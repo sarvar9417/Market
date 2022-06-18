@@ -42,6 +42,8 @@ export const Incoming = () => {
   //====================================================================
   // MODAL
   const [modal, setModal] = useState(false);
+  const [modal2, setModal2] = useState(false);
+  const [modal3, setModal3] = useState(false);
   //====================================================================
   //====================================================================
 
@@ -142,122 +144,6 @@ export const Incoming = () => {
 
   //====================================================================
   //====================================================================
-  // CATEGORYS
-  // const [categorys, setCategorys] = useState([]);
-
-  // const getCategorys = useCallback(async () => {
-  //   try {
-  //     const data = await request(
-  //       `/api/products/category/getall`,
-  //       'POST',
-  //       { market: auth.market._id },
-  //       {
-  //         Authorization: `Bearer ${auth.token}`,
-  //       }
-  //     );
-  //     let s = [
-  //       {
-  //         label: 'Barcha kategriyalar',
-  //         value: 'all',
-  //       },
-  //     ];
-  //     data.map((category) => {
-  //       return s.push({
-  //         label: (
-  //           <span className='flex justify-between font-bold'>
-  //             <span>{category.code}</span>
-  //             <span>{category.name && category.name}</span>
-  //           </span>
-  //         ),
-  //         value: category._id,
-  //       });
-  //     });
-  //     setCategorys(s);
-  //   } catch (error) {
-  //     notify({
-  //       title: error,
-  //       description: '',
-  //       status: 'error',
-  //     });
-  //   }
-  // }, [request, auth, notify]);
-
-  // const changeCategory = (e) => {
-  //   if (e.value === 'all') {
-  //     setProductType(productTypes);
-  //     setProducts(allproducts);
-  //   } else {
-  //     const filter = productTypes.filter((producttype) => {
-  //       return (
-  //         producttype.value !== 'all' &&
-  //         producttype.producttype.category === e.value
-  //       );
-  //     });
-  //     const filter2 = allproducts.filter(
-  //       (product) => product.category === e.value
-  //     );
-  //     setProductType(filter);
-  //     setProducts(filter2);
-  //   }
-  // };
-  // //====================================================================
-  // //====================================================================
-
-  // //====================================================================
-  // //====================================================================
-  // // PRODUCTTYPE
-  // const [productType, setProductType] = useState([]);
-  // const [productTypes, setProductTypes] = useState([]);
-  // const getProductType = useCallback(async () => {
-  //   try {
-  //     const data = await request(
-  //       `/api/products/producttype/getincoming`,
-  //       'POST',
-  //       { market: auth.market._id },
-  //       {
-  //         Authorization: `Bearer ${auth.token}`,
-  //       }
-  //     );
-  //     let s = [
-  //       {
-  //         label: 'Barcha mahsulot turlari',
-  //         value: 'all',
-  //       },
-  //     ];
-  //     data.map((producttype) => {
-  //       return s.push({
-  //         label: producttype.name,
-  //         value: producttype._id,
-  //         producttype: { ...producttype },
-  //       });
-  //     });
-  //     setProductType(s);
-  //     setProductTypes(s);
-  //   } catch (error) {
-  //     notify({
-  //       title: error,
-  //       description: '',
-  //       status: 'error',
-  //     });
-  //   }
-  // }, [request, auth, notify]);
-
-  // const changeProductType = (e) => {
-  //   if (e.value === 'all') {
-  //     setProducts(allproducts);
-  //   } else {
-  //     const filter = allproducts.filter(
-  //       (produc) =>
-  //         produc && produc.product && produc.product.producttype === e.value
-  //     );
-  //     setProducts(filter);
-  //   }
-  // };
-  //====================================================================
-  //====================================================================
-
-  //====================================================================
-  //====================================================================
   // Product
   const [allproducts, setAllProducts] = useState([]);
   const [products, setProducts] = useState([]);
@@ -319,9 +205,6 @@ export const Incoming = () => {
         supplier: '',
         product: {},
         unit: '',
-        // category: '',
-        // producttype: '',
-        // brand: '',
       });
     }
     for (const i in incomings) {
@@ -355,6 +238,7 @@ export const Incoming = () => {
     });
     setModal(true);
   };
+
   const addIncoming = () => {
     if (incoming.pieces === 0 || incoming.pieces === '') {
       return notify({
@@ -381,9 +265,6 @@ export const Incoming = () => {
       supplier: '',
       product: {},
       unit: '',
-      // category: '',
-      // producttype: '',
-      // brand: '',
     });
     setModal(false);
   };
@@ -552,6 +433,7 @@ export const Incoming = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+      console.log(data);
       setCountData(data.count);
       setSearchStorage(data.incomings);
       setCurrentImports(data.incomings);
@@ -657,15 +539,6 @@ export const Incoming = () => {
     setSearch({ ...search, supplier: e.target.value });
   };
 
-  // const searchCategoryTable = (e) => {
-  //   const searching = searchStorage.filter(
-  //     (item) =>
-  //       String(item.category.code).includes(e.target.value) ||
-  //       String(item.product.code).includes(e.target.value)
-  //   );
-  //   setCurrentImports(searching.slice(0, countPage));
-  // };
-
   const searchProduct = (e) => {
     const searching = searchStorage.filter((item) =>
       item.product.name.toLowerCase().includes(e.target.value.toLowerCase())
@@ -682,13 +555,6 @@ export const Incoming = () => {
     setSearch({ ...search, code: e.target.value });
   };
 
-  // const searchBrand = (e) => {
-  //   const searching = searchStorage.filter((item) =>
-  //     item.brand.name.toLowerCase().includes(e.target.value.toLowerCase())
-  //   );
-  //   setCurrentImports(searching.slice(0, countPage));
-  // };
-
   //====================================================================
   //====================================================================
   const setPageSize = useCallback((e) => {
@@ -703,22 +569,22 @@ export const Incoming = () => {
       let val = e.target.value;
       setIncoming({
         ...incoming,
-        pieces: val === '' ? '' : Math.round(val * 100) / 100,
+        pieces: val === '' ? '' : Math.round(val * 10000) / 10000,
         totalprice:
           val === ''
             ? ''
-            : Math.round(incoming.unitprice * e.target.value * 100) / 100,
+            : Math.round(incoming.unitprice * e.target.value * 10000) / 10000,
       });
     }
     if (e.target.name === 'unitprice') {
       let val = e.target.value;
       setIncoming({
         ...incoming,
-        unitprice: val === '' ? '' : Math.round(val * 100) / 100,
+        unitprice: val === '' ? '' : Math.round(val * 10000) / 10000,
         totalprice:
           val === ''
             ? '0'
-            : Math.round(e.target.value * incoming.pieces * 100) / 100,
+            : Math.round(e.target.value * incoming.pieces * 10000) / 10000,
       });
     }
     if (e.target.name === 'totalprice') {
@@ -728,8 +594,8 @@ export const Incoming = () => {
         unitprice:
           val === '' || val === 0
             ? ''
-            : Math.round((e.target.value / incoming.pieces) * 100) / 100,
-        totalprice: val === '' ? '' : Math.round(val * 100) / 100,
+            : Math.round((e.target.value / incoming.pieces) * 10000) / 10000,
+        totalprice: val === '' ? '' : Math.round(val * 10000) / 10000,
       });
     }
   };
@@ -806,6 +672,7 @@ export const Incoming = () => {
         description: '',
         status: 'success',
       });
+      getImports();
     } catch (error) {
       notify({
         title: error,
@@ -825,6 +692,7 @@ export const Incoming = () => {
     notify,
     clearSelect,
     daily,
+    getImports,
   ]);
 
   //====================================================================
@@ -846,11 +714,172 @@ export const Incoming = () => {
   };
   //====================================================================
   //====================================================================
+  const [editProduct, setEditProduct] = useState({});
+  const [deleteProduct, setDeleteProduct] = useState({});
 
+  const changeEditProduct = (e) => {
+    setEditProduct(e);
+    setModal2(true);
+  };
+
+  const changeDeleteProduct = (e) => {
+    setDeleteProduct(e);
+    setModal3(true);
+  };
+
+  const editHandler = (e) => {
+    if (e.target.name === 'pieces') {
+      let val = e.target.value;
+      setEditProduct({
+        ...editProduct,
+        pieces: val === '' ? '' : Math.round(val * 10000) / 10000,
+        totalprice:
+          val === ''
+            ? ''
+            : Math.round(editProduct.unitprice * e.target.value * 10000) /
+              10000,
+      });
+    }
+    if (e.target.name === 'unitprice') {
+      let val = e.target.value;
+      setEditProduct({
+        ...editProduct,
+        unitprice: val === '' ? '' : Math.round(val * 10000) / 10000,
+        totalprice:
+          val === ''
+            ? '0'
+            : Math.round(e.target.value * editProduct.pieces * 10000) / 10000,
+      });
+    }
+    if (e.target.name === 'totalprice') {
+      let val = e.target.value;
+      setEditProduct({
+        ...editProduct,
+        unitprice:
+          val === '' || val === 0
+            ? ''
+            : Math.round((e.target.value / editProduct.pieces) * 10000) / 10000,
+        totalprice: val === '' ? '' : Math.round(val * 10000) / 10000,
+      });
+    }
+  };
+
+  const editProductHandler = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/products/incoming/update`,
+        'PUT',
+        {
+          market: auth.market._id,
+          product: editProduct,
+          startDate: beginDay,
+          endDate: endDay,
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setEditProduct({});
+      setConnectors(data);
+      daily(data);
+      clearSelect();
+      setIncomings([]);
+      setIncoming({
+        totalprice: 0,
+        unitprice: 0,
+        pieces: 0,
+        user: auth.userId,
+        supplier: '',
+        product: {},
+        unit: '',
+      });
+      setModal2(false);
+      notify({
+        title: `Mahsulot tahrirlandi!`,
+        description: '',
+        status: 'success',
+      });
+      getImports();
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [
+    auth,
+    request,
+    beginDay,
+    endDay,
+    setIncomings,
+    setIncoming,
+    notify,
+    clearSelect,
+    daily,
+    getImports,
+    editProduct,
+  ]);
+
+  const deleteProductHandler = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/products/incoming/delete`,
+        'DELETE',
+        {
+          market: auth.market._id,
+          product: deleteProduct,
+          startDate: beginDay,
+          endDate: endDay,
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setDeleteProduct({});
+      setConnectors(data);
+      daily(data);
+      clearSelect();
+      setIncomings([]);
+      setIncoming({
+        totalprice: 0,
+        unitprice: 0,
+        pieces: 0,
+        user: auth.userId,
+        supplier: '',
+        product: {},
+        unit: '',
+      });
+      setModal3(false);
+      notify({
+        title: `Mahsulot o'chirildi!`,
+        description: '',
+        status: 'success',
+      });
+      getImports();
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [
+    auth,
+    request,
+    beginDay,
+    endDay,
+    setIncomings,
+    setIncoming,
+    notify,
+    clearSelect,
+    daily,
+    getImports,
+    deleteProduct,
+  ]);
   //====================================================================
   //====================================================================
   // useEffect
-
   const [n, setN] = useState(0);
   useEffect(() => {
     if (auth.market && !n) {
@@ -858,21 +887,8 @@ export const Incoming = () => {
       getSuppliers();
       getProducts();
       getConnectorCount();
-      // getCategorys();
-      // getProductType();
-      // getBrand();
     }
-  }, [
-    auth,
-    getSuppliers,
-    n,
-    getProducts,
-    getConnectorCount,
-    beginDay,
-    endDay,
-    // getProductType,
-    // getCategorys,
-  ]);
+  }, [auth, getSuppliers, n, getProducts, getConnectorCount, beginDay, endDay]);
 
   useEffect(() => {
     getIncomingConnectors();
@@ -898,11 +914,7 @@ export const Incoming = () => {
           editIncoming={editIncoming}
           incoming={incoming}
           changeProduct={changeProduct}
-          // changeCategory={changeCategory}
-          // changeProductType={changeProductType}
           products={products}
-          // categorys={categorys}
-          // productType={productType}
           loading={loading}
           suppliers={suppliers}
           supplier={supplier}
@@ -927,6 +939,8 @@ export const Incoming = () => {
         </div>
         <div className={visibleTable ? 'min-w-[990px]' : 'hidden'}>
           <TableIncoming
+            changeDeleteProduct={changeDeleteProduct}
+            changeEditProduct={changeEditProduct}
             searchKeypress={searchKeypress}
             searchProductCode={searchProductCode}
             getImportsExcel={getImportsExcel}
@@ -956,6 +970,22 @@ export const Incoming = () => {
         setModal={setModal}
         handler={addIncoming}
         text={<ModalTable incoming={incoming} inputHandler={inputHandler} />}
+      />
+
+      <Modal
+        setModal={setModal2}
+        modal={modal2}
+        text={<ModalTable incoming={editProduct} inputHandler={editHandler} />}
+        handler={editProductHandler}
+      />
+
+      <Modal
+        setModal={setModal3}
+        modal={modal3}
+        basic={`${
+          deleteProduct.product && deleteProduct.product.name
+        } qabul qilingan mahsulotini o'chirishni tasdiqlaysizmi?`}
+        handler={deleteProductHandler}
       />
     </div>
   );

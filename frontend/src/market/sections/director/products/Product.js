@@ -77,9 +77,6 @@ export const Product = () => {
     sellingprice: 0,
   });
   const sections = [
-    // { name: t('Kategoriya kodi'), value: 'category' },
-    // { name: t('Mahsulot turi'), value: 'producttype' },
-    // { name: t('Brend'), value: 'brand' },
     { name: t('Mahsulot kodi'), value: 'code' },
     { name: t('Mahsulot nomi'), value: 'name' },
     { name: t("O'lchov birligi"), value: 'unit' },
@@ -98,18 +95,7 @@ export const Product = () => {
     for (const input of inputs) {
       input.value = '';
     }
-    // selectRef.category.current.selectOption({
-    //   label: 'Kategoriya',
-    //   value: 'delete',
-    // });
-    // selectRef.producttype.current.selectOption({
-    //   label: 'Mahsulot',
-    //   value: 'delete',
-    // });
-    // selectRef.brand.current.selectOption({
-    //   label: 'Brand',
-    //   value: 'delete',
-    // });
+
     selectRef.unit.current.selectOption({
       label: "O'lchov birligi",
       value: 'delete',
@@ -122,22 +108,13 @@ export const Product = () => {
       incomingprice: 0,
       sellingprice: 0,
     });
-  }, [
-    auth,
-    // selectRef.category,
-    // selectRef.producttype,
-    // selectRef.brand,
-    selectRef.unit,
-  ]);
+  }, [auth, selectRef.unit]);
   //====================================================================
   //====================================================================
   const [productsCount, setProductsCount] = useState(0);
   const [search, setSearch] = useState({
     code: '',
     name: '',
-    // categorycode: '',
-    // producttype: '',
-    // brand: '',
   });
   const [sendingsearch, setSendingSearch] = useState({});
   //====================================================================
@@ -215,56 +192,6 @@ export const Product = () => {
 
   //====================================================================
   //====================================================================
-  // const [categories, setCategories] = useState([]);
-
-  // const getCategories = useCallback(async () => {
-  //   try {
-  //     const data = await request(
-  //       `/api/products/category/getall`,
-  //       'POST',
-  //       { market: auth.market._id },
-  //       {
-  //         Authorization: `Bearer ${auth.token}`,
-  //       }
-  //     );
-  //     let s = [
-  //       {
-  //         label: 'Kategoriya',
-  //         value: 'delete',
-  //       },
-  //     ];
-  //     data.map((category) => {
-  //       return s.push({
-  //         label: category.code,
-  //         value: category._id,
-  //       });
-  //     });
-  //     setCategories(s);
-  //   } catch (error) {
-  //     notify({
-  //       title: error,
-  //       description: '',
-  //       status: 'error',
-  //     });
-  //   }
-  // }, [request, auth, notify]);
-
-  // const changeCategory = (e) => {
-  //   if (e.value === 'delete') {
-  //     // setProductTypes(allproducttypes);
-  //     setProduct({ ...product, category: null });
-  //   }
-  //   setProduct({ ...product, category: e.value });
-  //   // const filter = allproducttypes.filter((item) => {
-  //   //   return item.producttype && item.producttype.category === e.value;
-  //   // });
-  //   // setProductTypes(filter);
-  // };
-  //====================================================================
-  //====================================================================
-
-  //====================================================================
-  //====================================================================
 
   const [units, setUnits] = useState([]);
 
@@ -309,98 +236,6 @@ export const Product = () => {
 
   //====================================================================
   //====================================================================
-
-  // //====================================================================
-  // //====================================================================
-  // const [producttypes, setProductTypes] = useState();
-  // const [allproducttypes, setAllProductTypes] = useState();
-  // const getProductTypes = useCallback(async () => {
-  //   try {
-  //     const data = await request(
-  //       `/api/products/product/getproducttypes`,
-  //       'POST',
-  //       { market: auth.market._id },
-  //       {
-  //         Authorization: `Bearer ${auth.token}`,
-  //       }
-  //     );
-  //     let s = [
-  //       {
-  //         label: 'Mahsulot turi',
-  //         value: 'delete',
-  //       },
-  //     ];
-  //     data.map((producttype) => {
-  //       return s.push({
-  //         label: producttype.name,
-  //         value: producttype._id,
-  //         producttype: { ...producttype },
-  //       });
-  //     });
-  //     setProductTypes(s);
-  //     setAllProductTypes(s);
-  //   } catch (error) {
-  //     notify({
-  //       title: error,
-  //       description: '',
-  //       status: 'error',
-  //     });
-  //   }
-  // }, [request, auth, notify]);
-
-  // const changeProductType = (e) => {
-  //   if (e.value === 'delete') {
-  //     setProduct({ ...product, producttype: null });
-  //   }
-  //   setProduct({ ...product, producttype: e.value });
-  // };
-
-  //====================================================================
-  //====================================================================
-
-  //====================================================================
-  //====================================================================
-  // const [brands, setBrands] = useState([]);
-  // const getBrand = useCallback(async () => {
-  //   try {
-  //     const data = await request(
-  //       `/api/products/brand/getall`,
-  //       'POST',
-  //       { market: auth.market._id },
-  //       {
-  //         Authorization: `Bearer ${auth.token}`,
-  //       }
-  //     );
-  //     let s = [
-  //       {
-  //         label: 'Brend',
-  //         value: 'delete',
-  //       },
-  //     ];
-  //     data.map((brand) => {
-  //       return s.push({
-  //         label: brand.name,
-  //         value: brand._id,
-  //       });
-  //     });
-  //     setBrands(s);
-  //   } catch (error) {
-  //     notify({
-  //       title: error,
-  //       description: '',
-  //       status: 'error',
-  //     });
-  //   }
-  // }, [request, auth, notify]);
-  // const changeBrand = (e) => {
-  //   if (e.value === 'delete') {
-  //     setProduct({ ...product, brand: null });
-  //   }
-  //   setProduct({ ...product, brand: e.value });
-  // };
-  //====================================================================
-  //====================================================================
-
   //====================================================================
   //====================================================================
 
@@ -501,7 +336,7 @@ export const Product = () => {
       return createHandler();
     }
   };
-  
+
   const keyPressed = (e) => {
     if (e.key === 'Enter') {
       return saveHandler();
@@ -689,8 +524,6 @@ export const Product = () => {
   // const [changedCurrentPage, setChangedCurrentPage] = useState(currentPage);
   useEffect(() => {
     getProducts();
-    // if (currentPage > changedCurrentPage || currentPage < changedCurrentPage) {
-    // setChangedCurrentPage(currentPage);
   }, [getProducts, currentPage, countPage, sendingsearch]);
 
   const [n, setN] = useState();
@@ -699,9 +532,6 @@ export const Product = () => {
       setN(1);
       getUnits();
       getProducts();
-      // getCategories();
-      // getProductTypes();
-      // getBrand();
     }
   }, [getUnits, n, getProducts]);
 
@@ -713,10 +543,6 @@ export const Product = () => {
       {loading ? <Loader /> : ''}
       <div className='overflow-x-auto'>
         <CreateProduct
-          // changeCategory={changeCategory}
-          // producttypes={producttypes}
-          // changeProductType={changeProductType}
-          // categories={categories}
           setProduct={setProduct}
           product={product}
           keyPressed={keyPressed}
@@ -724,9 +550,7 @@ export const Product = () => {
           saveHandler={saveHandler}
           loading={loading}
           units={units}
-          // brands={brands}
           clearInputs={clearInputs}
-          // changeBrand={changeBrand}
           changeUnit={changeUnit}
           selectRef={selectRef}
         />
@@ -734,12 +558,10 @@ export const Product = () => {
           <TableProduct
             search={search}
             getProductExcel={getProductExcel}
-            // producttypes={producttypes}
             keyPress={searchKeypress}
             setImports={setImports}
             product={product}
             changeHandler={searchProducts}
-            // categories={categories}
             products={products}
             setRemove={setRemove}
             setModal={setModal}

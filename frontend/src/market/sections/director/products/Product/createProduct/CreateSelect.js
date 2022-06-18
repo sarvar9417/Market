@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import React from 'react';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
@@ -18,7 +19,7 @@ export const CreateSelect = ({
   return (
     <>
       <ul className='thead'>
-        <li className='th col-span-12'>Mahsulotlar</li>
+        <li className='th col-span-12'>{t("Mahsulotlar")}</li>
       </ul>
       <ul className='tbody'>
         {/* <li className='td text-center bg-white font-bold col-span-3'>
@@ -91,7 +92,7 @@ export const CreateSelect = ({
               isLoading={loading}
               onChange={(e) => changeUnit(e)}
               components={animatedComponents}
-              placeholder="O'lchov birligi"
+              placeholder={t("O'lchov birligi")}
               options={units}
               theme={(theme) => ({
                 ...theme,

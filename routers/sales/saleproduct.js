@@ -47,15 +47,15 @@ module.exports.register = async (req, res) => {
       Math.round(
         saleproducts.reduce((summ, saleproduct) => {
           return summ + saleproduct.totalprice;
-        }, 0) * 100
-      ) / 100;
+        }, 0) * 10000
+      ) / 10000;
 
     const totalpriceuzs =
       Math.round(
         saleproducts.reduce((summ, saleproduct) => {
           return summ + saleproduct.totalpriceuzs;
-        }, 0) * 100
-      ) / 100;
+        }, 0) * 10000
+      ) / 10000;
 
     if (checkPayments(totalprice, payment, discount, debt)) {
       return res.status(400).json({
@@ -179,6 +179,7 @@ module.exports.register = async (req, res) => {
 
     if (payment.totalprice > 0) {
       const newPayment = new Payment({
+        comment: payment.comment,
         payment: payment.card + payment.cash + payment.transfer,
         paymentuzs: payment.carduzs + payment.cashuzs + payment.transferuzs,
         card: payment.card,
@@ -294,15 +295,15 @@ module.exports.addproducts = async (req, res) => {
       Math.round(
         saleproducts.reduce((summ, saleproduct) => {
           return summ + saleproduct.totalprice;
-        }, 0) * 100
-      ) / 100;
+        }, 0) * 10000
+      ) / 10000;
 
     const totalpriceuzs =
       Math.round(
         saleproducts.reduce((summ, saleproduct) => {
           return summ + saleproduct.totalpriceuzs;
-        }, 0) * 100
-      ) / 100;
+        }, 0) * 10000
+      ) / 10000;
 
     if (checkPayments(totalprice, payment, discount, debt)) {
       return res.status(400).json({
@@ -422,6 +423,7 @@ module.exports.addproducts = async (req, res) => {
 
     if (payment.totalprice > 0) {
       const newPayment = new Payment({
+        comment: payment.comment,
         payment: payment.card + payment.cash + payment.transfer,
         paymentuzs: payment.carduzs + payment.cashuzs + payment.transferuzs,
         card: payment.card,
@@ -526,7 +528,8 @@ module.exports.check = async (req, res) => {
 
 module.exports.getsaleconnectors = async (req, res) => {
   try {
-    const { market, countPage, currentPage, startDate, endDate } = req.body;
+    const { market, countPage, currentPage, startDate, endDate, search } =
+      req.body;
 
     const marke = await Market.findById(market);
     if (!marke) {
@@ -535,16 +538,13 @@ module.exports.getsaleconnectors = async (req, res) => {
       });
     }
 
-    const count = await SaleConnector.find({
-      market,
-      createdAt: {
-        $gte: startDate,
-        $lt: endDate,
-      },
-    }).count();
+    const id = new RegExp('.*' + search ? search.id : '' + '.*', 'i');
+
+    const name = new RegExp('.*' + search ? search.client : '' + '.*', 'i');
 
     const saleconnectors = await SaleConnector.find({
       market,
+      id,
       createdAt: {
         $gte: startDate,
         $lt: endDate,
@@ -559,19 +559,28 @@ module.exports.getsaleconnectors = async (req, res) => {
         options: { sort: { createdAt: -1 } },
         populate: {
           path: 'product',
-          select: 'category name code',
-          populate: { path: 'category', select: 'code' },
+          select: 'name code',
         },
       })
-      .populate('payments', 'payment paymentuzs')
+      .populate('payments', 'payment paymentuzs comment')
       .populate('discounts', 'discount discountuzs procient products')
       .populate('debts', 'debt debtuzs')
-      .populate('client', 'name')
-      .populate('packman', 'name')
-      .skip(currentPage * countPage)
-      .limit(countPage);
+      .populate({ path: 'client', match: { name: name }, select: 'name' })
+      .populate('packman', 'name');
 
-    res.status(200).json({ saleconnectors, count });
+    const filter = saleconnectors.filter((item) => {
+      return (
+        (search.client.length > 0 && item.client !== null && item.client) ||
+        search.client.length === 0
+      );
+    });
+
+    const count = filter.length;
+
+    res.status(200).json({
+      saleconnectors: filter.splice(countPage * currentPage, countPage),
+      count,
+    });
   } catch (error) {
     res.status(400).json({ error: 'Serverda xatolik yuz berdi...' });
   }
@@ -579,7 +588,7 @@ module.exports.getsaleconnectors = async (req, res) => {
 
 module.exports.getsaleconnectorsexcel = async (req, res) => {
   try {
-    const { market, startDate, endDate } = req.body;
+    const { market, startDate, endDate, search } = req.body;
 
     const marke = await Market.findById(market);
     if (!marke) {
@@ -588,8 +597,13 @@ module.exports.getsaleconnectorsexcel = async (req, res) => {
       });
     }
 
+    const id = new RegExp('.*' + search ? search.id : '' + '.*', 'i');
+
+    const name = new RegExp('.*' + search ? search.client : '' + '.*', 'i');
+
     const saleconnectors = await SaleConnector.find({
       market,
+      id,
       createdAt: {
         $gte: startDate,
         $lt: endDate,
@@ -604,17 +618,23 @@ module.exports.getsaleconnectorsexcel = async (req, res) => {
         options: { sort: { createdAt: -1 } },
         populate: {
           path: 'product',
-          select: 'category name code',
-          populate: { path: 'category', select: 'code' },
+          select: 'name code',
         },
       })
       .populate('payments', 'payment paymentuzs')
       .populate('discounts', 'discount discountuzs procient products')
       .populate('debts', 'debt debtuzs')
-      .populate('client', 'name')
+      .populate({ path: 'client', match: { name: name }, select: 'name' })
       .populate('packman', 'name');
 
-    res.status(200).json(saleconnectors);
+    const filter = saleconnectors.filter((item) => {
+      return (
+        (search.client.length > 0 && item.client !== null && item.client) ||
+        search.client.length === 0
+      );
+    });
+
+    res.status(200).json({ saleconnectors: filter });
   } catch (error) {
     res.status(400).json({ error: 'Serverda xatolik yuz berdi...' });
   }
@@ -651,15 +671,15 @@ module.exports.registeredit = async (req, res) => {
       Math.round(
         saleproducts.reduce((summ, saleproduct) => {
           return summ + saleproduct.totalprice;
-        }, 0) * 100
-      ) / 100;
+        }, 0) * 10000
+      ) / 10000;
 
     const totalpriceuzs =
       Math.round(
         saleproducts.reduce((summ, saleproduct) => {
           return summ + saleproduct.totalpriceuzs;
-        }, 0) * 100
-      ) / 100;
+        }, 0) * 10000
+      ) / 10000;
 
     let all = [];
 
@@ -745,6 +765,7 @@ module.exports.registeredit = async (req, res) => {
     }
     if (payment.carduzs + payment.cashuzs + payment.transferuzs !== 0) {
       const newPayment = new Payment({
+        comment: payment.comment,
         payment: payment.card + payment.cash + payment.transfer,
         paymentuzs: payment.carduzs + payment.cashuzs + payment.transferuzs,
         card: payment.card,
@@ -819,6 +840,7 @@ module.exports.payment = async (req, res) => {
     const saleconnector = await SaleConnector.findById(saleconnectorid);
 
     const newPayment = new Payment({
+      comment: payment.comment,
       payment: payment.card + payment.cash + payment.transfer,
       paymentuzs: payment.carduzs + payment.cashuzs + payment.transferuzs,
       card: payment.card,

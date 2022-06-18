@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export const TableFooter = ({ sales }) => {
   return (
@@ -13,7 +13,7 @@ export const TableFooter = ({ sales }) => {
               .reduce((summ, product) => {
                 return summ + product.totalprice;
               }, 0)
-              .toLocaleString("de-DE")}{" "}
+              .toLocaleString('ru-RU')}{' '}
             USD
           </th>
         </tr>
@@ -26,7 +26,7 @@ export const TableFooter = ({ sales }) => {
               .reduce((summ, payment) => {
                 return summ + payment.payment;
               }, 0)
-              .toLocaleString("de-DE")}{" "}
+              .toLocaleString('ru-RU')}{' '}
             USD
           </th>
         </tr>
@@ -39,7 +39,7 @@ export const TableFooter = ({ sales }) => {
               .reduce((summ, discount) => {
                 return summ + discount.discount;
               }, 0)
-              .toLocaleString("de-DE")}{" "}
+              .toLocaleString('ru-RU')}{' '}
             USD
           </th>
         </tr>
@@ -58,7 +58,7 @@ export const TableFooter = ({ sales }) => {
               sales.discounts.reduce((summ, discount) => {
                 return summ + discount.discount;
               }, 0)
-            ).toLocaleString("de-DE")}{" "}
+            ).toLocaleString('ru-RU')}{' '}
             USD
           </th>
         </tr>

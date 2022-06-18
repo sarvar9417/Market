@@ -52,22 +52,22 @@ module.exports.get = async (req, res) => {
       }, 0);
 
       const d =
-        Math.round(totalprice * 100) / 100 -
-        Math.round(payments * 100) / 100 -
-        Math.round(discounts * 100) / 100;
+        Math.round(totalprice * 10000) / 10000 -
+        Math.round(payments * 10000) / 10000 -
+        Math.round(discounts * 10000) / 10000;
 
-      if (d !== 0) {
-        debt.debt = Math.round(d * 100) / 100;
+      if (d > 0.01 || d < -0.01) {
+        debt.debt = Math.round(d * 10000) / 10000;
         alldebts.push({
           _id: debt._id,
           id: debt.id,
           client: debt.client,
           createdAt: debt.createdAt,
-          debt: Math.round(d * 100) / 100,
+          debt: Math.round(d * 10000) / 10000,
         });
       }
 
-      total += Math.round(d * 100) / 100;
+      total += Math.round(d * 10000) / 10000;
     });
 
     const count = alldebts.length;
@@ -124,18 +124,18 @@ module.exports.getexcel = async (req, res) => {
       }, 0);
 
       const d =
-        Math.round(totalprice * 100) / 100 -
-        Math.round(payments * 100) / 100 -
-        Math.round(discounts * 100) / 100;
+        Math.round(totalprice * 10000) / 10000 -
+        Math.round(payments * 10000) / 10000 -
+        Math.round(discounts * 10000) / 10000;
 
-      if (d !== 0) {
-        debt.debt = Math.round(d * 100) / 100;
+      if (d > 0.1 || d < -0.1) {
+        debt.debt = Math.round(d * 10000) / 10000;
         alldebts.push({
           _id: debt._id,
           id: debt.id,
           client: debt.client,
           createdAt: debt.createdAt,
-          debt: Math.round(d * 100) / 100,
+          debt: Math.round(d * 10000) / 10000,
         });
       }
     });

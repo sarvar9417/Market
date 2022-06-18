@@ -1,15 +1,14 @@
-import React from "react";
-import { LeftCard } from "./LeftCard";
-import { RightBody } from "./RightBody";
-import { CardHeader } from "./CardHeader";
+import React from 'react';
+import { LeftCard } from './LeftCard';
+import { RightBody } from './RightBody';
+import { CardHeader } from './CardHeader';
 
 export const PrePaymentCard = ({
+  prePaymentComment,
   prePaymentSaleConnector,
   totalpriceuzs,
   exchangerate,
   checkHandler,
-  // discount,
-  // changeProcient,
   changeHandler,
   paymentType,
   typeHandler,
@@ -29,10 +28,9 @@ export const PrePaymentCard = ({
       />
       <div className='grid grid-cols-1 md:grid-cols-2'>
         <LeftCard
+          prePaymentComment={prePaymentComment}
           exchangerate={exchangerate}
           checkHandler={checkHandler}
-          // discount={discount}
-          // changeProcient={changeProcient}
           changeHandler={changeHandler}
           paymentType={paymentType}
           totalprice={totalprice}
@@ -42,7 +40,6 @@ export const PrePaymentCard = ({
           exchangerate={exchangerate}
           typeHandler={typeHandler}
           payment={payment}
-          // discount={discount}
           debt={debt}
         />
       </div>

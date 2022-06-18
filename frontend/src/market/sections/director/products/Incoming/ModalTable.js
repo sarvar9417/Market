@@ -5,9 +5,7 @@ export const ModalTable = ({ incoming, inputHandler }) => {
   return (
     <>
       <div className='font-bold text-black mb-1'>
-        {incoming &&
-          incoming.category &&
-          incoming.category.code + ' ' + incoming.product.name}
+        Mahsulot: {incoming.product && incoming.product.name}
       </div>
       <div className='table-responsive'>
         <table className='table'>
@@ -45,7 +43,7 @@ export const ModalTable = ({ incoming, inputHandler }) => {
               <td className='border m-0 px-3 py-2 font-bold text-center'>
                 <input
                   onChange={inputHandler}
-                  value={incoming ? incoming.totalprice : 0}
+                  value={incoming.totalprice}
                   type='number'
                   style={{ maxWidth: '100px' }}
                   className='outline-none text-right w-full font-bold text-black'
@@ -53,19 +51,13 @@ export const ModalTable = ({ incoming, inputHandler }) => {
                 />
               </td>
               <td className='border m-0 px-3 py-2 font-bold text-center text-red-600'>
-                {Math.round(incoming.oldprice * 100) / 100} USD
+                {incoming.oldprice &&
+                  Math.round(incoming.oldprice * 10000) / 10000}{' '}
+                USD
               </td>
             </tr>
           </tbody>
         </table>
-        {/* <div className="">
-                <button
-                  onClick={addIncoming}
-                  className="bg-emerald-600 text-white px-4 py-1 rounded hover:bg-emerald-500"
-                >
-                  +
-                </button>
-              </div> */}
       </div>
     </>
   );

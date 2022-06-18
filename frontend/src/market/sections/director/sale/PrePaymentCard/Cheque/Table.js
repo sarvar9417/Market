@@ -45,13 +45,13 @@ export const Table = ({ sales }) => {
                 {product.product.name}
               </td>
               <td className='font-bold text-right border border-black py-1 px-2'>
-                {product.pieces.toLocaleString('de-DE')}
+                {product.pieces.toLocaleString('ru-RU')}
               </td>
               <td className='font-bold text-right border border-black py-1 px-2'>
-                {product.unitprice.toLocaleString('de-DE')} USD
+                {product.unitprice.toLocaleString('ru-RU')} USD
               </td>
               <td className='font-bold text-right border border-black py-1 px-2 text-teal-900'>
-                {product.totalprice.toLocaleString('de-DE')} USD
+                {product.totalprice.toLocaleString('ru-RU')} USD
               </td>
             </tr>
           );

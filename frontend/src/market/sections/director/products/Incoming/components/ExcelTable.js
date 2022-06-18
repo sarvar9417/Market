@@ -36,14 +36,14 @@ export const ExcelTable = ({ data }) => {
                 <td className='border-right'>{p.product.code}</td>
                 <td className='border-right'>{p.product.name}</td>
                 <td className='border-right'>
-                  {Math.round(p.pieces * 100) / 100}
+                  {Math.round(p.pieces * 10000) / 10000}
                 </td>
                 <td>{p.unit.name}</td>
                 <td className='border-right'>
-                  {Math.round(p.unitprice * 100) / 100}
+                  {Math.round(p.unitprice * 10000) / 10000}
                 </td>
                 <td className='border-right'>
-                  {Math.round(p.totalprice * 100) / 100}
+                  {Math.round(p.totalprice * 10000) / 10000}
                 </td>
               </tr>
             ))}

@@ -33,7 +33,7 @@ export const Table = ({ editSaleConnector, saleproducts, changeBack }) => {
                   {product.pieces}
                 </td>
                 <td className='border font-bold text-black text-right px-2 w-36'>
-                  {product.totalprice.toLocaleString('de-DE')}{' '}
+                  {product.totalprice.toLocaleString('ru-RU')}{' '}
                   <span className='text-teal-600'>USD</span>
                 </td>
                 <td className='border font-bold text-black text-right px-2 w-20'>
@@ -46,7 +46,7 @@ export const Table = ({ editSaleConnector, saleproducts, changeBack }) => {
                   />
                 </td>
                 <td className='border font-bold text-black text-right px-2 w-36'>
-                  {saleproducts[index].totalprice.toLocaleString('de-DE')}{' '}
+                  {saleproducts[index].totalprice.toLocaleString('ru-RU')}{' '}
                   <span className='text-teal-600'>USD</span>
                 </td>
               </tr>
