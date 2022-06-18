@@ -530,7 +530,7 @@ module.exports.getProducts = async (req, res) => {
         .json({ message: "Diqqat! Do'kon malumotlari topilmadi" });
     }
 
-    const code = new RegExp('.*' + '101' + '.*', 'i');
+    const code = new RegExp('.*' + search ? search.code : '' + '.*', 'i');
     const name = new RegExp('.*' + search ? search.name : '' + '.*', 'i');
 
     // const sinov = await Product.aggregate([
