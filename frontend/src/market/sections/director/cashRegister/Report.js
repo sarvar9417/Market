@@ -10,14 +10,21 @@ import { useReactToPrint } from 'react-to-print';
 import { AuthContext } from '../../../context/AuthContext';
 import { useHttp } from '../../../hooks/http.hook';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPrint } from '@fortawesome/free-solid-svg-icons';
+import { faPrint, faCircleInfo } from '@fortawesome/free-solid-svg-icons';
+import { PrintReport } from './PrintReport';
+import { Link, Redirect, Route, Switch } from 'react-router-dom';
+import { Debts } from '../sale/Debts';
+import { Discounts } from '../sale/Discounts';
+import { Payments } from '../sale/Payments';
+import { PaymentsReport } from './PaymentsReport';
+import { Loader } from '../../../loader/Loader';
 
 export const Report = () => {
   //========================================================
   //========================================================
 
   const auth = useContext(AuthContext);
-  const { request } = useHttp();
+  const { request, loading } = useHttp();
 
   //========================================================
   //========================================================
@@ -44,15 +51,35 @@ export const Report = () => {
   const [startDate, setStartDate] = useState(
     new Date(new Date().setUTCMonth(new Date().getMonth() - 1)).toISOString()
   );
-
   const [endDate, setEndDate] = useState(new Date().toISOString());
 
   //========================================================
   //========================================================
 
-  const [salesReport, setSalesReport] = useState({});
-  const [productsReport, setProductsReport] = useState({});
-  const [incomingsReport, setIncomingsReport] = useState({});
+  const [isPrint, setIsPrint] = useState(false);
+  const [paymentType, setPaymentType] = useState('');
+
+  //========================================================
+  //========================================================
+
+  const [salesReport, setSalesReport] = useState({
+    totalpayments: 0,
+    totalcash: 0,
+    totalcard: 0,
+    totaltransfer: 0,
+    salescount: 0,
+  });
+
+  const [productsReport, setProductsReport] = useState({
+    productscount: 0,
+    totalprice: 0,
+    totalproducts: 0,
+  });
+
+  const [incomingsReport, setIncomingsReport] = useState({
+    incomingsCount: 0,
+    totalIncomingsPrice: 0,
+  });
 
   const getSalesReport = useCallback(async () => {
     try {
@@ -68,6 +95,7 @@ export const Report = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+
       setSalesReport(data);
     } catch (error) {
       notify({
@@ -81,15 +109,16 @@ export const Report = () => {
   const getProductReport = useCallback(async () => {
     try {
       const data = await request(
-        '/api/reports/product',
+        '/api/reports/products',
         'POST',
         {
-          market: auth && auth.market._id,
+          market: auth.market._id,
         },
         {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+
       setProductsReport(data);
     } catch (error) {
       notify({
@@ -114,6 +143,7 @@ export const Report = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+
       setIncomingsReport(data);
     } catch (error) {
       notify({
@@ -123,6 +153,53 @@ export const Report = () => {
       });
     }
   }, [auth, request, notify, startDate, endDate]);
+
+  //========================================================
+  //========================================================
+
+  const [debtsReport, setDebtsReport] = useState({
+    debtcount: 0,
+    debttotal: 0,
+  });
+
+  const [discountsReport, setDiscountsReport] = useState({
+    discountcount: 0,
+    discounttotal: 0,
+  });
+
+  const getDebtAndDiscountReports = useCallback(async () => {
+    try {
+      const data = await request(
+        '/api/reports/debtdiscount',
+        'POST',
+        {
+          market: auth.market && auth.market._id,
+          startDate,
+          endDate,
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setDiscountsReport({
+        discountcount: data.discountcount,
+        discounttotal: data.discounttotal,
+      });
+      setDebtsReport({
+        debtcount: data.debtcount,
+        debttotal: data.debttotal,
+      });
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [auth, request, notify, startDate, endDate]);
+
+  //========================================================
+  //========================================================
 
   const [baseUrl, setBaseUrl] = useState();
 
@@ -163,10 +240,12 @@ export const Report = () => {
     getSalesReport();
     getProductReport();
     getIncomingsReport();
+    getDebtAndDiscountReports();
   }, [
     getSalesReport,
     getProductReport,
     getIncomingsReport,
+    getDebtAndDiscountReports,
     startDate,
     endDate,
   ]);
@@ -186,7 +265,9 @@ export const Report = () => {
 
   //========================================================
   //========================================================
-
+  if (loading) {
+    return <Loader />;
+  }
   return (
     <div className='m-3 p-4'>
       <div className='grid grid-cols-12 px-20 mb-10'>
@@ -209,150 +290,279 @@ export const Report = () => {
         <div className='col-end-13 col-span-3 text-right'>
           <button
             className='bg-blue-700 hover:bg-blue-800 text-white m-auto px-10 py-1 text-lg rounded mr-4'
-            onClick={print}
+            onClick={() => setIsPrint(true)}
           >
             <FontAwesomeIcon icon={faPrint} />
           </button>
         </div>
       </div>
-      <div className='a4 m-auto w-[27cm] p-4' ref={componentRef}>
-        <div className='w-full flex justify-between items-center px-6'>
-          <div className='text-blue-700 text-center'>
-            <div className='font-serif text-4xl font-bold'>ОТЧЕТ</div>
-            <div className='font-medium text-2xl'>
-              {new Date(startDate).toLocaleDateString()} -{' '}
-              {new Date(endDate).toLocaleDateString()}
-            </div>
-          </div>
-          <div className='flex justify-center items-center gap-4 mb-4'>
-            <img
-              src={
-                baseUrl &&
-                `${baseUrl}/api/upload/file/${auth && auth.market.image}`
-              }
-              alt='market'
-            />
-          </div>
-        </div>
-        <div className='grid grid-cols-12 border-2 border-blue-700 py-4 mb-8'>
-          <div className='col-span-4 flex flex-col items-center'>
-            <span className='text-2xl font-bold text-black'>
-              {salesReport.salescount || 0}
-            </span>
-            <p className='text-xl font-medium'>Количество продаж</p>
-          </div>
-          <div className='col-span-4 flex flex-col items-center'>
-            <span className='text-2xl font-bold text-black'>
-              {String(salesReport.totalpayments) || 0} $
-            </span>
-            <p className='text-xl font-medium'>Общая сумма продаж</p>
-          </div>
-          <div className='col-span-4 flex flex-col items-center'>
-            <span className='text-2xl font-bold text-red-400 '>{123456} $</span>
-            <p className='text-xl font-medium'>Общая сумма расходов</p>
-          </div>
-        </div>
-        <div className='grid grid-cols-12 mb-12'>
-          <div className='col-span-7'>
-            <table className='table-auto border-2 border-blue-700 w-full'>
-              <thead>
-                <tr>
-                  <th className='border-2 border-blue-700 py-2 px-4'>
-                    Количество продаж
-                  </th>
-                  <th className='border-2 border-blue-700 py-2 px-2 text-right text-base font-medium'>
-                    {salesReport.salescount || 0}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className='border-2 border-blue-700 py-2 px-4 text-lg font-bold'>
-                    Наличнами
-                  </td>
-                  <td className='border-2 border-blue-700 py-2 px-2 text-right text-base font-medium'>
-                    {parseFloat(salesReport.totalpayments) || 0} $
-                  </td>
-                </tr>
-                <tr>
-                  <td className='border-2 border-blue-700 py-2 px-4 text-lg font-bold'>
-                    По карте
-                  </td>
-                  <td className='border-2 border-blue-700 py-2 px-2 text-right text-base font-medium'>
-                    {salesReport.totalcard || 0} $
-                  </td>
-                </tr>
-                <tr>
-                  <td className='border-2 border-blue-700 py-2 px-4 text-lg font-bold'>
-                    Перевод
-                  </td>
-                  <td className='border-2 border-blue-700 py-2 px-2 text-right text-base font-medium'>
-                    {salesReport.totaltransfer || 0} $
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div className='col-span-5 flex flex-col items-center justify-center'>
-            <span className='text-4xl font-bold text-green-500'>44 000 $</span>
-            <p className='text-2xl font-medium text-blue-700'>Чистая прибыль</p>
-          </div>
-        </div>
-        <div className='grid grid-cols-12 border-2 border-blue-700 py-4 mb-6'>
-          <div className='col-span-4 flex flex-col items-center'>
-            <span className='text-xl font-bold text-black'>
-              {salesReport.salescount || 0}
-            </span>
-            <p className='text-lg font-medium'>Количество продаж</p>
-          </div>
-          <div className='col-span-4 flex flex-col items-center'>
-            <span className='text-xl font-bold text-black'>
-              {productsReport.productscount || 0}{' '}
-            </span>
-            <p className='text-lg font-medium'>Общее количество товаров</p>
-          </div>
-          <div className='col-span-4 flex flex-col items-center text-center'>
-            <span className='text-xl font-bold text-black'>
-              {productsReport.totalproducts || 0}
-            </span>
-            <p className='text-lg font-medium'>
-              Общее количество видов товаров
+
+      <div className='grid grid-cols-12 w-full mb-8 gap-4'>
+        <div className='col-span-4 flex flex-column justify-between gap-y-3'>
+          <Link
+            to='/alo24/reports/debts'
+            onClick={() => window.scroll(0, 500)}
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
+          >
+            <p className='text-white font-bold text-lg mb-2 pointer-events-none	'>
+              Долги
             </p>
-          </div>
+            <p className='text-white font-bold text-xl pointer-events-none	'>
+              {debtsReport.debtcount} {'-'}{' '}
+              {debtsReport.debttotal &&
+                debtsReport.debttotal.toLocaleString('ru-RU')}{' '}
+              $
+            </p>
+          </Link>
+          <Link
+            to='/alo24/reports/discounts'
+            onClick={() => window.scroll(0, 500)}
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
+          >
+            <p className='text-white font-bold text-lg mb-2 pointer-events-none'>
+              Скидки
+            </p>
+            <p className='text-white font-bold text-xl pointer-events-none'>
+              {discountsReport.discountcount} {'-'}{' '}
+              {discountsReport.discounttotal &&
+                discountsReport.discounttotal.toLocaleString('ru-RU')}{' '}
+              $
+            </p>
+          </Link>
+          <Link
+            to='/alo24/reports/discounts'
+            onClick={() => window.scroll(0, 500)}
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
+          >
+            <p className='text-white font-bold text-lg mb-2 pointer-events-none'>
+              Расход
+            </p>
+            <p className='text-white font-bold text-xl pointer-events-none'>
+              {discountsReport.discountcount} {'-'}{' '}
+              {discountsReport.discounttotal &&
+                discountsReport.discounttotal.toLocaleString('ru-RU')}{' '}
+              $
+            </p>
+          </Link>
         </div>
-        <div className='grid grid-cols-12 border-2 border-blue-700 py-4 mb-6'>
-          <div className='col-span-4 flex flex-col items-center'>
-            <span className='text-xl font-bold text-black'>
-              {incomingsReport.incomingsCount || 0}
-            </span>
-            <p className='text-lg font-medium'>Количество Приходов</p>
-          </div>
-          <div className='col-span-4 flex flex-col items-center'>
-            <span className='text-xl font-bold text-black'>
-              {parseFloat(salesReport.totalpayments) || 0} $
-            </span>
-            <p className='text-lg font-medium'>Общая сумма продаж</p>
-          </div>
-          <div className='col-span-4 flex flex-col items-center'>
-            <span className='text-xl font-bold text-black'>{123456} $</span>
-            <p className='text-lg font-medium'>Общая сумма расходов</p>
-          </div>
+        <div className='col-start-5 col-span-4 border-2 border-blue-700 p-4 flex flex-column items-center rounded-lg'>
+          <p className='text-xl font-bold text-black mb-4'>
+            Общая сумма продаж
+          </p>
+          <span className='text-3xl font-bold text-black'>
+            {salesReport.salescount}
+          </span>
+          <p className='text-base font-medium mb-4'>Количество</p>
+          <span className='text-3xl font-bold text-black'>
+            {(Math.round(salesReport.totalpayments * 100) / 100).toLocaleString(
+              'ru-RU'
+            )}{' '}
+            $
+          </span>
+          <p className='text-base font-medium mb-4'>Сумма</p>
+          <Link
+            to='/alo24/reports/payments'
+            onClick={() => window.scroll(0, 500)}
+            className='px-4 py-2 bg-blue-700 text-base text-white flex justify-around items-center'
+          >
+            <p className='mr-2'>Подробно</p>
+            <FontAwesomeIcon icon={faCircleInfo} />
+          </Link>
         </div>
-        <div className='grid grid-cols-12 border-2 border-blue-700 py-4 mb-6 px-2'>
-          <div className='col-span-4 flex flex-col items-center'>
-            <span className='text-xl font-bold text-black'>
-              {incomingsReport.totalIncomingsPrice || 0} $
-            </span>
-            <p className='text-lg font-medium'>Общая сумма Приходов</p>
-          </div>
-          <div className='col-start-9 col-span-4 flex flex-col items-center text-center'>
-            <span className='text-xl font-bold text-black'>
-              {productsReport.totalprice || 0} $
-            </span>
-            <p className='text-lg font-medium'>Общая сумма товаров на складе</p>
-          </div>
+        <div className='col-span-4 flex flex-column justify-between gap-y-3'>
+          <Link
+            to='/alo24/reports/paymentstypes'
+            onClick={() => {
+              setPaymentType('cash');
+              window.scroll(0, 500);
+            }}
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
+          >
+            <p className='text-white font-bold text-lg mb-2 pointer-events-none'>
+              Наличными
+            </p>
+            <p className='text-white font-bold text-xl pointer-events-none	'>
+              {salesReport.cashcount} {'-'}{' '}
+              {salesReport.totalcash &&
+                salesReport.totalcash.toLocaleString('ru-RU')}{' '}
+              $
+            </p>
+          </Link>
+          <Link
+            to='/alo24/reports/paymentstypes'
+            onClick={() => {
+              setPaymentType('card');
+              window.scroll(0, 500);
+            }}
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
+          >
+            <p className='text-white font-bold text-lg mb-2 pointer-events-none	'>
+              По карте
+            </p>
+            <p className='text-white font-bold text-xl pointer-events-none	'>
+              {salesReport.cardcount} {'-'}{' '}
+              {salesReport.totalcard &&
+                salesReport.totalcard.toLocaleString('ru-RU')}{' '}
+              $
+            </p>
+          </Link>
+          <Link
+            to='/alo24/reports/paymentstypes'
+            onClick={() => {
+              setPaymentType('transfer');
+              window.scroll(0, 500);
+            }}
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
+          >
+            <p className='text-white font-bold text-lg mb-2 pointer-events-none	'>
+              Переводы
+            </p>
+            <p className='text-white font-bold text-xl pointer-events-none	'>
+              {salesReport.transfercount} {'-'}{' '}
+              {salesReport.totaltransfer &&
+                salesReport.totaltransfer.toLocaleString('ru-RU')}{' '}
+              $
+            </p>
+          </Link>
         </div>
+      </div>
+
+      <Switch>
+        <Route path='/alo24/reports/debts'>
+          <Debts />
+        </Route>
+        <Route path='/alo24/reports/discounts'>
+          <Discounts />
+        </Route>
+        <Route path='/alo24/reports/payments'>
+          <Payments />
+        </Route>
+        <Route path='/alo24/reports/paymentstypes'>
+          <PaymentsReport type={paymentType} />
+        </Route>
+        <Redirect to='/alo24/reports' />
+      </Switch>
+
+      <div
+        className={`${
+          isPrint ? 'fixed' : 'hidden'
+        } top-0 left-0 w-full h-full z-10 bg-white overflow-auto pb-4`}
+      >
+        <PrintReport
+          startDate={startDate}
+          endDate={endDate}
+          baseUrl={baseUrl}
+          componentRef={componentRef}
+          salesReport={salesReport}
+          productsReport={productsReport}
+          incomingsReport={incomingsReport}
+          auth={auth}
+          print={print}
+          setIsPrint={setIsPrint}
+        />
       </div>
     </div>
   );
 };
+
+/* <div className='grid grid-cols-12 w-full mb-8'>
+        <div className='col-start-5 col-span-4 border-2 border-blue-700 p-4 flex flex-column items-center rounded-2'>
+          <p className='text-xl font-bold text-black mb-4'>
+            Общая сумма продаж
+          </p>
+          <span className='text-3xl font-bold text-black'>
+            {salesReport.salescount}
+          </span>
+          <p className='text-base font-medium mb-4'>Количество</p>
+          <span className='text-3xl font-bold text-black'>
+            {salesReport.totalpayments.toLocaleString('ru-RU')} $
+          </span>
+          <p className='text-base font-medium mb-4'>Сумма</p>
+          <Link
+            to='/alo24/reports/payments'
+            className='px-4 py-2 bg-blue-700 text-base text-white flex justify-around items-center'
+          >
+            <p className='mr-2'>Подробно</p>
+            <FontAwesomeIcon icon={faCircleInfo} />
+          </Link>
+        </div>
+      </div>
+
+      <div className='grid grid-cols-12 gap-6 w-full mb-8'>
+        <Link
+          to='/alo24/reports/paymentstypes'
+          onClick={() => setPaymentType('cash')}
+          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
+        >
+          <p className='text-white font-bold text-xl mb-2 pointer-events-none'>
+            Наличными
+          </p>
+          <p className='text-white font-bold text-2xl pointer-events-none	'>
+            {salesReport.cashcount} {'-'}{' '}
+            {salesReport.totalcash &&
+              salesReport.totalcash.toLocaleString('ru-RU')}{' '}
+            $
+          </p>
+        </Link>
+        <Link
+          to='/alo24/reports/paymentstypes'
+          onClick={() => setPaymentType('card')}
+          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
+        >
+          <p className='text-white font-bold text-xl mb-2 pointer-events-none	'>
+            По карте
+          </p>
+          <p className='text-white font-bold text-2xl pointer-events-none	'>
+            {salesReport.cardcount} {'-'}{' '}
+            {salesReport.totalcard &&
+              salesReport.totalcard.toLocaleString('ru-RU')}{' '}
+            $
+          </p>
+        </Link>
+        <Link
+          to='/alo24/reports/paymentstypes'
+          onClick={() => setPaymentType('transfer')}
+          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
+        >
+          <p className='text-white font-bold text-xl mb-2 pointer-events-none	'>
+            Переводы
+          </p>
+          <p className='text-white font-bold text-2xl pointer-events-none	'>
+            {salesReport.transfercount} {'-'}{' '}
+            {salesReport.totaltransfer &&
+              salesReport.totaltransfer.toLocaleString('ru-RU')}{' '}
+            $
+          </p>
+        </Link>
+      </div>
+
+      <div className='grid grid-cols-12 w-full gap-6 mb-8'>
+        <Link
+          to='/alo24/reports/debts'
+          className='col-span-6 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
+        >
+          <p className='text-white font-bold text-xl mb-2 pointer-events-none	'>
+            Долги
+          </p>
+          <p className='text-white font-bold text-2xl pointer-events-none	'>
+            {debtsReport.debtcount} {'-'}{' '}
+            {debtsReport.debttotal &&
+              debtsReport.debttotal.toLocaleString('ru-RU')}{' '}
+            $
+          </p>
+        </Link>
+        <Link
+          to='/alo24/reports/discounts'
+          className='col-span-6 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
+        >
+          <p className='text-white font-bold text-xl mb-2 pointer-events-none'>
+            Скидки
+          </p>
+          <p className='text-white font-bold text-2xl pointer-events-none'>
+            {discountsReport.discountcount} {'-'}{' '}
+            {discountsReport.discounttotal &&
+              discountsReport.discounttotal.toLocaleString('ru-RU')}{' '}
+            $
+          </p>
+        </Link>
+      </div> */

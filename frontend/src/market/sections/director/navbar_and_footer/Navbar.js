@@ -401,34 +401,18 @@ export const Navbar = ({ baseUrl }) => {
                 </ul>
               </li>
               <li className='nav-item dropdown'>
-                <span
-                  id='doctoRs'
-                  role='button'
-                  data-toggle='dropdown'
-                  aria-haspopup='true'
-                  aria-expanded='false'
-                  className={`nav-link dropdown-toggle ${
+                <Link
+                  className={`nav-link  ${
                     activePage === '/alo24/reports' ? 'active-page' : ''
                   }`}
+                  onClick={() => {
+                    setActivePage('/alo24/reports');
+                  }}
+                  to='/alo24/reports'
                 >
-                  <i className='icon-users nav-icon' />
+                  <i className='fa-cash-register nav-icon'></i>
                   Kassa
-                </span>
-                <ul className='dropdown-menu' aria-labelledby='doctoRs'>
-                  <li>
-                    <Link
-                      className={`dropdown-item ${
-                        activePage === '/alo24/reports' ? 'active-page' : ''
-                      }`}
-                      onClick={() => {
-                        setActivePage('/alo24/reports');
-                      }}
-                      to='/alo24/reports'
-                    >
-                      Hisobot
-                    </Link>
-                  </li>
-                </ul>
+                </Link>
               </li>
               <li className='nav-item dropdown'>
                 <Link
