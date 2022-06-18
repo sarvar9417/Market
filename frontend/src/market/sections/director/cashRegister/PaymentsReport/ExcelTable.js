@@ -1,7 +1,7 @@
 import { t } from 'i18next';
 import React from 'react';
 
-export const ExcelTable = ({ datas }) => {
+export const ExcelTable = ({ datas, type }) => {
   return (
     <div className='hidden'>
       <table className='table m-0' id='data-excel-table'>
@@ -10,14 +10,12 @@ export const ExcelTable = ({ datas }) => {
             <th className='border border-black'>№</th>
             <th>{t('Sana')}</th>
             <th>{t('Mijoz')}</th>
-            <th>{t('Naqt')} USD</th>
-            <th>{t('Naqt')} UZS</th>
-            <th>{t('Plastik')} USD</th>
-            <th>{t('Plastik')} UZS</th>
-            <th>{t("O'tkazma")} USD</th>
-            <th>{t("O'tkazma")} UZS</th>
-            <th>{t('Jami')} USD</th>
-            <th>{t('Jami')} UZS</th>
+            <th>
+              {(type === 'cash' && t('Naqt')) ||
+                (type === 'card' && t('Plastik')) ||
+                (type === 'transfer' && t("O'tkazma"))}{' '}
+              USD
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -29,14 +27,13 @@ export const ExcelTable = ({ datas }) => {
                 <td>
                   {item.saleconnector.client && item.saleconnector.client.name}
                 </td>
-                <td>{Math.round(item.cash * 100) / 100}</td>
-                <td>{Math.round(item.cashuzs * 100) / 100}</td>
-                <td>{Math.round(item.card * 100) / 100}</td>
-                <td>{Math.round(item.carduzs * 100) / 100}</td>
-                <td>{Math.round(item.transfer * 100) / 100}</td>
-                <td>{Math.round(item.transferuzs * 100) / 100}</td>
-                <td>{Math.round(item.payment * 100) / 100}</td>
-                <td>{Math.round(item.paymentuzs * 100) / 100}</td>
+                <td>
+                  {Math.round(
+                    (type === 'cash' && item.cash) ||
+                      (type === 'card' && item.card) ||
+                      (type === 'transfer' && item.transfer)
+                  )}
+                </td>
               </tr>
             ))}
         </tbody>

@@ -155,7 +155,7 @@ export const PaymentsReport = ({ type }) => {
         </ul>
       </div>
 
-      <ExcelTable datas={tableExcel} />
+      <ExcelTable datas={tableExcel} type={type} />
     </div>
   );
 };
