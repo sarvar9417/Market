@@ -23,7 +23,6 @@ router.post('/debtdiscount', auth, (req, res) => {
 router.post('/getpayments', auth, (req, res) => {
   require('./paymentsreport').getPayments(req, res);
 });
-
 router.post('/getpaymentexcel', auth, (req, res) => {
   require('./paymentsreport').getPaymentsExcel(req, res);
 });

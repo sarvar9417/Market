@@ -95,6 +95,7 @@ export const Report = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+
       setSalesReport(data);
     } catch (error) {
       notify({
@@ -117,6 +118,7 @@ export const Report = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+
       setProductsReport(data);
     } catch (error) {
       notify({
@@ -141,6 +143,7 @@ export const Report = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+
       setIncomingsReport(data);
     } catch (error) {
       notify({
@@ -294,6 +297,7 @@ export const Report = () => {
           </button>
         </div>
       </div>
+
       <div className='grid grid-cols-12 w-full mb-8 gap-4'>
         <div className='col-span-4 flex flex-column justify-between gap-y-3'>
           <Link
