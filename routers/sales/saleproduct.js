@@ -47,15 +47,15 @@ module.exports.register = async (req, res) => {
       Math.round(
         saleproducts.reduce((summ, saleproduct) => {
           return summ + saleproduct.totalprice;
-        }, 0) * 100
-      ) / 100;
+        }, 0) * 10000
+      ) / 10000;
 
     const totalpriceuzs =
       Math.round(
         saleproducts.reduce((summ, saleproduct) => {
           return summ + saleproduct.totalpriceuzs;
-        }, 0) * 100
-      ) / 100;
+        }, 0) * 10000
+      ) / 10000;
 
     if (checkPayments(totalprice, payment, discount, debt)) {
       return res.status(400).json({
@@ -295,15 +295,15 @@ module.exports.addproducts = async (req, res) => {
       Math.round(
         saleproducts.reduce((summ, saleproduct) => {
           return summ + saleproduct.totalprice;
-        }, 0) * 100
-      ) / 100;
+        }, 0) * 10000
+      ) / 10000;
 
     const totalpriceuzs =
       Math.round(
         saleproducts.reduce((summ, saleproduct) => {
           return summ + saleproduct.totalpriceuzs;
-        }, 0) * 100
-      ) / 100;
+        }, 0) * 10000
+      ) / 10000;
 
     if (checkPayments(totalprice, payment, discount, debt)) {
       return res.status(400).json({
@@ -562,7 +562,7 @@ module.exports.getsaleconnectors = async (req, res) => {
           select: 'name code',
         },
       })
-      .populate('payments', 'payment paymentuzs')
+      .populate('payments', 'payment paymentuzs comment')
       .populate('discounts', 'discount discountuzs procient products')
       .populate('debts', 'debt debtuzs')
       .populate({ path: 'client', match: { name: name }, select: 'name' })
@@ -576,6 +576,7 @@ module.exports.getsaleconnectors = async (req, res) => {
     });
 
     const count = filter.length;
+
     res.status(200).json({
       saleconnectors: filter.splice(countPage * currentPage, countPage),
       count,
@@ -670,15 +671,15 @@ module.exports.registeredit = async (req, res) => {
       Math.round(
         saleproducts.reduce((summ, saleproduct) => {
           return summ + saleproduct.totalprice;
-        }, 0) * 100
-      ) / 100;
+        }, 0) * 10000
+      ) / 10000;
 
     const totalpriceuzs =
       Math.round(
         saleproducts.reduce((summ, saleproduct) => {
           return summ + saleproduct.totalpriceuzs;
-        }, 0) * 100
-      ) / 100;
+        }, 0) * 10000
+      ) / 10000;
 
     let all = [];
 

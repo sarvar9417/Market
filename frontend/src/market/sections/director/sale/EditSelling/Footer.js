@@ -29,8 +29,8 @@ export const Footer = ({
               Math.round(
                 discount.reduce((summ, discount) => {
                   return summ + discount.discountuzs;
-                }, 0) * 100
-              ) / 100
+                }, 0) * 10000
+              ) / 10000
             ).toLocaleString("ru-RU")}{" "}
             <span className='text-green-800'>UZS</span>
           </span>
@@ -44,8 +44,8 @@ export const Footer = ({
                   payment.reduce((summ, payment) => {
                     return summ + payment.paymentuzs;
                   }, 0)) *
-                  100
-              ) / 100
+                  10000
+              ) / 10000
             ).toLocaleString("ru-RU")}{" "}
             <span className='text-green-800'>UZS</span>
           </span>
@@ -54,8 +54,8 @@ export const Footer = ({
               Math.round(
                 payment.reduce((summ, payment) => {
                   return summ + payment.paymentuzs;
-                }, 0) * 100
-              ) / 100
+                }, 0) * 10000
+              ) / 10000
             ).toLocaleString("ru-RU")}{" "}
             <span className='text-green-800'>UZS</span>
           </span>
@@ -70,8 +70,8 @@ export const Footer = ({
               Math.round(
                 discount.reduce((summ, discount) => {
                   return summ + discount.discount;
-                }, 0) * 100
-              ) / 100
+                }, 0) * 10000
+              ) / 10000
             ).toLocaleString("ru-RU")}{" "}
             <span className='text-green-800'>USD</span>
           </span>
@@ -85,8 +85,8 @@ export const Footer = ({
                   payment.reduce((summ, payment) => {
                     return summ + payment.payment;
                   }, 0)) *
-                  100
-              ) / 100
+                  10000
+              ) / 10000
             ).toLocaleString("ru-RU")}{" "}
             <span className='text-green-800'>USD</span>
           </span>
@@ -95,8 +95,8 @@ export const Footer = ({
               Math.round(
                 payment.reduce((summ, payment) => {
                   return summ + payment.payment;
-                }, 0) * 100
-              ) / 100
+                }, 0) * 10000
+              ) / 10000
             ).toLocaleString("ru-RU")}{" "}
             <span className='text-green-800'>USD</span>
           </span>

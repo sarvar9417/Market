@@ -29,14 +29,14 @@ export const ExcelTable = ({ datas }) => {
                 <td>
                   {item.saleconnector.client && item.saleconnector.client.name}
                 </td>
-                <td>{Math.round(item.cash * 100) / 100}</td>
-                <td>{Math.round(item.cashuzs * 100) / 100}</td>
-                <td>{Math.round(item.card * 100) / 100}</td>
-                <td>{Math.round(item.carduzs * 100) / 100}</td>
-                <td>{Math.round(item.transfer * 100) / 100}</td>
-                <td>{Math.round(item.transferuzs * 100) / 100}</td>
-                <td>{Math.round(item.payment * 100) / 100}</td>
-                <td>{Math.round(item.paymentuzs * 100) / 100}</td>
+                <td>{Math.round(item.cash * 10000) / 10000}</td>
+                <td>{Math.round(item.cashuzs * 10000) / 10000}</td>
+                <td>{Math.round(item.card * 10000) / 10000}</td>
+                <td>{Math.round(item.carduzs * 10000) / 10000}</td>
+                <td>{Math.round(item.transfer * 10000) / 10000}</td>
+                <td>{Math.round(item.transferuzs * 10000) / 10000}</td>
+                <td>{Math.round(item.payment * 10000) / 10000}</td>
+                <td>{Math.round(item.paymentuzs * 10000) / 10000}</td>
               </tr>
             ))}
         </tbody>

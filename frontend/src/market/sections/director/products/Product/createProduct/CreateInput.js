@@ -17,19 +17,19 @@ export const CreateInput = ({
   return (
     <div className='grid md:grid-cols-3 sm:grid-cols-2 gap-4 grid-cols-1 p-2'>
       <div className='flex justify-between font-bold'>
-        <p className='font-bold'>{t("Kodi")}:</p>
+        <p className='font-bold'>{t('Kodi')}:</p>
         <Input
           data={(product && product.code) || ''}
           keyPressed={keyPressed}
           changeHandler={inputHandler}
           placeholder={t('Mahsulot kodini kiriting')}
           name={'code'}
-          type={'number'}
+          type={'text'}
           classes={'text-right'}
         />
       </div>
       <div className='flex justify-between font-bold'>
-        <p className='font-bold'>{t("Nomi")}:</p>
+        <p className='font-bold'>{t('Nomi')}:</p>
         <Input
           data={(product && product.name) || ''}
           keyPressed={keyPressed}
@@ -41,7 +41,7 @@ export const CreateInput = ({
       </div>
 
       <div className='flex justify-between font-bold'>
-        <p className='font-bold'>{t("Soni")}:</p>
+        <p className='font-bold'>{t('Soni')}:</p>
         <Input
           data={(product && product.total) || ''}
           keyPressed={keyPressed}
@@ -54,7 +54,7 @@ export const CreateInput = ({
       </div>
 
       <div className='flex justify-between font-bold'>
-        <p className='font-bold'>{t("Keltirilgan narxi")}:</p>
+        <p className='font-bold'>{t('Keltirilgan narxi')}:</p>
         <Input
           data={(product && product.incomingprice) || ''}
           keyPressed={keyPressed}
@@ -67,7 +67,7 @@ export const CreateInput = ({
       </div>
 
       <div className='flex justify-between font-bold'>
-        <p className='font-bold'>{t("Sotish narxi")}:</p>
+        <p className='font-bold'>{t('Sotish narxi')}:</p>
         <Input
           data={(product && product.sellingprice) || ''}
           keyPressed={keyPressed}

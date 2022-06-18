@@ -569,22 +569,22 @@ export const Incoming = () => {
       let val = e.target.value;
       setIncoming({
         ...incoming,
-        pieces: val === '' ? '' : Math.round(val * 100) / 100,
+        pieces: val === '' ? '' : Math.round(val * 10000) / 10000,
         totalprice:
           val === ''
             ? ''
-            : Math.round(incoming.unitprice * e.target.value * 100) / 100,
+            : Math.round(incoming.unitprice * e.target.value * 10000) / 10000,
       });
     }
     if (e.target.name === 'unitprice') {
       let val = e.target.value;
       setIncoming({
         ...incoming,
-        unitprice: val === '' ? '' : Math.round(val * 100) / 100,
+        unitprice: val === '' ? '' : Math.round(val * 10000) / 10000,
         totalprice:
           val === ''
             ? '0'
-            : Math.round(e.target.value * incoming.pieces * 100) / 100,
+            : Math.round(e.target.value * incoming.pieces * 10000) / 10000,
       });
     }
     if (e.target.name === 'totalprice') {
@@ -594,8 +594,8 @@ export const Incoming = () => {
         unitprice:
           val === '' || val === 0
             ? ''
-            : Math.round((e.target.value / incoming.pieces) * 100) / 100,
-        totalprice: val === '' ? '' : Math.round(val * 100) / 100,
+            : Math.round((e.target.value / incoming.pieces) * 10000) / 10000,
+        totalprice: val === '' ? '' : Math.round(val * 10000) / 10000,
       });
     }
   };
@@ -732,22 +732,23 @@ export const Incoming = () => {
       let val = e.target.value;
       setEditProduct({
         ...editProduct,
-        pieces: val === '' ? '' : Math.round(val * 100) / 100,
+        pieces: val === '' ? '' : Math.round(val * 10000) / 10000,
         totalprice:
           val === ''
             ? ''
-            : Math.round(editProduct.unitprice * e.target.value * 100) / 100,
+            : Math.round(editProduct.unitprice * e.target.value * 10000) /
+              10000,
       });
     }
     if (e.target.name === 'unitprice') {
       let val = e.target.value;
       setEditProduct({
         ...editProduct,
-        unitprice: val === '' ? '' : Math.round(val * 100) / 100,
+        unitprice: val === '' ? '' : Math.round(val * 10000) / 10000,
         totalprice:
           val === ''
             ? '0'
-            : Math.round(e.target.value * editProduct.pieces * 100) / 100,
+            : Math.round(e.target.value * editProduct.pieces * 10000) / 10000,
       });
     }
     if (e.target.name === 'totalprice') {
@@ -757,8 +758,8 @@ export const Incoming = () => {
         unitprice:
           val === '' || val === 0
             ? ''
-            : Math.round((e.target.value / editProduct.pieces) * 100) / 100,
-        totalprice: val === '' ? '' : Math.round(val * 100) / 100,
+            : Math.round((e.target.value / editProduct.pieces) * 10000) / 10000,
+        totalprice: val === '' ? '' : Math.round(val * 10000) / 10000,
       });
     }
   };

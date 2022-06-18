@@ -186,15 +186,15 @@ export const Discounts = () => {
         <ul className='tr font-bold text-base'>
           <li className='td col-span-6 text-right border-r'>Jami</li>
           <li className='td text-right col-span-2 border-r-2 border-green-800'>
-            {(Math.round(totalDiscounts.totalprice * 100) / 100).toLocaleString(
-              'ru-RU'
-            )}{' '}
+            {(
+              Math.round(totalDiscounts.totalprice * 10000) / 10000
+            ).toLocaleString('ru-RU')}{' '}
             <span className='text-green-800'>USD</span>
           </li>
           <li className='td text-right col-span-2 border-r-2 border-orange-600'>
-            {(Math.round(totalDiscounts.discount * 100) / 100).toLocaleString(
-              'ru-RU'
-            )}{' '}
+            {(
+              Math.round(totalDiscounts.discount * 10000) / 10000
+            ).toLocaleString('ru-RU')}{' '}
             <span className='text-orange-600'>USD</span>
           </li>
           <li className='td text-right col-span-2 border-r-2 border-red-600'></li>

@@ -13,6 +13,7 @@ export const Rows = ({
   currentPage,
   editHandler,
 }) => {
+  console.log(saleconnector);
   return (
     <ul className='tr'>
       <li className='no'>{currentPage * countPage + 1 + index}</li>
@@ -20,24 +21,8 @@ export const Rows = ({
       <li className='td border-r font-bold'>
         {saleconnector.client && saleconnector.client.name}
       </li>
-      {/* <li className='td border-r font-bold text-right'>
-        {saleconnector.products.length}
-      </li> */}
-      <li
-        onClick={() => changePrepayment(saleconnector)}
-        className='td font-bold col-span-2 text-right border-r-2 border-r-green-700 hover:bg-blue-200 flex justify-between'>
-        <span className='text-white'>{t("To'lov")}</span>
-        <span>
-          {saleconnector.products
-            .reduce((summ, product) => {
-              return summ + product.totalprice;
-            }, 0)
-            .toLocaleString('ru-RU')}
-          {'  '}
-          <span className='text-green-900'>USD</span>
-        </span>
-      </li>
-      <li className='td border-r-2 border-red-600 font-bold col-span-2 text-right'>
+
+      <li className='td border-r-2 border-red-600 font-bold text-right'>
         <span>
           {(
             saleconnector.products.reduce((summ, product) => {
@@ -52,9 +37,8 @@ export const Rows = ({
           ).toLocaleString('ru-RU')}
         </span>
         {'  '}
-        <span className='text-red-600'>USD</span>
       </li>
-      <li className='td border-r-2 border-orange-500 font-bold col-span-2 text-right'>
+      <li className='td border-r-2 border-orange-500 font-bold text-right'>
         <span>
           {saleconnector.discounts
             .reduce((summ, discount) => {
@@ -63,7 +47,28 @@ export const Rows = ({
             .toLocaleString('ru-RU')}
         </span>
         {'  '}
-        <span className='text-orange-600'>USD</span>
+      </li>
+      <li
+        onClick={() => changePrepayment(saleconnector)}
+        className='td font-bold col-span-2 text-right border-r-2 border-r-green-700 hover:bg-blue-200 flex justify-between'>
+        <span className='text-white'>{t("To'lov")}</span>
+        <span>
+          {saleconnector.products
+            .reduce((summ, product) => {
+              return summ + product.totalprice;
+            }, 0)
+            .toLocaleString('ru-RU')}
+          {'  '}
+          <span className='text-green-900'>USD</span>
+        </span>
+      </li>
+      <li className='td col-span-2 border-r'>
+        {saleconnector.payments.map((payment, index) => {
+          if (payment.comment) {
+            return <p key={index}>{payment.comment}</p>;
+          }
+          return '';
+        })}{' '}
       </li>
       <li className='td-btn border-right'>
         <button

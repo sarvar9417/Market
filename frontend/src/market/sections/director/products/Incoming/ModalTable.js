@@ -51,7 +51,8 @@ export const ModalTable = ({ incoming, inputHandler }) => {
                 />
               </td>
               <td className='border m-0 px-3 py-2 font-bold text-center text-red-600'>
-                {incoming.oldprice && Math.round(incoming.oldprice * 100) / 100}{' '}
+                {incoming.oldprice &&
+                  Math.round(incoming.oldprice * 10000) / 10000}{' '}
                 USD
               </td>
             </tr>

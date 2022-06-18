@@ -26,9 +26,9 @@ export const ExcelTable = ({ datas }) => {
                 <td>{item.supplier.name}</td>
                 <td>{item.product.code}</td>
                 <td>{item.product.name}</td>
-                <td>{Math.round(item.pieces * 100) / 100}</td>
-                <td>{Math.round(item.unitprice * 100) / 100}</td>
-                <td>{Math.round(item.totalprice * 100) / 100}</td>
+                <td>{Math.round(item.pieces * 10000) / 10000}</td>
+                <td>{Math.round(item.unitprice * 10000) / 10000}</td>
+                <td>{Math.round(item.totalprice * 10000) / 10000}</td>
               </tr>
             ))}
         </tbody>

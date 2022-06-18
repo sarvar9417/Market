@@ -62,8 +62,8 @@ module.exports.registerAll = async (req, res) => {
         supplier: supplier._id,
         unit: unit._id,
         pieces,
-        unitprice: Math.round(unitprice * 100) / 100,
-        totalprice: Math.round(totalprice * 100) / 100,
+        unitprice: Math.round(unitprice * 10000) / 10000,
+        totalprice: Math.round(totalprice * 10000) / 10000,
         unit: unit._id,
         market,
         user,
@@ -96,13 +96,13 @@ module.exports.registerAll = async (req, res) => {
         productprice.length > 0 &&
         productprice[productprice.length - 1].sellingprice
           ? Math.round(
-              productprice[productprice.length - 1].sellingprice * 100
-            ) / 100
+              productprice[productprice.length - 1].sellingprice * 10000
+            ) / 10000
           : 0;
       const newProductPrice = new ProductPrice({
         // procient: productprice.procient,
         product: product.product,
-        incomingprice: Math.round(product.unitprice * 100) / 100,
+        incomingprice: Math.round(product.unitprice * 10000) / 10000,
         sellingprice: price,
         market,
       });
@@ -113,7 +113,7 @@ module.exports.registerAll = async (req, res) => {
       produc.price = newProductPrice._id;
       await produc.save();
       p.push(product._id);
-      t += Math.round(product.totalprice * 100) / 100;
+      t += Math.round(product.totalprice * 10000) / 10000;
     }
 
     (newIncomingConnector.total = t), (newIncomingConnector.incoming = p);
@@ -185,7 +185,7 @@ module.exports.register = async (req, res) => {
     const produc = await Product.findById(product);
 
     produc.total += parseInt(pieces);
-    produc.incomingprice = Math.round(unitprice * 100) / 100;
+    produc.incomingprice = Math.round(unitprice * 10000) / 10000;
     await produc.save();
 
     res.send(newIncoming);
@@ -213,14 +213,38 @@ module.exports.update = async (req, res) => {
       });
     }
 
-    const incomingconnector = await IncomingConnector.findById(
-      product.incomingconnector
-    );
+    if (product.incomingconnector) {
+      const incomingconnector = await IncomingConnector.findById(
+        product.incomingconnector
+      );
 
-    incomingconnector.total = incomingconnector.total - old.totalprice;
-    incomingconnector.total = incomingconnector.total + product.totalprice;
+      incomingconnector.total = incomingconnector.total - old.totalprice;
+      incomingconnector.total = incomingconnector.total + product.totalprice;
 
-    await incomingconnector.save();
+      await incomingconnector.save();
+    } else {
+      const incomingconnectors = await IncomingConnector.find().populate({
+        path: 'incoming',
+        match: { _id: product._id },
+        select: '_id',
+      });
+      incomingconnectors.forEach(async (connector) => {
+        if (connector.incoming.length > 0) {
+          const incomingconnector = await IncomingConnector.findById(
+            connector._id
+          );
+
+          incomingconnector.total = incomingconnector.total - old.totalprice;
+          incomingconnector.total =
+            incomingconnector.total + product.totalprice;
+
+          await incomingconnector.save();
+          await Incoming.findByIdAndUpdate(product._id, {
+            incomingconnector: incomingconnector._id,
+          });
+        }
+      });
+    }
 
     const produc = await Product.findById(product.product._id);
 

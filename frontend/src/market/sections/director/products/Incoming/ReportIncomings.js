@@ -42,7 +42,7 @@ export const ReportIncomings = ({
         <div className='col-span-12 sm:col-span-6 lg:col-span-3 font-bold flex justify-between text-center px-3 text-base pt-1 mx-3'>
           {t('Jami')}:{' '}
           <span className='text-blue-900'>
-            {Math.round(totalprice * 100) / 100} USD
+            {Math.round(totalprice * 10000) / 10000} USD
           </span>
         </div>
         <div className='col-span-12 lg:col-span-9 grid grid-cols-12 row-span-5'>
@@ -65,7 +65,7 @@ export const ReportIncomings = ({
                   <p className='font-bold  flex justify-around text-2xl py-1'>
                     <span className='text-amber-100'>
                       {connector.total &&
-                        Math.round(connector.total * 100) / 100}{' '}
+                        Math.round(connector.total * 10000) / 10000}{' '}
                       USD
                     </span>
                   </p>

@@ -6,16 +6,16 @@ export const returnProduct = (products, e) => {
       : Math.round(
           products[parseInt(e.target.id)].unitprice *
             parseFloat(e.target.value) *
-            100
-        ) / 100;
+            10000
+        ) / 10000;
   products[parseInt(e.target.id)].totalpriceuzs =
     e.target.value === ''
       ? 0
       : Math.round(
           products[parseInt(e.target.id)].unitpriceuzs *
             parseFloat(e.target.value) *
-            100
-        ) / 100;
+            10000
+        ) / 10000;
   return products;
 };
 
@@ -25,13 +25,13 @@ export const discountProcient = (EditDiscounts, products, e, i) => {
       ((products[parseInt(e.target.id)].totalprice *
         EditDiscounts[i].procient) /
         100) *
-        100
-    ) / 100;
+        10000
+    ) / 10000;
   EditDiscounts[i].discountuzs -=
     Math.round(
       ((products[parseInt(e.target.id)].totalpriceuzs *
         EditDiscounts[i].procient) /
         100) *
-        100
-    ) / 100;
+        10000
+    ) / 10000;
 };

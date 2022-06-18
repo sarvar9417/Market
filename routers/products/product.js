@@ -71,7 +71,7 @@ module.exports.registerAll = async (req, res) => {
         name,
         code,
         category: categor._id,
-        total: total ? Math.round(total * 100) / 100 : 0,
+        total: total ? Math.round(total * 10000) / 10000 : 0,
         market,
       });
 
@@ -79,9 +79,11 @@ module.exports.registerAll = async (req, res) => {
 
       const newPrice = new ProductPrice({
         incomingprice: incomingprice
-          ? Math.round(incomingprice * 100) / 100
+          ? Math.round(incomingprice * 10000) / 10000
           : 0,
-        sellingprice: sellingprice ? Math.round(sellingprice * 100) / 100 : 0,
+        sellingprice: sellingprice
+          ? Math.round(sellingprice * 10000) / 10000
+          : 0,
         market,
       });
 
@@ -132,7 +134,7 @@ module.exports.registerAll = async (req, res) => {
 
         const pric = await ProductPrice.findById(product.price);
         const newPrice = new ProductPrice({
-          incomingprice: Math.round(pric.sellingprice * 100) / 100,
+          incomingprice: Math.round(pric.sellingprice * 10000) / 10000,
           market: f,
         });
 
@@ -240,8 +242,10 @@ module.exports.register = async (req, res) => {
     });
 
     const newPrice = new ProductPrice({
-      incomingprice: incomingprice ? Math.round(incomingprice * 100) / 100 : 0,
-      sellingprice: sellingprice ? Math.round(sellingprice * 100) / 100 : 0,
+      incomingprice: incomingprice
+        ? Math.round(incomingprice * 10000) / 10000
+        : 0,
+      sellingprice: sellingprice ? Math.round(sellingprice * 10000) / 10000 : 0,
       market,
     });
 
@@ -348,8 +352,8 @@ module.exports.update = async (req, res) => {
     }
 
     await ProductPrice.findByIdAndUpdate(priceid, {
-      incomingprice: Math.round(incomingprice * 100) / 100,
-      sellingprice: Math.round(sellingprice * 100) / 100,
+      incomingprice: Math.round(incomingprice * 10000) / 10000,
+      sellingprice: Math.round(sellingprice * 10000) / 10000,
     });
     product.name = name;
     product.code = code;
@@ -526,8 +530,33 @@ module.exports.getProducts = async (req, res) => {
         .json({ message: "Diqqat! Do'kon malumotlari topilmadi" });
     }
 
-    const code = new RegExp('.*' + search ? search.code : '' + '.*', 'i');
+    const code = new RegExp('.*' + '101' + '.*', 'i');
     const name = new RegExp('.*' + search ? search.name : '' + '.*', 'i');
+
+    // const sinov = await Product.aggregate([
+    //   { $match: { market: ObjectId(market) } },
+    //   {
+    //     $lookup: {
+    //       from: 'categories', // DB dagi collecyion nomi
+    //       localField: 'category', // qo'shilgan schemaga qanday nom bilan yozulgani
+    //       foreignField: '_id', // qaysi propertysi qo'shilgani
+    //       as: 'category', // qanday nom bilan chiqishi
+    //       pipeline: [
+    //         { $match: { code: code } },
+    //         { $project: { code: 1, name: 1 } },
+    //       ],
+    //     },
+    //   },
+    //   { $unwind: '$category' },
+    //   {
+    //     $group: {
+    //       _id: '$_id',
+    //       category: { $first: '$category' },
+    //       code: { $first: '$code' },
+    //     },
+    //   },
+    // ]);
+    // console.log(sinov);
 
     const products = await Product.find({
       code: code,

@@ -238,15 +238,15 @@ export const Sale = () => {
     setSaleProduct({
       total: e.value.total,
       product: e.value,
-      totalprice: Math.round(e.value.price.sellingprice * 100) / 100,
+      totalprice: Math.round(e.value.price.sellingprice * 10000) / 10000,
       totalpriceuzs:
         Math.round(
-          e.value.price.sellingprice * exchangerate.exchangerate * 100
-        ) / 100,
+          e.value.price.sellingprice * exchangerate.exchangerate * 10000
+        ) / 10000,
       pieces: 1,
-      unitprice: Math.round(e.value.price.sellingprice * 100) / 100,
+      unitprice: Math.round(e.value.price.sellingprice * 10000) / 10000,
       unitpriceuzs: Math.round(
-        (e.value.price.sellingprice * exchangerate.exchangerate * 100) / 100
+        (e.value.price.sellingprice * exchangerate.exchangerate * 10000) / 10000
       ),
     });
   };
@@ -266,8 +266,8 @@ export const Sale = () => {
       }
       totalprice =
         Math.round(
-          (!unitprice ? 0 : unitprice) * parseFloat(e.target.value) * 100
-        ) / 100;
+          (!unitprice ? 0 : unitprice) * parseFloat(e.target.value) * 10000
+        ) / 10000;
       setSaleProduct({
         ...saleproduct,
         pieces: e.target.value === '' ? '' : parseFloat(e.target.value),
@@ -275,13 +275,15 @@ export const Sale = () => {
         totalpriceuzs:
           e.target.value === ''
             ? 0
-            : Math.round(totalprice * exchangerate.exchangerate * 100) / 100,
+            : Math.round(totalprice * exchangerate.exchangerate * 10000) /
+              10000,
       });
     }
     if (e.target.name === 'unitprice') {
       totalprice =
-        Math.round((!pieces ? 0 : pieces) * parseFloat(e.target.value) * 100) /
-        100;
+        Math.round(
+          (!pieces ? 0 : pieces) * parseFloat(e.target.value) * 10000
+        ) / 10000;
       setSaleProduct({
         ...saleproduct,
         unitprice: e.target.value === '' ? '' : parseFloat(e.target.value),
@@ -289,13 +291,14 @@ export const Sale = () => {
           e.target.value === ''
             ? ''
             : Math.round(
-                parseFloat(e.target.value) * exchangerate.exchangerate * 100
-              ) / 100,
+                parseFloat(e.target.value) * exchangerate.exchangerate * 10000
+              ) / 10000,
         totalprice: e.target.value === '' ? 0 : totalprice,
         totalpriceuzs:
           e.target.value === ''
             ? 0
-            : Math.round(totalprice * exchangerate.exchangerate * 100) / 100,
+            : Math.round(totalprice * exchangerate.exchangerate * 10000) /
+              10000,
       });
     }
   };
@@ -323,16 +326,16 @@ export const Sale = () => {
       return sale.totalpriceuzs + summ;
     }, 0);
 
-    setTotalPrice(Math.round(total * 100) / 100);
-    setTotalPriceUzs(Math.round(totaluzs * 100) / 100);
+    setTotalPrice(Math.round(total * 10000) / 10000);
+    setTotalPriceUzs(Math.round(totaluzs * 10000) / 10000);
 
     setPayment({
       ...payment,
-      totalprice: Math.round(total * 100) / 100,
-      totalpriceuzs: Math.round(totaluzs * 100) / 100,
+      totalprice: Math.round(total * 10000) / 10000,
+      totalpriceuzs: Math.round(totaluzs * 10000) / 10000,
       type: 'cash',
-      cash: Math.round(total * 100) / 100,
-      cashuzs: Math.round(totaluzs * 100) / 100,
+      cash: Math.round(total * 10000) / 10000,
+      cashuzs: Math.round(totaluzs * 10000) / 10000,
       discount: 0,
       discountuzs: 0,
     });
@@ -356,16 +359,16 @@ export const Sale = () => {
       return sale.totalpriceuzs + summ;
     }, 0);
 
-    setTotalPrice(Math.round(total * 100) / 100);
-    setTotalPriceUzs(Math.round(totaluzs * 100) / 100);
+    setTotalPrice(Math.round(total * 10000) / 10000);
+    setTotalPriceUzs(Math.round(totaluzs * 10000) / 10000);
 
     setPayment({
       ...payment,
-      totalprice: Math.round(total * 100) / 100,
-      totalpriceuzs: Math.round(totaluzs * 100) / 100,
+      totalprice: Math.round(total * 10000) / 10000,
+      totalpriceuzs: Math.round(totaluzs * 10000) / 10000,
       type: 'cash',
-      cash: Math.round(total * 100) / 100,
-      cashuzs: Math.round(totaluzs * 100) / 100,
+      cash: Math.round(total * 10000) / 10000,
+      cashuzs: Math.round(totaluzs * 10000) / 10000,
       discount: 0,
       discountuzs: 0,
     });
@@ -409,6 +412,7 @@ export const Sale = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+      console.log(data);
       setSaleCounts(data.count);
       setCurrentProducts(data.saleconnectors);
       setSaleConnectors(data.saleconnectors);
@@ -738,7 +742,7 @@ export const Sale = () => {
         status: 'error',
       });
     }
-    if (Math.round(e.target.value * 100) / 100 > totalprice) {
+    if (Math.round(e.target.value * 10000) / 10000 > totalprice) {
       return notify({
         title: t(
           'Diqqat! Umumiy summadan yuqori chegirma kiritish mumkin emas!'
@@ -748,9 +752,9 @@ export const Sale = () => {
       });
     }
     p.discount =
-      e.target.value === '' ? '' : Math.round(e.target.value * 100) / 100;
+      e.target.value === '' ? '' : Math.round(e.target.value * 10000) / 10000;
     p.discountuzs =
-      Math.round(e.target.value * exchangerate.exchangerate * 100) / 100;
+      Math.round(e.target.value * exchangerate.exchangerate * 10000) / 10000;
     p.cash = 0;
     p.card = 0;
     p.transfer = 0;
@@ -762,8 +766,8 @@ export const Sale = () => {
             (discount.isProcient
               ? (totalprice * e.target.value) / 100
               : e.target.value)) *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
       debtuzs:
         Math.round(
           (totalprice -
@@ -771,8 +775,8 @@ export const Sale = () => {
               ? (totalprice * e.target.value) / 100
               : e.target.value)) *
             exchangerate.exchangerate *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
     });
 
     discount.isProcient
@@ -780,21 +784,22 @@ export const Sale = () => {
           ...discount,
           procient: e.target.value,
           discount:
-            Math.round(((totalprice * e.target.value) / 100) * 100) / 100,
+            Math.round(((totalprice * e.target.value) / 100) * 10000) / 10000,
           discountuzs:
             Math.round(
               ((totalprice * e.target.value * exchangerate.exchangerate) /
                 100) *
-                100
-            ) / 100,
+                10000
+            ) / 10000,
         })
       : setDiscount({
           ...discount,
           procient:
-            Math.round(((e.target.value * 100) / totalprice) * 100) / 100,
-          discount: Math.round(e.target.value * 100) / 100,
+            Math.round(((e.target.value * 100) / totalprice) * 10000) / 10000,
+          discount: Math.round(e.target.value * 10000) / 10000,
           discountuzs:
-            Math.round(e.target.value * exchangerate.exchangerate * 100) / 100,
+            Math.round(e.target.value * exchangerate.exchangerate * 10000) /
+            10000,
         });
   };
 
@@ -809,7 +814,7 @@ export const Sale = () => {
       });
     }
     if (
-      Math.round((e.target.value / exchangerate.exchangerate) * 100) / 100 >
+      Math.round((e.target.value / exchangerate.exchangerate) * 10000) / 10000 >
       totalprice
     ) {
       return notify({
@@ -821,7 +826,7 @@ export const Sale = () => {
       });
     }
     p.discount =
-      Math.round((e.target.value / exchangerate.exchangerate) * 100) / 100;
+      Math.round((e.target.value / exchangerate.exchangerate) * 10000) / 10000;
     p.discountuzs = e.target.value === '' ? '' : e.target.value;
     p.cash = 0;
     p.card = 0;
@@ -835,8 +840,8 @@ export const Sale = () => {
               ? (totalprice * (e.target.value / exchangerate.exchangerate)) /
                 100
               : e.target.value / exchangerate.exchangerate)) *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
       debtuzs:
         Math.round(
           (totalprice -
@@ -845,21 +850,21 @@ export const Sale = () => {
                 100
               : e.target.value / exchangerate.exchangerate)) *
             exchangerate.exchangerate *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
     });
     discount.isProcient
       ? setDiscount({
           ...discount,
           procient: e.target.value,
           discount:
-            Math.round(((totalprice * e.target.value) / 100) * 100) / 100,
+            Math.round(((totalprice * e.target.value) / 100) * 10000) / 10000,
           discountuzs:
             Math.round(
               ((totalprice * e.target.value * exchangerate.exchangerate) /
                 100) *
-                100
-            ) / 100,
+                10000
+            ) / 10000,
         })
       : setDiscount({
           ...discount,
@@ -867,12 +872,12 @@ export const Sale = () => {
             Math.round(
               (((e.target.value / exchangerate.exchangerate) * 100) /
                 totalprice) *
-                100
-            ) / 100,
+                10000
+            ) / 10000,
           discount:
-            Math.round((e.target.value / exchangerate.exchangerate) * 100) /
-            100,
-          discountuzs: Math.round(e.target.value * 100) / 100,
+            Math.round((e.target.value / exchangerate.exchangerate) * 10000) /
+            10000,
+          discountuzs: Math.round(e.target.value * 10000) / 10000,
         });
   };
 
@@ -881,20 +886,20 @@ export const Sale = () => {
       (e.target.dataset.type === 'cash'
         ? e.target.value === ''
           ? 0
-          : Math.round(e.target.value * 100) / 100
+          : Math.round(e.target.value * 10000) / 10000
         : payment.cash) +
       (e.target.dataset.type === 'card'
         ? e.target.value === ''
           ? 0
-          : Math.round(e.target.value * 100) / 100
+          : Math.round(e.target.value * 10000) / 10000
         : payment.card) +
       (e.target.dataset.type === 'transfer'
         ? e.target.value === ''
           ? 0
-          : Math.round(e.target.value * 100) / 100
+          : Math.round(e.target.value * 10000) / 10000
         : payment.transfer);
 
-    if (Math.round((total + discount.discount) * 100) / 100 > totalprice) {
+    if (Math.round((total + discount.discount) * 10000) / 10000 > totalprice) {
       return notify({
         title: t('Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!'),
         description: '',
@@ -902,18 +907,19 @@ export const Sale = () => {
       });
     }
     p[e.target.dataset.type] =
-      e.target.value === '' ? '' : Math.round(e.target.value * 100) / 100;
+      e.target.value === '' ? '' : Math.round(e.target.value * 10000) / 10000;
     p[e.target.dataset.type + 'uzs'] =
-      Math.round(e.target.value * 100 * exchangerate.exchangerate) / 100;
+      Math.round(e.target.value * 10000 * exchangerate.exchangerate) / 10000;
     setDebt({
       ...debt,
-      debt: Math.round((totalprice - (total + discount.discount)) * 100) / 100,
+      debt:
+        Math.round((totalprice - (total + discount.discount)) * 10000) / 10000,
       debtuzs:
         Math.round(
           (totalprice - (total + discount.discount)) *
             exchangerate.exchangerate *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
     });
   };
 
@@ -922,20 +928,23 @@ export const Sale = () => {
       (e.target.dataset.type === 'cash'
         ? e.target.value === ''
           ? 0
-          : Math.round((e.target.value / exchangerate.exchangerate) * 100) / 100
+          : Math.round((e.target.value / exchangerate.exchangerate) * 10000) /
+            10000
         : payment.cash) +
       (e.target.dataset.type === 'card'
         ? e.target.value === ''
           ? 0
-          : Math.round((e.target.value / exchangerate.exchangerate) * 100) / 100
+          : Math.round((e.target.value / exchangerate.exchangerate) * 10000) /
+            10000
         : payment.card) +
       (e.target.dataset.type === 'transfer'
         ? e.target.value === ''
           ? 0
-          : Math.round((e.target.value / exchangerate.exchangerate) * 100) / 100
+          : Math.round((e.target.value / exchangerate.exchangerate) * 10000) /
+            10000
         : payment.transfer);
 
-    if (Math.round((total + discount.discount) * 100) / 100 > totalprice) {
+    if (Math.round((total + discount.discount) * 10000) / 10000 > totalprice) {
       return notify({
         title: t('Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!'),
         description: '',
@@ -943,18 +952,19 @@ export const Sale = () => {
       });
     }
     p[e.target.dataset.type] =
-      Math.round((e.target.value / exchangerate.exchangerate) * 100) / 100;
+      Math.round((e.target.value / exchangerate.exchangerate) * 10000) / 10000;
     p[e.target.dataset.type + 'uzs'] =
-      e.target.value === '' ? '' : Math.round(e.target.value * 100) / 100;
+      e.target.value === '' ? '' : Math.round(e.target.value * 10000) / 10000;
     setDebt({
       ...debt,
-      debt: Math.round((totalprice - (total + discount.discount)) * 100) / 100,
+      debt:
+        Math.round((totalprice - (total + discount.discount)) * 10000) / 10000,
       debtuzs:
         Math.round(
           (totalprice - (total + discount.discount)) *
             exchangerate.exchangerate *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
     });
   };
 
@@ -985,20 +995,23 @@ export const Sale = () => {
     ) {
       setDebt({
         ...debt,
-        debt: Math.round((totalprice - discount.discount) * 100) / 100,
+        debt: Math.round((totalprice - discount.discount) * 10000) / 10000,
         debtuzs:
           Math.round(
-            (totalprice - discount.discount) * exchangerate.exchangerate * 100
-          ) / 100,
+            (totalprice - discount.discount) * exchangerate.exchangerate * 10000
+          ) / 10000,
       });
     }
     types.map((type) => {
       return type === e.target.dataset.type
-        ? ((p[type] = Math.round((totalprice - discount.discount) * 100) / 100),
+        ? ((p[type] =
+            Math.round((totalprice - discount.discount) * 10000) / 10000),
           (p[type + 'uzs'] =
             Math.round(
-              (totalprice - discount.discount) * exchangerate.exchangerate * 100
-            ) / 100),
+              (totalprice - discount.discount) *
+                exchangerate.exchangerate *
+                10000
+            ) / 10000),
           (p.type = type),
           setDebt({
             ...debt,
@@ -1030,7 +1043,7 @@ export const Sale = () => {
 
     if (!discount.isProcient) {
       let procient =
-        Math.round(((discount.discount * 100) / totalprice) * 100) / 100;
+        Math.round(((discount.discount * 100) / totalprice) * 10000) / 10000;
       setPayment({
         ...payment,
         discount: procient,
@@ -1056,7 +1069,7 @@ export const Sale = () => {
       payment.cash +
       payment.transfer +
       debt.debt;
-    if (Math.round(total * 100) / 100 !== totalprice) {
+    if (Math.round(total * 10000) / 10000 !== totalprice) {
       alert(totalprice);
       return notify({
         title: t("Diqqat! To'lov hisobida xatolik yuz bergan!"),
@@ -1064,9 +1077,9 @@ export const Sale = () => {
         status: 'error',
       });
     }
-    if (debt.debt > 0) {
-      return setModal2(true);
-    }
+    // if (debt.debt > 0) {
+    //   return setModal2(true);
+    // }
 
     return setModal3(true);
   };
@@ -1285,8 +1298,8 @@ export const Sale = () => {
               editPayments.reduce((summ, payment) => {
                 return summ + payment.payment;
               }, 0)) *
-              100
-          ) / 100,
+              10000
+          ) / 10000,
         debtuzs:
           Math.round(
             (editTotalPriceUzs -
@@ -1296,8 +1309,8 @@ export const Sale = () => {
               editPayments.reduce((summ, payment) => {
                 return summ + payment.paymentuzs;
               }, 0)) *
-              100
-          ) / 100,
+              10000
+          ) / 10000,
       });
     }
     types.map((type) => {
@@ -1311,8 +1324,8 @@ export const Sale = () => {
                 editPayments.reduce((summ, payment) => {
                   return summ + payment.payment;
                 }, 0)) *
-                100
-            ) / 100),
+                10000
+            ) / 10000),
           (p[type + 'uzs'] =
             Math.round(
               (editTotalPriceUzs -
@@ -1322,8 +1335,8 @@ export const Sale = () => {
                 editPayments.reduce((summ, payment) => {
                   return summ + payment.paymentuzs;
                 }, 0)) *
-                100
-            ) / 100),
+                10000
+            ) / 10000),
           (p.type = type),
           setDebt({
             ...debt,
@@ -1344,17 +1357,17 @@ export const Sale = () => {
       (e.target.dataset.type === 'cash'
         ? e.target.value === ''
           ? 0
-          : Math.round(e.target.value * 100) / 100
+          : Math.round(e.target.value * 10000) / 10000
         : paymentEdit.cash) +
       (e.target.dataset.type === 'card'
         ? e.target.value === ''
           ? 0
-          : Math.round(e.target.value * 100) / 100
+          : Math.round(e.target.value * 10000) / 10000
         : paymentEdit.card) +
       (e.target.dataset.type === 'transfer'
         ? e.target.value === ''
           ? 0
-          : Math.round(e.target.value * 100) / 100
+          : Math.round(e.target.value * 10000) / 10000
         : paymentEdit.transfer);
 
     const disc = editDiscounts.reduce((summ, discount) => {
@@ -1363,14 +1376,14 @@ export const Sale = () => {
     const pays = editPayments.reduce((summ, payment) => {
       return summ + payment.payment;
     }, 0);
-    const val = Math.round(e.target.value * 100) / 100;
+    const val = Math.round(e.target.value * 10000) / 10000;
 
-    const totals = Math.round((editTotalPrice - pays - disc) * 100) / 100;
+    const totals = Math.round((editTotalPrice - pays - disc) * 10000) / 10000;
     if (
       (totals > 0 && val < 0) ||
       (totals < 0 && val > 0) ||
-      (totals < 0 && Math.round(total * 100) / 100 < totals) ||
-      (totals > 0 && Math.round(total * 100) / 100 > totals)
+      (totals < 0 && Math.round(total * 10000) / 10000 < totals) ||
+      (totals > 0 && Math.round(total * 10000) / 10000 > totals)
     ) {
       return notify({
         title: t('Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!'),
@@ -1379,9 +1392,9 @@ export const Sale = () => {
       });
     }
     p[e.target.dataset.type] =
-      e.target.value === '' ? '' : Math.round(e.target.value * 100) / 100;
+      e.target.value === '' ? '' : Math.round(e.target.value * 10000) / 10000;
     p[e.target.dataset.type + 'uzs'] =
-      Math.round(e.target.value * 100 * editExchanrate.exchangerate) / 100;
+      Math.round(e.target.value * 10000 * editExchanrate.exchangerate) / 10000;
     setDebt({
       ...debt,
       debt:
@@ -1396,8 +1409,8 @@ export const Sale = () => {
             p.cash -
             p.card -
             p.transfer) *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
       debtuzs:
         Math.round(
           (editTotalPriceUzs -
@@ -1410,8 +1423,8 @@ export const Sale = () => {
             p.cashuzs -
             p.carduzs -
             p.transferuzs) *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
     });
   };
 
@@ -1420,20 +1433,20 @@ export const Sale = () => {
       (e.target.dataset.type === 'cash'
         ? e.target.value === ''
           ? 0
-          : Math.round((e.target.value / editExchanrate.exchangerate) * 100) /
-            100
+          : Math.round((e.target.value / editExchanrate.exchangerate) * 10000) /
+            10000
         : payment.cash) +
       (e.target.dataset.type === 'card'
         ? e.target.value === ''
           ? 0
-          : Math.round((e.target.value / editExchanrate.exchangerate) * 100) /
-            100
+          : Math.round((e.target.value / editExchanrate.exchangerate) * 10000) /
+            10000
         : payment.card) +
       (e.target.dataset.type === 'transfer'
         ? e.target.value === ''
           ? 0
-          : Math.round((e.target.value / editExchanrate.exchangerate) * 100) /
-            100
+          : Math.round((e.target.value / editExchanrate.exchangerate) * 10000) /
+            10000
         : payment.transfer);
 
     const disc = editDiscounts.reduce((summ, discount) => {
@@ -1442,14 +1455,14 @@ export const Sale = () => {
     const pays = editPayments.reduce((summ, payment) => {
       return summ + payment.payment;
     }, 0);
-    const val = Math.round(e.target.value * 100) / 100;
+    const val = Math.round(e.target.value * 10000) / 10000;
 
-    const totals = Math.round((editTotalPrice - pays - disc) * 100) / 100;
+    const totals = Math.round((editTotalPrice - pays - disc) * 10000) / 10000;
     if (
       (totals > 0 && val < 0) ||
       (totals < 0 && val > 0) ||
-      (totals < 0 && Math.round(total * 100) / 100 < totals) ||
-      (totals > 0 && Math.round(total * 100) / 100 > totals)
+      (totals < 0 && Math.round(total * 10000) / 10000 < totals) ||
+      (totals > 0 && Math.round(total * 10000) / 10000 > totals)
     ) {
       return notify({
         title: t('Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!'),
@@ -1458,9 +1471,10 @@ export const Sale = () => {
       });
     }
     p[e.target.dataset.type] =
-      Math.round((e.target.value / editExchanrate.exchangerate) * 100) / 100;
+      Math.round((e.target.value / editExchanrate.exchangerate) * 10000) /
+      10000;
     p[e.target.dataset.type + 'uzs'] =
-      e.target.value === '' ? '' : Math.round(e.target.value * 100) / 100;
+      e.target.value === '' ? '' : Math.round(e.target.value * 10000) / 10000;
     setDebt({
       ...debt,
       debt:
@@ -1475,8 +1489,8 @@ export const Sale = () => {
             p.cash -
             p.card -
             p.transfer) *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
       debtuzs:
         Math.round(
           (editTotalPriceUzs -
@@ -1489,8 +1503,8 @@ export const Sale = () => {
             p.cashuzs -
             p.carduzs -
             p.transferuzs) *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
     });
   };
 
@@ -1542,8 +1556,8 @@ export const Sale = () => {
           products.reduce((summ, product) => {
             return summ + product.totalprice;
           }, 0)) *
-          100
-      ) / 100;
+          10000
+      ) / 10000;
 
     let totaluzs =
       Math.round(
@@ -1553,8 +1567,8 @@ export const Sale = () => {
           products.reduce((summ, product) => {
             return summ + product.totalpriceuzs;
           }, 0)) *
-          100
-      ) / 100;
+          10000
+      ) / 10000;
 
     let cashuzs =
       Math.round(
@@ -1565,8 +1579,8 @@ export const Sale = () => {
           editPayments.reduce((summ, payment) => {
             return summ + payment.paymentuzs;
           }, 0)) *
-          100
-      ) / 100;
+          10000
+      ) / 10000;
 
     let cash =
       Math.round(
@@ -1577,15 +1591,15 @@ export const Sale = () => {
           editPayments.reduce((summ, payment) => {
             return summ + payment.payment;
           }, 0)) *
-          100
-      ) / 100;
+          10000
+      ) / 10000;
 
     setEditTotalPrice(total);
     setEditTotalPriceUzs(totaluzs);
     setPaymentEdit({
       ...paymentEdit,
-      cash: Math.round(cash * 100) / 100,
-      cashuzs: Math.round(cashuzs * 100) / 100,
+      cash: Math.round(cash * 10000) / 10000,
+      cashuzs: Math.round(cashuzs * 10000) / 10000,
       type: 'cash',
     });
     setEditExchanrate({
@@ -1593,8 +1607,8 @@ export const Sale = () => {
         Math.round(
           (editSaleConnector.products[parseInt(e.target.id)].unitpriceuzs /
             editSaleConnector.products[parseInt(e.target.id)].unitprice) *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
     });
   };
 
@@ -1615,8 +1629,8 @@ export const Sale = () => {
       debt.debt;
 
     if (
-      Math.round(total * 100) / 100 !==
-      Math.round(editTotalPrice * 100) / 100
+      Math.round(total * 10000) / 10000 !==
+      Math.round(editTotalPrice * 10000) / 10000
     ) {
       return notify({
         title: t("Diqqat! To'lov hisobida xatolik yuz bergan!"),
@@ -1624,9 +1638,9 @@ export const Sale = () => {
         status: 'error',
       });
     }
-    if (debt.debt > 0) {
-      return setModal4(true);
-    }
+    // if (debt.debt > 0) {
+    //   return setModal4(true);
+    // }
 
     return setModal5(true);
   };
@@ -1751,15 +1765,15 @@ export const Sale = () => {
       Math.round(
         e.products.reduce((summ, product) => {
           return summ + product.totalprice;
-        }, 0) * 100
-      ) / 100
+        }, 0) * 10000
+      ) / 10000
     );
     setPrePaymentTotalPriceUzs(
       Math.round(
         e.products.reduce((summ, product) => {
           return summ + product.totalpriceuzs;
-        }, 0) * 100
-      ) / 100
+        }, 0) * 10000
+      ) / 10000
     );
     setPrePaymentDebt({
       ...prePaymentDebt,
@@ -1774,8 +1788,8 @@ export const Sale = () => {
             e.payments.reduce((summ, payment) => {
               return summ + payment.payment;
             }, 0)) *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
       debtuzs:
         Math.round(
           (e.products.reduce((summ, product) => {
@@ -1787,8 +1801,8 @@ export const Sale = () => {
             e.payments.reduce((summ, payment) => {
               return summ + payment.paymentuzs;
             }, 0)) *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
     });
   };
 
@@ -1809,8 +1823,8 @@ export const Sale = () => {
               prePaymentSaleConnector.payments.reduce((summ, payment) => {
                 return summ + payment.payment;
               }, 0)) *
-              100
-          ) / 100,
+              10000
+          ) / 10000,
         debtuzs:
           Math.round(
             (prePaymentTotalPriceUzs -
@@ -1820,8 +1834,8 @@ export const Sale = () => {
               prePaymentSaleConnector.payments.reduce((summ, payment) => {
                 return summ + payment.paymentuzs;
               }, 0)) *
-              100
-          ) / 100,
+              10000
+          ) / 10000,
       });
     }
     types.map((type) => {
@@ -1835,8 +1849,8 @@ export const Sale = () => {
                 prePaymentSaleConnector.payments.reduce((summ, payment) => {
                   return summ + payment.payment;
                 }, 0)) *
-                100
-            ) / 100),
+                10000
+            ) / 10000),
           (p[type + 'uzs'] =
             Math.round(
               (prePaymentTotalPriceUzs -
@@ -1846,8 +1860,8 @@ export const Sale = () => {
                 prePaymentSaleConnector.payments.reduce((summ, payment) => {
                   return summ + payment.paymentuzs;
                 }, 0)) *
-                100
-            ) / 100),
+                10000
+            ) / 10000),
           (p.type = type),
           setPrePaymentDebt({
             ...prePaymentDebt,
@@ -1868,17 +1882,17 @@ export const Sale = () => {
       (e.target.dataset.type === 'cash'
         ? e.target.value === ''
           ? 0
-          : Math.round(e.target.value * 100) / 100
+          : Math.round(e.target.value * 10000) / 10000
         : prePayment.cash) +
       (e.target.dataset.type === 'card'
         ? e.target.value === ''
           ? 0
-          : Math.round(e.target.value * 100) / 100
+          : Math.round(e.target.value * 10000) / 10000
         : prePayment.card) +
       (e.target.dataset.type === 'transfer'
         ? e.target.value === ''
           ? 0
-          : Math.round(e.target.value * 100) / 100
+          : Math.round(e.target.value * 10000) / 10000
         : prePayment.transfer);
 
     const disc = prePaymentSaleConnector.discounts.reduce((summ, discount) => {
@@ -1887,14 +1901,15 @@ export const Sale = () => {
     const pays = prePaymentSaleConnector.payments.reduce((summ, payment) => {
       return summ + payment.payment;
     }, 0);
-    const val = Math.round(e.target.value * 100) / 100;
+    const val = Math.round(e.target.value * 10000) / 10000;
 
-    const totals = Math.round((prePaymentTotalPrice - pays - disc) * 100) / 100;
+    const totals =
+      Math.round((prePaymentTotalPrice - pays - disc) * 10000) / 10000;
     if (
       (totals > 0 && val < 0) ||
       (totals < 0 && val > 0) ||
-      (totals < 0 && Math.round(total * 100) / 100 < totals) ||
-      (totals > 0 && Math.round(total * 100) / 100 > totals)
+      (totals < 0 && Math.round(total * 10000) / 10000 < totals) ||
+      (totals > 0 && Math.round(total * 10000) / 10000 > totals)
     ) {
       return notify({
         title: t('Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!'),
@@ -1903,9 +1918,9 @@ export const Sale = () => {
       });
     }
     p[e.target.dataset.type] =
-      e.target.value === '' ? '' : Math.round(e.target.value * 100) / 100;
+      e.target.value === '' ? '' : Math.round(e.target.value * 10000) / 10000;
     p[e.target.dataset.type + 'uzs'] =
-      Math.round(e.target.value * 100 * exchangerate.exchangerate) / 100;
+      Math.round(e.target.value * 10000 * exchangerate.exchangerate) / 10000;
     setPrePaymentDebt({
       ...prePaymentDebt,
       debt:
@@ -1920,8 +1935,8 @@ export const Sale = () => {
             p.cash -
             p.card -
             p.transfer) *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
       debtuzs:
         Math.round(
           (prePaymentTotalPriceUzs -
@@ -1934,8 +1949,8 @@ export const Sale = () => {
             p.cashuzs -
             p.carduzs -
             p.transferuzs) *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
     });
   };
 
@@ -1944,17 +1959,20 @@ export const Sale = () => {
       (e.target.dataset.type === 'cash'
         ? e.target.value === ''
           ? 0
-          : Math.round((e.target.value / exchangerate.exchangerate) * 100) / 100
+          : Math.round((e.target.value / exchangerate.exchangerate) * 10000) /
+            10000
         : prePayment.cash) +
       (e.target.dataset.type === 'card'
         ? e.target.value === ''
           ? 0
-          : Math.round((e.target.value / exchangerate.exchangerate) * 100) / 100
+          : Math.round((e.target.value / exchangerate.exchangerate) * 10000) /
+            10000
         : prePayment.card) +
       (e.target.dataset.type === 'transfer'
         ? e.target.value === ''
           ? 0
-          : Math.round((e.target.value / exchangerate.exchangerate) * 100) / 100
+          : Math.round((e.target.value / exchangerate.exchangerate) * 10000) /
+            10000
         : prePayment.transfer);
 
     const disc = prePaymentSaleConnector.discounts.reduce((summ, discount) => {
@@ -1964,15 +1982,16 @@ export const Sale = () => {
       return summ + payment.payment;
     }, 0);
     const val =
-      Math.round((e.target.value / exchangerate.exchangerate) * 100) / 100;
+      Math.round((e.target.value / exchangerate.exchangerate) * 10000) / 10000;
 
-    const totals = Math.round((prePaymentTotalPrice - pays - disc) * 100) / 100;
+    const totals =
+      Math.round((prePaymentTotalPrice - pays - disc) * 10000) / 10000;
 
     if (
       (totals > 0 && val < 0) ||
       (totals < 0 && val > 0) ||
-      (totals < 0 && Math.round(total * 100) / 100 < totals) ||
-      (totals > 0 && Math.round(total * 100) / 100 > totals)
+      (totals < 0 && Math.round(total * 10000) / 10000 < totals) ||
+      (totals > 0 && Math.round(total * 10000) / 10000 > totals)
     ) {
       return notify({
         title: t('Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!'),
@@ -1981,9 +2000,9 @@ export const Sale = () => {
       });
     }
     p[e.target.dataset.type] =
-      Math.round((e.target.value / exchangerate.exchangerate) * 100) / 100;
+      Math.round((e.target.value / exchangerate.exchangerate) * 10000) / 10000;
     p[e.target.dataset.type + 'uzs'] =
-      e.target.value === '' ? '' : Math.round(e.target.value * 100) / 100;
+      e.target.value === '' ? '' : Math.round(e.target.value * 10000) / 10000;
 
     setPrePaymentDebt({
       ...prePaymentDebt,
@@ -1999,8 +2018,8 @@ export const Sale = () => {
             p.cash -
             p.card -
             p.transfer) *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
       debtuzs:
         Math.round(
           (prePaymentTotalPriceUzs -
@@ -2013,8 +2032,8 @@ export const Sale = () => {
             p.cashuzs -
             p.carduzs -
             p.transferuzs) *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
     });
   };
 
