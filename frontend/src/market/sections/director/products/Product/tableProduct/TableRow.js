@@ -24,6 +24,7 @@ export const TableRow = ({
       </li>
       <li className='col-span-5 td font-bold border-r'>{p.name}</li>
       <li className='col-span-1 td no flex justify-end px-1'>
+
         <span>{p.total}</span> <span className='ml-1'>{p.unit && p.unit.name}</span>
       </li>
       <li className='col-span-1 td no flex justify-end px-1'>

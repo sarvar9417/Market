@@ -19,6 +19,5 @@ module.exports.routers = (app) => {
   );
   app.use('/api/inventory', require('./inventory/inventory.routes'));
   app.use('/api', require('./charts/chars.routes'));
-
-
+  app.use('/api/reports', require('./reports/reports.route'));
 };

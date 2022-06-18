@@ -1,36 +1,28 @@
+import { useToast } from '@chakra-ui/react';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../../context/AuthContext';
 import { useHttp } from '../../../hooks/http.hook';
-import { TableHead } from './Discount/TableHead';
-import { TableHeader } from './Discount/TableHeader';
-import { Rows } from './Discount/Rows';
-import { ExcelTable } from './Discount/ExcelTable';
-import { useToast } from '@chakra-ui/react';
+import { TableHead } from './PaymentsReport/TableHead';
+import { TableHeader } from './PaymentsReport/TableHeader';
+import { Rows } from './PaymentsReport/Rows';
+import { ExcelTable } from './PaymentsReport/ExcelTable';
 
-export const Discounts = () => {
+export const PaymentsReport = ({ type }) => {
   // STATES
   const { request } = useHttp();
   const auth = useContext(AuthContext);
 
   const [currentPage, setCurrentPage] = useState(0);
   const [countPage, setCountPage] = useState(10);
-  const [search, setSearch] = useState({ clientname: '' });
-  const [sendingsearch, setSendingSearch] = useState({ clientname: '' });
 
-  const [currentDiscounts, setCurrentDiscounts] = useState([]);
-  const [discountsCount, setDiscountsCount] = useState([]);
-  const [searchStorage, setSearchStorage] = useState([]);
+  const [currentPayments, setCurrentPayments] = useState([]);
+  const [paymentsCount, setPaymentsCount] = useState([]);
   const [tableExcel, setTableExcel] = useState([]);
   const [startDate, setStartDate] = useState(
     new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString()
   );
   const [endDate, setEndDate] = useState(new Date().toISOString());
-  const [totalDiscounts, setTotalDiscounts] = useState({
-    discount: 0,
-    discountuzs: 0,
-    totalprice: 0,
-    totalpriceuzs: 0,
-  });
+  const [totalPayments, setTotalPayments] = useState(0);
   //TOAST
   const toast = useToast();
   const notify = useCallback(
@@ -48,16 +40,16 @@ export const Discounts = () => {
   );
 
   // GETDATA
-  const getDiscounts = useCallback(async () => {
+  const getPayments = useCallback(async () => {
     try {
       const data = await request(
-        '/api/sales/discounts/get',
+        '/api/reports/getpayments',
         'POST',
         {
           market: auth.market._id,
           currentPage,
           countPage,
-          search: sendingsearch,
+          type,
           startDate,
           endDate,
         },
@@ -65,10 +57,9 @@ export const Discounts = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      setTotalDiscounts(data.total);
-      setCurrentDiscounts(data.discounts);
-      setSearchStorage(data.discounts);
-      setDiscountsCount(data.count);
+      setTotalPayments(data.totalpayments);
+      setPaymentsCount(data.paymentsCount);
+      setCurrentPayments(data.payments);
     } catch (error) {
       notify({
         title: error,
@@ -76,25 +67,16 @@ export const Discounts = () => {
         status: 'error',
       });
     }
-  }, [
-    auth,
-    request,
-    notify,
-    currentPage,
-    countPage,
-    sendingsearch,
-    startDate,
-    endDate,
-  ]);
+  }, [auth, request, notify, currentPage, countPage, startDate, endDate, type]);
 
-  const getDiscountsExcel = async () => {
+  const getPaymentsExcel = async () => {
     try {
       const data = await request(
-        '/api/sales/discounts/getexcel',
+        '/api/reports/getpaymentexcel',
         'POST',
         {
           market: auth.market._id,
-          search: sendingsearch,
+          type,
           startDate,
           endDate,
         },
@@ -111,26 +93,6 @@ export const Discounts = () => {
         status: 'error',
       });
     }
-  };
-
-  // Handlers
-  const searchKeypress = (e) => {
-    if (e.key === 'Enter') {
-      setCurrentPage(0);
-      setSendingSearch(search);
-    }
-  };
-
-  const searchDiscount = (e) => {
-    setSearch({
-      clientname: e.target.value,
-    });
-    const searching = searchStorage.filter((item) =>
-      item.saleconnector.client.name
-        .toLowerCase()
-        .includes(e.target.value.toLowerCase())
-    );
-    setCurrentDiscounts(searching);
   };
 
   const setPageSize = (e) => {
@@ -150,8 +112,8 @@ export const Discounts = () => {
   };
 
   useEffect(() => {
-    getDiscounts();
-  }, [getDiscounts, currentPage, countPage, sendingsearch, startDate, endDate]);
+    getPayments();
+  }, [getPayments, currentPage, countPage, startDate, endDate, type]);
 
   return (
     <div className='overflow-x-auto'>
@@ -160,44 +122,36 @@ export const Discounts = () => {
           startDate={startDate}
           endDate={endDate}
           changeDate={changeDate}
-          getDiscountsExcel={getDiscountsExcel}
+          getPaymentsExcel={getPaymentsExcel}
           currentPage={currentPage}
           setPageSize={setPageSize}
-          searchDiscount={searchDiscount}
           setCurrentPage={setCurrentPage}
-          discountsCount={discountsCount}
+          paymentsCount={paymentsCount}
           countPage={countPage}
-          keyPressed={searchKeypress}
         />
         <TableHead
-          currentDiscounts={currentDiscounts}
-          setCurrentDiscounts={setCurrentDiscounts}
+          currentPayments={currentPayments}
+          setCurrentPayments={setCurrentPayments}
+          type={type}
         />
-        {currentDiscounts.map((discount, index) => {
+        {currentPayments.map((payment, index) => {
           return (
             <Rows
               key={index}
               index={index}
-              discount={discount}
+              payment={payment}
               currentPage={currentPage}
+              type={type}
             />
           );
         })}
+
         <ul className='tr font-bold text-base'>
-          <li className='td col-span-6 text-right border-r'>Jami</li>
-          <li className='td text-right col-span-2 border-r-2 border-green-800'>
-            {(
-              Math.round(totalDiscounts.totalprice * 10000) / 10000
-            ).toLocaleString('ru-RU')}{' '}
-            <span className='text-green-800'>USD</span>
-          </li>
-          <li className='td text-right col-span-2 border-r-2 border-orange-600'>
-            {(
-              Math.round(totalDiscounts.discount * 10000) / 10000
-            ).toLocaleString('ru-RU')}{' '}
+          <li className='td col-span-9 text-right border-r'>Jami</li>
+          <li className='td text-right col-span-3 border-r-2 border-orange-600'>
+            {(Math.round(totalPayments * 100) / 100).toLocaleString('de-DE')}{' '}
             <span className='text-orange-600'>USD</span>
           </li>
-          <li className='td text-right col-span-2 border-r-2 border-red-600'></li>
         </ul>
       </div>
 

@@ -77,6 +77,7 @@ export const Navbar = ({ baseUrl }) => {
   }, [getUser]);
 
   return (
+
     <nav className=''>
       <div className='flex justify-between m-0 p-0'>
         <div className='font-bold flex items-center'>
