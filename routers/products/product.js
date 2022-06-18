@@ -159,7 +159,7 @@ module.exports.registerAll = async (req, res) => {
       name: productname,
       market,
     })
-      .sort({ _id: -1 })
+      .sort({ code: 1 })
       .select('name code total unit market category')
       .populate('price', 'incomingprice sellingprice')
       .populate('unit', 'name')
@@ -294,7 +294,7 @@ module.exports.register = async (req, res) => {
       name: productname,
       market,
     })
-      .sort({ _id: -1 })
+      .sort({ code: 1 })
       .select('name code total unit market category')
       .populate('price', 'incomingprice sellingprice')
       .populate('unit', 'name')
@@ -404,7 +404,7 @@ module.exports.update = async (req, res) => {
       name: productname,
       market,
     })
-      .sort({ _id: -1 })
+      .sort({ code: 1 })
       .select('name code total unit market category')
       .populate('price', 'incomingprice sellingprice')
       .populate('unit', 'name')
