@@ -9,7 +9,7 @@ import React from 'react';
 
 export const Table = ({ saleproducts, editProducts }) => {
   return (
-    <div className='max-h-96'>
+    <div className=''>
       <table className='bg-white w-full text-base relative min-w-[700px]'>
         <thead className='z-10 border text-center text-base  text-white py-4'>
           <tr>

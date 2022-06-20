@@ -275,7 +275,6 @@ module.exports.addproducts = async (req, res) => {
       market,
       user,
     } = req.body;
-
     const marke = await Market.findById(market);
     if (!marke) {
       return res.status(400).json({
@@ -470,6 +469,8 @@ module.exports.addproducts = async (req, res) => {
         saleconnector.client = newClient._id;
         dailysaleconnector.client = newClient._id;
       }
+    } else {
+      dailysaleconnector.client = saleconnector.client;
     }
 
     saleconnector.products.push(...products);
@@ -497,7 +498,6 @@ module.exports.addproducts = async (req, res) => {
       .populate('client', 'name')
       .populate('packman', 'name')
       .populate('saleconnector', 'id');
-
     res.status(201).send(connector);
   } catch (error) {
     res.status(400).json({ error: 'Serverda xatolik yuz berdi...' });
@@ -860,7 +860,6 @@ module.exports.payment = async (req, res) => {
 
     res.status(201).send(newPayment);
   } catch (error) {
-    console.log(error);
     res.status(400).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };

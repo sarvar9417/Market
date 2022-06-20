@@ -20,6 +20,10 @@ export const Header = ({ auth, sales }) => {
           <span className='font-bold'>Sana:</span>
           <span>{new Date(sales.createdAt).toLocaleDateString()}</span>
         </p>
+        <p className='flex justify-between'>
+          <span className='font-bold'>Mijoz:</span>
+          <span>{sales.client && sales.client.name && sales.client.name}</span>
+        </p>
       </div>
       <div className='text-center text-xl font-bold'>Sotuv: A{sales.id}</div>
       <div className='text-right text-2xl font-bold '>PIPE HOUSE</div>

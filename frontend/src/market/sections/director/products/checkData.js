@@ -86,12 +86,21 @@ export const checkProduct = (product) => {
       status: 'error',
     };
 
-  if (product.code.length !== 6)
+  if (product.code.length < 6)
     return {
-      title: "Diqqat! Mahsulot kodi 6 ta raqamdan iborat bo'shi kerak.",
+      title: "Diqqat! Mahsulot kodi kamida 6 ta belgidan iborat bo'shi kerak.",
       description: "Iltimos kodi to'g'ri kiriting.",
       status: 'error',
     };
+
+  if (product.code.length > 7)
+    return {
+      title:
+        "Diqqat! Mahsulot kodi ko'pi bilan 7 ta belgidan iborat bo'shi kerak.",
+      description: "Iltimos kodi to'g'ri kiriting.",
+      status: 'error',
+    };
+
   if (!product.name)
     return {
       title: 'Diqqat! Mahsulot nomi kiritilmagan.',

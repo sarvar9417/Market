@@ -506,7 +506,7 @@ module.exports.getAll = async (req, res) => {
     const products = await Product.find({
       market,
     })
-      .sort({ _id: -1 })
+      .sort({ code: 1 })
       .select('name code unit category producttype brand price total')
       .populate('category', 'name code')
       .populate('producttype', 'name')
@@ -654,7 +654,7 @@ module.exports.getProductExcel = async (req, res) => {
       name: name,
       market,
     })
-      .sort({ _id: -1 })
+      .sort({ code: 1 })
       .select('name code total unit')
       .populate('price', 'incomingprice sellingprice')
       .populate('unit', 'name');
@@ -866,7 +866,7 @@ module.exports.getProductsInventory = async (req, res) => {
       name: productname,
       market,
     })
-      .sort({ _id: -1 })
+      .sort({ code: 1 })
       .select('name market category producttype brand code total unit')
       .populate({
         path: 'category',
@@ -917,7 +917,7 @@ module.exports.getproductsale = async (req, res) => {
     const products = await Product.find({
       market,
     })
-      .sort({ _id: -1 })
+      .sort({ code: 1 })
       .select('name code total unit market price')
       .populate('price', 'sellingprice')
       .populate('unit', 'name');

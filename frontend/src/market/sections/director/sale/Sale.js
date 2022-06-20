@@ -412,7 +412,6 @@ export const Sale = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      console.log(data);
       setSaleCounts(data.count);
       setCurrentProducts(data.saleconnectors);
       setSaleConnectors(data.saleconnectors);
@@ -2277,26 +2276,17 @@ export const Sale = () => {
       getClients();
       getExchangerate();
       getProducts();
-      // getCategories();
-      // getProductTypes();
-      // getBrand();
-      // getBaseUrl();
     }
   }, [
-    // getCategories,
-    // getProductTypes,
-    // getBrand,
     getPackmans,
     getClients,
     getProducts,
     n,
-    // getBaseUrl,
     getExchangerate,
     getSaleConnectors,
   ]);
   //====================================================================
   //====================================================================
-
   return (
     <div className='m-3'>
       <div className={`${checkTemporary ? '' : 'hidden'}`}>

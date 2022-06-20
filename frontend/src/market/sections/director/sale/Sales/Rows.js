@@ -13,7 +13,6 @@ export const Rows = ({
   currentPage,
   editHandler,
 }) => {
-  console.log(saleconnector);
   return (
     <ul className='tr'>
       <li className='no'>{currentPage * countPage + 1 + index}</li>
