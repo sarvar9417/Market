@@ -483,41 +483,10 @@ export const Product = () => {
     getUnits();
   }, [getUnits]);
 
-  const rename = useCallback(async () => {
-    try {
-      const data = await request(
-        `/api/products/product/updateallproducts`,
-        'POST',
-        {},
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
-      );
-      notify({
-        title: `${t(data)}`,
-        description: '',
-        status: 'success',
-      });
-    } catch (e) {
-      notify({
-        title: e,
-        description: '',
-        status: 'error',
-      });
-    }
-  }, [auth, request, notify]);
-  //====================================================================
-  //====================================================================
-
   return (
     <>
       {/* {loading ? <Loader /> : ''} */}
 
-      <button
-        onClick={rename}
-        className='rounded bg-red-600 px-5 py-2 text-white'>
-        Rename
-      </button>
       <div className='overflow-x-auto'>
         <CreateProduct
           setProduct={setProduct}
