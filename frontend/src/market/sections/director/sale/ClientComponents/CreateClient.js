@@ -34,7 +34,7 @@ export const CreateClient = ({
             placeholder={t('Kategoriyani tanlang')}
             onChange={selectHandler}
           >
-            <option value='delete'>Kategoriya tanlang</option>
+            <option value='delete'>{t("Kategoriya tanlang")}</option>
             {packmans &&
               packmans.map((packman, index) => {
                 return (

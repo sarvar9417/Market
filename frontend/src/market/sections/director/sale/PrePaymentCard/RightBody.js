@@ -72,7 +72,7 @@ export const RightBody = ({ payment, typeHandler, debt }) => {
             <button
               onClick={typeHandler}
               className='bg-blue-700 hover:bg-blue-800 text-white w-full rounded font-bold flex justify-center items-center px-3 py-3 h-full'
-              name='Aralash'
+              name={t('Aralash')}
               data-type='mixed'>
               <span className='text-2xl pointer-events-none flex flex-col w-[105px] h-[105px] justify-center  border-white border-2 rounded-full p-4'>
                 <span className='flex justify-between'>
@@ -108,7 +108,7 @@ export const RightBody = ({ payment, typeHandler, debt }) => {
         <button
           onClick={typeHandler}
           className='bg-blue-700 hover:bg-blue-800 text-white w-full rounded font-bold flex flex-col justify-between items-center px-3 py-3'
-          name='Qarz'
+          name={t('Qarz')}
           data-type='debt'>
           <h1 className=' pointer-events-none text-yellow-600'>{t("Qarz")}</h1>
           <p className='text-3xl font-bold pointer-events-none flex flex-col'>

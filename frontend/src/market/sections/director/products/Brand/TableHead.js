@@ -8,7 +8,7 @@ export const TableHead = ({ currentBrands, setCurrentBrands }) => {
       <li className='th border-r'>№</li>
 
       <li className='th border-r col-span-7 flex justify-center'>
-        {t("Brand nomi")}{" "}
+        {t("Brend nomi")}{" "}
         <Sort
           property={"name"}
           data={currentBrands}

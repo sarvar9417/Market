@@ -15,6 +15,7 @@ import { Modal } from './modal/Modal';
 import { RouterBtns } from './Incoming/RouterBtns';
 import { ModalTable } from './Incoming/ModalTable';
 import { ExcelTable } from './Incoming/ExcelTable';
+import { t } from 'i18next';
 
 export const Incoming = () => {
   const [beginDay, setBeginDay] = useState(
@@ -118,7 +119,7 @@ export const Incoming = () => {
       );
       let s = [
         {
-          label: 'Yetkazib beruvchilar',
+          label: t('Yetkazib beruvchilar'),
           value: 'all',
         },
       ];
@@ -173,7 +174,7 @@ export const Incoming = () => {
       );
       let s = [
         {
-          label: 'Barcha mahsulotlar',
+          label: t('Barcha mahsulotlar'),
           value: 'all',
         },
       ];
@@ -210,11 +211,11 @@ export const Incoming = () => {
     for (const i in incomings) {
       if (incomings[i].product._id === e.product._id) {
         return notify({
-          title: `Diqqat! Ushbu mahsulot ro'yxatga ${
+          title: `${t("Diqqat! Ushbu mahsulot ro'yxatga")} ${
             parseInt(i) + 1
-          } raqamda kiritilgan.`,
+          } ${t("raqamda kiritilgan.")}`,
           description:
-            "Qiymatlarini o'zgartirish uchun tahrirlash tugmasini bosishingiz mumkin",
+            t("Qiymatlarini o'zgartirish uchun tahrirlash tugmasini bosishingiz mumkin"),
           status: 'warning',
         });
       }
@@ -242,15 +243,15 @@ export const Incoming = () => {
   const addIncoming = () => {
     if (incoming.pieces === 0 || incoming.pieces === '') {
       return notify({
-        title: 'Diqqat! Mahsulot soni kiritilmagan.',
-        description: 'Iltimos Qabul qilinayotgan mahsulot sonini kiriting.',
+        title: t('Diqqat! Mahsulot soni kiritilmagan.'),
+        description: t('Iltimos Qabul qilinayotgan mahsulot sonini kiriting.'),
         status: 'warning',
       });
     }
     if (incoming.unitprice === 0 || incoming.unitprice === '') {
       return notify({
-        title: 'Diqqat! Mahsulot narxi kiritilmagan.',
-        description: 'Iltimos Qabul qilinayotgan mahsulot narxini kiriting.',
+        title: t('Diqqat! Mahsulot narxi kiritilmagan.'),
+        description: t('Iltimos Qabul qilinayotgan mahsulot narxini kiriting.'),
         status: 'warning',
       });
     }
@@ -611,11 +612,11 @@ export const Incoming = () => {
 
   const clearSelect = useCallback(() => {
     selectRef.supplier.current.selectOption({
-      label: 'Yetkazib beruvchilar',
+      label: t('Yetkazib beruvchilar'),
       value: 'all',
     });
     selectRef.product.current.selectOption({
-      label: 'Barcha mahsulotlar',
+      label: t('Barcha mahsulotlar'),
       value: 'all',
     });
     // selectRef.category.current.selectOption({
@@ -668,7 +669,7 @@ export const Incoming = () => {
       setVisible(false);
       setVisibleReport(true);
       notify({
-        title: `Mahsulotlar qabul qilindi!`,
+        title: t(`Mahsulotlar qabul qilindi!`),
         description: '',
         status: 'success',
       });

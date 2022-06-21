@@ -3,6 +3,7 @@ import { Link, useHistory } from 'react-router-dom'
 import { AuthContext } from '../../../context/AuthContext'
 import { useHttp } from '../../../hooks/http.hook'
 import { useToast } from '@chakra-ui/react'
+import { t } from 'i18next'
 
 export const Navbar = ({ baseUrl }) => {
   const history = useHistory()
@@ -113,7 +114,7 @@ export const Navbar = ({ baseUrl }) => {
                   to="/"
                 >
                   <i className="icon-devices_other nav-icon" />
-                  Bosh sahifa
+                  {t("Bosh sahifa")}
                 </Link>
               </li>
               <li className="nav-item dropdown ">
@@ -135,7 +136,7 @@ export const Navbar = ({ baseUrl }) => {
                     }`}
                 >
                   <i className="icon-users nav-icon" />
-                  Mahsulotlar
+                  {t("Mahsulotlar")}
                 </span>
                 <ul className="dropdown-menu" aria-labelledby="doctoRs">
                   <li>
@@ -148,7 +149,7 @@ export const Navbar = ({ baseUrl }) => {
                       aria-haspopup="true"
                       aria-expanded="false"
                     >
-                      Yaratish
+                      {t("Yaratish")}
                     </Link>
                     <ul
                       className="dropdown-menu dropdown-menu-right"
@@ -165,7 +166,7 @@ export const Navbar = ({ baseUrl }) => {
                           }}
                           to="/alo24/category"
                         >
-                          Mahsulot kategoriyalari
+                          {t("Mahsulot kategoriyalari")}
                         </Link>
                       </li>
                       <li>
@@ -179,7 +180,7 @@ export const Navbar = ({ baseUrl }) => {
                           }}
                           to="/alo24/producttypes"
                         >
-                          Mahsulotlar turlari
+                          {t("Mahsulotlar turlari")}
                         </Link>
                       </li>
                       <li>
@@ -191,7 +192,7 @@ export const Navbar = ({ baseUrl }) => {
                           }}
                           to="/alo24/brand"
                         >
-                          Brandlar
+                          {t("Brendlar")}
                         </Link>
                       </li>
                       <li>
@@ -203,7 +204,7 @@ export const Navbar = ({ baseUrl }) => {
                           }}
                           to="/alo24/product"
                         >
-                          Mahsulotlar
+                          {t("Mahsulotlar")}
                         </Link>
                       </li>
                       <li>
@@ -215,12 +216,12 @@ export const Navbar = ({ baseUrl }) => {
                           }}
                           to="/alo24/unit"
                         >
-                          O'lchov birliklari
+                          {t("O'lchov birliklari")}
                         </Link>
                       </li>
                       <li>
                         <Link className="dropdown-item" to="/alo24/supplier">
-                          Yetkazib beruvchilar
+                          {t("Yetkazib beruvchilar")}
                         </Link>
                       </li>
                     </ul>
@@ -235,7 +236,7 @@ export const Navbar = ({ baseUrl }) => {
                       }}
                       to="/alo24/incoming"
                     >
-                      Qabul qilish
+                      {t("Qabul qilish")}
                     </Link>
                   </li>
                 </ul>
@@ -250,7 +251,7 @@ export const Navbar = ({ baseUrl }) => {
                   role="button"
                 >
                   <i className="icon-book-open nav-icon" />
-                  Foydalanuvchilar
+                  {t("Foydalanuvchilar")}
                 </Link>
               </li>
               <li className="nav-item dropdown">
@@ -265,7 +266,7 @@ export const Navbar = ({ baseUrl }) => {
                   to="/alo24/exchangerate"
                 >
                   <i className="icon-dollar-sign nav-icon"></i>
-                  Valyuta kursi
+                  {t("Valyuta kursi")}
                 </Link>
               </li>
             </ul>
@@ -312,13 +313,13 @@ export const Navbar = ({ baseUrl }) => {
                         />
                       </div>
                       {user.firstname} {user.lastname}
-                      <p>Direktor</p>
+                      <p>{t("Direktor")}</p>
                     </div>
                     <Link to="/alo24/editdirector">
-                      <i className="icon-user1" /> Tahrirlash
+                      <i className="icon-user1" /> {t("Tahrirlash")}
                     </Link>
                     <Link to="/alo24/editdirectorpassword">
-                      <i className="icon-vpn_key" /> Parolni o'zgartirish
+                      <i className="icon-vpn_key" /> {t("Parolni o'zgartirish")}
                     </Link>
                     <button
                       onClick={() => {
@@ -326,7 +327,7 @@ export const Navbar = ({ baseUrl }) => {
                         history.push('/')
                       }}
                     >
-                      <i className="icon-log-out1" /> Sign Out
+                      <i className="icon-log-out1" /> {t("Tizimdan chiqish")}
                     </button>
                   </div>
                 </div>
@@ -339,7 +340,7 @@ export const Navbar = ({ baseUrl }) => {
           {/* Page header start */}
           <div className="page-header">
             <ol className="breadcrumb">
-              <li className="breadcrumb-item active">Bosh sahifa</li>
+              <li className="breadcrumb-item active">{t("Bosh sahifa")}</li>
             </ol>
           </div>
           {/* Page header end */}

@@ -180,7 +180,7 @@ export const Unit = () => {
         }
       );
       notify({
-        title: `${data.name} ${t("o'lchov birliki o'chirildi!")}`,
+        title: `${data.name} ${t("o'lchov birligi o'chirildi!")}`,
         description: '',
         status: 'success',
       });

@@ -7,6 +7,7 @@ import { Rows } from './Inventory/Rows';
 import { Modal } from '../components/Modal';
 import { useToast } from '@chakra-ui/react';
 import { useHistory } from 'react-router-dom';
+import { t } from 'i18next';
 
 export const Inventory = () => {
   // ===========================================================
@@ -109,7 +110,7 @@ export const Inventory = () => {
         );
         localStorage.setItem('data', data);
         notify({
-          title: `${currentProducts[i].name} mahsuloti inventarizatsiyasi saqlandi`,
+          title: `${currentProducts[i].name} ${t("mahsuloti inventarizatsiyasi saqlandi")}`,
           description: '',
           status: 'success',
         });
@@ -140,7 +141,7 @@ export const Inventory = () => {
 
       localStorage.setItem('data', data);
       notify({
-        title: `Inventarizatsiya jarayoni yakunlandi`,
+        title: t(`Inventarizatsiya jarayoni yakunlandi`),
         description: '',
         status: 'success',
       });
@@ -250,7 +251,7 @@ export const Inventory = () => {
       <Modal
         modal={modal}
         setModal={setModal}
-        basic='Diqqat! Inventarizatsiya jarayoni yakunlanganiini tasdiqlaysizmi?'
+        basic={t('Diqqat! Inventarizatsiya jarayoni yakunlanganiini tasdiqlaysizmi?')}
         handler={completeInventory}
       />
     </div>

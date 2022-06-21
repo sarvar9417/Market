@@ -37,8 +37,8 @@ export const TableHeader = ({
       <li className='th-h border-r col-span-1'>
         <SearchInput
           changeHandler={changeHandler}
-          type={'text'}
-          placeholder={'Kodi'}
+          type={'number'}
+          placeholder={t('Kodi')}
           name='code'
           value={search.code}
           keyPressed={keyPress}
@@ -49,7 +49,7 @@ export const TableHeader = ({
         <SearchInput
           changeHandler={changeHandler}
           type={'text'}
-          placeholder={'Mahsulot nomi'}
+          placeholder={t('Mahsulot nomi')}
           name='name'
           value={search.name}
           keyPressed={keyPress}
@@ -80,7 +80,7 @@ export const TableHeader = ({
           onClick={getProductExcel}>
           <FontAwesomeIcon icon={faFileExcel} />
         </button>
-        <ExcelDownload filename={'Mahsulotlar'} />
+        <ExcelDownload filename={t('Mahsulotlar')} />
       </li>
       <li className='th-h border-r col-span-1 flex justify-center'>
         <ExcelUpload

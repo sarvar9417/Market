@@ -10,7 +10,7 @@ export const ExcelDownload = ({ filename }) => {
         table='data-excel-table'
         sheet='Sheet'
         buttonText='Excel'
-        filename={t(filename)}
+        filename="filename"
       />
     </div>
   );

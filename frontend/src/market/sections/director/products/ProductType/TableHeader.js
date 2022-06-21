@@ -5,6 +5,7 @@ import { Pagination } from '../../components/Pagination';
 import { ExcelDownload } from '../../components/ExcelDownload';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileExcel } from '@fortawesome/free-solid-svg-icons';
+import { t } from 'i18next';
 
 export const TableHeader = ({
   currentPage,
@@ -26,7 +27,7 @@ export const TableHeader = ({
         <SearchInput
           changeHandler={searchProductType}
           type={'text'}
-          placeholder={'Kategoriya kodi'}
+          placeholder={t('Kategoriya kodi')}
           name='code'
           value={search.categorycode}
           keyPressed={keyPressed}
@@ -36,7 +37,7 @@ export const TableHeader = ({
         <SearchInput
           changeHandler={searchProductType}
           type={'text'}
-          placeholder={'Mahsulot turi'}
+          placeholder={t('Mahsulot turi')}
           name='name'
           value={search.name}
           keyPressed={keyPressed}
@@ -56,7 +57,7 @@ export const TableHeader = ({
           onClick={getSearchedProductType}>
           <FontAwesomeIcon icon={faFileExcel} />
         </button>
-        <ExcelDownload filename={'Mahsulot turlari'} />
+        <ExcelDownload filename={t('Mahsulot turlari')} />
       </li>
     </ul>
   );

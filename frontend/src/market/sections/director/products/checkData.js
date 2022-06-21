@@ -5,7 +5,7 @@ export const checkCategory = (category) => {
   if (!category.market)
     return {
       title: t("Diqqat! Avtorzatsiyadan o'tilmagan."),
-      description: "Iltimos bo'limdan chiqib qayta kiriting.",
+      description: t("Iltimos bo'limdan chiqib qayta kiriting."),
       status: 'error',
     };
   if (!category.name)
@@ -69,8 +69,8 @@ export const checkUnit = (unit) => {
 export const checkProduct = (product) => {
   if (!product.market)
     return {
-      title: "Diqqat! Avtorzatsiyadan o'tilmagan.",
-      description: "Iltimos bo'limdan chiqib qayta kiring.",
+      title: t("Diqqat! Avtorzatsiyadan o'tilmagan."),
+      description: t("Iltimos bo'limdan chiqib qayta kiring."),
       status: 'error',
     };
   // if (!product.category)
@@ -81,15 +81,15 @@ export const checkProduct = (product) => {
   //   };
   if (!product.code)
     return {
-      title: 'Diqqat! Mahsulot kodi kiritilmagan.',
-      description: 'Iltimos kodini kiriting.',
+      title: t('Diqqat! Mahsulot kodi kiritilmagan.'),
+      description: t('Iltimos kodini kiriting.'),
       status: 'error',
     };
 
   if (product.code.length < 6)
     return {
-      title: "Diqqat! Mahsulot kodi kamida 6 ta belgidan iborat bo'shi kerak.",
-      description: "Iltimos kodi to'g'ri kiriting.",
+      title: t("Diqqat! Mahsulot kodi 6 ta raqamdan iborat bo'shi kerak."),
+      description: t("Iltimos kodi to'g'ri kiriting."),
       status: 'error',
     };
 
@@ -103,36 +103,36 @@ export const checkProduct = (product) => {
 
   if (!product.name)
     return {
-      title: 'Diqqat! Mahsulot nomi kiritilmagan.',
-      description: 'Iltimos mahsulot nomini kiriting.',
+      title: t('Diqqat! Mahsulot nomi kiritilmagan.'),
+      description: t('Iltimos mahsulot nomini kiriting.'),
       status: 'error',
     };
   if (!product.incomingprice) {
     return {
-      title: 'Diqqat! Olish narxi kiritilmagan.',
-      description: 'Iltimos olish narxni kiriting.',
+      title: t('Diqqat! Olish narxi kiritilmagan.'),
+      description: t('Iltimos olish narxni kiriting.'),
       status: 'error',
     };
   }
 
   if (!product.sellingprice) {
     return {
-      title: 'Diqqat! Sotish narxi kiritilmagan.',
-      description: 'Iltimos sotish narxni kiriting.',
+      title: t('Diqqat! Sotish narxi kiritilmagan.'),
+      description: t('Iltimos sotish narxni kiriting.'),
       status: 'error',
     };
   }
   if (parseFloat(product.incomingprice) > parseFloat(product.sellingprice)) {
     return {
-      title: "Diqqat! Sotish narxi olish dan katta bo'lish kerak.",
-      description: "Iltimos sotish narxini to'g'ri kiriting.",
+      title: t("Diqqat! Sotish narxi olish dan katta bo'lish kerak."),
+      description: t("Iltimos sotish narxini to'g'ri kiriting."),
       status: 'error',
     };
   }
   if (!product.unit || product.unit === 'delete')
     return {
-      title: "Diqqat! O'lchov birligi kiritilmagan.",
-      description: "Iltimos o'lchov birlikini kiriting.",
+      title: t("Diqqat! O'lchov birligi kiritilmagan."),
+      description: t("Iltimos o'lchov birlikini kiriting."),
       status: 'error',
     };
 
@@ -538,15 +538,15 @@ export const checkUploadProductConnectors = (market, productConnectors) => {
 export const checkExchangerate = (exchangerate) => {
   if (!exchangerate.market)
     return {
-      title: "Diqqat! Avtorzatsiyadan o'tilmagan.",
-      description: "Iltimos bo'limdan chiqib qayta kiriting.",
+      title: t("Diqqat! Avtorzatsiyadan o'tilmagan."),
+      description: t("Iltimos bo'limdan chiqib qayta kiriting."),
       status: 'error',
     };
 
   if (!exchangerate.exchangerate)
     return {
-      title: "Diqqat! Kurs ko'rsatilmagan.",
-      description: 'Iltimos kursni kiriting.',
+      title: t("Diqqat! Kurs ko'rsatilmagan."),
+      description: t('Iltimos kursni kiriting.'),
       status: 'error',
     };
   return false;
@@ -556,14 +556,14 @@ export const checkExchangerate = (exchangerate) => {
 export const checkBrand = (brand) => {
   if (!brand.market)
     return {
-      title: "Diqqat! Avtorzatsiyadan o'tilmagan.",
-      description: "Iltimos bo'limdan chiqib qayta kiring.",
+      title: t("Diqqat! Avtorzatsiyadan o'tilmagan."),
+      description: t("Iltimos bo'limdan chiqib qayta kiring."),
       status: 'error',
     };
   if (!brand.name)
     return {
-      title: 'Diqqat! Yetkazib beruvchi kiritilmagan.',
-      description: 'Iltimos Yetkazib beruvchi nomini kiriting.',
+      title: t('Diqqat! Yetkazib beruvchi kiritilmagan.'),
+      description: t('Iltimos Yetkazib beruvchi nomini kiriting.'),
       status: 'error',
     };
   return false;

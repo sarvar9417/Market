@@ -1,6 +1,5 @@
 const mongoose = require("mongoose")
 const config = require("config")
-
 const PORT = config.get("PORT") || 8800
 
 module.exports.start = async (app) => {
@@ -13,7 +12,7 @@ module.exports.start = async (app) => {
             .catch(() => { console.log('Connecting error to MongoDB') })
         app.listen(PORT, () => console.log(`App has been started on port ${PORT}`))
     } catch (error) {
-        console.log('Serverda xatolik yuz berdi', error.message)
+        console.log ('Serverda xatolik yuz berdi', error.message)
         process.exit(1)
     }
 }

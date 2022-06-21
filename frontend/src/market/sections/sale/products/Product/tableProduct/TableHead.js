@@ -34,7 +34,7 @@ export const TableHead = ({ currentProducts, setCurrentProducts }) => {
         />
       </li>
       <li className='th border-r flex justify-center items-center col-span-2'>
-        Narxi
+        {t("Narxi")}
         <SortDoubleProperty
           property={'price'}
           innnerProperty='sellingprice'

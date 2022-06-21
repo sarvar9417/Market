@@ -30,7 +30,7 @@ export const TableHeader = ({
         <SearchInput
           changeHandler={changeHandler}
           type={'number'}
-          placeholder={'Kodi'}
+          placeholder={t('Kodi')}
           name='code'
           value={search.code}
           keyPressed={keyPress}
@@ -41,7 +41,7 @@ export const TableHeader = ({
         <SearchInput
           changeHandler={changeHandler}
           type={'text'}
-          placeholder={'Mahsulot nomi'}
+          placeholder={t('Mahsulot nomi')}
           name='name'
           value={search.name}
           keyPressed={keyPress}
