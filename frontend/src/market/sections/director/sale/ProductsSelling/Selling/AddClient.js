@@ -30,7 +30,7 @@ export const AddClient = ({
         }`}>
         <Select
           onChange={changePackman}
-          placeholder={t('Yetkazuvchi')}
+          placeholder={t('Santexniklar')}
           isClearable={true}
           options={packmans}
         />

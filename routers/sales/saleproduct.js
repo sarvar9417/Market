@@ -258,8 +258,6 @@ module.exports.register = async (req, res) => {
       .populate('packman', 'name')
       .populate('saleconnector', 'id');
 
-    console.log(connector.products[0].product);
-
     res.status(201).send(connector);
   } catch (error) {
     res.status(400).json({ error: 'Serverda xatolik yuz berdi...' });
@@ -534,7 +532,6 @@ module.exports.getsaleconnectors = async (req, res) => {
   try {
     const { market, countPage, currentPage, startDate, endDate, search } =
       req.body;
-    console.log(search);
     const marke = await Market.findById(market);
     if (!marke) {
       return res.status(400).json({
@@ -704,7 +701,6 @@ module.exports.getsaleconnectors = async (req, res) => {
           : 1,
     });
   } catch (error) {
-    console.log(error);
     res.status(400).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };

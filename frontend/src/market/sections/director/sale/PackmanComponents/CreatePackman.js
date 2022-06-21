@@ -19,7 +19,7 @@ export const CreatePackman = ({
   return (
     <>
       <ul className='thead'>
-        <li className='th col-span-6 border-r'>{t('Yetkazuvchi')}</li>
+        <li className='th col-span-6 border-r'>{t('Santexnik')}</li>
         <li className='th col-span-3 border-r'>{t('Saqlash')}</li>
         <li className='th col-span-3'>{t('Tozalash')}</li>
       </ul>
@@ -28,7 +28,7 @@ export const CreatePackman = ({
           <Input
             name={'name'}
             data={packman && packman.name}
-            placeholder={t('Yetkazuvchini kiriting')}
+            placeholder={t('Santexnikni kiriting')}
             type={'text'}
             keyPressed={keyPressed}
             changeHandler={changeHandler}
