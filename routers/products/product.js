@@ -911,13 +911,12 @@ module.exports.getProducts = async (req, res) => {
         },
       },
     ]);
-
     res.status(201).json({
       products: products[0].currentProducts,
       count: products[0].countProducts[0] && products[0].countProducts[0].count,
     });
   } catch (error) {
-    res.status(401).json({ message: 'Serverda xatolik yuz berdi...' });
+    res.status(401).send(error);
   }
 };
 

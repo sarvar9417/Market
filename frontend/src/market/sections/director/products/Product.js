@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Loader } from '../../../loader/Loader';
+// import { Loader } from '../../../loader/Loader';
 import { useToast } from '@chakra-ui/react';
 import { useHttp } from '../../../hooks/http.hook';
 import { AuthContext } from '../../../context/AuthContext';
@@ -126,7 +126,6 @@ export const Product = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      console.log(data);
       setSearchStorage(data.products);
       setCurrentProducts(data.products);
       setProductsCount(data.count);
@@ -512,7 +511,7 @@ export const Product = () => {
 
   return (
     <>
-      {loading ? <Loader /> : ''}
+      {/* {loading ? <Loader /> : ''} */}
 
       <button
         onClick={rename}
