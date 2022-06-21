@@ -18,7 +18,7 @@ export const Rows = ({
       <li className='no'>{currentPage * countPage + 1 + index}</li>
       <li className='no'>{saleconnector.id}</li>
       <li className='td border-r font-bold'>
-        {saleconnector.client && saleconnector.client.name}
+        {saleconnector.client[0] && saleconnector.client[0].name}
       </li>
 
       <li className='td border-r-2 border-red-600 font-bold text-right'>

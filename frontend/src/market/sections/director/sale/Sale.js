@@ -412,6 +412,8 @@ export const Sale = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+
+      console.log(data);
       setSaleCounts(data.count);
       setCurrentProducts(data.saleconnectors);
       setSaleConnectors(data.saleconnectors);
