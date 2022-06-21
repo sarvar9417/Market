@@ -7,6 +7,7 @@ import {
   InputLeftAddon,
   useToast,
 } from '@chakra-ui/react';
+import { t } from 'i18next';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../../context/AuthContext';
 import { useHttp } from '../../../hooks/http.hook';
@@ -162,7 +163,7 @@ export const Filials = () => {
       getBranches('');
       setBranch({});
       notify({
-        title: `${data.name} filiali yangilandi!`,
+        title: `${data.name} ${t("filiali yangilandi!")}`,
         description: '',
         status: 'success',
       });
@@ -181,9 +182,9 @@ export const Filials = () => {
   const handleImage = async (e) => {
     if (branch.image) {
       return notify({
-        title: 'Diqqat! Surat avval yuklangan',
+        title: t('Diqqat! Surat avval yuklangan'),
         description:
-          "Suratni qayta yuklash uchun suratni ustiga bir marotaba bosib uni o'chiring!",
+          t("Suratni qayta yuklash uchun suratni ustiga bir marotaba bosib uni o'chiring!"),
         status: 'error',
       });
     }
@@ -198,7 +199,7 @@ export const Filials = () => {
     notify({
       status: 'success',
       description: '',
-      title: 'Surat muvaffaqqiyatli yuklandi',
+      title: t('Surat muvaffaqqiyatli yuklandi'),
     });
   };
 
@@ -265,13 +266,13 @@ export const Filials = () => {
     getBranches();
   }, [currentPage, countPage, getBranches]);
 
-  const [t, setT] = useState(false);
+  const [n, setN] = useState(false);
   useEffect(() => {
-    if (!t) {
-      setT(true);
+    if (!n) {
+      setN(true);
       getBaseUrl();
     }
-  }, [getBaseUrl, t]);
+  }, [getBaseUrl, n]);
 
   //====================================================================
   //====================================================================

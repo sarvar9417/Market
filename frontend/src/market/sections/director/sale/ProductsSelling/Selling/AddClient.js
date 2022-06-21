@@ -45,7 +45,7 @@ export const AddClient = ({
           classes={'py-2'}
           name='name'
           changeHandler={inputClient}
-          placeholder={'Xaridor'}
+          placeholder={t("Xaridor")}
         />
       </div>
     </div>

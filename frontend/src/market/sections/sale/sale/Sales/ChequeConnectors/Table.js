@@ -1,4 +1,5 @@
 import React from 'react';
+import { t } from 'i18next'
 
 export const Table = ({ sales }) => {
   return (
@@ -9,22 +10,22 @@ export const Table = ({ sales }) => {
             №
           </th>
           <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
-            Sanasi
+            {t("Sanasi")}
           </th>
           <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
-            Kodi
+            {t("Kodi")}
           </th>
           <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
-            Mahsulot
+            {t("Mahsulot")}
           </th>
           <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
-            Soni
+            {t("Soni")}
           </th>
           <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
-            Narxi (dona)
+            {t("Narxi (dona)")}
           </th>
           <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
-            Jami
+            {t("Jami")}
           </th>
         </tr>
       </thead>

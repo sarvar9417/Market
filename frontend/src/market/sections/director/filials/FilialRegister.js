@@ -15,6 +15,7 @@ import { faHouseMedical } from '@fortawesome/free-solid-svg-icons';
 import { Loader } from '../../../loader/Loader';
 import { AuthContext } from '../../../context/AuthContext';
 import { useHistory } from 'react-router-dom';
+import { t } from 'i18next';
 
 const styleDefault = {
   border: '1.5px solid #eee',
@@ -86,9 +87,9 @@ export const FilialRegister = () => {
   const handleImage = async (e) => {
     if (branch.image) {
       return notify({
-        title: 'Diqqat! Surat avval yuklangan',
+        title: t('Diqqat! Surat avval yuklangan'),
         description:
-          "Suratni qayta yuklash uchun suratni ustiga bir marotaba bosib uni o'chiring!",
+          t("Suratni qayta yuklash uchun suratni ustiga bir marotaba bosib uni o'chiring!"),
         status: 'error',
       });
     }
@@ -103,7 +104,7 @@ export const FilialRegister = () => {
     notify({
       status: 'success',
       description: '',
-      title: 'Surat muvaffaqqiyatli yuklandi',
+      title: t('Surat muvaffaqqiyatli yuklandi'),
     });
   };
 
@@ -191,7 +192,7 @@ export const FilialRegister = () => {
         })
       );
       notify({
-        title: `${data.name} filiali yaratildi!`,
+        title: `${data.name} ${t("filiali yaratildi!")}`,
         description: '',
         status: 'success',
       });
@@ -241,12 +242,13 @@ export const FilialRegister = () => {
               <div className='card-body p-5'>
                 <div
                   className='card-title d-flex align-items-center'
-                  style={{ fontSize: '20pt', color: '#38B2AC' }}>
+                  style={{ fontSize: '20pt', color: '#38B2AC' }}
+                >
                   <div>
                     <FontAwesomeIcon icon={faHouseMedical} />
                   </div>
                   <h5 className='mb-0 fs-5 ml-2' style={{ fontWeight: '600' }}>
-                    Flilial
+                    {t("Filial")}
                   </h5>
                 </div>
                 <hr />
@@ -255,13 +257,14 @@ export const FilialRegister = () => {
                     <div className='col-md-12'>
                       <FormControl isRequired>
                         <FormLabel
-                          style={{ color: '#38B2AC', marginTop: '1rem' }}>
-                          Filial nomi
+                          style={{ color: '#38B2AC', marginTop: '1rem' }}
+                        >
+                          {t("Filial nomi")}
                         </FormLabel>
                         <Input
                           onKeyUp={keyPressed}
                           className='is-valid'
-                          placeholder={'Filial nomini kiriting'}
+                          placeholder={t('Filial nomini kiriting')}
                           size='sm'
                           style={
                             branch.name && branch.name.length > 0
@@ -276,12 +279,13 @@ export const FilialRegister = () => {
                     <div className='col-md-12'>
                       <FormControl>
                         <FormLabel
-                          style={{ color: '#38B2AC', marginTop: '1rem' }}>
-                          {'Tashkilot nomi'}
+                          style={{ color: '#38B2AC', marginTop: '1rem' }}
+                        >
+                          {t('Tashkilot nomi')}
                         </FormLabel>
                         <Input
                           onKeyUp={keyPressed}
-                          placeholder={'Tashkilot nomini kiriting'}
+                          placeholder={t('Tashkilot nomini kiriting')}
                           size='sm'
                           style={
                             branch.organitionName &&
@@ -297,12 +301,13 @@ export const FilialRegister = () => {
                     <div className='col-md-12'>
                       <FormControl>
                         <FormLabel
-                          style={{ color: '#38B2AC', marginTop: '1rem' }}>
-                          {'Manzil'}
+                          style={{ color: '#38B2AC', marginTop: '1rem' }}
+                        >
+                          {t('Manzil')}
                         </FormLabel>
                         <Input
                           onKeyUp={keyPressed}
-                          placeholder={'Manzilni kiriting'}
+                          placeholder={t('Manzilni kiriting')}
                           size='sm'
                           style={
                             branch.address && branch.address.length > 0
@@ -317,12 +322,13 @@ export const FilialRegister = () => {
                     <div className='col-md-12'>
                       <FormControl>
                         <FormLabel
-                          style={{ color: '#38B2AC', marginTop: '1rem' }}>
-                          {"Mo'ljal"}
+                          style={{ color: '#38B2AC', marginTop: '1rem' }}
+                        >
+                          {t("Mo'ljal")}
                         </FormLabel>
                         <Input
                           onKeyUp={keyPressed}
-                          placeholder={"Mo'ljalni kiriting"}
+                          placeholder={t("Mo'ljalni kiriting")}
                           size='sm'
                           style={
                             branch.orientation && branch.orientation.length > 0
@@ -337,8 +343,9 @@ export const FilialRegister = () => {
                     <div className='col-md-12'>
                       <FormControl isRequired>
                         <FormLabel
-                          style={{ color: '#38B2AC', marginTop: '1rem' }}>
-                          {'Telefon raqam1'}
+                          style={{ color: '#38B2AC', marginTop: '1rem' }}
+                        >
+                          {t('Telefon raqam1')}
                         </FormLabel>
                         <InputGroup>
                           <InputLeftAddon
@@ -352,7 +359,7 @@ export const FilialRegister = () => {
                           <Input
                             onKeyUp={keyPressed}
                             type='tel'
-                            placeholder={'Telefon raqamni kiriting'}
+                            placeholder={t('Telefon raqamni kiriting')}
                             size='sm'
                             style={
                               branch.phone1 && branch.phone1.length > 0
@@ -368,8 +375,9 @@ export const FilialRegister = () => {
                     <div className='col-md-12'>
                       <FormControl>
                         <FormLabel
-                          style={{ color: '#38B2AC', marginTop: '1rem' }}>
-                          {'Telefon raqam2'}
+                          style={{ color: '#38B2AC', marginTop: '1rem' }}
+                        >
+                          {t('Telefon raqam2')}
                         </FormLabel>
                         <InputGroup>
                           <InputLeftAddon
@@ -383,7 +391,7 @@ export const FilialRegister = () => {
                           <Input
                             onKeyUp={keyPressed}
                             type='tel'
-                            placeholder={'Telefon raqamni kiriting'}
+                            placeholder={t('Telefon raqamni kiriting')}
                             size='sm'
                             style={
                               branch.phone2 && branch.phone2.length > 0
@@ -399,8 +407,9 @@ export const FilialRegister = () => {
                     <div className='col-md-12'>
                       <FormControl>
                         <FormLabel
-                          style={{ color: '#38B2AC', marginTop: '1rem' }}>
-                          {'Telefon raqam3'}
+                          style={{ color: '#38B2AC', marginTop: '1rem' }}
+                        >
+                          {t('Telefon raqam3')}
                         </FormLabel>
                         <InputGroup>
                           <InputLeftAddon
@@ -414,7 +423,7 @@ export const FilialRegister = () => {
                           <Input
                             onKeyUp={keyPressed}
                             type='tel'
-                            placeholder={'Telefon raqamni kiriting'}
+                            placeholder={t('Telefon raqamni kiriting')}
                             size='sm'
                             style={
                               branch.phone3 && branch.phone3.length > 0
@@ -432,15 +441,17 @@ export const FilialRegister = () => {
                     <div className='col-md-12'>
                       <p
                         className='bg-zinc-50 font-medium text-base mt-4 mb-2'
-                        style={{ color: '#38B2AC' }}>
-                        Bosh do'kon
+                        style={{ color: '#38B2AC' }}
+                      >
+                        {t("Bosh do'kon")}
                       </p>
                       <select
                         name='select'
-                        placeholder="Do'konni tanlang"
+                        placeholder={t("Do'konni tanlang")}
                         onChange={changeHandler}
-                        className='bg-gray-50 border border-gray-300 text-gray-900 text-sm block h-[32px] w-full px-2 py-1 outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white'>
-                        <option value='delete'>Do'konni tanlang</option>
+                        className='bg-gray-50 border border-gray-300 text-gray-900 text-sm block h-[32px] w-full px-2 py-1 outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white'
+                      >
+                        <option value='delete'>{t("Do'konni tanlang")}</option>
                         {allmarkets.map((market, ind) => (
                           <option key={ind} value={market._id}>
                             {market.name}
@@ -451,12 +462,13 @@ export const FilialRegister = () => {
                     <div className='col-md-12'>
                       <FormControl>
                         <FormLabel
-                          style={{ color: '#38B2AC', marginTop: '1rem' }}>
-                          {'Bank nomi'}
+                          style={{ color: '#38B2AC', marginTop: '1rem' }}
+                        >
+                          {t('Bank nomi')}
                         </FormLabel>
                         <Input
                           onKeyUp={keyPressed}
-                          placeholder={'Bank nomini kiriting'}
+                          placeholder={t('Bank nomini kiriting')}
                           size='sm'
                           style={
                             branch.bank && branch.bank.length > 0
@@ -471,13 +483,14 @@ export const FilialRegister = () => {
                     <div className='col-md-12'>
                       <FormControl>
                         <FormLabel
-                          style={{ color: '#38B2AC', marginTop: '1rem' }}>
-                          {'INN'}
+                          style={{ color: '#38B2AC', marginTop: '1rem' }}
+                        >
+                          {t('INN')}
                         </FormLabel>
                         <Input
                           onKeyUp={keyPressed}
                           type='number'
-                          placeholder={'INN ni kiriting'}
+                          placeholder={t('INN ni kiriting')}
                           size='sm'
                           style={
                             branch.inn && branch.inn.length > 0
@@ -492,13 +505,14 @@ export const FilialRegister = () => {
                     <div className='col-md-12'>
                       <FormControl>
                         <FormLabel
-                          style={{ color: '#38B2AC', marginTop: '1rem' }}>
-                          {'Hisob raqam'}
+                          style={{ color: '#38B2AC', marginTop: '1rem' }}
+                        >
+                          {t('Hisob raqam')}
                         </FormLabel>
                         <Input
                           onKeyUp={keyPressed}
                           type='number'
-                          placeholder={'Hisob raqamni kiriting'}
+                          placeholder={t('Hisob raqamni kiriting')}
                           size='sm'
                           style={
                             branch.bankNumber && branch.bankNumber.length > 0
@@ -530,13 +544,15 @@ export const FilialRegister = () => {
                       <Button
                         isLoading
                         colorScheme='teal'
-                        variant='solid'></Button>
+                        variant='solid'
+                      ></Button>
                     ) : (
                       <Button
                         colorScheme='teal'
                         variant='solid'
-                        onClick={createHandler}>
-                        {'Registratsiya'}
+                        onClick={createHandler}
+                      >
+                        {t('Registratsiya')}
                       </Button>
                     )}
                   </div>

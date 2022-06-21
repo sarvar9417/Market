@@ -39,7 +39,7 @@ export const RegisterIncoming = ({
         <div className='min-w-[991px]'>
           <div className='font-bold text-lg p-2  bg-white flex justify-between'>
             <span>
-              {t(' Yetkazib beruvchi:')} {supplier && supplier.name}
+              {t('Yetkazib beruvchi')} {supplier && supplier.name}
             </span>
             <span className='text-sm flex items-center'>
               {loading ? (

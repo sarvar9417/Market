@@ -28,7 +28,7 @@ export const RouterBtns = ({
         <span className='w-[20px] h-[20px] bg-white text-orange-700 flex items-center justify-center mr-1 rounded-full'>
           <FontAwesomeIcon icon={faShoppingCart} />
         </span>{' '}
-        Qabullar
+        {t("Qabullar")}
       </button>
       <button
         onClick={changeVisibleTable}
@@ -36,7 +36,7 @@ export const RouterBtns = ({
         <span className='w-[20px] h-[20px] bg-white text-green-700 flex items-center justify-center mr-1 rounded-full'>
           <FontAwesomeIcon icon={faTable} />
         </span>{' '}
-        Ro'yxat
+        {t("Ro'yxat")}
       </button>
     </div>
   );

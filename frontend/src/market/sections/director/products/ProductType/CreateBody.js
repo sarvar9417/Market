@@ -26,7 +26,7 @@ export const CreateBody = ({
           className='text-center py-1 px-3 border focus:ring focus:outline-green-800 rounded'
           placeholder={t("Kategoriyani tanlang")}
           onChange={checkHandler}>
-          <option value='all'>Kategoriya tanlang</option>
+          <option value='all'>{t("Kategoriya tanlang")}</option>
           {categories &&
             categories.map((category, index) => {
               return (
@@ -41,7 +41,7 @@ export const CreateBody = ({
         <Input
           name={"name"}
           data={producttype.name}
-          placeholder={"Kategotiya nomini kiriting"}
+          placeholder={t("Kategotiya nomini kiriting")}
           type={"text"}
           keyPressed={keyPressed}
           changeHandler={changeHandler}

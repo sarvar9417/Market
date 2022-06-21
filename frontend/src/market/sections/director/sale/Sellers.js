@@ -5,9 +5,10 @@ import { useHttp } from '../../../hooks/http.hook';
 import { Modal } from '../components/Modal';
 import { LoginPassword } from './Sellers/LoginPassword';
 import { Register } from './Sellers/Register';
-import { checkSeller, checkSellerId } from './Sellers//checkData';
+import { checkSeller, checkSellerId } from './Sellers/checkData';
 import { TableHead } from './Sellers/TableHead';
 import { Rows } from './Sellers/Rows';
+import { t } from 'i18next';
 
 export const Sellers = () => {
   //====================================================================
@@ -147,7 +148,7 @@ export const Sellers = () => {
         modal={modal}
         setModal={setModal}
         handler={createSeller}
-        basic={'Diqqat! Yangi sotuvchi yaratishni tasdiqlaysizmi?'}
+        basic={t('Diqqat! Yangi sotuvchi yaratishni tasdiqlaysizmi?')}
       />
     </div>
   );

@@ -18,7 +18,7 @@ export const ReportIncomings = ({
 }) => {
   return (
     <div className='w-full shadow-lg'>
-      <div className='card-header text-lg'>Qabul qilingan mahsulotlar</div>
+      <div className='card-header text-lg'>{t("Qabul qilingan mahsulotlar")}</div>
       <div className='grid grid-cols-12 p-3 grid-rows-6'>
         <div className='col-span-12 sm:col-span-6 lg:col-span-3 row-span-6'>
           <div className=' xsm:text-center sm:text-start'>

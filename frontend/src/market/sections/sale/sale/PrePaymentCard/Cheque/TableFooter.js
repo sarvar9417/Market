@@ -1,4 +1,5 @@
 import React from "react";
+import { t } from "i18next"
 
 export const TableFooter = ({ sales }) => {
   return (
@@ -6,7 +7,7 @@ export const TableFooter = ({ sales }) => {
       <tfoot className='text-base'>
         <tr>
           <th colSpan={6} className='py-1'>
-            Jami:
+            {t("Jami")}:
           </th>
           <th className='text-right text-teal-900 py-1'>
             {sales.products
@@ -19,7 +20,7 @@ export const TableFooter = ({ sales }) => {
         </tr>
         <tr>
           <th colSpan={6} className='py-1'>
-            To'langan:
+            {t("To'langan")}:
           </th>
           <th className='text-right text-teal-900 py-1'>
             {sales.payment.payment &&
@@ -29,7 +30,7 @@ export const TableFooter = ({ sales }) => {
         </tr>
         <tr>
           <th colSpan={6} className='py-1'>
-            Chegirma:
+            {t("Chegirma")}:
           </th>
           <th className='text-right text-teal-900 py-1'>
             {sales.discount &&
@@ -40,7 +41,7 @@ export const TableFooter = ({ sales }) => {
         </tr>
         <tr>
           <th colSpan={6} className='py-1'>
-            Qarz:
+            {t("Qarz")}:
           </th>
           <th className='text-right text-teal-900 py-1'>
             {sales.debt &&

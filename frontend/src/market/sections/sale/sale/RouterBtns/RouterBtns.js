@@ -1,6 +1,7 @@
 import { faAdd, faTable } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
+import { t } from 'i18next'
 
 export const RouterBtns = ({
   changeSellingCard,
@@ -15,7 +16,7 @@ export const RouterBtns = ({
         <span className='w-[20px] h-[20px] bg-white text-darkblue-500 flex items-center justify-center mr-1 rounded-full'>
           <FontAwesomeIcon icon={faAdd} />
         </span>{' '}
-        Sotuv
+        {t("Sotuv")}
       </button>
       {/* <button
         onClick={changeSellingEditCard}
@@ -31,7 +32,7 @@ export const RouterBtns = ({
         <span className='w-[20px] h-[20px] bg-white text-green-700 flex items-center justify-center mr-1 rounded-full'>
           <FontAwesomeIcon icon={faTable} />
         </span>{' '}
-        Ro'yxat
+        {t("Ro'yxat")}
       </button>
     </div>
   );

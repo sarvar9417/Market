@@ -97,7 +97,7 @@ export const checkDirectorData = (director) => {
   }
   if (!director.image) {
     return {
-      title: t("Diqqat! Director surati yuklanmagan."),
+      title: t("Diqqat! Direktor surati yuklanmagan."),
       description: t("Iltimos direktor suratini yuklang."),
       status: "error",
     };

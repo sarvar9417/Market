@@ -5,7 +5,7 @@ export const InputProduct = ({ setCounts, product, changeEnter }) => {
   return (
     <div>
       <p className='font-bold flex justify-between'>
-        <span className='text-black'>Mahsulot:</span>
+        <span className='text-black'>{t("Mahsulot")}:</span>
         <span>
           {product && product.product.code + '-' + product.product.name}{' '}
         </span>

@@ -217,9 +217,9 @@ export const Sale = () => {
     if (e.value.price.sellingprice === 0) {
       return notify({
         title:
-          'Diqqat! Ushbu mahsulotga narx belgilanmagan. Mahsulotni sotish imkoni mavjud emas.',
+          t('Diqqat! Ushbu mahsulotga narx belgilanmagan. Mahsulotni sotish imkoni mavjud emas.'),
         description:
-          "Sotuvdan oldin mahsulotga sotuv narxini belgilashingizni so'raymiz.",
+          t("Sotuvdan oldin mahsulotga sotuv narxini belgilashingizni so'raymiz."),
         status: 'warning',
       });
     }
@@ -227,8 +227,8 @@ export const Sale = () => {
     for (const saleproduct of saleproducts) {
       if (e.value._id === saleproduct.product._id) {
         return notify({
-          title: "Diqqat! Ushbu mahsulot ro'yxatga qo'shilgan. ",
-          description: "Qayta qo'shmasdan qiymatini o'zgartirishingiz mumkin.",
+          title: t("Diqqat! Ushbu mahsulot ro'yxatga qo'shilgan. "),
+          description: t("Qayta qo'shmasdan qiymatini o'zgartirishingiz mumkin."),
           status: 'warning',
         });
       }
@@ -259,8 +259,8 @@ export const Sale = () => {
       if (parseFloat(e.target.value) > saleproduct.total) {
         return notify({
           title:
-            'Diqqat! Ushbu mahsulot soni omborda mavjud mahsulot sonidan oshmasligi lozim.',
-          description: `Omborda mavjud mahsulot soni ${saleproduct.total}`,
+            t('Diqqat! Ushbu mahsulot soni omborda mavjud mahsulot sonidan oshmasligi lozim.'),
+          description: `${t("Omborda mavjud mahsulot soni")} ${saleproduct.total}`,
           status: 'warning',
         });
       }
@@ -377,7 +377,7 @@ export const Sale = () => {
   const saleHandler = () => {
     if (saleproducts.length === 0) {
       return notify({
-        title: 'Diqqat! Mahsulotlar kiritilmagan',
+        title: t('Diqqat! Mahsulotlar kiritilmagan'),
         description: '',
         status: 'warning',
       });
@@ -1524,7 +1524,7 @@ export const Sale = () => {
     ) {
       return notify({
         title:
-          'Diqqat! Xarid qilingan mahsulotdan ortiq mahsulot qaytarishning imkoni mavjud emas!',
+          t('Diqqat! Xarid qilingan mahsulotdan ortiq mahsulot qaytarishning imkoni mavjud emas!'),
         description: '',
         status: 'warning',
       });
@@ -2051,7 +2051,7 @@ export const Sale = () => {
   const checkPrePayment = () => {
     if (prePayment.card + prePayment.cash + prePayment.transfer === 0) {
       return notify({
-        title: "Diqqat! To'lov summasi kiritilmagan",
+        title: t("Diqqat! To'lov summasi kiritilmagan"),
         description: '',
         status: 'error',
       });

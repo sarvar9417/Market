@@ -2,6 +2,7 @@ import React from "react";
 import { SearchInput } from "../../components/Input";
 import { PaginationSize } from "../../components/PaginationSize";
 import { Pagination } from "../../components/Pagination";
+import { t } from "i18next";
 
 export const TableHeader = ({
   setPageSize,
@@ -22,7 +23,7 @@ export const TableHeader = ({
           name={"branch"}
           type={"text"}
           changeHandler={branchInputChange}
-          placeholder={"Filial"}
+          placeholder={t("Filial")}
           keyPressed={keyPressed}
         />
       </li>

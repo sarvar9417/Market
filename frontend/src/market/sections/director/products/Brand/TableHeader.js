@@ -5,6 +5,7 @@ import { Pagination } from '../../components/Pagination';
 import { ExcelDownload } from '../../components/ExcelDownload';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileExcel } from '@fortawesome/free-solid-svg-icons';
+import { t } from 'i18next';
 
 export const TableHeader = ({
   getBrandsExcel,
@@ -25,7 +26,7 @@ export const TableHeader = ({
         <SearchInput
           changeHandler={searchBrand}
           type={'text'}
-          placeholder={'Brand nomi'}
+          placeholder={t('Brend nomi')}
           name='name'
           keyPressed={keyPressed}
         />
@@ -44,7 +45,7 @@ export const TableHeader = ({
           onClick={getBrandsExcel}>
           <FontAwesomeIcon icon={faFileExcel} />
         </button>
-        <ExcelDownload filename={'Brandlar'} />
+        <ExcelDownload filename={t('Brendlar')} />
       </li>
     </ul>
   );

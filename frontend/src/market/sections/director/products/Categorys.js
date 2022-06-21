@@ -345,7 +345,7 @@ export const Category = () => {
         modal={modal}
         setModal={setModal}
         basic={remove && remove.code}
-        text={"kategoriyasini o'chirishni tasdiqlaysizmi?"}
+        text={t("kategoriyasini o'chirishni tasdiqlaysizmi?")}
         handler={deleteHandler}
       />
     </div>

@@ -1,25 +1,26 @@
+import { t } from "i18next";
 // Check Packman
 export const checkSellerId = (seller) => {
   if (seller.firstname.length < 1) {
     return {
-      title: 'Diqqat! Sotuvchi ismi kiritilmagan!',
-      description: 'Iltimos! Sotuvchi ismini kiriting.',
+      title: t('Diqqat! Sotuvchi ismi kiritilmagan!'),
+      description: t('Iltimos! Sotuvchi ismini kiriting.'),
       status: 'error',
     };
   }
 
   if (seller.firstname.length < 1) {
     return {
-      title: 'Diqqat! Sotuvchi familiyasi kiritilmagan!',
-      description: 'Iltimos! Sotuvchi familiyasi kiriting.',
+      title: t('Diqqat! Sotuvchi familiyasi kiritilmagan!'),
+      description: t('Iltimos! Sotuvchi familiyasi kiriting.'),
       status: 'error',
     };
   }
 
   if (seller.phone.length < 9) {
     return {
-      title: 'Diqqat! Sotuvchi telefon raqami kiritilmagan!',
-      description: 'Iltimos! Sotuvchi telefon raqamini kiriting.',
+      title: t('Diqqat! Sotuvchi telefon raqami kiritilmagan!'),
+      description: t('Iltimos! Sotuvchi telefon raqamini kiriting.'),
       status: 'error',
     };
   }
@@ -27,8 +28,8 @@ export const checkSellerId = (seller) => {
   if (seller.login.length < 3) {
     return {
       title:
-        "Diqqat! Foydalanuvchi loginini kiritish majburiy va u 3 belgidan kam bo'lmasligi kerak!",
-      description: 'Iltimos! Sotuvchi loginini kiriting.',
+        t("Diqqat! Foydalanuvchi loginini kiritish majburiy va u 3 belgidan kam bo'lmasligi kerak!"),
+      description: t('Iltimos! Sotuvchi loginini kiriting.'),
       status: 'error',
     };
   }
@@ -36,8 +37,8 @@ export const checkSellerId = (seller) => {
   if (seller.password && seller.password.length < 6) {
     return {
       title:
-        "Diqqat! Foydalanuvchi parolini kiritish majburiy va u 6 belgidan kam bo'lmasligi kerak!",
-      description: 'Iltimos! Sotuvchi parolini qayta kiriting.',
+        t("Diqqat! Foydalanuvchi parolini kiritish majburiy va u 3 belgidan kam bo'lmasligi kerak!"),
+      description: t('Iltimos! Sotuvchi parolini qayta kiriting.'),
       status: 'error',
     };
   }
@@ -45,8 +46,8 @@ export const checkSellerId = (seller) => {
   if (seller.repassword && seller.password !== seller.repassword) {
     return {
       title:
-        "Diqqat! Foydalanuvchi parolini ayta kiritishda xalikka yo'l qo'ydingiz!",
-      description: 'Iltimos! Sotuvchi parolini qayta tasdiqlang.',
+        t("Diqqat! Foydalanuvchi parolini ayta kiritishda xalikka yo'l qo'ydingiz!"),
+      description: t('Iltimos! Sotuvchi parolini qayta tasdiqlang.'),
       status: 'error',
     };
   }
@@ -57,24 +58,24 @@ export const checkSellerId = (seller) => {
 export const checkSeller = (seller) => {
   if (seller.firstname.length < 1) {
     return {
-      title: 'Diqqat! Sotuvchi ismi kiritilmagan!',
-      description: 'Iltimos! Sotuvchi ismini kiriting.',
+      title: t('Diqqat! Sotuvchi ismi kiritilmagan!'),
+      description: t('Iltimos! Sotuvchi ismini kiriting.'),
       status: 'error',
     };
   }
 
   if (seller.lastname.length < 1) {
     return {
-      title: 'Diqqat! Sotuvchi familiyasi kiritilmagan!',
-      description: 'Iltimos! Sotuvchi familiyasi kiriting.',
+      title: t('Diqqat! Sotuvchi familiyasi kiritilmagan!'),
+      description: t('Iltimos! Sotuvchi familiyasi kiriting.'),
       status: 'error',
     };
   }
 
   if (seller.phone.length < 9) {
     return {
-      title: 'Diqqat! Sotuvchi telefon raqami kiritilmagan!',
-      description: 'Iltimos! Sotuvchi telefon raqamini kiriting.',
+      title: t('Diqqat! Sotuvchi telefon raqami kiritilmagan!'),
+      description: t('Iltimos! Sotuvchi telefon raqamini kiriting.'),
       status: 'error',
     };
   }
@@ -82,8 +83,8 @@ export const checkSeller = (seller) => {
   if (seller.login.length < 3) {
     return {
       title:
-        "Diqqat! Foydalanuvchi loginini kiritish majburiy va u 3 belgidan kam bo'lmasligi kerak!",
-      description: 'Iltimos! Sotuvchi loginini kiriting.',
+        t("Diqqat! Foydalanuvchi loginini kiritish majburiy va u 3 belgidan kam bo'lmasligi kerak!"),
+      description: t('Iltimos! Sotuvchi loginini kiriting.'),
       status: 'error',
     };
   }
@@ -91,8 +92,8 @@ export const checkSeller = (seller) => {
   if (seller.password.length < 6) {
     return {
       title:
-        "Diqqat! Foydalanuvchi parolini kiritish majburiy va u 6 belgidan kam bo'lmasligi kerak!",
-      description: 'Iltimos! Sotuvchi parolini qayta kiriting.',
+        t("Diqqat! Foydalanuvchi parolini kiritish majburiy va u 3 belgidan kam bo'lmasligi kerak!"),
+      description: t('Iltimos! Sotuvchi parolini qayta kiriting.'),
       status: 'error',
     };
   }
@@ -100,8 +101,8 @@ export const checkSeller = (seller) => {
   if (seller.password !== seller.confirmPassword) {
     return {
       title:
-        "Diqqat! Foydalanuvchi parolini qayta kiritishda xalikka yo'l qo'ydingiz!",
-      description: 'Iltimos! Sotuvchi parolini qayta tasdiqlang.',
+        t("Diqqat! Foydalanuvchi parolini qayta kiritishda xalikka yo'l qo'ydingiz!"),
+      description: t('Iltimos! Sotuvchi parolini qayta tasdiqlang.'),
       status: 'error',
     };
   }

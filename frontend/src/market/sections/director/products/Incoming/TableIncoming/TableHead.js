@@ -7,7 +7,7 @@ export const TableHead = ({ currentImport, setCurrentInports }) => {
     <ul className='thead shadow-xl'>
       <li className='th border-r flex justify-center items-center'>№</li>
       <li className='th border-r flex justify-center items-center'>
-        {t('Brand')}
+        {t('Brend')}
         <SortDoubleProperty
           property={'supplier'}
           innnerProperty={'name'}
