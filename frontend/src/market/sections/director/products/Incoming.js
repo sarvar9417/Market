@@ -26,13 +26,13 @@ export const Incoming = () => {
   );
 
   const [startDate, setStartDate] = useState(
-    new Date(new Date().setHours(0, 0, 0, 0)).toISOString()
+    new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString()
   );
   const [endDate, setEndDate] = useState(
     new Date(new Date().setHours(23, 59, 59, 0)).toISOString()
   );
   //====================================================================
-  //====================================================================
+  //PAGINATION
 
   const [currentPage, setCurrentPage] = useState(0);
   const [countPage, setCountPage] = useState(10);
@@ -40,15 +40,11 @@ export const Incoming = () => {
   const [currentImports, setCurrentImports] = useState([]);
 
   //====================================================================
-  //====================================================================
   // MODAL
   const [modal, setModal] = useState(false);
   const [modal2, setModal2] = useState(false);
   const [modal3, setModal3] = useState(false);
-  //====================================================================
-  //====================================================================
 
-  //====================================================================
   //====================================================================
   // Visible
   const [visible, setVisible] = useState(false);
@@ -74,15 +70,11 @@ export const Incoming = () => {
   };
 
   //====================================================================
-  //====================================================================
   const { request, loading } = useHttp();
   const auth = useContext(AuthContext);
 
   //====================================================================
-  //====================================================================
-
-  //====================================================================
-  //====================================================================
+  //TOAST
   const toast = useToast();
 
   const notify = useCallback(
@@ -98,10 +90,7 @@ export const Incoming = () => {
     },
     [toast]
   );
-  //====================================================================
-  //====================================================================
 
-  //====================================================================
   //====================================================================
   // SUPPLIERS
   const [suppliers, setSuppliers] = useState([]);
@@ -140,10 +129,6 @@ export const Incoming = () => {
     }
   }, [request, auth, notify]);
 
-  //====================================================================
-  //====================================================================
-
-  //====================================================================
   //====================================================================
   // Product
   const [allproducts, setAllProducts] = useState([]);
@@ -233,9 +218,6 @@ export const Incoming = () => {
       },
       unit: e.product.unit && e.product.unit,
       oldprice: e.product.price.incomingprice,
-      // category: e.product.category && e.product.category,
-      // producttype: e.product.producttype && e.product.producttype,
-      // brand: e.product.brand && e.product.brand,
     });
     setModal(true);
   };
@@ -284,10 +266,6 @@ export const Incoming = () => {
     setIncomings(i);
   };
 
-  //====================================================================
-  //====================================================================
-
-  //====================================================================
   //====================================================================
   // CONNECTORS
   const [totalprice, setTotalPrice] = useState(0);
@@ -401,10 +379,7 @@ export const Incoming = () => {
     setVisibleReport(false);
     setVisibleTable(true);
   }, []);
-  //====================================================================
-  //====================================================================
 
-  //====================================================================
   //====================================================================
   // IMPORTS
 
@@ -488,12 +463,6 @@ export const Incoming = () => {
     }
   };
 
-  useEffect(() => {
-    getImports();
-  }, [currentPage, countPage, getImports, startDate, endDate, sendingsearch]);
-
-  //====================================================================
-  //====================================================================
   const [connectorCount, setConnectorCount] = useState(0);
   const getConnectorCount = useCallback(async () => {
     try {
@@ -882,6 +851,11 @@ export const Incoming = () => {
   //====================================================================
   // useEffect
   const [n, setN] = useState(0);
+
+  useEffect(() => {
+    getImports();
+  }, [currentPage, countPage, getImports, startDate, endDate, sendingsearch]);
+
   useEffect(() => {
     if (auth.market && !n) {
       setN(1);

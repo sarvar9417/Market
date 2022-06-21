@@ -19,32 +19,21 @@ import { ExcelTable } from './Product/ExcelTable';
 
 export const Product = () => {
   //====================================================================
-  //====================================================================
   // Pagination
   const [currentPage, setCurrentPage] = useState(0);
   const [countPage, setCountPage] = useState(10);
   const [currentProducts, setCurrentProducts] = useState([]);
 
-  //====================================================================
-  //====================================================================
-
-  //====================================================================
-  //====================================================================
   const [modal, setModal] = useState(false);
   const [modal2, setModal2] = useState(false);
   const [remove, setRemove] = useState();
 
   const selectRef = {
-    // category: useRef(),
-    // producttype: useRef(),
-    // brand: useRef(),
     unit: useRef(),
   };
-  //====================================================================
-  //====================================================================
 
   //====================================================================
-  //====================================================================
+  // Notify
   const toast = useToast();
 
   const notify = useCallback(
@@ -60,11 +49,7 @@ export const Product = () => {
     },
     [toast]
   );
-  //====================================================================
-  //====================================================================
 
-  //====================================================================
-  //====================================================================
   const { request, loading } = useHttp();
   const auth = useContext(AuthContext);
 
@@ -76,6 +61,7 @@ export const Product = () => {
     incomingprice: 0,
     sellingprice: 0,
   });
+
   const sections = [
     { name: t('Mahsulot kodi'), value: 'code' },
     { name: t('Mahsulot nomi'), value: 'name' },
@@ -140,6 +126,7 @@ export const Product = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+      console.log(data);
       setSearchStorage(data.products);
       setCurrentProducts(data.products);
       setProductsCount(data.count);
@@ -345,17 +332,25 @@ export const Product = () => {
       const data = await request(
         `/api/products/product/delete`,
         'DELETE',
-        { ...remove, market: auth.market && auth.market._id },
+        {
+          ...remove,
+          market: auth.market && auth.market._id,
+          search: sendingsearch,
+          currentPage,
+          countPage,
+        },
         {
           Authorization: `Bearer ${auth.token}`,
         }
       );
       notify({
-        title: `${data.name} ${t("mahsuloti o'chirildi!")}`,
+        title: `${t("Mahsulot o'chirildi!")}`,
         description: '',
         status: 'success',
       });
-      getProducts();
+      setSearchStorage(data.products);
+      setCurrentProducts(data.products);
+      setProductsCount(data.count);
       clearInputs();
       setModal(false);
     } catch (error) {
@@ -365,7 +360,16 @@ export const Product = () => {
         status: 'error',
       });
     }
-  }, [auth, request, remove, notify, clearInputs, getProducts]);
+  }, [
+    auth,
+    request,
+    remove,
+    notify,
+    clearInputs,
+    sendingsearch,
+    countPage,
+    currentPage,
+  ]);
 
   //====================================================================
   //====================================================================
@@ -403,9 +407,6 @@ export const Product = () => {
       setSearchStorage(data.products);
       setCurrentProducts(data.products);
       setProductsCount(data.count);
-      setProduct({
-        market: auth.market && auth.market._id,
-      });
       clearInputs();
       setModal2(false);
     } catch (e) {
@@ -454,47 +455,6 @@ export const Product = () => {
       );
       setCurrentProducts(searching);
     }
-
-    // if (e.target.name === 'category') {
-    //   setSearch({
-    //     ...search,
-    //     categorycode: e.target.value,
-    //     productcode: e.target.value,
-    //   });
-
-    //   const searching = searchStorage.filter(
-    //     (item) =>
-    //       item.category.code.includes(e.target.value) ||
-    //       item.code.includes(e.target.value)
-    //   );
-    //   setCurrentProducts(searching);
-    // }
-    // if (e.target.name === 'producttype') {
-    //   setSearch({
-    //     ...search,
-    //     producttype: e.target.value,
-    //     productname: e.target.value,
-    //   });
-
-    //   const searching = searchStorage.filter(
-    //     (item) =>
-    //       (item.producttype &&
-    //         item.producttype.name
-    //           .toLowerCase()
-    //           .includes(e.target.value.toLowerCase())) ||
-    //       item.name.toLowerCase().includes(e.target.value.toLowerCase())
-    //   );
-    //   setCurrentProducts(searching);
-    // }
-    // if (e.target.name === 'brand') {
-    //   setSearch({ ...search, brand: e.target.value });
-    //   const searching = searchStorage.filter(
-    //     (item) =>
-    //       item.brand &&
-    //       item.brand.name.toLowerCase().includes(e.target.value.toLowerCase())
-    //   );
-    //   setCurrentProducts(searching);
-    // }
   };
 
   const searchKeypress = (e) => {
@@ -513,31 +473,52 @@ export const Product = () => {
     },
     [products]
   );
-  //====================================================================
-  //====================================================================
 
   //====================================================================
-  //====================================================================
-  // const [changedCurrentPage, setChangedCurrentPage] = useState(currentPage);
+  //UseEffects
   useEffect(() => {
     getProducts();
   }, [getProducts, currentPage, countPage, sendingsearch]);
 
-  const [n, setN] = useState();
   useEffect(() => {
-    if (!n) {
-      setN(1);
-      getUnits();
-      getProducts();
-    }
-  }, [getUnits, n, getProducts]);
+    getUnits();
+  }, [getUnits]);
 
+  const rename = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/products/product/updateallproducts`,
+        'POST',
+        {},
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      notify({
+        title: `${t(data)}`,
+        description: '',
+        status: 'success',
+      });
+    } catch (e) {
+      notify({
+        title: e,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [auth, request, notify]);
   //====================================================================
   //====================================================================
 
   return (
     <>
       {loading ? <Loader /> : ''}
+
+      <button
+        onClick={rename}
+        className='rounded bg-red-600 px-5 py-2 text-white'>
+        Rename
+      </button>
       <div className='overflow-x-auto'>
         <CreateProduct
           setProduct={setProduct}

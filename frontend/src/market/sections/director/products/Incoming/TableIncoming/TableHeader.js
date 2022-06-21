@@ -63,14 +63,22 @@ export const TableHeader = ({
       <li className='th-h border-r col-span-4   '>
         <input
           onChange={changeDate}
-          value={new Date(startDate).toISOString().slice(0, 10)}
+          value={new Date(
+            new Date(startDate).setHours(new Date(startDate).getHours() + 5)
+          )
+            .toISOString()
+            .slice(0, 10)}
           type='date'
           name='startDate'
           className='border rounded p-1 focus:outline-green-800'
         />
         <input
           onChange={changeDate}
-          value={new Date(endDate).toISOString().slice(0, 10)}
+          value={new Date(
+            new Date(endDate).setHours(new Date(endDate).getHours() + 5)
+          )
+            .toISOString()
+            .slice(0, 10)}
           type='date'
           name='endDate'
           className='border rounded p-1 focus:outline-green-800 mx-2 '

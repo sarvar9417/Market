@@ -25,10 +25,10 @@ export const Table = ({ editSaleConnector, saleproducts, changeBack }) => {
                   {index + 1}
                 </td>
                 <td className='border font-bold text-black text-center w-10'>
-                  {product.product.code}
+                  {product.product.productdata.code}
                 </td>
                 <td className='border font-bold text-black px-1'>
-                  {product.product.name}
+                  {product.product.productdata.name}
                 </td>
                 <td className='border font-bold text-black text-right px-2 w-14'>
                   {product.pieces}

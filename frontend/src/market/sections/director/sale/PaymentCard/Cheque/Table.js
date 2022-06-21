@@ -40,10 +40,10 @@ export const Table = ({ sales }) => {
                 {new Date(sales.createdAt).toLocaleDateString()}
               </td>
               <td className='font-bold text-right border border-black py-1 px-2'>
-                {product.product.code}
+                {product.product.productdata.code}
               </td>
               <td className='font-bold border border-black py-1 px-2'>
-                {product.product.name}
+                {product.product.productdata.name}
               </td>
               <td className='font-bold text-right border border-black py-1 px-2'>
                 {product.pieces.toLocaleString('ru-RU')}

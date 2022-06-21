@@ -3,11 +3,12 @@ const Joi = require('joi');
 
 const product = new Schema(
   {
-    name: { type: String, required: true },
-    unit: { type: Schema.Types.ObjectId, ref: 'Unit' },
-    code: { type: String, required: true },
-    price: { type: Schema.Types.ObjectId, ref: 'ProductPrice' },
+    name: { type: String },
+    code: { type: String },
     total: { type: Number, default: 0 },
+    productdata: { type: Schema.Types.ObjectId, ref: 'ProductData' },
+    unit: { type: Schema.Types.ObjectId, ref: 'Unit' },
+    price: { type: Schema.Types.ObjectId, ref: 'ProductPrice' },
     category: { type: Schema.Types.ObjectId, ref: 'Category' },
     producttype: { type: Schema.Types.ObjectId, ref: 'ProductType' },
     brand: { type: Schema.Types.ObjectId, ref: 'Brand' },

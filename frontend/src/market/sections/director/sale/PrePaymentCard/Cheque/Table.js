@@ -31,6 +31,7 @@ export const Table = ({ sales }) => {
       </thead>
       <tbody>
         {sales.products.map((product, index) => {
+          console.log(product);
           return (
             <tr key={index}>
               <td className='font-bold text-center border border-black py-1 px-2'>
@@ -40,10 +41,10 @@ export const Table = ({ sales }) => {
                 {new Date(sales.createdAt).toLocaleDateString()}
               </td>
               <td className='font-bold text-right border border-black py-1 px-2'>
-                {product.product.code}
+                {product.product.productdata.code}
               </td>
               <td className='font-bold border border-black py-1 px-2'>
-                {product.product.name}
+                {product.product.productdata.name}
               </td>
               <td className='font-bold text-right border border-black py-1 px-2'>
                 {product.pieces.toLocaleString('ru-RU')}

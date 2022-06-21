@@ -359,37 +359,178 @@ module.exports.delete = async (req, res) => {
 //Incoming getall
 module.exports.get = async (req, res) => {
   try {
-    const { market, beginDay, endDay, currentPage, countPage } = req.body;
+    const { market, beginDay, endDay, currentPage, countPage, search } =
+      req.body;
     const marke = await Market.findById(market);
     if (!marke) {
       return res.status(400).json({
         message: "Diqqat! Do'kon ma'lumotlari topilmadi.",
       });
     }
+    
+    const productcode = new RegExp(
+      '.*' + search ? search.code : '' + '.*',
+      'i'
+    );
+    const productname = new RegExp(
+      '.*' + search ? search.name : '' + '.*',
+      'i'
+    );
 
-    const count = await Incoming.find({
-      market,
-      createdAt: {
-        $gte: beginDay,
-        $lt: endDay,
-      },
-    }).count();
+    const suppliername = new RegExp(
+      '.*' + search ? search.supplier : '' + '.*',
+      'i'
+    );
 
-    const incomings = await Incoming.find({
-      market,
-      createdAt: {
-        $gte: beginDay,
-        $lt: endDay,
+    const incomings = await Incoming.aggregate([
+      {
+        $facet: {
+          currentIncomings: [
+            {
+              $match: {
+                market: ObjectId(market),
+                createdAt: {
+                  $gte: new Date(beginDay),
+                  $lt: new Date(endDay),
+                },
+              },
+            },
+            {
+              $lookup: {
+                from: 'products', // DB dagi collecyion nomi
+                localField: 'product', // qo'shilgan schemaga qanday nom bilan yozulgani
+                foreignField: '_id', // qaysi propertysi qo'shilgani
+                as: 'product', // qanday nom bilan chiqishi
+                pipeline: [
+                  {
+                    $lookup: {
+                      from: 'productdatas', // DB dagi collecyion nomi
+                      localField: 'productdata', // qo'shilgan schemaga qanday nom bilan yozulgani
+                      foreignField: '_id', // qaysi propertysi qo'shilgani
+                      as: 'productdata', // qanday nom bilan chiqishi
+                      pipeline: [
+                        { $match: { code: productcode, name: productname } },
+                        { $project: { code: 1, name: 1 } },
+                      ],
+                    },
+                  },
+                  { $unwind: '$productdata' },
+                  {
+                    $group: {
+                      _id: '$_id',
+                      name: { $first: '$productdata.name' },
+                      code: { $first: '$productdata.code' },
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              $lookup: {
+                from: 'units', // DB dagi collecyion nomi
+                localField: 'unit', // qo'shilgan schemaga qanday nom bilan yozulgani
+                foreignField: '_id', // qaysi propertysi qo'shilgani
+                as: 'unit', // qanday nom bilan chiqishi
+                pipeline: [{ $project: { name: 1 } }],
+              },
+            },
+            {
+              $lookup: {
+                from: 'suppliers', // DB dagi collection nomi
+                localField: 'supplier', // qo'shilgan schemaga qanday nom bilan yozulgani
+                foreignField: '_id', // qaysi propertysi qo'shilgani
+                as: 'supplier', // qanday nom bilan chiqishi
+                pipeline: [
+                  { $match: { name: suppliername } },
+                  { $project: { name: 1 } },
+                ],
+              },
+            },
+            { $unwind: '$supplier' },
+            { $unwind: '$product' },
+            { $unwind: '$unit' },
+            {
+              $group: {
+                _id: '$_id',
+                product: { $first: '$product' },
+                unit: { $first: '$unit' },
+                supplier: { $first: '$supplier' },
+                totalprice: { $first: '$totalprice' },
+                unitprice: { $first: '$unitprice' },
+                pieces: { $first: '$pieces' },
+                createdAt: { $first: '$createdAt' },
+                market: { $first: '$market' },
+              },
+            },
+            {
+              $sort: { createdAt: -1 },
+            },
+            {
+              $skip: parseInt(currentPage) * parseInt(countPage),
+            },
+            {
+              $limit: parseInt(countPage),
+            },
+          ],
+          countIncomings: [
+            {
+              $match: {
+                market: ObjectId(market),
+                createdAt: {
+                  $gte: new Date(beginDay),
+                  $lt: new Date(endDay),
+                },
+              },
+            },
+            {
+              $lookup: {
+                from: 'products', // DB dagi collecyion nomi
+                localField: 'product', // qo'shilgan schemaga qanday nom bilan yozulgani
+                foreignField: '_id', // qaysi propertysi qo'shilgani
+                as: 'product', // qanday nom bilan chiqishi
+                pipeline: [
+                  {
+                    $lookup: {
+                      from: 'productdatas', // DB dagi collecyion nomi
+                      localField: 'productdata', // qo'shilgan schemaga qanday nom bilan yozulgani
+                      foreignField: '_id', // qaysi propertysi qo'shilgani
+                      as: 'productdata', // qanday nom bilan chiqishi
+                      pipeline: [
+                        { $match: { code: productcode, name: productname } },
+                      ],
+                    },
+                  },
+                  { $unwind: '$productdata' },
+                ],
+              },
+            },
+            {
+              $lookup: {
+                from: 'suppliers', // DB dagi collection nomi
+                localField: 'supplier', // qo'shilgan schemaga qanday nom bilan yozulgani
+                foreignField: '_id', // qaysi propertysi qo'shilgani
+                as: 'supplier', // qanday nom bilan chiqishi
+                pipeline: [
+                  { $match: { name: suppliername } },
+                  { $project: { name: 1 } },
+                ],
+              },
+            },
+            { $unwind: '$product' },
+            { $unwind: '$supplier' },
+            { $count: 'count' },
+          ],
+        },
       },
-    })
-      .sort({ _id: -1 })
-      .select('-isArchive -updatedAt -market -user -__v')
-      .populate('supplier', 'name')
-      .populate('product', 'name code')
-      .populate('unit', 'name')
-      .skip(currentPage * countPage)
-      .limit(countPage);
-    res.status(201).send({ incomings, count });
+    ]);
+
+    res.status(201).send({
+      incomings: incomings[0].currentIncomings,
+      count:
+        incomings[0].countIncomings[0] && incomings[0].countIncomings[0].count
+          ? incomings[0].countIncomings[0].count
+          : 1,
+    });
   } catch (error) {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
