@@ -239,7 +239,6 @@ module.exports.registerAll = async (req, res) => {
         allproducts[0].countProducts[0].count,
     });
   } catch (error) {
-    console.log(error);
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
@@ -918,7 +917,6 @@ module.exports.getProducts = async (req, res) => {
       count: products[0].countProducts[0] && products[0].countProducts[0].count,
     });
   } catch (error) {
-    console.log(error);
     res.status(401).json({ message: 'Serverda xatolik yuz berdi...' });
   }
 };

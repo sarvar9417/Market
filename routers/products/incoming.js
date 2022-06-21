@@ -367,7 +367,7 @@ module.exports.get = async (req, res) => {
         message: "Diqqat! Do'kon ma'lumotlari topilmadi.",
       });
     }
-    
+
     const productcode = new RegExp(
       '.*' + search ? search.code : '' + '.*',
       'i'
