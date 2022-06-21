@@ -24,24 +24,15 @@ export const TableProduct = ({
   getProductExcel,
 }) => {
   const edit = (p) => {
-    // selectRef.category.current.selectOption({
-    //   label: p.category.code,
-    //   value: p.category._id,
-    // });
-    // selectRef.producttype.current.selectOption({
-    //   label: p.producttype && p.producttype.name,
-    //   value: p.producttype && p.producttype._id,
-    // });
-    // selectRef.brand.current.selectOption({
-    //   label: p.brand ? p.brand.name : '',
-    //   value: p.brand ? p.brand._id : '',
-    // });
     selectRef.unit.current.selectOption({
       label: p.unit.name,
       value: p.unit._id,
     });
     setProduct({
       ...p,
+      productdata: p.productdata._id,
+      code: p.productdata.code,
+      name: p.productdata.name,
       priceid: p.price._id,
       incomingprice: p.price.incomingprice,
       sellingprice: p.price.sellingprice,

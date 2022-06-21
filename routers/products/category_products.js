@@ -205,4 +205,9 @@ router.post('/brand/getbrandsexcel', auth, (req, res) => {
   require('./brand').getBrandsExcel(req, res);
 });
 
+/////////////////
+router.post('/product/updateallproducts', (req, res) => {
+  require('./product').updateAllProducts(req, res);
+});
+
 module.exports = router;

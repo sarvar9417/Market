@@ -13,6 +13,7 @@ const {
   FilialProduct,
   validateFilialProduct,
 } = require('../../models/FilialProducts/FilialProduct');
+const { ProductData } = require('../../models/Products/Productdata');
 const ObjectId = require('mongodb').ObjectId;
 
 //Product registerall
@@ -202,7 +203,7 @@ module.exports.register = async (req, res) => {
       });
     }
 
-    const product = await Product.findOne({
+    const product = await ProductData.findOne({
       market,
       code,
     });
@@ -232,13 +233,21 @@ module.exports.register = async (req, res) => {
       });
     }
 
-    const newProduct = new Product({
-      name,
+    const newProductData = new ProductData({
       code,
+      name,
+      category: categor._id,
+      unit,
+      market,
+    });
+    await newProductData.save();
+
+    const newProduct = new Product({
+      productdata: newProductData._id,
       category: categor._id,
       market,
       unit,
-      total,
+      total: Math.round(total * 100) / 100,
     });
 
     const newPrice = new ProductPrice({
@@ -256,29 +265,17 @@ module.exports.register = async (req, res) => {
     newPrice.product = newProduct._id;
     await newPrice.save();
 
-    await Category.findByIdAndUpdate(categor._id, {
+    await ProductData.findByIdAndUpdate(newProductData._id, {
       $push: {
         products: newProduct._id,
       },
     });
 
-    for (const f of marke.filials) {
-      const filialproduct = new FilialProduct({
-        product: newProduct._id,
-        category: newProduct.category,
-        unit: newProduct.unit,
-        market: f,
-      });
-
-      const newPrice = new ProductPrice({
-        incomingprice: sellingprice,
-        market: f,
-      });
-      await newPrice.save();
-      filialproduct.price = newPrice._id;
-
-      await filialproduct.save();
-    }
+    await Category.findByIdAndUpdate(categor._id, {
+      $push: {
+        products: newProductData._id,
+      },
+    });
 
     const productcode = new RegExp(
       '.*' + search ? search.code : '' + '.*',
@@ -290,13 +287,14 @@ module.exports.register = async (req, res) => {
     );
 
     const products = await Product.find({
-      code: productcode,
-      name: productname,
+      // code: productcode,
+      // name: productname,
       market,
     })
       .sort({ code: 1 })
       .select('name code total unit market category')
       .populate('price', 'incomingprice sellingprice')
+      .populate('productdata', 'name code')
       .populate('unit', 'name')
       .skip(currentPage * countPage)
       .limit(countPage);
@@ -330,6 +328,7 @@ module.exports.update = async (req, res) => {
       incomingprice,
       sellingprice,
       total,
+      productdata,
     } = req.body.product;
 
     const { currentPage, countPage, search } = req.body;
@@ -355,15 +354,17 @@ module.exports.update = async (req, res) => {
       incomingprice: Math.round(incomingprice * 10000) / 10000,
       sellingprice: Math.round(sellingprice * 10000) / 10000,
     });
-    product.name = name;
-    product.code = code;
     product.unit = unit;
     product.total = total;
 
+    const productData = await ProductData.findById(productdata);
+    productData.name = name;
+    productData.code = code;
+
     if (code.slice(0, 3) !== categor.code) {
-      await Category.findByIdAndUpdate(product.category, {
+      await Category.findByIdAndUpdate(productData.category, {
         $pull: {
-          products: new ObjectId(_id),
+          products: new ObjectId(productData._id),
         },
       });
 
@@ -382,13 +383,15 @@ module.exports.update = async (req, res) => {
       }
       updateCategory = await Category.findByIdAndUpdate(updateCategory._id, {
         $push: {
-          products: _id,
+          products: productData._id,
         },
       });
       product.category = updateCategory._id;
+      productData.category = updateCategory._id;
     }
 
     await product.save();
+    await productData.save();
 
     const productcode = new RegExp(
       '.*' + search ? search.code : '' + '.*',
@@ -407,6 +410,7 @@ module.exports.update = async (req, res) => {
       .sort({ code: 1 })
       .select('name code total unit market category')
       .populate('price', 'incomingprice sellingprice')
+      .populate('productdata', 'name code')
       .populate('unit', 'name')
       .skip(currentPage * countPage)
       .limit(countPage);
@@ -422,6 +426,7 @@ module.exports.update = async (req, res) => {
       count,
     });
   } catch (error) {
+    console.log(error);
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
@@ -429,8 +434,7 @@ module.exports.update = async (req, res) => {
 //Product delete
 module.exports.delete = async (req, res) => {
   try {
-    const { _id, category, market, name, producttype } = req.body;
-
+    const { _id, category, market, name, producttype, productdata } = req.body;
     const marke = await Market.findById(market);
 
     if (!marke) {
@@ -472,17 +476,24 @@ module.exports.delete = async (req, res) => {
       });
     }
 
-    const categoryUpdate = await Category.findByIdAndUpdate(category, {
+    await ProductData.findByIdAndUpdate(productdata._id, {
       $pull: {
         products: new ObjectId(_id),
       },
     });
 
-    const producttypeUpdate = await ProductType.findByIdAndUpdate(producttype, {
-      $pull: {
-        products: new ObjectId(_id),
-      },
-    });
+    const productData = await ProductData.findById(productdata._id);
+    if (
+      productData.products.length === 0 &&
+      market === productData.market.toString()
+    ) {
+      await ProductData.findByIdAndDelete(productdata._id);
+      await Category.findByIdAndUpdate(category, {
+        $pull: {
+          products: new ObjectId(productData._id),
+        },
+      });
+    }
 
     res.send(product);
   } catch (error) {
@@ -533,30 +544,51 @@ module.exports.getProducts = async (req, res) => {
     const code = new RegExp('.*' + search ? search.code : '' + '.*', 'i');
     const name = new RegExp('.*' + search ? search.name : '' + '.*', 'i');
 
-    // const sinov = await Product.aggregate([
-    //   { $match: { market: ObjectId(market) } },
-    //   {
-    //     $lookup: {
-    //       from: 'categories', // DB dagi collecyion nomi
-    //       localField: 'category', // qo'shilgan schemaga qanday nom bilan yozulgani
-    //       foreignField: '_id', // qaysi propertysi qo'shilgani
-    //       as: 'category', // qanday nom bilan chiqishi
-    //       pipeline: [
-    //         { $match: { code: code } },
-    //         { $project: { code: 1, name: 1 } },
-    //       ],
-    //     },
-    //   },
-    //   { $unwind: '$category' },
-    //   {
-    //     $group: {
-    //       _id: '$_id',
-    //       category: { $first: '$category' },
-    //       code: { $first: '$code' },
-    //     },
-    //   },
-    // ]);
-    // console.log(sinov);
+    const sinov = await Product.aggregate([
+      { $match: { market: ObjectId(market) } },
+      {
+        $lookup: {
+          from: 'productprices', // DB dagi collection nomi
+          localField: 'price', // qo'shilgan schemaga qanday nom bilan yozulgani
+          foreignField: '_id', // qaysi propertysi qo'shilgani
+          as: 'price', // qanday nom bilan chiqishi
+          pipeline: [{ $project: { sellingprice: 1, incomingprice: 1 } }],
+        },
+      },
+      {
+        $lookup: {
+          from: 'units', // DB dagi collecyion nomi
+          localField: 'unit', // qo'shilgan schemaga qanday nom bilan yozulgani
+          foreignField: '_id', // qaysi propertysi qo'shilgani
+          as: 'unit', // qanday nom bilan chiqishi
+          pipeline: [{ $project: { name: 1 } }],
+        },
+      },
+      {
+        $lookup: {
+          from: 'productdatas', // DB dagi collecyion nomi
+          localField: 'productdata', // qo'shilgan schemaga qanday nom bilan yozulgani
+          foreignField: '_id', // qaysi propertysi qo'shilgani
+          as: 'productdata', // qanday nom bilan chiqishi
+          pipeline: [
+            { $match: { code: code } },
+            { $project: { code: 1, name: 1 } },
+          ],
+        },
+      },
+      { $unwind: '$price' },
+      { $unwind: '$productdata' },
+      { $unwind: '$unit' },
+      {
+        $group: {
+          _id: '$_id',
+          productdata: { $first: '$productdata' },
+          price: { $first: '$price' },
+          unit: { $first: '$unit' },
+        },
+      },
+    ]);
+    console.log(sinov);
 
     const products = await Product.find({
       code: code,
@@ -566,10 +598,12 @@ module.exports.getProducts = async (req, res) => {
       .sort({ code: 1 })
       .select('name code total unit market category')
       .populate('price', 'incomingprice sellingprice')
+      .populate('productdata', 'code name')
       .populate('unit', 'name')
       .skip(currentPage * countPage)
       .limit(countPage);
 
+    console.log(products);
     const count = await Product.find({
       code: code,
       name: name,
@@ -925,5 +959,55 @@ module.exports.getproductsale = async (req, res) => {
     res.status(201).json(products);
   } catch (error) {
     res.status(401).json({ message: 'Serverda xatolik yuz berdi...' });
+  }
+};
+
+//Product register
+module.exports.updateAllProducts = async (req, res) => {
+  try {
+    let allproducts = await Product.find({});
+    allproducts.map(async (product) => {
+      if (product.code) {
+        const productData = new ProductData({
+          market: product.market,
+          name: product.name,
+          code: product.code,
+          category: product.category,
+          unit: product.unit,
+        });
+
+        await productData.save();
+
+        await ProductData.findByIdAndUpdate(productData._id, {
+          $push: {
+            products: new ObjectId(product._id),
+          },
+        });
+
+        await Product.findByIdAndUpdate(product._id, {
+          productdata: productData._id,
+          $unset: { name: true, code: true },
+        });
+
+        await Category.findByIdAndUpdate(product.category, {
+          $push: {
+            products: new ObjectId(productData._id),
+          },
+        });
+
+        await Category.findByIdAndUpdate(product.category, {
+          $pull: {
+            products: new ObjectId(product._id),
+          },
+        });
+      }
+    });
+
+    res.status(201).json({
+      message: 'tayyor',
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };

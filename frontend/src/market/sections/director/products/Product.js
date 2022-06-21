@@ -19,32 +19,21 @@ import { ExcelTable } from './Product/ExcelTable';
 
 export const Product = () => {
   //====================================================================
-  //====================================================================
   // Pagination
   const [currentPage, setCurrentPage] = useState(0);
   const [countPage, setCountPage] = useState(10);
   const [currentProducts, setCurrentProducts] = useState([]);
 
-  //====================================================================
-  //====================================================================
-
-  //====================================================================
-  //====================================================================
   const [modal, setModal] = useState(false);
   const [modal2, setModal2] = useState(false);
   const [remove, setRemove] = useState();
 
   const selectRef = {
-    // category: useRef(),
-    // producttype: useRef(),
-    // brand: useRef(),
     unit: useRef(),
   };
-  //====================================================================
-  //====================================================================
 
   //====================================================================
-  //====================================================================
+  // Notify
   const toast = useToast();
 
   const notify = useCallback(
@@ -60,11 +49,7 @@ export const Product = () => {
     },
     [toast]
   );
-  //====================================================================
-  //====================================================================
 
-  //====================================================================
-  //====================================================================
   const { request, loading } = useHttp();
   const auth = useContext(AuthContext);
 
@@ -76,6 +61,7 @@ export const Product = () => {
     incomingprice: 0,
     sellingprice: 0,
   });
+
   const sections = [
     { name: t('Mahsulot kodi'), value: 'code' },
     { name: t('Mahsulot nomi'), value: 'name' },
@@ -403,9 +389,6 @@ export const Product = () => {
       setSearchStorage(data.products);
       setCurrentProducts(data.products);
       setProductsCount(data.count);
-      setProduct({
-        market: auth.market && auth.market._id,
-      });
       clearInputs();
       setModal2(false);
     } catch (e) {
@@ -513,24 +496,16 @@ export const Product = () => {
     },
     [products]
   );
-  //====================================================================
-  //====================================================================
 
   //====================================================================
-  //====================================================================
-  // const [changedCurrentPage, setChangedCurrentPage] = useState(currentPage);
+  //UseEffects
   useEffect(() => {
     getProducts();
   }, [getProducts, currentPage, countPage, sendingsearch]);
 
-  const [n, setN] = useState();
   useEffect(() => {
-    if (!n) {
-      setN(1);
-      getUnits();
-      getProducts();
-    }
-  }, [getUnits, n, getProducts]);
+    getUnits();
+  }, [getUnits]);
 
   //====================================================================
   //====================================================================
