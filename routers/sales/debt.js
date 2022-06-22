@@ -25,14 +25,23 @@ module.exports.get = async (req, res) => {
         $lt: endDate,
       },
     })
-      .select(
-        '-isArchive -updatedAt -user -market -__v -debts -dailyconnectors'
-      )
+      .select('-isArchive -updatedAt -user -market -__v')
       .sort({ _id: -1 })
-      .populate('products', 'totalprice')
       .populate('payments', 'payment paymentuzs')
       .populate('discounts', 'discount discountuzs')
-      .populate('client', 'name');
+      .populate('client', 'name')
+      .populate('packman', 'name')
+      .populate('debts', 'debt debtuzs')
+      .populate({
+        path: 'products',
+        select:
+          'totalprice unitprice totalpriceuzs unitpriceuzs pieces createdAt discount',
+        options: { sort: { createdAt: -1 } },
+        populate: {
+          path: 'product',
+          select: 'name code',
+        },
+      });
 
     const alldebts = [];
 
@@ -64,6 +73,7 @@ module.exports.get = async (req, res) => {
           client: debt.client,
           createdAt: debt.createdAt,
           debt: Math.round(d * 10000) / 10000,
+          saleconnector: debt,
         });
       }
 

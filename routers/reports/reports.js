@@ -6,6 +6,7 @@ const { Debt } = require('../../models/Sales/Debt');
 const { Discount } = require('../../models/Sales/Discount');
 const { Payment } = require('../../models/Sales/Payment');
 const { SaleConnector } = require('../../models/Sales/SaleConnector');
+const { SaleProduct } = require('../../models/Sales/SaleProduct');
 
 module.exports.getSalesReport = async (req, res) => {
   try {
@@ -24,38 +25,36 @@ module.exports.getSalesReport = async (req, res) => {
         $gte: startDate,
         $lte: endDate,
       },
-    }).count();
+    })
+      .select(
+        '-isArchive -updatedAt -user -market -__v -debts -dailyconnectors'
+      )
+      .populate('payments');
 
-    const payments = await Payment.find({
-      market,
-      createdAt: {
-        $gte: startDate,
-        $lte: endDate,
-      },
-    }).select('market payment cash card transfer type');
-
-    let paymentReport = {
-      totalpayments: 0,
+    let totalSales = {
+      totalsale: 0,
       totalcash: 0,
       totalcard: 0,
       totaltransfer: 0,
-      paymentcount: 0,
+      salecount: 0,
       cashcount: 0,
       cardcount: 0,
       transfercount: 0,
     };
-    payments.map((payment) => {
-      payment.cash > 0 && paymentReport.cashcount++;
-      payment.card > 0 && paymentReport.cardcount++;
-      payment.transfer > 0 && paymentReport.transfercount++;
-      paymentReport.paymentcount += 1;
-      paymentReport.totalpayments += payment.payment;
-      paymentReport.totalcash += payment.cash;
-      paymentReport.totalcard += payment.card;
-      paymentReport.totaltransfer += payment.transfer;
-    });
 
-    res.status(201).json({ ...paymentReport, salescount: sales });
+    sales.map((sale) => {
+      totalSales.salecount++;
+      sale.payments.map((payment) => {
+        payment.cash > 0 && totalSales.cashcount++;
+        payment.card > 0 && totalSales.cardcount++;
+        payment.transfer > 0 && totalSales.transfercount++;
+        totalSales.totalsale += payment.payment;
+        totalSales.totalcash += payment.cash;
+        totalSales.totalcard += payment.card;
+        totalSales.totaltransfer += payment.transfer;
+      });
+    });
+    res.status(201).json(totalSales);
   } catch (error) {
     res.status(400).json({ error: 'Serverda xatolik yuz berdi...' });
   }
@@ -72,21 +71,53 @@ module.exports.getProductsReport = async (req, res) => {
         .status(401)
         .json({ message: `Diqqat! Do'kon haqida malumotlar topilmadi!` });
     }
-    const products = await Product.find({ market }).select('total market');
-    const totalproducts = products.reduce((prev, product) => {
-      return prev + product.total;
-    }, 0);
 
-    const productsprice = await ProductPrice.find({ market }).select(
-      'incomingprice'
+    const saleproduct = await SaleProduct.find({ market }).select(
+      'product market pieces'
     );
-    const totalprice = productsprice.reduce((prev, price) => {
-      return prev + price.incomingprice;
+
+    const incomingproduct = await Incoming.find({ market }).select(
+      'product pieces market'
+    );
+
+    const product = await Product.find({ market })
+      .select('total market price')
+      .populate('price');
+
+    let salesprodcutspieces = 0;
+    let salesproducts = [];
+    saleproduct.map((item) => {
+      salesprodcutspieces += item.pieces;
+      if (!salesproducts.includes(item.product.toString())) {
+        salesproducts.push(item.product.toString());
+      }
+    });
+
+    let incomeproducts = [];
+    let incomeproductspieces = 0;
+    incomingproduct.map((income) => {
+      incomeproductspieces += income.pieces;
+      if (!incomeproducts.includes(income.product.toString())) {
+        incomeproducts.push(income.product.toString());
+      }
+    });
+
+    let products = product.length;
+    let productstotalprice = 0;
+    let productspieces = product.reduce((prev, prod) => {
+      productstotalprice += prod.price.incomingprice * prod.total;
+      return prev + prod.total;
     }, 0);
 
-    res
-      .status(201)
-      .json({ productscount: products.length, totalproducts, totalprice });
+    res.status(201).json({
+      salesproducts: salesproducts.length,
+      salesprodcutspieces,
+      incomeproducts: incomeproducts.length,
+      incomeproductspieces,
+      products,
+      productspieces,
+      productstotalprice,
+    });
   } catch (error) {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
@@ -135,13 +166,18 @@ module.exports.getDebtAndDiscountReports = async (req, res) => {
         .json({ message: `Diqqat! Do'kon haqida malumotlar topilmadi!` });
     }
 
-    const debts = await Debt.find({
+    const debts = await SaleConnector.find({
       market,
       createdAt: {
         $gte: startDate,
         $lt: endDate,
       },
-    }).select('-isArchive -updatedAt -user -market -__v -products');
+    })
+      .select('-isArchive -updatedAt -user -__v -dailyconnectors')
+      .populate('products', 'totalprice')
+      .populate('payments', 'payment paymentuzs')
+      .populate('discounts', 'discount discountuzs')
+      .populate('client', 'name');
 
     const discounts = await Discount.find({
       market,
@@ -159,15 +195,33 @@ module.exports.getDebtAndDiscountReports = async (req, res) => {
     };
 
     debts.map((debt) => {
-      reports.debttotal += debt.debt;
-      reports.debtcount += 1;
+      const totalprice = debt.products.reduce((summ, product) => {
+        return summ + product.totalprice;
+      }, 0);
+
+      const discounts = debt.discounts.reduce((summ, product) => {
+        return summ + product.discount;
+      }, 0);
+
+      const payments = debt.payments.reduce((summ, product) => {
+        return summ + product.payment;
+      }, 0);
+
+      const d =
+        Math.round(totalprice * 10000) / 10000 -
+        Math.round(payments * 10000) / 10000 -
+        Math.round(discounts * 10000) / 10000;
+
+      if (d > 0.01 || d < -0.01) {
+        reports.debtcount += 1;
+        reports.debttotal += d;
+      }
     });
 
     discounts.map((discount) => {
       reports.discounttotal += discount.discount;
       reports.discountcount += 1;
     });
-
     res.status(201).json(reports);
   } catch (error) {
     res.status(400).json({ error: 'Serverda xatolik yuz berdi...' });

@@ -61,6 +61,7 @@ export const Debts = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+      console.log(data);
       setTotalDebts(data.total);
       setCurrentDebts(data.debts);
       setSearchStorage(data.debts);

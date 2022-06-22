@@ -12,7 +12,7 @@ export const Rows = ({ currentPage, index, debt }) => {
       </li>
       <li className='td  col-span-2  text-right border-r'>{debt.id}</li>
       <li className='td  col-span-3  text-right border-r-2 border-r-orange-600'>
-        {(Math.round(debt.debt * 10000) / 1000).toLocaleString('ru-RU')}{' '}
+        {(Math.round(debt.debt * 10000) / 10000).toLocaleString('ru-RU')}{' '}
         <span className='text-orange-600'>USD</span>
       </li>
     </ul>
