@@ -39,18 +39,18 @@ export const HomePage = () => {
   //=============================================================
 
   const months = [
-    'January',
-    'February',
-    'March',
-    'April',
+    'Yanvar',
+    'Fevral',
+    'Mart',
+    'Aprel',
     'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
+    'Iyun',
+    'Iyul',
+    'Avgust',
+    'Sentyabr',
+    'Oktyabr',
+    'Noyabr',
+    'Dekabr',
   ];
 
   //=============================================================
@@ -153,7 +153,7 @@ export const HomePage = () => {
     return <Loader />;
   }
   return (
-    <div className='container'>
+    <div className='container py-2'>
       <Line
         options={{
           responsive: true,
@@ -163,7 +163,7 @@ export const HomePage = () => {
             },
             title: {
               display: true,
-              text: 'Chart.js Line Chart',
+              text: 'Keltirilgan va sotilgan mahsulotlar',
             },
           },
         }}
@@ -173,14 +173,14 @@ export const HomePage = () => {
           datasets: [
             {
               id: 1,
-              label: 'incoming',
+              label: 'Keltirilgan',
               data: incomingPrice,
               borderColor: 'rgb(255, 99, 132)',
               backgroundColor: 'rgba(255, 99, 132, 0.5)',
             },
             {
               id: 2,
-              label: 'selling',
+              label: 'Sotilgan',
               data: sellingPrice,
               borderColor: 'rgb(75, 192, 192)',
               backgroundColor: 'rgba(75, 192, 192, 0.5)',
