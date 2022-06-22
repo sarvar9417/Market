@@ -696,55 +696,25 @@ module.exports.getAllIncoming = async (req, res) => {
       });
     }
 
-    const products = await Product.aggregate([
-      { $match: { market: ObjectId(market) } },
-      {
-        $lookup: {
-          from: 'productdatas', // DB dagi collecyion nomi
-          localField: 'productdata', // qo'shilgan schemaga qanday nom bilan yozulgani
-          foreignField: '_id', // qaysi propertysi qo'shilgani
-          as: 'productdata', // qanday nom bilan chiqishi
-          pipeline: [{ $project: { code: 1, name: 1 } }],
-        },
-      },
-      {
-        $lookup: {
-          from: 'productprices', // DB dagi collection nomi
-          localField: 'price', // qo'shilgan schemaga qanday nom bilan yozulgani
-          foreignField: '_id', // qaysi propertysi qo'shilgani
-          as: 'price', // qanday nom bilan chiqishi
-          pipeline: [{ $project: { incomingprice: 1 } }],
-        },
-      },
-      {
-        $lookup: {
-          from: 'units', // DB dagi collecyion nomi
-          localField: 'unit', // qo'shilgan schemaga qanday nom bilan yozulgani
-          foreignField: '_id', // qaysi propertysi qo'shilgani
-          as: 'unit', // qanday nom bilan chiqishi
-          pipeline: [{ $project: { name: 1 } }],
-        },
-      },
-      { $unwind: '$price' },
-      { $unwind: '$productdata' },
-      { $unwind: '$unit' },
-      {
-        $group: {
-          _id: '$_id',
-          productdata: { $first: '$productdata._id' },
-          name: { $first: '$productdata.name' },
-          code: { $first: '$productdata.code' },
-          unit: { $first: '$unit' },
-          price: { $first: '$price' },
-        },
-      },
-      {
-        $sort: { code: 1 },
-      },
-    ]);
+    const allproducts = await Product.find({
+      market,
+    })
+      .sort({ code: 1 })
+      .select('total market category')
+      .populate('price', 'incomingprice sellingprice')
+      .populate({
+        path: 'productdata',
+        select: 'name code',
+      })
+      .populate('unit', 'name');
+
+    const products = allproducts.filter((product) => {
+      return product.productdata !== null;
+    });
 
     res.send(products);
   } catch (error) {
+    console.log(error);
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };

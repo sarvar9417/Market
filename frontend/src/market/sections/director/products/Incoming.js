@@ -165,7 +165,7 @@ export const Incoming = () => {
       ];
       data.map((product) => {
         return s.push({
-          label: product.code + ' ' + product.name,
+          label: product.productdata.code + ' ' + product.productdata.name,
           value: product._id,
           product: { ...product },
         });
@@ -198,13 +198,15 @@ export const Incoming = () => {
         return notify({
           title: `${t("Diqqat! Ushbu mahsulot ro'yxatga")} ${
             parseInt(i) + 1
-          } ${t("raqamda kiritilgan.")}`,
-          description:
-            t("Qiymatlarini o'zgartirish uchun tahrirlash tugmasini bosishingiz mumkin"),
+          } ${t('raqamda kiritilgan.')}`,
+          description: t(
+            "Qiymatlarini o'zgartirish uchun tahrirlash tugmasini bosishingiz mumkin"
+          ),
           status: 'warning',
         });
       }
     }
+
     setIncoming({
       totalprice: 0,
       unitprice: 0,
@@ -213,8 +215,8 @@ export const Incoming = () => {
       supplier,
       product: {
         _id: e.product._id && e.product._id,
-        name: e.product.name && e.product.name,
-        code: e.product && e.product.code,
+        name: e.product.productdata && e.product.productdata.name,
+        code: e.product.productdata && e.product.productdata.code,
       },
       unit: e.product.unit && e.product.unit,
       oldprice: e.product.price.incomingprice,

@@ -27,11 +27,7 @@ export const RegisterIncoming = ({
         setSupplier={setSupplier}
         suppliers={suppliers}
         selectRef={selectRef}
-        // categorys={categorys}
-        // changeProductType={changeProductType}
         changeProduct={changeProduct}
-        // changeCategory={changeCategory}
-        // productType={productType}
         products={products}
         clearSelect={clearSelect}
       />
