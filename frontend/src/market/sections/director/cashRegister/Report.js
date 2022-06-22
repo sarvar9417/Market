@@ -13,11 +13,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPrint, faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import { PrintReport } from './PrintReport';
 import { Link, Redirect, Route, Switch } from 'react-router-dom';
-import { Debts } from '../sale/Debts';
 import { Discounts } from '../sale/Discounts';
-import { Payments } from '../sale/Payments';
 import { PaymentsReport } from './PaymentsReport';
 import { Loader } from '../../../loader/Loader';
+import { DebtsReport } from './DebtsReport';
 
 export const Report = () => {
   //========================================================
@@ -70,11 +69,7 @@ export const Report = () => {
     salescount: 0,
   });
 
-  const [productsReport, setProductsReport] = useState({
-    productscount: 0,
-    totalprice: 0,
-    totalproducts: 0,
-  });
+  const [productsReport, setProductsReport] = useState({});
 
   const [incomingsReport, setIncomingsReport] = useState({
     incomingsCount: 0,
@@ -95,7 +90,6 @@ export const Report = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-
       setSalesReport(data);
     } catch (error) {
       notify({
@@ -118,7 +112,6 @@ export const Report = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-
       setProductsReport(data);
     } catch (error) {
       notify({
@@ -253,6 +246,9 @@ export const Report = () => {
   //========================================================
   //========================================================
 
+  //========================================================
+  //========================================================
+
   const componentRef = useRef();
 
   const print = () => {
@@ -351,19 +347,22 @@ export const Report = () => {
             Общая сумма продаж
           </p>
           <span className='text-3xl font-bold text-black'>
-            {salesReport.salescount}
+            {salesReport.salecount}
           </span>
           <p className='text-base font-medium mb-4'>Количество</p>
           <span className='text-3xl font-bold text-black'>
-            {(Math.round(salesReport.totalpayments * 100) / 100).toLocaleString(
+            {(Math.round(salesReport.totalsale * 100) / 100).toLocaleString(
               'ru-RU'
             )}{' '}
             $
           </span>
           <p className='text-base font-medium mb-4'>Сумма</p>
           <Link
-            to='/alo24/reports/payments'
-            onClick={() => window.scroll(0, 500)}
+            to='/alo24/reports/paymentstypes'
+            onClick={() => {
+              setPaymentType('allpayments');
+              window.scroll(0, 500);
+            }}
             className='px-4 py-2 bg-blue-700 text-base text-white flex justify-around items-center'
           >
             <p className='mr-2'>Подробно</p>
@@ -430,13 +429,15 @@ export const Report = () => {
 
       <Switch>
         <Route path='/alo24/reports/debts'>
-          <Debts />
+          <DebtsReport
+            getSalesReport={getSalesReport}
+            getProductReport={getProductReport}
+            getIncomingsReport={getIncomingsReport}
+            getDebtAndDiscountReports={getDebtAndDiscountReports}
+          />
         </Route>
         <Route path='/alo24/reports/discounts'>
           <Discounts />
-        </Route>
-        <Route path='/alo24/reports/payments'>
-          <Payments />
         </Route>
         <Route path='/alo24/reports/paymentstypes'>
           <PaymentsReport type={paymentType} />

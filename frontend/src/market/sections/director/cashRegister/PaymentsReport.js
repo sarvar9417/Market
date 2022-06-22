@@ -6,10 +6,12 @@ import { TableHead } from './PaymentsReport/TableHead';
 import { TableHeader } from './PaymentsReport/TableHeader';
 import { Rows } from './PaymentsReport/Rows';
 import { ExcelTable } from './PaymentsReport/ExcelTable';
+import { t } from 'i18next';
+import { Loader } from '../../../loader/Loader';
 
 export const PaymentsReport = ({ type }) => {
   // STATES
-  const { request } = useHttp();
+  const { request, loading } = useHttp();
   const auth = useContext(AuthContext);
 
   const [currentPage, setCurrentPage] = useState(0);
@@ -57,9 +59,9 @@ export const PaymentsReport = ({ type }) => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      setTotalPayments(data.totalpayments);
-      setPaymentsCount(data.paymentsCount);
-      setCurrentPayments(data.payments);
+      setTotalPayments(data.totalsales);
+      setPaymentsCount(data.salesConnectors.length);
+      setCurrentPayments(data.salesConnectors);
     } catch (error) {
       notify({
         title: error,
@@ -113,8 +115,11 @@ export const PaymentsReport = ({ type }) => {
 
   useEffect(() => {
     getPayments();
-  }, [getPayments, currentPage, countPage, startDate, endDate, type]);
+  }, [getPayments, currentPage, countPage, startDate, endDate]);
 
+  if (loading) {
+    return <Loader />;
+  }
   return (
     <div className='overflow-x-auto'>
       <div className='m-3 min-w-[990px]'>
@@ -145,14 +150,39 @@ export const PaymentsReport = ({ type }) => {
             />
           );
         })}
-
-        <ul className='tr font-bold text-base'>
-          <li className='td col-span-9 text-right border-r'>Jami</li>
-          <li className='td text-right col-span-3 border-r-2 border-orange-600'>
-            {(Math.round(totalPayments * 100) / 100).toLocaleString('de-DE')}{' '}
-            <span className='text-orange-600'>USD</span>
-          </li>
-        </ul>
+        {type === 'allpayments' ? (
+          <ul className='tr font-bold text-base'>
+            <li className='td col-span-6 text-right border-r'>{t('Jami')}</li>
+            <li className='td text-right col-span-2 border-r-2 border-green-800'>
+              {(Math.round(totalPayments.cash * 10000) / 10000).toLocaleString(
+                'ru-RU'
+              )}{' '}
+              <span className='text-green-800'>USD</span>
+            </li>
+            <li className='td text-right col-span-2 border-r-2 border-orange-600'>
+              {(Math.round(totalPayments.card * 10000) / 10000).toLocaleString(
+                'ru-RU'
+              )}{' '}
+              <span className='text-orange-600'>USD</span>
+            </li>
+            <li className='td text-right col-span-2 border-r-2 border-red-600'>
+              {(
+                Math.round(totalPayments.transfer * 10000) / 10000
+              ).toLocaleString('ru-RU')}{' '}
+              <span className='text-red-600'>USD</span>
+            </li>
+          </ul>
+        ) : (
+          <ul className='tr font-bold text-base'>
+            <li className='td col-span-8 text-right border-r'>Jami</li>
+            <li className='td text-right col-span-4 border-r-2 border-orange-600'>
+              {(
+                Math.round(totalPayments[`${type}`] * 100) / 100
+              ).toLocaleString('de-DE')}{' '}
+              <span className='text-orange-600'>USD</span>
+            </li>
+          </ul>
+        )}
       </div>
 
       <ExcelTable datas={tableExcel} type={type} />

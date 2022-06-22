@@ -38,15 +38,15 @@ export const PrintReport = ({
         <div className='grid grid-cols-12 border-2 border-blue-700 py-4 mb-8'>
           <div className='col-span-4 flex flex-col items-center'>
             <span className='text-2xl font-bold text-black'>
-              {salesReport.salescount &&
-                salesReport.salescount.toLocaleString('ru-RU')}
+              {salesReport.salecount &&
+                salesReport.salecount.toLocaleString('ru-RU')}
             </span>
             <p className='text-xl font-medium'>Количество продаж</p>
           </div>
           <div className='col-span-4 flex flex-col items-center'>
             <span className='text-2xl font-bold text-black'>
-              {salesReport.totalpayments &&
-                salesReport.totalpayments.toLocaleString('ru-RU')}{' '}
+              {salesReport.totalsale &&
+                salesReport.totalsale.toLocaleString('ru-RU')}{' '}
               $
             </span>
             <p className='text-xl font-medium'>Общая сумма продаж</p>
@@ -65,8 +65,8 @@ export const PrintReport = ({
                     Количество продаж
                   </th>
                   <th className='border-2 border-blue-700 py-2 px-2 text-right text-base font-medium'>
-                    {salesReport.salescount &&
-                      salesReport.salescount.toLocaleString('ru-RU')}
+                    {salesReport.salecount &&
+                      salesReport.salecount.toLocaleString('ru-RU')}
                   </th>
                 </tr>
               </thead>
@@ -76,8 +76,8 @@ export const PrintReport = ({
                     Наличнами
                   </td>
                   <td className='border-2 border-blue-700 py-2 px-2 text-right text-base font-medium'>
-                    {salesReport.totalpayments &&
-                      salesReport.totalpayments.toLocaleString('ru-RU')}{' '}
+                    {salesReport.totalcash &&
+                      salesReport.totalcash.toLocaleString('ru-RU')}{' '}
                     $
                   </td>
                 </tr>
@@ -112,26 +112,26 @@ export const PrintReport = ({
         <div className='grid grid-cols-12 border-2 border-blue-700 py-4 mb-6'>
           <div className='col-span-4 flex flex-col items-center'>
             <span className='text-xl font-bold text-black'>
-              {salesReport.salescount &&
-                salesReport.salescount.toLocaleString('ru-RU')}
+              {salesReport.salecount &&
+                salesReport.salecount.toLocaleString('ru-RU')}
             </span>
             <p className='text-lg font-medium'>Количество продаж</p>
           </div>
           <div className='col-span-4 flex flex-col items-center'>
             <span className='text-xl font-bold text-black'>
-              {productsReport.productscount &&
-                productsReport.productscount.toLocaleString('ru-RU')}{' '}
-            </span>
-            <p className='text-lg font-medium'>Общее количество товаров</p>
-          </div>
-          <div className='col-span-4 flex flex-col items-center text-center'>
-            <span className='text-xl font-bold text-black'>
-              {productsReport.totalproducts &&
-                productsReport.totalproducts.toLocaleString('ru-RU')}
+              {productsReport.salesproducts &&
+                productsReport.salesproducts.toLocaleString('ru-RU')}{' '}
             </span>
             <p className='text-lg font-medium'>
               Общее количество видов товаров
             </p>
+          </div>
+          <div className='col-span-4 flex flex-col items-center text-center'>
+            <span className='text-xl font-bold text-black'>
+              {productsReport.salesprodcutspieces &&
+                productsReport.salesprodcutspieces.toLocaleString('ru-RU')}
+            </span>
+            <p className='text-lg font-medium'>Общее количество товаров</p>
           </div>
         </div>
         <div className='grid grid-cols-12 border-2 border-blue-700 py-4 mb-6'>
@@ -144,19 +144,22 @@ export const PrintReport = ({
           </div>
           <div className='col-span-4 flex flex-col items-center'>
             <span className='text-xl font-bold text-black'>
-              {salesReport.totalpayments &&
-                salesReport.totalpayments.toLocaleString('ru-RU')}{' '}
-              $
+              {productsReport.incomeproducts &&
+                productsReport.incomeproducts.toLocaleString('ru-RU')}{' '}
             </span>
-            <p className='text-lg font-medium'>Общая сумма продаж</p>
+            <p className='text-lg font-medium'>
+              Общее количество видов товаров
+            </p>
           </div>
           <div className='col-span-4 flex flex-col items-center'>
-            <span className='text-xl font-bold text-black'>{123456} $</span>
-            <p className='text-lg font-medium'>Общая сумма расходов</p>
+            <span className='text-xl font-bold text-black'>
+              {productsReport.incomeproductspieces}
+            </span>
+            <p className='text-lg font-medium'>Общее количество товаров</p>
           </div>
         </div>
-        <div className='grid grid-cols-12 border-2 border-blue-700 py-4 mb-6 px-2'>
-          <div className='col-span-4 flex flex-col items-center'>
+        <div className='w-full flex justify-center items-center py-4 mb-6 px-2'>
+          <div className='flex flex-col items-center'>
             <span className='text-xl font-bold text-black'>
               {incomingsReport.totalIncomingsPrice &&
                 incomingsReport.totalIncomingsPrice.toLocaleString(
@@ -166,10 +169,28 @@ export const PrintReport = ({
             </span>
             <p className='text-lg font-medium'>Общая сумма Приходов</p>
           </div>
+        </div>
+        <div className='grid grid-cols-12 border-2 border-blue-700 py-4 mb-6 px-2'>
+          <div className='col-span-4 flex flex-col items-center'>
+            <span className='text-xl font-bold text-black'>
+              {productsReport.products &&
+                productsReport.products.toLocaleString('ru-RU')}{' '}
+            </span>
+            <p className='text-lg font-medium'>
+              Общее количество видов товаров
+            </p>
+          </div>
+          <div className='col-span-4 flex flex-col items-center'>
+            <span className='text-xl font-bold text-black'>
+              {productsReport.productspieces &&
+                productsReport.productspieces.toLocaleString('ru-RU')}{' '}
+            </span>
+            <p className='text-lg font-medium'>Общее количество товаров</p>
+          </div>
           <div className='col-start-9 col-span-4 flex flex-col items-center text-center'>
             <span className='text-xl font-bold text-black'>
-              {productsReport.totalprice &&
-                productsReport.totalprice.toLocaleString('ru-RU')}{' '}
+              {productsReport.productstotalprice &&
+                productsReport.productstotalprice.toLocaleString('ru-RU')}{' '}
               $
             </span>
             <p className='text-lg font-medium'>Общая сумма товаров на складе</p>
