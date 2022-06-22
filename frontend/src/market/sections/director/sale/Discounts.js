@@ -65,6 +65,7 @@ export const Discounts = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+      console.log(data);
       setTotalDiscounts(data.total);
       setCurrentDiscounts(data.discounts);
       setSearchStorage(data.discounts);
