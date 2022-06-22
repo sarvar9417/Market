@@ -126,7 +126,6 @@ export const Product = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      console.log(data);
       setSearchStorage(data.products);
       setCurrentProducts(data.products);
       setProductsCount(data.count);

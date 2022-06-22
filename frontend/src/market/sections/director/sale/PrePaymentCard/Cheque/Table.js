@@ -31,7 +31,6 @@ export const Table = ({ sales }) => {
       </thead>
       <tbody>
         {sales.products.map((product, index) => {
-          console.log(product);
           return (
             <tr key={index}>
               <td className='font-bold text-center border border-black py-1 px-2'>

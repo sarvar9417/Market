@@ -167,8 +167,6 @@ export const checkUploadServices = (
         status: 'error',
       };
     }
-    console.log(service);
-    console.log(servicetypes);
     const s = servicetypes.find(
       (servicetype) => servicetype.name === service.servicetype
     );
