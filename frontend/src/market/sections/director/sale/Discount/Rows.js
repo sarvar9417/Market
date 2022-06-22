@@ -8,7 +8,9 @@ export const Rows = ({ currentPage, index, discount }) => {
         {new Date(discount.createdAt).toLocaleDateString()}
       </li>
       <li className='td col-span-3 border-r text-left'>
-        {discount.saleconnector.client && discount.saleconnector.client.name}
+        {discount.saleconnector &&
+          discount.saleconnector.client &&
+          discount.saleconnector.client.name}
       </li>
       <li className='td  col-span-2  text-right border-r-2 border-r-green-800'>
         {(Math.round(discount.totalprice * 10000) / 10000).toLocaleString(
