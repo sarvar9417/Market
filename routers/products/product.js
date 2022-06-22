@@ -151,92 +151,28 @@ module.exports.registerAll = async (req, res) => {
       'i'
     );
 
-    const allproducts = await Product.aggregate([
-      {
-        $facet: {
-          currentProducts: [
-            { $match: { market: ObjectId(market._id) } },
-            {
-              $lookup: {
-                from: 'productdatas', // DB dagi collecyion nomi
-                localField: 'productdata', // qo'shilgan schemaga qanday nom bilan yozulgani
-                foreignField: '_id', // qaysi propertysi qo'shilgani
-                as: 'productdata', // qanday nom bilan chiqishi
-                pipeline: [
-                  { $match: { code: productcode, name: productname } },
-                  { $project: { code: 1, name: 1 } },
-                ],
-              },
-            },
-            {
-              $lookup: {
-                from: 'productprices', // DB dagi collection nomi
-                localField: 'price', // qo'shilgan schemaga qanday nom bilan yozulgani
-                foreignField: '_id', // qaysi propertysi qo'shilgani
-                as: 'price', // qanday nom bilan chiqishi
-                pipeline: [{ $project: { sellingprice: 1, incomingprice: 1 } }],
-              },
-            },
-            {
-              $lookup: {
-                from: 'units', // DB dagi collecyion nomi
-                localField: 'unit', // qo'shilgan schemaga qanday nom bilan yozulgani
-                foreignField: '_id', // qaysi propertysi qo'shilgani
-                as: 'unit', // qanday nom bilan chiqishi
-                pipeline: [{ $project: { name: 1 } }],
-              },
-            },
-            { $unwind: '$price' },
-            { $unwind: '$productdata' },
-            { $unwind: '$unit' },
-            {
-              $group: {
-                _id: '$_id',
-                productdata: { $first: '$productdata._id' },
-                name: { $first: '$productdata.name' },
-                code: { $first: '$productdata.code' },
-                unit: { $first: '$unit' },
-                price: { $first: '$price' },
-                total: { $first: '$total' },
-                market: { $first: '$market' },
-                category: { $first: '$category' },
-              },
-            },
-            {
-              $sort: { code: 1 },
-            },
-            {
-              $skip: parseInt(currentPage) * parseInt(countPage),
-            },
-            {
-              $limit: parseInt(countPage),
-            },
-          ],
-          countProducts: [
-            { $match: { market: ObjectId(market._id) } },
-            {
-              $lookup: {
-                from: 'productdatas', // DB dagi collecyion nomi
-                localField: 'productdata', // qo'shilgan schemaga qanday nom bilan yozulgani
-                foreignField: '_id', // qaysi propertysi qo'shilgani
-                as: 'productdata', // qanday nom bilan chiqishi
-                pipeline: [
-                  { $match: { code: productcode, name: productname } },
-                ],
-              },
-            },
-            { $unwind: '$productdata' },
-            { $count: 'count' },
-          ],
-        },
-      },
-    ]);
+    const allproducts = await Product.find({
+      market,
+    })
+      .sort({ code: 1 })
+      .select('total market category')
+      .populate('price', 'incomingprice sellingprice')
+      .populate({
+        path: 'productdata',
+        select: 'name code',
+        match: { name: productname, code: productcode },
+      })
+      .populate('unit', 'name');
 
+    let filter = allproducts.filter((product) => {
+      return product.productdata !== null;
+    });
+
+    const count = filter.length;
+    filter = filter.splice(currentPage * countPage, countPage);
     res.status(201).json({
-      products: allproducts[0].currentProducts,
-      count:
-        allproducts[0].countProducts[0] &&
-        allproducts[0].countProducts[0].count,
+      products: filter,
+      count,
     });
   } catch (error) {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
@@ -355,17 +291,20 @@ module.exports.register = async (req, res) => {
       .populate('price', 'incomingprice sellingprice')
       .populate({
         path: 'productdata',
-        match: { name: productname, code: productcode },
         select: 'name code',
+        match: { name: productname, code: productcode },
       })
       .populate('unit', 'name');
 
-    const filter = products.filter((product) => {
+    let filter = products.filter((product) => {
       return product.productdata !== null;
     });
+
+    const count = filter.length;
+    filter = filter.splice(currentPage * countPage, countPage);
     res.status(201).json({
-      products: filter.splice(currentPage * countPage, countPage),
-      count: filter.length,
+      products: filter,
+      count,
     });
   } catch (error) {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
@@ -470,17 +409,20 @@ module.exports.update = async (req, res) => {
       .populate('price', 'incomingprice sellingprice')
       .populate({
         path: 'productdata',
-        match: { name: productname, code: productcode },
         select: 'name code',
+        match: { name: productname, code: productcode },
       })
       .populate('unit', 'name');
 
-    const filter = products.filter((product) => {
+    let filter = products.filter((product) => {
       return product.productdata !== null;
     });
+
+    const count = filter.length;
+    filter = filter.splice(currentPage * countPage, countPage);
     res.status(201).json({
-      products: filter.splice(currentPage * countPage, countPage),
-      count: filter.length,
+      products: filter,
+      count,
     });
   } catch (error) {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
@@ -569,17 +511,20 @@ module.exports.delete = async (req, res) => {
       .populate('price', 'incomingprice sellingprice')
       .populate({
         path: 'productdata',
-        match: { name: productname, code: productcode },
         select: 'name code',
+        match: { name: productname, code: productcode },
       })
       .populate('unit', 'name');
 
-    const filter = products.filter((product) => {
+    let filter = products.filter((product) => {
       return product.productdata !== null;
     });
+
+    const count = filter.length;
+    filter = filter.splice(currentPage * countPage, countPage);
     res.status(201).json({
-      products: filter.splice(currentPage * countPage, countPage),
-      count: filter.length,
+      products: filter,
+      count,
     });
   } catch (error) {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
@@ -629,85 +574,6 @@ module.exports.getProducts = async (req, res) => {
 
     const code = new RegExp('.*' + search ? search.code : '' + '.*', 'i');
     const name = new RegExp('.*' + search ? search.name : '' + '.*', 'i');
-
-    // const products = await Product.aggregate([
-    //   {
-    //     $facet: {
-    //       currentProducts: [
-    //         { $match: { market: ObjectId(market) } },
-    //         {
-    //           $lookup: {
-    //             from: 'productdatas', // DB dagi collecyion nomi
-    //             localField: 'productdata', // qo'shilgan schemaga qanday nom bilan yozulgani
-    //             foreignField: '_id', // qaysi propertysi qo'shilgani
-    //             as: 'productdata', // qanday nom bilan chiqishi
-    //             pipeline: [
-    //               { $match: { code: code, name: name } },
-    //               { $project: { code: 1, name: 1 } },
-    //             ],
-    //           },
-    //         },
-    //         {
-    //           $lookup: {
-    //             from: 'productprices', // DB dagi collection nomi
-    //             localField: 'price', // qo'shilgan schemaga qanday nom bilan yozulgani
-    //             foreignField: '_id', // qaysi propertysi qo'shilgani
-    //             as: 'price', // qanday nom bilan chiqishi
-    //             pipeline: [{ $project: { sellingprice: 1, incomingprice: 1 } }],
-    //           },
-    //         },
-    //         {
-    //           $lookup: {
-    //             from: 'units', // DB dagi collecyion nomi
-    //             localField: 'unit', // qo'shilgan schemaga qanday nom bilan yozulgani
-    //             foreignField: '_id', // qaysi propertysi qo'shilgani
-    //             as: 'unit', // qanday nom bilan chiqishi
-    //             pipeline: [{ $project: { name: 1 } }],
-    //           },
-    //         },
-    //         { $unwind: '$price' },
-    //         { $unwind: '$productdata' },
-    //         { $unwind: '$unit' },
-    //         {
-    //           $group: {
-    //             _id: '$_id',
-    //             productdata: { $first: '$productdata._id' },
-    //             name: { $first: '$productdata.name' },
-    //             code: { $first: '$productdata.code' },
-    //             unit: { $first: '$unit' },
-    //             price: { $first: '$price' },
-    //             total: { $first: '$total' },
-    //             market: { $first: '$market' },
-    //             category: { $first: '$category' },
-    //           },
-    //         },
-    //         {
-    //           $sort: { code: 1 },
-    //         },
-    //         {
-    //           $skip: parseInt(currentPage) * parseInt(countPage),
-    //         },
-    //         {
-    //           $limit: parseInt(countPage),
-    //         },
-    //       ],
-    //       countProducts: [
-    //         { $match: { market: ObjectId(market) } },
-    //         {
-    //           $lookup: {
-    //             from: 'productdatas', // DB dagi collecyion nomi
-    //             localField: 'productdata', // qo'shilgan schemaga qanday nom bilan yozulgani
-    //             foreignField: '_id', // qaysi propertysi qo'shilgani
-    //             as: 'productdata', // qanday nom bilan chiqishi
-    //             pipeline: [{ $match: { code: code, name: name } }],
-    //           },
-    //         },
-    //         { $unwind: '$productdata' },
-    //         { $count: 'count' },
-    //       ],
-    //     },
-    //   },
-    // ]);
     const products = await Product.find({
       market,
     })
@@ -716,20 +582,22 @@ module.exports.getProducts = async (req, res) => {
       .populate('price', 'incomingprice sellingprice')
       .populate({
         path: 'productdata',
-        match: { name: name, code: code },
         select: 'name code',
+        match: { name: name, code: code },
       })
       .populate('unit', 'name');
 
-    const filter = products.filter((product) => {
+    let filter = products.filter((product) => {
       return product.productdata !== null;
     });
+
+    const count = filter.length;
+    filter = filter.splice(currentPage * countPage, countPage);
     res.status(201).json({
-      products: filter.splice(currentPage * countPage, countPage),
-      count: filter.length,
+      products: filter,
+      count,
     });
   } catch (error) {
-    // console.log(error);
     res.status(401).send(error);
   }
 };
