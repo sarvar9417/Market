@@ -15,7 +15,9 @@ export const Rows = ({
       <li className='col-span-3 td border-r font-bold'>
         {new Date(s.createdAt).toLocaleDateString()}
       </li>
-      <li className='col-span-4 td border-r font-bold'>{s.exchangerate}</li>
+      <li className='col-span-4 td border-r font-bold'>
+        1 USD - {s.exchangerate} UZS
+      </li>
       <li className='td-btn col-span-2 border-r'>
         {<EditBtn editHandler={() => setExchangerate({ ...s })} />}
       </li>
