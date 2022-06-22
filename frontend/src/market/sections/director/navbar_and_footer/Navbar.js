@@ -302,33 +302,6 @@ export const Navbar = ({ baseUrl }) => {
                   <li>
                     <Link
                       onClick={changeLink}
-                      to='/alo24/payments'
-                      className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
-                    >
-                      {t('Tushumlar')}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      onClick={changeLink}
-                      to='/alo24/discounts'
-                      className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
-                    >
-                      {t('Chegirmalar')}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      onClick={changeLink}
-                      to='/alo24/debts'
-                      className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
-                    >
-                      {t('Qarzlar')}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      onClick={changeLink}
                       to='/alo24/packman'
                       className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
                     >
@@ -366,7 +339,7 @@ export const Navbar = ({ baseUrl }) => {
                       : 'unactive-page'
                   }
                 >
-                  Kassa
+                  {t("Kassa")}
                 </Link>
               </li>
               <li className='inline-block relative'>
@@ -424,7 +397,7 @@ export const Navbar = ({ baseUrl }) => {
                       : 'unactive-page'
                   }
                 >
-                  Valyuta kursi
+                  {t("Valyuta kursi")}
                 </Link>
               </li>
             </ul>
@@ -710,33 +683,6 @@ export const Navbar = ({ baseUrl }) => {
                   className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
                 >
                   {t('Sotuv')}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  onClick={changeLink}
-                  to='/alo24/payments'
-                  className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
-                >
-                  {t('Tushumlar')}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  onClick={changeLink}
-                  to='/alo24/discounts'
-                  className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
-                >
-                  {t('Chegirmalar')}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  onClick={changeLink}
-                  to='/alo24/debts'
-                  className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
-                >
-                  {t('Qarzlar')}
                 </Link>
               </li>
               <li>
