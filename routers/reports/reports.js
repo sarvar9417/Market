@@ -1,6 +1,7 @@
 const { Market } = require('../../models/MarketAndBranch/Market');
 const { Incoming } = require('../../models/Products/Incoming');
 const { Product } = require('../../models/Products/Product');
+const { ProductData } = require('../../models/Products/Productdata');
 const { ProductPrice } = require('../../models/Products/ProductPrice');
 const { Debt } = require('../../models/Sales/Debt');
 const { Discount } = require('../../models/Sales/Discount');
@@ -80,9 +81,11 @@ module.exports.getProductsReport = async (req, res) => {
       'product pieces market'
     );
 
+    const productsCount = await ProductData.find({ market }).count();
+
     const product = await Product.find({ market })
       .select('total market price')
-      .populate('price');
+      .populate('price', 'incomingprice sellingprice');
 
     let salesprodcutspieces = 0;
     let salesproducts = [];
@@ -102,7 +105,6 @@ module.exports.getProductsReport = async (req, res) => {
       }
     });
 
-    let products = product.length;
     let productstotalprice = 0;
     let productspieces = product.reduce((prev, prod) => {
       productstotalprice += prod.price.incomingprice * prod.total;
@@ -114,7 +116,7 @@ module.exports.getProductsReport = async (req, res) => {
       salesprodcutspieces,
       incomeproducts: incomeproducts.length,
       incomeproductspieces,
-      products,
+      products: productsCount,
       productspieces,
       productstotalprice,
     });
