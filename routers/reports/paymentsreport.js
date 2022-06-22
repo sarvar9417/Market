@@ -52,6 +52,7 @@ module.exports.getPayments = async (req, res) => {
           createdAt: sale.createdAt,
           id: sale.id,
           market: sale.market,
+          client: sale.client && sale.client.name,
           payment: sale.payments.reduce(
             (prev, payment) => prev + payment[`${type}`],
             0

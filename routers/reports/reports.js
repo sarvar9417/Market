@@ -45,10 +45,13 @@ module.exports.getSalesReport = async (req, res) => {
 
     sales.map((sale) => {
       totalSales.salecount++;
+
+      sale.payments.some((item) => item.cash > 0) > 0 && totalSales.cashcount++;
+      sale.payments.some((item) => item.card > 0) > 0 && totalSales.cardcount++;
+      sale.payments.some((item) => item.transfer > 0) > 0 &&
+        totalSales.transfercount++;
+
       sale.payments.map((payment) => {
-        payment.cash > 0 && totalSales.cashcount++;
-        payment.card > 0 && totalSales.cardcount++;
-        payment.transfer > 0 && totalSales.transfercount++;
         totalSales.totalsale += payment.payment;
         totalSales.totalcash += payment.cash;
         totalSales.totalcard += payment.card;

@@ -39,9 +39,7 @@ export const Rows = ({ currentPage, index, payment, type }) => {
           {new Date(payment.createdAt).toLocaleDateString()}
         </li>
         <li className='td col-span-5 border-r text-left'>
-          {payment.saleconnector &&
-            payment.saleconnector.client &&
-            payment.saleconnector.client.name}
+          {payment.client && payment.client}
         </li>
         <li className='td  col-span-4  text-right border-r-2 border-r-orange-600'>
           {(payment.payment || 0).toLocaleString('de-DE')}{' '}

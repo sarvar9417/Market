@@ -139,17 +139,18 @@ export const PaymentsReport = ({ type }) => {
           setCurrentPayments={setCurrentPayments}
           type={type}
         />
-        {currentPayments.map((payment, index) => {
-          return (
-            <Rows
-              key={index}
-              index={index}
-              payment={payment}
-              currentPage={currentPage}
-              type={type}
-            />
-          );
-        })}
+        {currentPayments &&
+          currentPayments.map((payment, index) => {
+            return (
+              <Rows
+                key={index}
+                index={index}
+                payment={payment}
+                currentPage={currentPage}
+                type={type}
+              />
+            );
+          })}
         {type === 'allpayments' ? (
           <ul className='tr font-bold text-base'>
             <li className='td col-span-6 text-right border-r'>{t('Jami')}</li>
