@@ -409,7 +409,6 @@ export const Incoming = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      console.log(data);
       setCountData(data.count);
       setSearchStorage(data.incomings);
       setCurrentImports(data.incomings);

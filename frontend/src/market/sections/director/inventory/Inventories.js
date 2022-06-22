@@ -100,7 +100,6 @@ export const Inventories = () => {
             Authorization: `Bearer ${auth.token}`,
           }
         );
-        console.log(data);
       } catch (error) {
         notify({
           title: error,
