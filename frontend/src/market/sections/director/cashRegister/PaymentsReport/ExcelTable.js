@@ -22,7 +22,7 @@ export const ExcelTable = ({ datas, type }) => {
                 <tr key={index}>
                   <td>{index + 1}</td>
                   <td>{new Date(item.createdAt).toLocaleDateString()}</td>
-                  <td>{item.client && item.client.name}</td>
+                  <td>{item.client && item.client}</td>
                   <td>{item.cash}</td>
                   <td>{item.card}</td>
                   <td>{item.transfer}</td>
