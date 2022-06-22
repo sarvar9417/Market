@@ -261,7 +261,6 @@ export const Navbar = ({ baseUrl }) => {
                   </li>
                 </ul>
               </li>
-
               <li className='inline-block relative'>
                 <Link
                   to='#'
