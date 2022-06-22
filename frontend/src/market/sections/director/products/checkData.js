@@ -28,7 +28,7 @@ export const checkCategory = (category) => {
 export const checkProductType = (producttype) => {
   if (!producttype.market)
     return {
-      title: t("Diqqat! Avtorzatsiyadan o'tilmagan."),
+      title: t("Diqqat! Avtorizatsiyadan o'tilmagan."),
       description: t("Iltimos bo'limdan chiqib qayta kiriting."),
       status: 'error',
     };
@@ -66,7 +66,7 @@ export const checkUnit = (unit) => {
   }
 };
 
-export const checkProduct = (product) => {
+export const checkProduct = (product, t) => {
   if (!product.market)
     return {
       title: t("Diqqat! Avtorzatsiyadan o'tilmagan."),

@@ -310,8 +310,8 @@ export const Product = () => {
   ]);
 
   const saveHandler = () => {
-    if (checkProduct(product)) {
-      return notify(checkProduct(product));
+    if (checkProduct(product, t)) {
+      return notify(checkProduct(product, t));
     }
     if (product._id) {
       return updateHandler();
@@ -444,13 +444,13 @@ export const Product = () => {
     setSearch({ ...search, [e.target.name]: e.target.value });
     if (e.target.name === 'code') {
       const searching = searchStorage.filter((item) =>
-        item.code.includes(e.target.value)
+        item.productdata.code.includes(e.target.value)
       );
       setCurrentProducts(searching);
     }
     if (e.target.name === 'name') {
       const searching = searchStorage.filter((item) =>
-        item.name.includes(e.target.value)
+        item.productdata.name.includes(e.target.value)
       );
       setCurrentProducts(searching);
     }

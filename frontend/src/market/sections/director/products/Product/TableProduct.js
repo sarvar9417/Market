@@ -30,9 +30,9 @@ export const TableProduct = ({
     });
     setProduct({
       ...p,
-      productdata: p.productdata,
-      code: p.code,
-      name: p.name,
+      productdata: p.productdata._id,
+      code: p.productdata.code,
+      name: p.productdata.name,
       priceid: p.price._id,
       incomingprice: p.price.incomingprice,
       sellingprice: p.price.sellingprice,
