@@ -40,14 +40,14 @@ function Translaste() {
         <GlobeIcon />
       </button>
       <ul
-        className={`${visible ? 'block' : 'hidden'} bg-[#171717] `}
+        className={`${visible ? 'block' : 'hidden'} bg-[#0c5154] rounded `}
         aria-labelledby='dropdownMenuButton'
       >
         {language.map(({ code, name, country_code }, index) => {
           return (
             <li key={index}>
               <button
-                className='dropdown-item text-white'
+                className='dropdown-item text-white hover:text-black'
                 onClick={() => {
                   i18next.changeLanguage(code);
                 }}

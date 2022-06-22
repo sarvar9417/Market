@@ -184,9 +184,8 @@ code {
 }
 
 .dropdown-item:hover {
-  color: #fff !important;
+  color: #000 !important;
 }
-
 .modal {
   background-color: rgba(0, 0, 0, 0.7);
 }
