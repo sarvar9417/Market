@@ -900,60 +900,38 @@ module.exports.getProductsInventory = async (req, res) => {
         .json({ message: "Diqqat! Do'kon malumotlari topilmadi" });
     }
 
-    const categorycode = new RegExp(
-      '.*' + search ? search.categorycode : '' + '.*',
-      'i'
-    );
     const productcode = new RegExp(
       '.*' + search ? search.productcode : '' + '.*',
       'i'
     );
-    const producttype = new RegExp(
-      '.*' + search ? search.producttype : '' + '.*',
-      'i'
-    );
+
     const productname = new RegExp(
       '.*' + search ? search.productname : '' + '.*',
       'i'
     );
-    const brandname = new RegExp('.*' + search ? search.brand : '' + '.*', 'i');
 
     const products = await Product.find({
-      code: productcode,
-      name: productname,
       market,
     })
       .sort({ code: 1 })
-      .select('name market category producttype brand code total unit')
+      .select('total market category')
+      .populate('price', 'incomingprice sellingprice')
       .populate({
-        path: 'category',
-        match: { code: categorycode },
-        select: 'code',
+        path: 'productdata',
+        select: 'name code',
+        match: { name: productname, code: productcode },
       })
-      .populate({
-        path: 'producttype',
-        match: { name: producttype },
-        select: 'name',
-      })
-      .populate({ path: 'brand', match: { name: brandname }, select: 'name' })
       .populate('unit', 'name');
 
-    const filter = products.filter((item) => {
-      return (
-        ((search.categorycode.length > 0 && item.category !== null) ||
-          search.categorycode.length === 0) &&
-        ((search.producttype.length > 0 &&
-          item.producttype &&
-          item.producttype !== null) ||
-          search.producttype.length === 0) &&
-        ((search.brand.length > 0 && item.brand && item.brand !== null) ||
-          search.brand.length === 0)
-      );
+    let filter = products.filter((product) => {
+      return product.productdata !== null;
     });
+
     const count = filter.length;
 
+    filter = filter.splice(currentPage * countPage, countPage);
     res.status(201).json({
-      products: filter.splice(countPage * currentPage, countPage),
+      products: filter,
       count,
     });
   } catch (error) {

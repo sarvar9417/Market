@@ -20,41 +20,21 @@ export const TableHeader = ({
       <li className='th-h border-r'>
         <PaginationSize setPageSize={setPageSize} />
       </li>
-      <li className='th-h border-r'>
+      <li className='th-h border-r col-span-2'>
         <SearchInput
           changeHandler={changeHandler}
           type={'number'}
-          placeholder={t('Kategoriya')}
-          name='categorycode'
+          placeholder={t('Kodi')}
+          name='productcode'
           keyPressed={keyPressed}
         />
       </li>
-      <li className='th-h border-r col-span-3 flex'>
-        <span className='w-1/4 mr-1'>
-          <SearchInput
-            changeHandler={changeHandler}
-            type={'number'}
-            placeholder={t('Kodi')}
-            name='productcode'
-            keyPressed={keyPressed}
-          />
-        </span>
-        <span>
-          <SearchInput
-            changeHandler={changeHandler}
-            type={'text'}
-            placeholder={t('Nomi')}
-            name='productname'
-            keyPressed={keyPressed}
-          />
-        </span>
-      </li>
-      <li className='th-h border-r col-span-2 flex'>
+      <li className='th-h border-r col-span-4 flex'>
         <SearchInput
           changeHandler={changeHandler}
           type={'text'}
-          placeholder={t('Brend')}
-          name='brand'
+          placeholder={t('Nomi')}
+          name='productname'
           keyPressed={keyPressed}
         />
       </li>
@@ -62,7 +42,7 @@ export const TableHeader = ({
         <button
           onClick={() => setModal(true)}
           className='bg-orange-700 text-white px-3 rounded font-bold hover:bg-orange-600'>
-          {t("Yakunlash")}
+          {t('Yakunlash')}
         </button>
         <Pagination
           currentPage={currentPage}

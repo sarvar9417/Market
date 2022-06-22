@@ -389,13 +389,13 @@ export const Sale = () => {
         status: 'warning',
       });
     }
-    if (!client.name || client.name.length < 1) {
-      return notify({
-        title: t('Diqqat! Mijoz ismi kiritilmagan.'),
-        description: 'Iltimos! Mijoz ismini kiriting.',
-        status: 'warning',
-      });
-    }
+    // if (!client.name || client.name.length < 1) {
+    //   return notify({
+    //     title: t('Diqqat! Mijoz ismi kiritilmagan.'),
+    //     description: 'Iltimos! Mijoz ismini kiriting.',
+    //     status: 'warning',
+    //   });
+    // }
     setVisible(true);
   };
 

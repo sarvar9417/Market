@@ -6,6 +6,8 @@ import { useHttp } from '../../../hooks/http.hook';
 import { TableHead } from './Invertories/TableHead';
 import { TableHeader } from './Invertories/TableHeader';
 import { Rows } from './Invertories//Rows';
+import { Print } from './Print';
+import { ExcelTable } from './ExcelTable';
 
 export const Inventories = () => {
   // ===========================================================
@@ -16,10 +18,9 @@ export const Inventories = () => {
   const [currentConnectors, setCurrentConnectors] = useState([]);
 
   const [connectorsCount, setConnectorsCount] = useState(0);
-  // const [modal, setModal] = useState(false);
 
-  //Inventoies
-  // const [connectors, setConnectors] = useState([]);
+  const [inventories, setInventories] = useState([]);
+  const [inventoriesConnector, setInventoriesConnector] = useState({});
 
   // SearchData
   const [startDate, setStartDate] = useState(
@@ -86,6 +87,7 @@ export const Inventories = () => {
     startDate,
     endDate,
   ]);
+
   const getInventories = useCallback(
     async (e) => {
       try {
@@ -100,6 +102,37 @@ export const Inventories = () => {
             Authorization: `Bearer ${auth.token}`,
           }
         );
+        setInventories(data.inventories);
+        setInventoriesConnector(data.inventoriesConnector);
+      } catch (error) {
+        notify({
+          title: error,
+          description: '',
+          status: 'error',
+        });
+      }
+    },
+    [request, auth, notify]
+  );
+
+  const getInventoriesExcel = useCallback(
+    async (e) => {
+      try {
+        const data = await request(
+          `/api/inventory/inventories`,
+          'POST',
+          {
+            market: auth.market._id,
+            id: e,
+          },
+          {
+            Authorization: `Bearer ${auth.token}`,
+          }
+        );
+        console.log(data);
+        setInventories(data.inventories);
+        setInventoriesConnector(data.inventoriesConnector);
+        document.getElementById('reacthtmltoexcel').click();
       } catch (error) {
         notify({
           title: error,
@@ -130,6 +163,15 @@ export const Inventories = () => {
   };
 
   // ==========================================================
+  // Print
+
+  const [visible, setVisible] = useState(false);
+  const changePrint = (e) => {
+    getInventories(e);
+    setVisible(true);
+  };
+
+  // ==========================================================
   // USEEFFECTS
   useEffect(() => {
     getConnectors();
@@ -137,6 +179,13 @@ export const Inventories = () => {
 
   return (
     <div className='overflow-x-auto'>
+      <div className={visible ? '' : 'hidden'}>
+        <Print
+          setCheck={setVisible}
+          inventories={inventories}
+          inventoriesConnector={inventoriesConnector}
+        />
+      </div>
       <div className='m-3 min-w[990px]'>
         <TableHeader
           changeDate={changeDate}
@@ -152,16 +201,20 @@ export const Inventories = () => {
         {currentConnectors.map((connector, index) => {
           return (
             <Rows
+              getInventoriesExcel={getInventoriesExcel}
               getInventories={getInventories}
               countPage={countPage}
               key={index}
               index={index}
               currentPage={currentPage}
               connector={connector}
+              changePrint={changePrint}
             />
           );
         })}
       </div>
+
+      <ExcelTable datas={inventories} />
     </div>
   );
 };

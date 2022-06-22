@@ -356,10 +356,12 @@ export const Sale = () => {
   const changeProduct = (e) => {
     if (e.value.price.sellingprice === 0) {
       return notify({
-        title:
-          t('Diqqat! Ushbu mahsulotga narx belgilanmagan. Mahsulotni sotish imkoni mavjud emas.'),
-        description:
-          t("Sotuvdan oldin mahsulotga sotuv narxini belgilashingizni so'raymiz."),
+        title: t(
+          'Diqqat! Ushbu mahsulotga narx belgilanmagan. Mahsulotni sotish imkoni mavjud emas.'
+        ),
+        description: t(
+          "Sotuvdan oldin mahsulotga sotuv narxini belgilashingizni so'raymiz."
+        ),
         status: 'warning',
       });
     }
@@ -368,7 +370,9 @@ export const Sale = () => {
       if (e.value._id === saleproduct.product._id) {
         return notify({
           title: t("Diqqat! Ushbu mahsulot ro'yxatga qo'shilgan."),
-          description: t("Qayta qo'shmasdan qiymatini o'zgartirishingiz mumkin."),
+          description: t(
+            "Qayta qo'shmasdan qiymatini o'zgartirishingiz mumkin."
+          ),
           status: 'warning',
         });
       }
@@ -398,9 +402,12 @@ export const Sale = () => {
     if (e.target.name === 'pieces') {
       if (parseFloat(e.target.value) > saleproduct.total) {
         return notify({
-          title:
-            t('Diqqat! Ushbu mahsulot soni omborda mavjud mahsulot sonidan oshmasligi lozim.'),
-          description: `${t("Omborda mavjud mahsulot soni")} ${saleproduct.total}`,
+          title: t(
+            'Diqqat! Ushbu mahsulot soni omborda mavjud mahsulot sonidan oshmasligi lozim.'
+          ),
+          description: `${t('Omborda mavjud mahsulot soni')} ${
+            saleproduct.total
+          }`,
           status: 'warning',
         });
       }
@@ -1607,8 +1614,9 @@ export const Sale = () => {
       editSaleConnector.products[parseInt(e.target.id)].pieces
     ) {
       return notify({
-        title:
-          t('Diqqat! Xarid qilingan mahsulotdan ortiq mahsulot qaytarishning imkoni mavjud emas!'),
+        title: t(
+          'Diqqat! Xarid qilingan mahsulotdan ortiq mahsulot qaytarishning imkoni mavjud emas!'
+        ),
         description: '',
         status: 'warning',
       });
@@ -2146,6 +2154,8 @@ export const Sale = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+      localStorage.setItem('data', data);
+
       setModal6(false);
       // setCheckConnectors(true);
       window.scroll({ top: 0 });

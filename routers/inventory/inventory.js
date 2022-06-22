@@ -9,6 +9,7 @@ const {
   InventoryConnector,
 } = require('../../models/Inventory/InventoriesConnector');
 const { Inventory } = require('../../models/Inventory/Inventory');
+const { ProductData } = require('../../models/Products/Productdata');
 
 //Product for Inventory
 module.exports.getProductsInventory = async (req, res) => {
@@ -22,59 +23,34 @@ module.exports.getProductsInventory = async (req, res) => {
         .json({ message: "Diqqat! Do'kon malumotlari topilmadi" });
     }
 
-    const categorycode = new RegExp(
-      '.*' + search ? search.categorycode : '' + '.*',
-      'i'
-    );
     const productcode = new RegExp(
       '.*' + search ? search.productcode : '' + '.*',
-      'i'
-    );
-    const producttype = new RegExp(
-      '.*' + search ? search.producttype : '' + '.*',
       'i'
     );
     const productname = new RegExp(
       '.*' + search ? search.productname : '' + '.*',
       'i'
     );
-    const brandname = new RegExp('.*' + search ? search.brand : '' + '.*', 'i');
 
     const products = await Product.find({
-      code: productcode,
-      name: productname,
       market,
     })
-      .sort({ _id: -1 })
-      .select('name category producttype brand code total unit price')
+      .sort({ code: 1 })
+      .select('total market unit price')
       .populate({
-        path: 'category',
-        match: { code: categorycode },
-        select: 'code',
+        path: 'productdata',
+        select: 'name code',
+        match: { name: productname, code: productcode },
       })
-      .populate({
-        path: 'producttype',
-        match: { name: producttype },
-        select: 'name',
-      })
-      .populate({ path: 'brand', match: { name: brandname }, select: 'name' })
       .populate('unit', 'name');
 
-    const filter = products.filter((item) => {
-      return (
-        ((search.categorycode.length > 0 && item.category !== null) ||
-          search.categorycode.length === 0) &&
-        ((search.producttype.length > 0 &&
-          item.producttype &&
-          item.producttype !== null) ||
-          search.producttype.length === 0) &&
-        ((search.brand.length > 0 && item.brand && item.brand !== null) ||
-          search.brand.length === 0)
-      );
+    const filter = products.filter((product) => {
+      return product.productdata !== null;
     });
+
     const count = filter.length;
 
-    const sendingProducts = filter.splice(countPage * currentPage, countPage);
+    const sendingProducts = filter.splice(currentPage * countPage, countPage);
 
     let inventoryConnector = await InventoryConnector.findOne({
       market,
@@ -93,34 +69,33 @@ module.exports.getProductsInventory = async (req, res) => {
       await inventoryConnector.save();
     }
 
-    let inventories = [];
-
-    for (const product of sendingProducts) {
+    for (const i in sendingProducts) {
       let inventory = await Inventory.findOne({
         market,
         inventoryConnector: inventoryConnector._id,
-        product: product._id,
-      });
-      if (!inventory) {
-        inventory = new Inventory({
-          market,
-          inventoryConnector: inventoryConnector._id,
-          product: product._id,
-          price: product.price._id,
-          category: product.category._id,
-          unit: product.unit._id,
-        });
-
-        await inventory.save();
-        inventoryConnector.inventories.push(inventory._id);
-      }
-      inventories.push(inventory);
+        product: sendingProducts[i]._id,
+      }).select('-__iv -updatedAt -createdAt -isArchive');
+      inventory
+        ? (sendingProducts[i] = {
+            ...sendingProducts[i]._doc,
+            inventory,
+          })
+        : (sendingProducts[i] = {
+            ...sendingProducts[i]._doc,
+            inventory: {
+              market,
+              inventoryConnector: inventoryConnector._id,
+              product: sendingProducts[i]._id,
+              price: sendingProducts[i].price._id,
+              unit: sendingProducts[i].unit._id,
+              productdata: sendingProducts[i].productdata._id,
+            },
+          });
     }
-    await inventoryConnector.save();
+
     res.status(201).json({
       products: sendingProducts,
       count,
-      inventories,
     });
   } catch (error) {
     res.status(401).json({ message: 'Serverda xatolik yuz berdi...' });
@@ -142,7 +117,19 @@ module.exports.updateInventory = async (req, res) => {
         message: 'Diqqat! Inventarizatsiya qiymatlari xato kiritilmoqda',
       });
     }
-    await Inventory.findByIdAndUpdate(inventory._id, inventory);
+
+    if (!inventory._id) {
+      newinventory = new Inventory({
+        ...inventory,
+      });
+
+      await newinventory.save();
+      const inventoryConnector = await InventoryConnector.findById(
+        inventory.inventoryConnector
+      );
+      inventoryConnector.inventories.push(newinventory._id);
+      await inventoryConnector.save();
+    } else await Inventory.findByIdAndUpdate(inventory._id, inventory);
 
     res.status(201).json(inventory);
   } catch (error) {
@@ -153,42 +140,30 @@ module.exports.updateInventory = async (req, res) => {
 //Product for Inventory
 module.exports.completed = async (req, res) => {
   try {
-    const { market, inventory } = req.body;
+    const { market } = req.body;
     const marke = await Market.findById(market);
     if (!marke) {
       return res
         .status(401)
         .json({ message: "Diqqat! Do'kon malumotlari topilmadi" });
     }
-    await InventoryConnector.findByIdAndUpdate(inventory.inventoryConnector, {
-      completed: true,
+    const inventoryConnector = await InventoryConnector.findOne({
+      market,
+      completed: false,
+    })
+      .select('inventories completed')
+      .populate('inventories', 'product inventorycount productcount');
+
+    inventoryConnector.inventories.forEach(async (inventory) => {
+      await Product.findByIdAndUpdate(inventory.product, {
+        total: inventory.inventorycount,
+      });
     });
 
-    res.status(201).json(inventory);
+    inventoryConnector.completed = true;
+    await inventoryConnector.save();
 
-    const inventoryConnector = await InventoryConnector.findById(
-      inventory.inventoryConnector
-    )
-      .select('inventories')
-      .populate('inventories', 'inventorycount inventoryConnector product');
-
-    inventoryConnector.inventories.map(async (inventory) => {
-      if (!inventory.inventorycount) {
-        await Inventory.findByIdAndDelete(inventory._id);
-        await InventoryConnector.findByIdAndUpdate(
-          inventory.inventoryConnector,
-          {
-            $pull: {
-              inventories: inventory._id,
-            },
-          }
-        );
-      } else {
-        await Product.findByIdAndUpdate(inventory.product, {
-          total: inventory.inventorycount,
-        });
-      }
-    });
+    res.status(201).json({ message: 'Inventarizatsiya jarayoni yakunlandi' });
   } catch (error) {
     res.status(401).json({ message: 'Serverda xatolik yuz berdi...' });
   }
@@ -240,17 +215,17 @@ module.exports.inventoryproducts = async (req, res) => {
         .status(401)
         .json({ message: "Diqqat! Do'kon malumotlari topilmadi" });
     }
-    const inventoryConnector = await InventoryConnector.findById(id);
+    const inventoriesConnector = await InventoryConnector.findById(id);
 
     const inventories = await Inventory.find({
       inventoryConnector: id,
       market,
     })
-      .select('product category inventorycount productcount createdAt')
-      .populate('product', 'name code')
-      .populate('category', 'name code');
+      .select('inventorycount productcount createdAt comment')
+      .populate('productdata', 'name code')
+      .populate('price', 'incomingprice sellingprice');
 
-    res.status(201).json({ inventories, inventoryConnector });
+    res.status(201).json({ inventories, inventoriesConnector });
   } catch (error) {
     res.status(401).json({ message: 'Serverda xatolik yuz berdi...' });
   }

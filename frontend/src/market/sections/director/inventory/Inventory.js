@@ -30,9 +30,6 @@ export const Inventory = () => {
   const [productsCount, setProductsCount] = useState(0);
   const [modal, setModal] = useState(false);
 
-  //Inventoies
-  const [inventories, setInventories] = useState([]);
-
   //Context
   const { request } = useHttp();
   const auth = useContext(AuthContext);
@@ -72,7 +69,6 @@ export const Inventory = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      setInventories(data.inventories);
       setSearchStorage(data.products);
       setCurrentProducts(data.products);
       setProductsCount(data.count);
@@ -110,7 +106,9 @@ export const Inventory = () => {
         );
         localStorage.setItem('data', data);
         notify({
-          title: `${currentProducts[i].name} ${t("mahsuloti inventarizatsiyasi saqlandi")}`,
+          title: `${currentProducts[i].productdata.name} ${t(
+            'mahsuloti inventarizatsiyasi saqlandi'
+          )}`,
           description: '',
           status: 'success',
         });
@@ -132,7 +130,6 @@ export const Inventory = () => {
         'POST',
         {
           market: auth.market._id,
-          inventory: inventories[0],
         },
         {
           Authorization: `Bearer ${auth.token}`,
@@ -153,7 +150,7 @@ export const Inventory = () => {
         status: 'error',
       });
     }
-  }, [request, auth, notify, inventories, history]);
+  }, [request, auth, notify, history]);
 
   // ===========================================================
   // HANDLAERS
@@ -161,26 +158,18 @@ export const Inventory = () => {
     setSearch({ ...search, [e.target.name]: e.target.value });
 
     let filter = [];
+
     switch (e.target.name) {
       case 'productname':
         filter = searchStorage.filter((product) => {
-          return product.name.includes(e.target.value);
+          return product.productdata.name
+            .toLowerCase()
+            .includes(e.target.value.toLowerCase());
         });
         break;
-
       case 'productcode':
         filter = searchStorage.filter((product) => {
-          return product.code.includes(e.target.value);
-        });
-        break;
-      case 'categorycode':
-        filter = searchStorage.filter((product) => {
-          return product.category.code.includes(e.target.value);
-        });
-        break;
-      case 'brand':
-        filter = searchStorage.filter((product) => {
-          return product.brand && product.brand.name.includes(e.target.value);
+          return product.productdata.code.includes(e.target.value);
         });
         break;
       default:
@@ -190,18 +179,30 @@ export const Inventory = () => {
     setCurrentProducts(filter);
   };
 
+  const commitHandler = (e) => {
+    let s = [...currentProducts];
+    s[parseInt(e.target.id)].inventory.comment = e.target.value;
+    setCurrentProducts(s);
+  };
+
   const countHandler = (e) => {
-    let s = [...inventories];
-    s[parseInt(e.target.name)].inventorycount = e.target.value;
-    s[parseInt(e.target.name)].productcount =
-      currentProducts[parseInt(e.target.name)].total;
-    setInventories(s);
+    let s = [...currentProducts];
+    s[parseInt(e.target.name)].inventory.inventorycount = e.target.value;
+    s[parseInt(e.target.name)].inventory.productcount =
+      s[parseInt(e.target.name)].total;
+    setCurrentProducts(s);
   };
 
   const keyPressed = (e) => {
     if (e.key === 'Enter') {
       setCurrentPage(0);
       setSendingSearch(search);
+    }
+  };
+
+  const keyPressedUpdate = (e, inventory, i) => {
+    if (e.key === 'Enter') {
+      updateInventory(inventory, i);
     }
   };
 
@@ -231,27 +232,29 @@ export const Inventory = () => {
         />
         <TableHead />
 
-        {currentProducts.length === inventories.length &&
-          currentProducts.map((product, index) => {
-            return (
-              <Rows
-                updateInventory={updateInventory}
-                countHandler={countHandler}
-                inventory={inventories[index]}
-                key={index}
-                index={index}
-                currentPage={currentPage}
-                countPage={countPage}
-                product={product}
-              />
-            );
-          })}
+        {currentProducts.map((product, index) => {
+          return (
+            <Rows
+              commitHandler={commitHandler}
+              keyPressed={keyPressedUpdate}
+              updateInventory={updateInventory}
+              countHandler={countHandler}
+              key={index}
+              index={index}
+              currentPage={currentPage}
+              countPage={countPage}
+              product={product}
+            />
+          );
+        })}
       </div>
 
       <Modal
         modal={modal}
         setModal={setModal}
-        basic={t('Diqqat! Inventarizatsiya jarayoni yakunlanganiini tasdiqlaysizmi?')}
+        basic={t(
+          'Diqqat! Inventarizatsiya jarayoni yakunlanganiini tasdiqlaysizmi?'
+        )}
         handler={completeInventory}
       />
     </div>

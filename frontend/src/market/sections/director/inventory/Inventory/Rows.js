@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import React from 'react';
 import { SaveBtn } from '../../components/TableButtons';
 
@@ -6,45 +7,50 @@ export const Rows = ({
   index,
   product,
   countPage,
-  inventory,
   countHandler,
   updateInventory,
+  keyPressed,
+  commitHandler,
 }) => {
   return (
     <ul
       className={`tr font-bold  ${
-        inventory && inventory.inventorycount ? 'bg-[#e8f8dba6]' : ''
+        product.inventory && product.inventory.inventorycount
+          ? 'bg-[#e8f8dba6]'
+          : ''
       }`}>
       <li className='no'>{currentPage * countPage + 1 + index}</li>
       <li className='td border-r font-bold text-right'>
-        {product.category.code}
+        {product.productdata.code}
       </li>
       <li className='td border-r font-bold col-span-3 flex justify-between'>
-        <span className='w-1/4'>{product.code}</span>
-        <span className='w-3/4 text-right'>{product.name}</span>
-      </li>
-      <li className='td text-center col-span-2 border-r'>
-        {product.brand && product.brand.name}
+        {product.productdata.name}
       </li>
       <li className='td border-r text-right'>
         <span>{Math.round(product.total * 100) / 100}</span>{' '}
       </li>
       <li className='td  border-r text-right '>
         <input
+          id='update'
+          onKeyUp={(e) => keyPressed(e, product.inventory, index)}
           onChange={countHandler}
           name={index}
           className='text-right font-bold w-full focus:outline-1 outline-green-800 px-1'
           type='number'
           defaultValue={
-            inventory && inventory.inventorycount ? inventory.inventorycount : 0
+            product.inventory && product.inventory.inventorycount
+              ? product.inventory.inventorycount
+              : 0
           }
         />
       </li>
       <li className='td  border-r text-right col-span-2'>
         <span>
-          {inventory && inventory.inventorycount
+          {product.inventory && product.inventory.inventorycount
             ? Math.round(
-                -(inventory.productcount - inventory.inventorycount) * 100
+                (product.inventory.inventorycount -
+                  product.inventory.productcount) *
+                  100
               ) / 100
             : 0}
         </span>
@@ -52,11 +58,27 @@ export const Rows = ({
           {product.unit && product.unit.name}
         </span>
       </li>
+      <li className='td  border-r text-right col-span-2'>
+        <input
+          id={index}
+          placeholder={t('Izoh')}
+          onKeyUp={(e) => keyPressed(e, product.inventory, index)}
+          onChange={commitHandler}
+          name='comment'
+          className='text-right font-bold w-full focus:outline-1 outline-green-800 px-1'
+          type='text'
+          defaultValue={
+            product.inventory && product.inventory.comment
+              ? product.inventory.comment
+              : ''
+          }
+        />
+      </li>
       <li className='td-btn'>
         {
           <SaveBtn
             saveHandler={() => {
-              updateInventory(inventory, index);
+              updateInventory(product.inventory, index);
             }}
           />
         }

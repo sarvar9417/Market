@@ -5,15 +5,18 @@ import {
   faPrint,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { t } from 'i18next';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { ExcelDownload } from '../../components/ExcelDownload';
 
 export const Rows = ({
   currentPage,
   index,
   connector,
   countPage,
-  getInventories,
+  changePrint,
+  getInventoriesExcel,
 }) => {
   const history = useHistory();
   return (
@@ -46,15 +49,18 @@ export const Rows = ({
       </li>
       <li className='td-btn col-span-2 border-r'>
         <button
-          onClick={() => getInventories(connector._id)}
+          onClick={() => changePrint(connector._id)}
           className='px-4 bg-blue-800 rounded-2xl text-white hover:bg-blue-900'>
           <FontAwesomeIcon icon={faPrint} />
         </button>
       </li>
       <li className='td-btn col-span-2'>
-        <button className='px-4 bg-green-800 rounded-2xl text-white hover:bg-green-900'>
+        <button
+          className='px-4 bg-green-700 hover:bg-green-800 text-white rounded'
+          onClick={() => getInventoriesExcel(connector._id)}>
           <FontAwesomeIcon icon={faFileExcel} />
         </button>
+        <ExcelDownload filename={t('Inventarizatsiya')} />
       </li>
     </ul>
   );
