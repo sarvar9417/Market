@@ -22,7 +22,88 @@ export const TableHead = ({ sales, setSales }) => {
           setData={setSales}
         />
       </li>
-
+      <li className='th border-r flex justify-center col-span-2'>
+        {t('Jami')}
+        <div className='flex flex-col pl-2'>
+          <FontAwesomeIcon
+            onClick={() =>
+              setSales(
+                [...sales].sort((a, b) =>
+                  a.products.reduce((summ, product) => {
+                    return summ + product.totalprice;
+                  }, 0) >
+                  b.products.reduce((summ, product) => {
+                    return summ + product.totalprice;
+                  }, 0)
+                    ? 1
+                    : -1
+                )
+              )
+            }
+            icon={faAngleUp}
+            className='cursor-pointer p-0 m-0'
+          />
+          <FontAwesomeIcon
+            icon={faAngleDown}
+            className='cursor-pointer p-0 m-0'
+            onClick={() =>
+              setSales(
+                [...sales].sort((a, b) =>
+                  a.products.reduce((summ, product) => {
+                    return summ + product.totalprice;
+                  }, 0) <
+                  b.products.reduce((summ, product) => {
+                    return summ + product.totalprice;
+                  }, 0)
+                    ? 1
+                    : -1
+                )
+              )
+            }
+          />
+        </div>
+      </li>
+      <li className='th border-r flex justify-center'>
+        {t('Chegirma')}
+        <div className='flex flex-col pl-2'>
+          <FontAwesomeIcon
+            onClick={() =>
+              setSales(
+                [...sales].sort((a, b) =>
+                  a.discounts.reduce((summ, discount) => {
+                    return summ + discount.discount;
+                  }, 0) >
+                  b.discounts.reduce((summ, discount) => {
+                    return summ + discount.discount;
+                  }, 0)
+                    ? 1
+                    : -1
+                )
+              )
+            }
+            icon={faAngleUp}
+            className='cursor-pointer p-0 m-0'
+          />
+          <FontAwesomeIcon
+            icon={faAngleDown}
+            className='cursor-pointer p-0 m-0'
+            onClick={() =>
+              setSales(
+                [...sales].sort((a, b) =>
+                  a.discounts.reduce((summ, discount) => {
+                    return summ + discount.discount;
+                  }, 0) <
+                  b.products.reduce((summ, discount) => {
+                    return summ + discount.discount;
+                  }, 0)
+                    ? 1
+                    : -1
+                )
+              )
+            }
+          />
+        </div>
+      </li>
       <li className='th border-r flex justify-center'>
         {t('Qarz')}
         <div className='flex flex-col pl-2'>
@@ -80,88 +161,6 @@ export const TableHead = ({ sales, setSales }) => {
                     b.payments.reduce((summ, payment) => {
                       return summ + payment.payment;
                     }, 0)
-                    ? 1
-                    : -1
-                )
-              )
-            }
-          />
-        </div>
-      </li>
-      <li className='th border-r flex justify-center'>
-        {t('Chegirma')}
-        <div className='flex flex-col pl-2'>
-          <FontAwesomeIcon
-            onClick={() =>
-              setSales(
-                [...sales].sort((a, b) =>
-                  a.discounts.reduce((summ, discount) => {
-                    return summ + discount.discount;
-                  }, 0) >
-                  b.discounts.reduce((summ, discount) => {
-                    return summ + discount.discount;
-                  }, 0)
-                    ? 1
-                    : -1
-                )
-              )
-            }
-            icon={faAngleUp}
-            className='cursor-pointer p-0 m-0'
-          />
-          <FontAwesomeIcon
-            icon={faAngleDown}
-            className='cursor-pointer p-0 m-0'
-            onClick={() =>
-              setSales(
-                [...sales].sort((a, b) =>
-                  a.discounts.reduce((summ, discount) => {
-                    return summ + discount.discount;
-                  }, 0) <
-                  b.products.reduce((summ, discount) => {
-                    return summ + discount.discount;
-                  }, 0)
-                    ? 1
-                    : -1
-                )
-              )
-            }
-          />
-        </div>
-      </li>
-      <li className='th border-r flex justify-center col-span-2'>
-        {t('Jami')}
-        <div className='flex flex-col pl-2'>
-          <FontAwesomeIcon
-            onClick={() =>
-              setSales(
-                [...sales].sort((a, b) =>
-                  a.products.reduce((summ, product) => {
-                    return summ + product.totalprice;
-                  }, 0) >
-                  b.products.reduce((summ, product) => {
-                    return summ + product.totalprice;
-                  }, 0)
-                    ? 1
-                    : -1
-                )
-              )
-            }
-            icon={faAngleUp}
-            className='cursor-pointer p-0 m-0'
-          />
-          <FontAwesomeIcon
-            icon={faAngleDown}
-            className='cursor-pointer p-0 m-0'
-            onClick={() =>
-              setSales(
-                [...sales].sort((a, b) =>
-                  a.products.reduce((summ, product) => {
-                    return summ + product.totalprice;
-                  }, 0) <
-                  b.products.reduce((summ, product) => {
-                    return summ + product.totalprice;
-                  }, 0)
                     ? 1
                     : -1
                 )
