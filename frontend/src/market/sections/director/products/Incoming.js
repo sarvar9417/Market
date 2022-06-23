@@ -198,9 +198,10 @@ export const Incoming = () => {
         return notify({
           title: `${t("Diqqat! Ushbu mahsulot ro'yxatga")} ${
             parseInt(i) + 1
-          } ${t("raqamda kiritilgan.")}`,
-          description:
-            t("Qiymatlarini o'zgartirish uchun tahrirlash tugmasini bosishingiz mumkin"),
+          } ${t('raqamda kiritilgan.')}`,
+          description: t(
+            "Qiymatlarini o'zgartirish uchun tahrirlash tugmasini bosishingiz mumkin"
+          ),
           status: 'warning',
         });
       }

@@ -557,7 +557,14 @@ module.exports.getexcel = async (req, res) => {
       .sort({ _id: -1 })
       .select('-isArchive -updatedAt -market -user -__v')
       .populate('supplier', 'name')
-      .populate('product', 'name code')
+      .populate({
+        path: 'product',
+        select: 'productdata',
+        populate: {
+          path: 'productdata',
+          select: 'name code',
+        },
+      })
       .populate('unit', 'name');
     res.status(201).send(incomings);
   } catch (error) {

@@ -110,7 +110,7 @@ module.exports.getPaymentsExcel = async (req, res) => {
       .sort({ _id: -1 })
       .populate('payments', 'totalprice payment cash card transfer')
       .populate('client', 'name');
-    console.log(sales);
+
     let salesConnectors = [];
     sales.map((sale) => {
       if (type === 'allpayments') {

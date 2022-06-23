@@ -102,7 +102,7 @@ export const Product = () => {
     code: '',
     name: '',
   });
-  const [sendingsearch, setSendingSearch] = useState({});
+  const [sendingsearch, setSendingSearch] = useState({ code: '', name: '' });
   //====================================================================
   //====================================================================
 
