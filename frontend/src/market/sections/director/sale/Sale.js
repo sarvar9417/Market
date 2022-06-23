@@ -746,16 +746,17 @@ export const Sale = () => {
   let types = ['cash', 'card', 'transfer'];
 
   const changeDiscount = (e, p) => {
-    if (discount.isProcient && e.target.value > 100) {
+    if (discount.isProcient && e.target.value > 5) {
       return notify({
-        title: t(
-          'Diqqat! Umumiy summadan yuqori chegirma kiritish mumkin emas!'
-        ),
+        title: t('Diqqat! 5% yuqori chegirma kiritish mumkin emas!'),
         description: '',
         status: 'error',
       });
     }
-    if (Math.round(e.target.value * 10000) / 10000 > totalprice) {
+    if (
+      !discount.isProcient &&
+      Math.round(e.target.value * 10000) / 10000 > totalprice
+    ) {
       return notify({
         title: t(
           'Diqqat! Umumiy summadan yuqori chegirma kiritish mumkin emas!'
@@ -2151,6 +2152,9 @@ export const Sale = () => {
         status: 'warning',
       });
     }
+    saleproducts.sort((a, b) => {
+      return a.product.code > b.product.code ? 1 : -1;
+    });
     // if (!client.name) {
     //   return notify({
     //     title:
@@ -2179,6 +2183,10 @@ export const Sale = () => {
       deleteTemporarys(currenttemporary._id);
       setCurrentTemporary();
     }
+    setSellingCard(false);
+    setTableCard(false);
+    setSellingEditCard(false);
+    setVisibleTemporary(true);
   };
 
   const createTemporary = useCallback(async () => {

@@ -32,7 +32,7 @@ export const ClientTable = ({
           <SearchInput
             changeHandler={searchClient}
             type={'search'}
-            placeholder={t('Yetkazuvchilar')}
+            placeholder={t('Santexniklar')}
             keyPressed={searchKeypress}
             name='packman'
           />
@@ -58,7 +58,7 @@ export const ClientTable = ({
       <ul className='thead shadow-xl'>
         <li className='th border-r col-span-2'>№</li>
         <li className='th border-r col-span-3 flex justify-center'>
-          {t('Yetkazuvchi')}{' '}
+          {t('Santexnik')}{' '}
           <SortDoubleProperty
             innnerProperty={'name'}
             property={'packman'}

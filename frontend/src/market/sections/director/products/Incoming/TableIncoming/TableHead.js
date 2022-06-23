@@ -58,10 +58,10 @@ export const TableHead = ({ currentImport, setCurrentInports }) => {
         />
       </li>
       <li className='th border-r flex justify-center items-center'>
-        Tahrirlash
+        {t("Tahrirlash")}
       </li>
       <li className='th border-r flex justify-center items-center'>
-        O'chirish
+        {t("O'chirish")}
       </li>
     </ul>
   );

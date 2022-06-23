@@ -31,10 +31,9 @@ export const CreateClient = ({
           <select
             style={{ minWidth: '70px', maxWidth: '200px' }}
             className='text-center text-black py-1 px-3 border focus:ring focus:outline-green-800 rounded'
-            placeholder={t('Kategoriyani tanlang')}
-            onChange={selectHandler}
-          >
-            <option value='delete'>{t("Kategoriya tanlang")}</option>
+            placeholder={t('Santexnikni tanlang')}
+            onChange={selectHandler}>
+            <option value='delete'>{t('Santexnikni tanlang')}</option>
             {packmans &&
               packmans.map((packman, index) => {
                 return (
@@ -49,7 +48,7 @@ export const CreateClient = ({
           <Input
             name={'name'}
             data={client && client.name}
-            placeholder={t('Yetkazuvchini kiriting')}
+            placeholder={t('Mijoz ismini kiriting')}
             type={'text'}
             keyPressed={keyPressed}
             changeHandler={changeHandler}

@@ -12,6 +12,7 @@ const { Packman } = require('../../models/Sales/Packman');
 const { Payment } = require('../../models/Sales/Payment');
 const { checkPayments } = require('./saleproduct/checkData');
 const { Product } = require('../../models/Products/Product');
+const { ProductData } = require('../../models/Products/Productdata');
 const { Category } = require('../../models/Products/Category');
 const { DailySaleConnector } = require('../../models/Sales/DailySaleConnector');
 const ObjectId = require('mongodb').ObjectId;
@@ -263,6 +264,7 @@ module.exports.register = async (req, res) => {
 
     res.status(201).send(connector);
   } catch (error) {
+    console.log(error);
     res.status(400).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };

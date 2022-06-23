@@ -17,7 +17,7 @@ export const CreateBody = ({
   loading,
 }) => {
   return (
-    <>
+    <div className='mb-3'>
       <ul className='thead'>
         <li className='th col-span-8 border-r'>{t('Kursni kiriting')}</li>
         <li className='th col-span-2 border-r'>{t('Saqlash')}</li>
@@ -41,6 +41,6 @@ export const CreateBody = ({
           {loading ? <ClearBtnLoad /> : <ClearBtn clearDatas={clearInputs} />}
         </li>
       </ul>
-    </>
+    </div>
   );
 };
