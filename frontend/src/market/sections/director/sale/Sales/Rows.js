@@ -1,8 +1,4 @@
-import {
-  faAdd,
-  faPrint,
-  faRotateLeft,
-} from '@fortawesome/free-solid-svg-icons';
+import { faAdd, faPrint, faSync } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { t } from 'i18next';
 import React from 'react';
@@ -97,7 +93,7 @@ export const Rows = ({
           onClick={() => editHandler(saleconnector)}
           className='px-4 bg-red-600 text-white rounded-xl hover:bg-red-700'
         >
-          <FontAwesomeIcon icon={faRotateLeft} />
+          <FontAwesomeIcon icon={faSync} />
         </button>
       </li>
     </ul>

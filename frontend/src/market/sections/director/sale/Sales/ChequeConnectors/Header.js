@@ -3,7 +3,7 @@ import React from 'react';
 
 export const Header = ({ auth, sales }) => {
   return (
-    <div className='grid grid-cols-6 px-4 gap-x-4 items-center'>
+    <div className='grid grid-cols-6 gap-x-4 items-center'>
       <div className='col-span-2 flex flex-col'>
         <p className='flex justify-between'>
           <span className='font-bold'>{t("Do'kon")}:</span>{' '}
@@ -26,8 +26,8 @@ export const Header = ({ auth, sales }) => {
           <span>{sales.client && sales.client[0] && sales.client[0].name}</span>
         </p>
       </div>
-      <div className='px-4 col-span-4 flex flex-col '>
-        <div className='flex justify-between items-center mb-2'>
+      <div className='col-span-4 h-full pl-8 pt-4 flex flex-col justify-between'>
+        <div className='flex justify-between items-center'>
           <div className='text-center text-xl font-bold'>
             {t('Sotuv')}: A{sales.id}
           </div>
@@ -35,9 +35,9 @@ export const Header = ({ auth, sales }) => {
             {auth.market.name}
           </div>
         </div>
-        <div className='flex justify-between items-center'>
-          <div className='text-center text-xl font-bold'>Sotuvchi:</div>
-          <div className='text-right text-2xl font-bold'>
+        <div className='flex items-center'>
+          <div className='font-bold mr-2'>Sotuvchi:</div>
+          <div>
             {auth.user.firstname} {auth.user.lastname}
           </div>
         </div>
