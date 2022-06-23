@@ -15,6 +15,7 @@ const {
 const { ProductPrice } = require('../../models/Products/ProductPrice');
 const { Supplier } = require('../../models/Supplier/Supplier');
 const router = require('./category_products');
+const { ProductData } = require('../../models/Products/Productdata');
 const ObjectId = require('mongodb').ObjectId;
 //Incoming registerall
 module.exports.registerAll = async (req, res) => {
@@ -382,156 +383,47 @@ module.exports.get = async (req, res) => {
       'i'
     );
 
-    const incomings = await Incoming.aggregate([
-      {
-        $facet: {
-          currentIncomings: [
-            {
-              $match: {
-                market: ObjectId(market),
-                createdAt: {
-                  $gte: new Date(beginDay),
-                  $lt: new Date(endDay),
-                },
-              },
-            },
-            {
-              $lookup: {
-                from: 'products', // DB dagi collecyion nomi
-                localField: 'product', // qo'shilgan schemaga qanday nom bilan yozulgani
-                foreignField: '_id', // qaysi propertysi qo'shilgani
-                as: 'product', // qanday nom bilan chiqishi
-                pipeline: [
-                  {
-                    $lookup: {
-                      from: 'productdatas', // DB dagi collecyion nomi
-                      localField: 'productdata', // qo'shilgan schemaga qanday nom bilan yozulgani
-                      foreignField: '_id', // qaysi propertysi qo'shilgani
-                      as: 'productdata', // qanday nom bilan chiqishi
-                      pipeline: [
-                        { $match: { code: productcode, name: productname } },
-                        { $project: { code: 1, name: 1 } },
-                      ],
-                    },
-                  },
-                  { $unwind: '$productdata' },
-                  {
-                    $group: {
-                      _id: '$_id',
-                      name: { $first: '$productdata.name' },
-                      code: { $first: '$productdata.code' },
-                    },
-                  },
-                ],
-              },
-            },
-            {
-              $lookup: {
-                from: 'units', // DB dagi collecyion nomi
-                localField: 'unit', // qo'shilgan schemaga qanday nom bilan yozulgani
-                foreignField: '_id', // qaysi propertysi qo'shilgani
-                as: 'unit', // qanday nom bilan chiqishi
-                pipeline: [{ $project: { name: 1 } }],
-              },
-            },
-            {
-              $lookup: {
-                from: 'suppliers', // DB dagi collection nomi
-                localField: 'supplier', // qo'shilgan schemaga qanday nom bilan yozulgani
-                foreignField: '_id', // qaysi propertysi qo'shilgani
-                as: 'supplier', // qanday nom bilan chiqishi
-                pipeline: [
-                  { $match: { name: suppliername } },
-                  { $project: { name: 1 } },
-                ],
-              },
-            },
-            { $unwind: '$supplier' },
-            { $unwind: '$product' },
-            { $unwind: '$unit' },
-            {
-              $group: {
-                _id: '$_id',
-                product: { $first: '$product' },
-                unit: { $first: '$unit' },
-                supplier: { $first: '$supplier' },
-                totalprice: { $first: '$totalprice' },
-                unitprice: { $first: '$unitprice' },
-                pieces: { $first: '$pieces' },
-                createdAt: { $first: '$createdAt' },
-                market: { $first: '$market' },
-              },
-            },
-            {
-              $sort: { createdAt: -1 },
-            },
-            {
-              $skip: parseInt(currentPage) * parseInt(countPage),
-            },
-            {
-              $limit: parseInt(countPage),
-            },
-          ],
-          countIncomings: [
-            {
-              $match: {
-                market: ObjectId(market),
-                createdAt: {
-                  $gte: new Date(beginDay),
-                  $lt: new Date(endDay),
-                },
-              },
-            },
-            {
-              $lookup: {
-                from: 'products', // DB dagi collecyion nomi
-                localField: 'product', // qo'shilgan schemaga qanday nom bilan yozulgani
-                foreignField: '_id', // qaysi propertysi qo'shilgani
-                as: 'product', // qanday nom bilan chiqishi
-                pipeline: [
-                  {
-                    $lookup: {
-                      from: 'productdatas', // DB dagi collecyion nomi
-                      localField: 'productdata', // qo'shilgan schemaga qanday nom bilan yozulgani
-                      foreignField: '_id', // qaysi propertysi qo'shilgani
-                      as: 'productdata', // qanday nom bilan chiqishi
-                      pipeline: [
-                        { $match: { code: productcode, name: productname } },
-                      ],
-                    },
-                  },
-                  { $unwind: '$productdata' },
-                ],
-              },
-            },
-            {
-              $lookup: {
-                from: 'suppliers', // DB dagi collection nomi
-                localField: 'supplier', // qo'shilgan schemaga qanday nom bilan yozulgani
-                foreignField: '_id', // qaysi propertysi qo'shilgani
-                as: 'supplier', // qanday nom bilan chiqishi
-                pipeline: [
-                  { $match: { name: suppliername } },
-                  { $project: { name: 1 } },
-                ],
-              },
-            },
-            { $unwind: '$product' },
-            { $unwind: '$supplier' },
-            { $count: 'count' },
-          ],
-        },
+    const incomings = await Incoming.find({
+      market,
+      createdAt: {
+        $gte: beginDay,
+        $lt: endDay,
       },
-    ]);
+    })
+      .sort({ _id: -1 })
+      .select('-isArchive -updatedAt -market -user -__v')
+      .populate({
+        path: 'supplier',
+        match: { name: suppliername },
+        select: 'name',
+      })
+      .populate({
+        path: 'product',
+        select: 'productdata',
+        populate: {
+          path: 'productdata',
+          match: { code: productcode, name: productname },
+          select: 'name code',
+        },
+      })
+      .populate('unit', 'name');
+
+    let filter = incomings.filter((incoming) => {
+      return (
+        incoming.supplier !== null && incoming.product.productdata !== null
+      );
+    });
+
+    const count = filter.length;
+
+    filter = filter.splice(currentPage * countPage, countPage);
 
     res.status(201).send({
-      incomings: incomings[0].currentIncomings,
-      count:
-        incomings[0].countIncomings[0] && incomings[0].countIncomings[0].count
-          ? incomings[0].countIncomings[0].count
-          : 1,
+      incomings: filter,
+      count: count,
     });
   } catch (error) {
+    console.log(error);
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };

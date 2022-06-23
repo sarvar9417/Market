@@ -22,8 +22,7 @@ export const Rows = ({
       </li>
       <li
         onClick={() => changePrepayment(saleconnector)}
-        className='td font-bold col-span-2 text-right border-r-2 border-r-green-700 hover:bg-blue-200 flex justify-between'
-      >
+        className='td font-bold col-span-2 text-right border-r-2 border-r-green-700 hover:bg-blue-200 flex justify-between'>
         <span className='text-white'>{t("To'lov")}</span>
         <span>
           {saleconnector.products
@@ -67,13 +66,12 @@ export const Rows = ({
             return <p key={index}>{payment.comment}</p>;
           }
           return '';
-        })}{' '}
+        })}
       </li>
       <li className='td-btn border-right'>
         <button
           onClick={() => changeCheck(saleconnector)}
-          className='px-4 bg-blue-700 text-white rounded-xl hover:bg-blue-800'
-        >
+          className='px-4 bg-blue-700 text-white rounded-xl hover:bg-blue-800'>
           <FontAwesomeIcon icon={faPrint} />
         </button>
       </li>
@@ -83,16 +81,14 @@ export const Rows = ({
             addProducts(saleconnector);
             Clear();
           }}
-          className='px-4 bg-green-700 text-white rounded-xl hover:bg-green-800'
-        >
+          className='px-4 bg-green-700 text-white rounded-xl hover:bg-green-800'>
           <FontAwesomeIcon icon={faAdd} />
         </button>
       </li>
       <li className='td-btn'>
         <button
           onClick={() => editHandler(saleconnector)}
-          className='px-4 bg-red-600 text-white rounded-xl hover:bg-red-700'
-        >
+          className='px-4 bg-red-600 text-white rounded-xl hover:bg-red-700'>
           <FontAwesomeIcon icon={faSync} />
         </button>
       </li>

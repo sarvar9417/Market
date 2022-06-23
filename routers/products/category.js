@@ -186,7 +186,7 @@ module.exports.getCategories = async (req, res) => {
       code: code,
     })
       .sort({ code: 1 })
-      .select('code market')
+      .select('code market name')
       .skip(currentPage * countPage)
       .limit(countPage);
 

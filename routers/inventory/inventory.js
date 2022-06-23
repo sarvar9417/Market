@@ -114,7 +114,7 @@ module.exports.updateInventory = async (req, res) => {
     }
     if (!inventory.inventorycount || inventory.inventorycount < 0) {
       return res.status(401).json({
-        message: 'Diqqat! Inventarizatsiya qiymatlari xato kiritilmoqda',
+        message: 'Diqqat! Inventarizatsiya qiymatlari kiritilmagan yoki xato kiritilmoqda',
       });
     }
 

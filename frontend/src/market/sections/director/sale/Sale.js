@@ -1134,6 +1134,9 @@ export const Sale = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+      data.products.sort((a, b) => {
+        return a.product.productdata.code > b.product.productdata.code ? 1 : -1;
+      });
       setCheck(true);
       setSales(data);
       clearDatas();
@@ -1142,7 +1145,7 @@ export const Sale = () => {
       if (currenttemporary) {
         deleteTemporarys(currenttemporary._id);
       }
-      setCheckTemporary();
+      setCheckTemporary(false);
     } catch (error) {
       notify({
         title: error,
@@ -1202,6 +1205,9 @@ export const Sale = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+      data.products.sort((a, b) => {
+        return a.product.productdata.code > b.product.productdata.code ? 1 : -1;
+      });
       setCheck(true);
       setSales(data);
       clearDatas();
@@ -1211,7 +1217,7 @@ export const Sale = () => {
       if (currenttemporary) {
         deleteTemporarys(currenttemporary._id);
       }
-      setCheckTemporary();
+      setCheckTemporary(false);
     } catch (error) {
       notify({
         title: error,

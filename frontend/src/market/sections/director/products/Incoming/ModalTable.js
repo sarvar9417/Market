@@ -1,7 +1,12 @@
 import { t } from 'i18next';
 import React from 'react';
 
-export const ModalTable = ({ incoming, inputHandler }) => {
+export const ModalTable = ({ incoming, inputHandler, keyPressed }) => {
+  const changeHandler = (e) => {
+    if (e.key === 'Enter') {
+      keyPressed();
+    }
+  };
   return (
     <>
       <div className='font-bold text-black mb-1'>
@@ -28,6 +33,7 @@ export const ModalTable = ({ incoming, inputHandler }) => {
                   className='outline-none text-right text-black font-bold'
                   name='pieces'
                   style={{ maxWidth: '100px' }}
+                  onKeyUp={changeHandler}
                 />
               </td>
               <td className='border m-0 px-3 py-2 font-bolds text-center'>
@@ -38,6 +44,7 @@ export const ModalTable = ({ incoming, inputHandler }) => {
                   className='outline-none text-right text-black font-bold'
                   name='unitprice'
                   style={{ maxWidth: '100px' }}
+                  onKeyUp={changeHandler}
                 />
               </td>
               <td className='border m-0 px-3 py-2 font-bold text-center'>
@@ -48,6 +55,7 @@ export const ModalTable = ({ incoming, inputHandler }) => {
                   style={{ maxWidth: '100px' }}
                   className='outline-none text-right w-full font-bold text-black'
                   name='totalprice'
+                  onKeyUp={changeHandler}
                 />
               </td>
               <td className='border m-0 px-3 py-2 font-bold text-center text-red-600'>
