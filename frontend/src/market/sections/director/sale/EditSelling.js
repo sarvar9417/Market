@@ -17,12 +17,13 @@ export const EditSelling = ({
 }) => {
   return (
     <div
-      className={`bg-white mb-3 shadow-2xl ${sellingEditCard ? '' : 'hidden'}`}>
+      className={`bg-white mb-3 shadow-2xl ${sellingEditCard ? '' : 'hidden'}`}
+    >
       <p className='bg-blue-800 text-center text-2xl text-white py-2 font-bold'>
         {t('Mahsulotlarni tahrirlash')}
       </p>
-      <div className='px-3 py-2 overflow-x-scroll'>
-        <div className='max-h-96 min-w-[991px]'>
+      <div className='px-3 py-2'>
+        <div className='min-w-[991px]'>
           <Table
             editSaleConnector={editSaleConnector}
             changeBack={changeBack}

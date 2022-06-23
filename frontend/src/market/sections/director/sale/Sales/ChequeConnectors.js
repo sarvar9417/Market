@@ -29,6 +29,7 @@ export const ChequeConnectors = ({ sales, setCheck }) => {
     content: () => componentRef.current,
   });
   const auth = useContext(AuthContext);
+
   return (
     <div className='absolute top-0 w-full bg-white font-mono h-full right-0 z-50'>
       <div className='a4 m-auto w-[27cm]' ref={componentRef}>
