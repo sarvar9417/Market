@@ -662,20 +662,21 @@ module.exports.getProductExcel = async (req, res) => {
         .status(401)
         .json({ message: "Diqqat! Do'kon malummotlari topilmadi." });
     }
-
     const code = new RegExp('.*' + search ? search.code : '' + '.*', 'i');
     const name = new RegExp('.*' + search ? search.name : '' + '.*', 'i');
 
     const products = await Product.find({
-      code: code,
-      name: name,
       market,
     })
       .sort({ _id: -1 })
-      .select('total unit')
+      .select('total unit price productdata')
       .populate('price', 'incomingprice sellingprice')
       .populate('unit', 'name')
-      .populate('unit', 'name');
+      .populate({
+        path: 'productdata',
+        select: 'name code',
+        match: { name: name, code: code },
+      });
 
     res.status(201).json(products);
   } catch (error) {

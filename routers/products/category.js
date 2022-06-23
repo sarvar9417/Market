@@ -199,7 +199,7 @@ module.exports.getCategories = async (req, res) => {
 //Category getaCategories
 module.exports.getCategoriesExcel = async (req, res) => {
   try {
-    const { market, search } = req.body;
+    const { market } = req.body;
 
     const marke = await Market.findById(market);
 
@@ -208,13 +208,8 @@ module.exports.getCategoriesExcel = async (req, res) => {
         message: "Diqqat! Do'kon ma'lumotlari topilmadi.",
       });
     }
-    const code = new RegExp('.*' + (search ? search.code : '') + '.*', 'i');
-    const name = new RegExp('.*' + (search ? search.name : '') + '.*', 'i');
-
     const categorys = await Category.find({
       market,
-      name: name,
-      code: code,
     })
       .sort({ _id: -1 })
       .select('name code market');

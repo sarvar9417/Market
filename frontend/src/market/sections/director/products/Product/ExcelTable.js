@@ -20,8 +20,8 @@ export const ExcelTable = ({ products }) => {
             products.map((product, index) => (
               <tr key={index}>
                 <td className='font-bold border'>{index + 1}</td>
-                <td>{product.code}</td>
-                <td>{product.name}</td>
+                <td>{product.productdata.code}</td>
+                <td>{product.productdata.name}</td>
                 <td>
                   {product.total} {product.unit.name}
                 </td>
