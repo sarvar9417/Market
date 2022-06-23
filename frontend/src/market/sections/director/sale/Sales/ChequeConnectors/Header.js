@@ -35,10 +35,10 @@ export const Header = ({ auth, sales }) => {
             {auth.market.name}
           </div>
         </div>
-        <div className='flex items-center'>
-          <div className='font-bold mr-2'>Sotuvchi:</div>
+        <div className='flex justify-end'>
           <div>
-            {auth.user.firstname} {auth.user.lastname}
+            <span className='font-bold'>Sotuvchi:</span> {auth.user.firstname}{' '}
+            {auth.user.lastname}
           </div>
         </div>
       </div>
