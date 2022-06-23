@@ -168,12 +168,14 @@ export const Sale = () => {
     payment: {},
     debt: {},
     discount: {},
+    user: {},
   });
   const [allSales, setAllSales] = useState({
     products: [],
     payments: [],
     debts: [],
     discounts: [],
+    user: [],
   });
   const [saleCounts, setSaleCounts] = useState(0);
 
@@ -2402,7 +2404,7 @@ export const Sale = () => {
           changeTemporary={changeTemporary}
         />
       </div>
-      <div className={sellingCard ? '' : 'hidden'}>
+      <div className={sellingCard ? ' ' : 'hidden'}>
         <Products changeProduct={changeProduct} products={products} />
         <Selling
           saveTemporary={saveTemporary}

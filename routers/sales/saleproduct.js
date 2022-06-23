@@ -241,7 +241,7 @@ module.exports.register = async (req, res) => {
     await dailysaleconnector.save();
 
     const connector = await DailySaleConnector.findById(dailysaleconnector._id)
-      .select('-isArchive -updatedAt -user -market -__v')
+      .select('-isArchive -updatedAt -market -__v')
       .populate({
         path: 'products',
         select: 'totalprice unitprice totalpriceuzs unitpriceuzs pieces',
@@ -260,6 +260,7 @@ module.exports.register = async (req, res) => {
       .populate('debt', 'debt debtuzs')
       .populate('client', 'name')
       .populate('packman', 'name')
+      .populate('user', 'firstname lastname')
       .populate('saleconnector', 'id');
 
     res.status(201).send(connector);
@@ -488,7 +489,7 @@ module.exports.addproducts = async (req, res) => {
     await dailysaleconnector.save();
 
     const connector = await DailySaleConnector.findById(dailysaleconnector._id)
-      .select('-isArchive -updatedAt -user -market -__v')
+      .select('-isArchive -updatedAt -market -__v')
       .populate({
         path: 'products',
         select: 'totalprice unitprice totalpriceuzs unitpriceuzs pieces',
@@ -504,6 +505,7 @@ module.exports.addproducts = async (req, res) => {
       .populate('debt', 'debt debtuzs')
       .populate('client', 'name')
       .populate('packman', 'name')
+      .populate('user', 'firstname lastname')
       .populate('saleconnector', 'id');
     res.status(201).send(connector);
   } catch (error) {
@@ -625,6 +627,15 @@ module.exports.getsaleconnectors = async (req, res) => {
             },
             {
               $lookup: {
+                from: 'users', // DB dagi collecyion nomi
+                localField: 'user', // qo'shilgan schemaga qanday nom bilan yozulgani
+                foreignField: '_id', // qaysi propertysi qo'shilgani
+                as: 'user', // qanday nom bilan chiqishi
+                pipeline: [{ $project: { firstname: 1, lastname: 1 } }],
+              },
+            },
+            {
+              $lookup: {
                 from: 'discounts', // DB dagi collection nomi
                 localField: 'discounts', // qo'shilgan schemaga qanday nom bilan yozulgani
                 foreignField: '_id', // qaysi propertysi qo'shilgani
@@ -658,6 +669,7 @@ module.exports.getsaleconnectors = async (req, res) => {
                 discounts: { $first: '$discounts' },
                 createdAt: { $first: '$createdAt' },
                 market: { $first: '$market' },
+                user: { $first: '$user' },
               },
             },
             {

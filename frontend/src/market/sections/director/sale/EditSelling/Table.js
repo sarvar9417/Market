@@ -1,19 +1,21 @@
 import React from 'react';
-import { t } from "i18next";
+import { t } from 'i18next';
 
 export const Table = ({ editSaleConnector, saleproducts, changeBack }) => {
   return (
-    <table className='bg-white w-full text-base relative min-w-[700px]'>
-      <thead className='z-10 border text-center text-base  text-white py-4'>
+    <table className='bg-white w-full relative text-base'>
+      <thead className='border text-center text-base text-white py-4'>
         <tr>
-          <th className='border sticky top-0 bg-blue-800'>№</th>
-          <th className='border sticky top-0 bg-blue-800'>{t("Kodi")}</th>
-          <th className='border sticky top-0 bg-blue-800'>{t("Nomi")}</th>
-          <th className='border sticky top-0 bg-blue-800'>{t("Xarid qilingan")}</th>
+          <th className='border static top-0 bg-blue-800'>№</th>
+          <th className='border static top-0 bg-blue-800'>{t('Kodi')}</th>
+          <th className='border static top-0 bg-blue-800'>{t('Nomi')}</th>
+          <th className='border static top-0 bg-blue-800'>
+            {t('Xarid qilingan')}
+          </th>
 
-          <th className='border sticky top-0 bg-blue-800'>{t("Narxi")}</th>
-          <th className='border sticky top-0 bg-blue-800'>{t("Qaytarish")}</th>
-          <th className='border sticky top-0 bg-blue-800'>{t("Narxi")}</th>
+          <th className='border static top-0 bg-blue-800'>{t('Narxi')}</th>
+          <th className='border static top-0 bg-blue-800'>{t('Qaytarish')}</th>
+          <th className='border static top-0 bg-blue-800'>{t('Narxi')}</th>
         </tr>
       </thead>
       <tbody className='border text-black'>
