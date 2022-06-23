@@ -1,9 +1,4 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -49,13 +44,13 @@ export const Navbar = ({ baseUrl }) => {
     e.target.id === menu ? setMenu('') : setMenu(e.target.id);
     setSubMenu('');
   };
-  
+
   const changeSubMenu = (e) => {
     e.target.id === submenu ? setSubMenu('') : setSubMenu(e.target.id);
   };
-  
+
   const changeLink = () => {
-    setBar(false)
+    setBar(false);
     setMenu('');
     setSubMenu('');
   };
@@ -87,11 +82,12 @@ export const Navbar = ({ baseUrl }) => {
     window.addEventListener('click', () => {
       setCurrentPage(window.location.pathname);
     });
-  }, [getUser]);
+    return () => setUser(auth.user);
+  }, [getUser, auth]);
 
   return (
     <div>
-      <nav className={'hidden md:block' }>
+      <nav className={'hidden md:block'}>
         <div className='flex justify-between m-0 p-0'>
           <div className='font-bold flex items-center'>
             <div className='px-5 py-2 text-xl'>
@@ -339,7 +335,7 @@ export const Navbar = ({ baseUrl }) => {
                       : 'unactive-page'
                   }
                 >
-                  {t("Kassa")}
+                  {t('Kassa')}
                 </Link>
               </li>
               <li className='inline-block relative'>
@@ -397,7 +393,7 @@ export const Navbar = ({ baseUrl }) => {
                       : 'unactive-page'
                   }
                 >
-                  {t("Valyuta kursi")}
+                  {t('Valyuta kursi')}
                 </Link>
               </li>
             </ul>
@@ -788,9 +784,9 @@ export const Navbar = ({ baseUrl }) => {
           </li>
         </ul>
       </nav>
-        <div className='bg-blue-900 py-2 px-3 text-white text-xl m-0'>
-          {t('Bosh sahifa')}
-        </div>
+      <div className='bg-blue-900 py-2 px-3 text-white text-xl m-0'>
+        {t('Bosh sahifa')}
+      </div>
     </div>
   );
 };
