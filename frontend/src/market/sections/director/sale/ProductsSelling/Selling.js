@@ -26,20 +26,16 @@ export const Selling = ({
   return (
     <div className='shadow-xl mb-3'>
       <p className='card-header text-lg'>{t('Sotilayotgan mahsulotlar')} </p>
-      {saleconnectorid ? (
-        ''
-      ) : (
-        <AddClient
-          client={client}
-          setBtn={setBtn}
-          btn={btn}
-          changePackman={changePackman}
-          packmans={packmans}
-          changeClient={changeClient}
-          clients={clients}
-          inputClient={inputClient}
-        />
-      )}
+      <AddClient
+        client={client}
+        setBtn={setBtn}
+        btn={btn}
+        changePackman={changePackman}
+        packmans={packmans}
+        changeClient={changeClient}
+        clients={clients}
+        inputClient={inputClient}
+      />
 
       <div className='px-3 py-2 overflow-x-auto'>
         <Table saleproducts={saleproducts} editProducts={editProducts} />
