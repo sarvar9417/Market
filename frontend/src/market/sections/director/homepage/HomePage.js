@@ -31,7 +31,6 @@ export const HomePage = () => {
 
   const { request, loading } = useHttp();
   const auth = useContext(AuthContext);
-
   //=============================================================
   //=============================================================
 
@@ -86,23 +85,26 @@ export const HomePage = () => {
 
   const getIncomingCharts = useCallback(async () => {
     try {
-      const data = await request(
-        '/api/chart/getincoming',
-        'POST',
-        {
-          market: auth.market && auth.market._id,
-        },
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
-      );
-      let arr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-      data.map((item) => {
-        let indx = new Date(item.createdAt).getMonth();
-        return (arr[indx] =
-          arr[indx] > 0 ? arr[indx] + item.totalprice : item.totalprice);
-      });
-      setIncomingPrice(arr.slice(0, new Date().getMonth() + 1));
+      if (auth.market) {
+        const data = await request(
+          '/api/chart/getincoming',
+          'POST',
+          {
+            market: auth.market && auth.market._id,
+          },
+          {
+            Authorization: `Bearer ${auth.token}`,
+          }
+        );
+
+        let arr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        data.map((item) => {
+          let indx = new Date(item.createdAt).getMonth();
+          return (arr[indx] =
+            arr[indx] > 0 ? arr[indx] + item.totalprice : item.totalprice);
+        });
+        setIncomingPrice(arr.slice(0, new Date().getMonth() + 1));
+      }
     } catch (error) {
       notify({
         title: error,
@@ -114,24 +116,25 @@ export const HomePage = () => {
 
   const getSellingCharts = useCallback(async () => {
     try {
-      const data = await request(
-        '/api/chart/getselling',
-        'POST',
-        {
-          market: auth.market && auth.market._id,
-        },
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
-      );
-      let arr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-      data.map((item) => {
-        let indx = new Date(item.createdAt).getMonth();
-        return (arr[indx] =
-          arr[indx] > 0 ? arr[indx] + item.totalprice : item.totalprice);
-      });
-
-      setSellingPrice(arr.slice(0, new Date().getMonth() + 1));
+      if (auth.market) {
+        const data = await request(
+          '/api/chart/getselling',
+          'POST',
+          {
+            market: auth.market && auth.market._id,
+          },
+          {
+            Authorization: `Bearer ${auth.token}`,
+          }
+        );
+        let arr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        data.map((item) => {
+          let indx = new Date(item.createdAt).getMonth();
+          return (arr[indx] =
+            arr[indx] > 0 ? arr[indx] + item.totalprice : item.totalprice);
+        });
+        setSellingPrice(arr.slice(0, new Date().getMonth() + 1));
+      }
     } catch (error) {
       notify({
         title: error,
