@@ -1140,7 +1140,7 @@ export const Sale = () => {
       if (currenttemporary) {
         deleteTemporarys(currenttemporary._id);
       }
-      setCheckTemporary();
+      setCheckTemporary(false);
     } catch (error) {
       notify({
         title: error,
@@ -1209,7 +1209,7 @@ export const Sale = () => {
       if (currenttemporary) {
         deleteTemporarys(currenttemporary._id);
       }
-      setCheckTemporary();
+      setCheckTemporary(false);
     } catch (error) {
       notify({
         title: error,

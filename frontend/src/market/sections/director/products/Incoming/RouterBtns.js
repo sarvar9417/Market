@@ -1,5 +1,6 @@
 import {
   faAdd,
+  faIdCard,
   faShoppingCart,
   faTable,
 } from '@fortawesome/free-solid-svg-icons';
@@ -8,6 +9,7 @@ import { t } from 'i18next';
 import React from 'react';
 
 export const RouterBtns = ({
+  changeVisibleTemporary,
   changeVisible,
   changeVisibleTable,
   changeVisibleReport,
@@ -28,7 +30,15 @@ export const RouterBtns = ({
         <span className='w-[20px] h-[20px] bg-white text-orange-700 flex items-center justify-center mr-1 rounded-full'>
           <FontAwesomeIcon icon={faShoppingCart} />
         </span>{' '}
-        {t("Qabullar")}
+        {t('Qabullar')}
+      </button>
+      <button
+        onClick={changeVisibleTemporary}
+        className='bg-red-600 hover:bg-red-700 px-2 py-1 text-white font-bold rounded-2xl flex ml-2 my-2 sm:my-0'>
+        <span className='w-[20px] h-[20px] bg-white text-red-600 flex items-center justify-center mr-1 rounded-full'>
+          <FontAwesomeIcon icon={faIdCard} />
+        </span>{' '}
+        {t('Saqlanganlar')}
       </button>
       <button
         onClick={changeVisibleTable}

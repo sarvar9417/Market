@@ -205,9 +205,22 @@ router.post('/brand/getbrandsexcel', auth, (req, res) => {
   require('./brand').getBrandsExcel(req, res);
 });
 
-/////////////////
+//
 router.post('/product/updateallproducts', (req, res) => {
   require('./product').updateAllProducts(req, res);
+});
+
+// TEMPORARY
+router.post('/temporary/register', (req, res) => {
+  require('./temporaryincoming').register(req, res);
+});
+
+router.post('/temporary/get', (req, res) => {
+  require('./temporaryincoming').getAll(req, res);
+});
+
+router.post('/temporary/delete', (req, res) => {
+  require('./temporaryincoming').deleteTemporaryIncoming(req, res);
 });
 
 module.exports = router;

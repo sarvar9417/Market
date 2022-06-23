@@ -16,6 +16,8 @@ import { RouterBtns } from './Incoming/RouterBtns';
 import { ModalTable } from './Incoming/ModalTable';
 import { ExcelTable } from './Incoming/ExcelTable';
 import { t } from 'i18next';
+import { TemporayCheque } from './Temporary/TemporaryCheque';
+import { Temporaries } from './Temporary/Temporaries';
 
 export const Incoming = () => {
   const [beginDay, setBeginDay] = useState(
@@ -44,31 +46,46 @@ export const Incoming = () => {
   const [modal, setModal] = useState(false);
   const [modal2, setModal2] = useState(false);
   const [modal3, setModal3] = useState(false);
+  const [modal4, setModal4] = useState(false);
+  const [modal5, setModal5] = useState(false);
+  const [modal6, setModal6] = useState(false);
 
   //====================================================================
   // Visible
   const [visible, setVisible] = useState(false);
   const [visibleTable, setVisibleTable] = useState(false);
   const [visibleReport, setVisibleReport] = useState(true);
+  const [visibleTemporary, setVisibleTemporary] = useState(false);
 
   const changeVisibleTable = () => {
     setVisible(false);
     setVisibleReport(false);
+    setVisibleTemporary(false);
     setVisibleTable(true);
   };
 
   const changeVisible = () => {
     setVisibleTable(false);
     setVisibleReport(false);
+    setVisibleTemporary(false);
     setVisible(true);
   };
 
   const changeVisibleReport = () => {
     setVisibleTable(false);
     setVisible(false);
+    setVisibleTemporary(false);
     setVisibleReport(true);
   };
 
+  const changeVisibleTemporary = () => {
+    setVisibleTable(false);
+    setVisible(false);
+    setVisibleTemporary(true);
+    setVisibleReport(false);
+  };
+
+  const [currenttemporary, setCurrentTemporary] = useState();
   //====================================================================
   const { request, loading } = useHttp();
   const auth = useContext(AuthContext);
@@ -198,7 +215,7 @@ export const Incoming = () => {
         return notify({
           title: `${t("Diqqat! Ushbu mahsulot ro'yxatga")} ${
             parseInt(i) + 1
-          } ${t('raqamda kiritilgan.')}`,
+          } ${t('-raqamda kiritilgan.')}`,
           description: t(
             "Qiymatlarini o'zgartirish uchun tahrirlash tugmasini bosishingiz mumkin"
           ),
@@ -512,7 +529,9 @@ export const Incoming = () => {
 
   const searchProduct = (e) => {
     const searching = searchStorage.filter((item) =>
-      item.product.name.toLowerCase().includes(e.target.value.toLowerCase())
+      item.product.productdata.name
+        .toLowerCase()
+        .includes(e.target.value.toLowerCase())
     );
     setCurrentImports(searching);
     setSearch({ ...search, name: e.target.value });
@@ -520,7 +539,9 @@ export const Incoming = () => {
 
   const searchProductCode = (e) => {
     const searching = searchStorage.filter((item) =>
-      item.product.code.toLowerCase().includes(e.target.value.toLowerCase())
+      item.product.productdata.code
+        .toLowerCase()
+        .includes(e.target.value.toLowerCase())
     );
     setCurrentImports(searching);
     setSearch({ ...search, code: e.target.value });
@@ -589,24 +610,49 @@ export const Incoming = () => {
       label: t('Barcha mahsulotlar'),
       value: 'all',
     });
-    // selectRef.category.current.selectOption({
-    //   label: 'Barcha kategoriyalar',
-    //   value: 'all',
-    // });
-    // selectRef.producttype.current.selectOption({
-    //   label: 'Barcha mahsulot turlari',
-    //   value: 'all',
-    // });
-  }, [
-    selectRef.supplier,
-    // selectRef.category,
-    // selectRef.producttype,
-    selectRef.product,
-  ]);
+    setIncomings([]);
+  }, [selectRef.supplier, selectRef.product]);
 
   //====================================================================
   //====================================================================
   // CreateHandler
+  const deleteTemporarys = useCallback(
+    async (id) => {
+      try {
+        const data = await request(
+          `/api/products/temporary/delete`,
+          'POST',
+          {
+            market: auth.market._id,
+            _id: id,
+          },
+          {
+            Authorization: `Bearer ${auth.token}`,
+          }
+        );
+
+        setTemporarys(data);
+      } catch (error) {
+        notify({
+          title: error,
+          description: '',
+          status: 'error',
+        });
+      }
+    },
+    [request, notify, auth]
+  );
+
+  const changeSaveIncoming = () => {
+    if (incomings.length === 0) {
+      return notify({
+        title: 'Diqqat! Qabul qilish uchun mahsulotlar tanlanmagan.',
+        status: 'warning',
+      });
+    }
+    setModal6(true);
+  };
+
   const createHandler = useCallback(async () => {
     try {
       const data = await request(
@@ -644,6 +690,11 @@ export const Incoming = () => {
         status: 'success',
       });
       getImports();
+      setModal6(false);
+      if (currenttemporary) {
+        deleteTemporarys(currenttemporary._id);
+      }
+      setCheckTemporary(false);
     } catch (error) {
       notify({
         title: error,
@@ -664,12 +715,10 @@ export const Incoming = () => {
     clearSelect,
     daily,
     getImports,
+    currenttemporary,
+    deleteTemporarys,
   ]);
 
-  //====================================================================
-  //====================================================================
-
-  //====================================================================
   //====================================================================
   // Search
   const changeDate = (e) => {
@@ -683,7 +732,7 @@ export const Incoming = () => {
           ).toISOString()
         );
   };
-  //====================================================================
+
   //====================================================================
   const [editProduct, setEditProduct] = useState({});
   const [deleteProduct, setDeleteProduct] = useState({});
@@ -848,6 +897,133 @@ export const Incoming = () => {
     getImports,
     deleteProduct,
   ]);
+
+  //====================================================================
+  //TEMPORARY
+
+  const [temporary, setTemporary] = useState({
+    incomings,
+    supplier,
+  });
+  const [temporarys, setTemporarys] = useState([]);
+
+  const [checkTemporary, setCheckTemporary] = useState(false);
+
+  const saveTemporary = () => {
+    if (incomings.length === 0) {
+      return notify({
+        title:
+          "Diqqat! Qabulni vaqtincha saqlash uchun kamida bitta mahsulot kiritilgan bo'lishi kerak.",
+        status: 'warning',
+      });
+    }
+    setModal4(true);
+  };
+
+  const confirmSaveTemporary = () => {
+    setModal4(false);
+    setTemporary({
+      incomings,
+      supplier,
+    });
+    setCheckTemporary(true);
+    clearSelect();
+    createTemporary();
+    setVisibleTemporary(true);
+    if (currenttemporary) {
+      deleteTemporarys(currenttemporary._id);
+      setCurrentTemporary();
+    }
+  };
+
+  const createTemporary = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/products/temporary/register`,
+        'POST',
+        {
+          market: auth.market._id,
+          temporaryincoming: {
+            supplier,
+            incomings,
+          },
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setTemporarys(data);
+      setVisibleTable(false);
+      setVisible(false);
+      setVisibleTemporary(true);
+      setVisibleReport(false);
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [request, notify, auth, incomings, supplier]);
+
+  const getTemporarys = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/products/temporary/get`,
+        'POST',
+        {
+          market: auth.market._id,
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setTemporarys(data);
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [request, notify, auth]);
+
+  const changeTemporary = (e) => {
+    selectRef.supplier.current.selectOption({
+      label: e.temporaryincoming.supplier.name,
+      value: e.temporaryincoming.supplier._id,
+    });
+    setIncomings(e.temporaryincoming.incomings);
+    setSupplier(e.temporaryincoming.supplier);
+    setVisibleTemporary(false);
+    setVisible(true);
+    setCurrentTemporary(e);
+  };
+  const [delTemporary, setDelTemporary] = useState({});
+
+  const deleteTemporary = (e) => {
+    setDelTemporary(e);
+    setModal5(true);
+  };
+
+  const confirmDeleteTemporary = () => {
+    deleteTemporarys(delTemporary._id);
+    setModal5(false);
+    notify({
+      title: "Saqlangan qabul qilish amaliyoti muvaffaqqiyatli o'chirildi",
+      status: 'success',
+    });
+  };
+
+  const changeTemporaryCheck = (e) => {
+    setTemporary(e.temporaryincoming);
+    setCheckTemporary(true);
+  };
+
+  useEffect(() => {
+    getTemporarys();
+  }, [getTemporarys]);
+
   //====================================================================
   //====================================================================
   // useEffect
@@ -871,17 +1047,29 @@ export const Incoming = () => {
   }, [getIncomingConnectors, beginDay, endDay]);
   //====================================================================
   //====================================================================
-
   return (
     <div className='overflow-x-auto'>
+      <div className={`${checkTemporary ? '' : 'hidden'}`}>
+        <TemporayCheque temporary={temporary} setCheck={setCheckTemporary} />
+      </div>
       <RouterBtns
+        changeVisibleTemporary={changeVisibleTemporary}
         changeVisible={changeVisible}
         changeVisibleTable={changeVisibleTable}
         changeVisibleReport={changeVisibleReport}
       />
+      <div className={`${visibleTemporary ? 'm-3' : 'hidden'}`}>
+        <Temporaries
+          changeTemporaryCheck={changeTemporaryCheck}
+          deleteTemporary={deleteTemporary}
+          temporarys={temporarys}
+          changeTemporary={changeTemporary}
+        />
+      </div>
       <div className={visible ? 'h-screen m-3' : 'd-none'}>
         <RegisterIncoming
-          createHandler={createHandler}
+          saveTemporary={saveTemporary}
+          changeSaveIncoming={changeSaveIncoming}
           removeIncoming={removeIncoming}
           inputHandler={inputHandler}
           clearSelect={clearSelect}
@@ -945,13 +1133,25 @@ export const Incoming = () => {
         modal={modal}
         setModal={setModal}
         handler={addIncoming}
-        text={<ModalTable incoming={incoming} inputHandler={inputHandler} />}
+        text={
+          <ModalTable
+            incoming={incoming}
+            inputHandler={inputHandler}
+            keyPressed={addIncoming}
+          />
+        }
       />
 
       <Modal
         setModal={setModal2}
         modal={modal2}
-        text={<ModalTable incoming={editProduct} inputHandler={editHandler} />}
+        text={
+          <ModalTable
+            incoming={editProduct}
+            inputHandler={editHandler}
+            keyPressed={editProductHandler}
+          />
+        }
         handler={editProductHandler}
       />
 
@@ -962,6 +1162,29 @@ export const Incoming = () => {
           deleteProduct.product && deleteProduct.product.name
         } qabul qilingan mahsulotini o'chirishni tasdiqlaysizmi?`}
         handler={deleteProductHandler}
+      />
+
+      <Modal
+        modal={modal4}
+        setModal={setModal4}
+        handler={confirmSaveTemporary}
+        basic={t('Qabul qilishni vaqtincha saqlashni tasdiqlaysizmi?')}
+      />
+      <Modal
+        modal={modal5}
+        setModal={setModal5}
+        handler={confirmDeleteTemporary}
+        basic={t(
+          "Diqqat! Saqlangan qabul qilishni o'chirishni tasdiqlaysizmi?"
+        )}
+      />
+      <Modal
+        modal={modal6}
+        setModal={setModal6}
+        handler={createHandler}
+        basic={t(
+          'Diqqat! Barcha qabul qilingan mahsulotlarni omborga kirim qilishni tasdiqlaysizmi?'
+        )}
       />
     </div>
   );

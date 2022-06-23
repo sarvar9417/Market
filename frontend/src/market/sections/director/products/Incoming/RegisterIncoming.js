@@ -5,9 +5,12 @@ import { Header } from './RegisterIncoming/Header';
 import { TableHead } from './RegisterIncoming/TableHead';
 import { Rows } from './RegisterIncoming/Rows';
 import { ClearBtn, ClearBtnLoad } from '../../components/TableButtons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMoneyCheckDollar, faSave } from '@fortawesome/free-solid-svg-icons';
 
 export const RegisterIncoming = ({
-  createHandler,
+  saveTemporary,
+  changeSaveIncoming,
   removeIncoming,
   incomings,
   editIncoming,
@@ -61,15 +64,31 @@ export const RegisterIncoming = ({
         </div>
         <div className='text-right px-3 py-2 rounded  bg-white shadow-xl'>
           {loading ? (
-            <button className='btn btn-primary' disabled>
+            <button
+              className='px-3 py-2 bg-orange-800 font-bold text-white rounded mr-3'
+              disabled>
               <span className='spinner-border spinner-border-sm'></span>
               Loading...
             </button>
           ) : (
             <button
-              onClick={createHandler}
-              className='px-3 py-2 bg-blue-800 font-bold text-white rounded'>
-              {t('Saqlash')}
+              onClick={saveTemporary}
+              className='px-3 py-1 bg-orange-800 font-bold text-white rounded mr-3 text-2xl'>
+              <FontAwesomeIcon icon={faSave} />
+            </button>
+          )}
+          {loading ? (
+            <button
+              className='px-3 py-2 bg-blue-800 font-bold text-white rounded'
+              disabled>
+              <span className='spinner-border spinner-border-sm'></span>
+              Loading...
+            </button>
+          ) : (
+            <button
+              onClick={changeSaveIncoming}
+              className='px-3 py-1 bg-blue-800 font-bold text-white rounded text-2xl'>
+              <FontAwesomeIcon icon={faMoneyCheckDollar} />
             </button>
           )}
         </div>

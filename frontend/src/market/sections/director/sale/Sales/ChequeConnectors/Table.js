@@ -10,22 +10,22 @@ export const Table = ({ sales }) => {
             №
           </th>
           <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
-            {t("Sanasi")}
+            {t('Sana')}
           </th>
           <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
-            {t("Kodi")}
+            {t('Kodi')}
           </th>
           <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
-            {t("Mahsulot")}
+            {t('Mahsulot')}
           </th>
           <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
-            {t("Soni")}
+            {t('Soni')}
           </th>
           <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
-            {t("Narxi (dona)")}
+            {t('Narxi (dona)')}
           </th>
           <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
-            {t("Jami")}
+            {t('Jami')}
           </th>
         </tr>
       </thead>

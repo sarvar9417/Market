@@ -47,11 +47,21 @@ export const Rows = ({
       <li className='td  border-r text-right col-span-2'>
         <span>
           {product.inventory && product.inventory.inventorycount
-            ? Math.round(
-                (product.inventory.inventorycount -
-                  product.inventory.productcount) *
+            ? product.inventory.inventorycount -
+                product.inventory.productcount >
+              0
+              ? '+' +
+                Math.round(
+                  (product.inventory.inventorycount -
+                    product.inventory.productcount) *
+                    100
+                ) /
                   100
-              ) / 100
+              : Math.round(
+                  (product.inventory.inventorycount -
+                    product.inventory.productcount) *
+                    100
+                ) / 100
             : 0}
         </span>
         <span className='text-red-600 w-1/4 inline-block'>
@@ -67,7 +77,7 @@ export const Rows = ({
           name='comment'
           className='text-right font-bold w-full focus:outline-1 outline-green-800 px-1'
           type='text'
-          defaultValue={
+          value={
             product.inventory && product.inventory.comment
               ? product.inventory.comment
               : ''

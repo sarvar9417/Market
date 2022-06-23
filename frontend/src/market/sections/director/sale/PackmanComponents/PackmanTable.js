@@ -30,7 +30,7 @@ export const PackmanTable = ({
           <SearchInput
             changeHandler={searchPackman}
             type={'search'}
-            placeholder={t('Yetkazuvchilar')}
+            placeholder={t('Santexniklar')}
             keyPressed={searchKeypress}
           />
         </li>

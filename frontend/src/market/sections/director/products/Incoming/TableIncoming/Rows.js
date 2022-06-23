@@ -14,10 +14,10 @@ export const Rows = ({
       <li className='no'>{currentPage * countPage + 1 + index}</li>
       <li className='no'>{product.supplier.name}</li>
       <li className='td border-r text-right font-bold'>
-        <span>{product.product.code}</span>
+        <span>{product.product.productdata.code}</span>
       </li>
       <li className='td-btn col-span-3 border-r flex justify-between'>
-        {product.product.name}
+        {product.product.productdata.name}
       </li>
       <li className='td border-r text-right'>
         <span className=''>{product.pieces}</span>{' '}

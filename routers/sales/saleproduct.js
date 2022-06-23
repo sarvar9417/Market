@@ -601,6 +601,7 @@ module.exports.getsaleconnectors = async (req, res) => {
                       unitprice: { $first: '$unitprice' },
                       unitpriceuzs: { $first: '$unitpriceuzs' },
                       pieces: { $first: '$pieces' },
+                      createdAt: { $first: '$createdAt' },
                     },
                   },
                 ],
@@ -612,7 +613,9 @@ module.exports.getsaleconnectors = async (req, res) => {
                 localField: 'payments', // qo'shilgan schemaga qanday nom bilan yozulgani
                 foreignField: '_id', // qaysi propertysi qo'shilgani
                 as: 'payments', // qanday nom bilan chiqishi
-                pipeline: [{ $project: { payment: 1, paymentuzs: 1 } }],
+                pipeline: [
+                  { $project: { payment: 1, paymentuzs: 1, comment: 1 } },
+                ],
               },
             },
             {

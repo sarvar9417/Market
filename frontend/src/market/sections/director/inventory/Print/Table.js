@@ -58,13 +58,26 @@ export const Table = ({ inventories }) => {
                 {inventory.inventorycount}
               </td>
               <td className='font-bold text-right border border-black py-1 px-2 text-teal-900'>
-                {inventory.inventorycount - inventory.productcount}
+                {inventory.inventorycount - inventory.productcount > 0
+                  ? '+' +
+                    (
+                      inventory.inventorycount - inventory.productcount
+                    ).toLocaleString('ru-RU')
+                  : (
+                      inventory.inventorycount - inventory.productcount
+                    ).toLocaleString('ru-RU')}
               </td>
               <td className='font-bold text-right border border-black py-1 px-2 text-teal-900'>
-                {(
-                  (inventory.inventorycount - inventory.productcount) *
-                  inventory.price.sellingprice
-                ).toLocaleString('ru-RU')}
+                {inventory.inventorycount - inventory.productcount > 0
+                  ? '+' +
+                    (
+                      (inventory.inventorycount - inventory.productcount) *
+                      inventory.price.sellingprice
+                    ).toLocaleString('ru-RU')
+                  : (
+                      (inventory.inventorycount - inventory.productcount) *
+                      inventory.price.sellingprice
+                    ).toLocaleString('ru-RU')}
               </td>
               <td className='font-bold border-black border py-1 px-2 text-teal-900'>
                 {inventory.comment && inventory.comment}
@@ -89,9 +102,13 @@ export const Table = ({ inventories }) => {
             }, 0)}
           </th>
           <th className='text-right text-teal-900 p-1 border'>
-            {inventories.reduce((summ, inventory) => {
-              return summ + (inventory.inventorycount - inventory.productcount);
-            }, 0)}
+            {inventories
+              .reduce((summ, inventory) => {
+                return (
+                  summ + (inventory.inventorycount - inventory.productcount)
+                );
+              }, 0)
+              .toLocaleString('ru-RU')}
           </th>
           <th className='text-right text-teal-900 p-1 border'>
             {inventories
