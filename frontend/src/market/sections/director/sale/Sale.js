@@ -1132,6 +1132,9 @@ export const Sale = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+      data.products.sort((a, b) => {
+        return a.product.productdata.code > b.product.productdata.code ? 1 : -1;
+      });
       setCheck(true);
       setSales(data);
       clearDatas();
@@ -1200,6 +1203,9 @@ export const Sale = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+      data.products.sort((a, b) => {
+        return a.product.productdata.code > b.product.productdata.code ? 1 : -1;
+      });
       setCheck(true);
       setSales(data);
       clearDatas();

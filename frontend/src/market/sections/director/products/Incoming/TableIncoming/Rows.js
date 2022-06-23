@@ -19,13 +19,17 @@ export const Rows = ({
       <li className='td-btn col-span-3 border-r flex justify-between'>
         {product.product.productdata.name}
       </li>
-      <li className='td border-r text-right'>
-        <span className=''>{product.pieces}</span>{' '}
+      <li className='td border-orange-500  border-r-2 text-right'>
+        <span className=''>{product.pieces.toLocaleString('ru-RU')}</span>{' '}
         <span className='text-orange-700'>{product.unit.name}</span>
       </li>
-      <li className='td border-r text-right'>{product.unitprice}</li>
-      <li className='td border-r text-right col-span-2'>
-        {product.totalprice} <span className='text-green-800'>USD</span>
+      <li className='td border-blue-800  border-r-2 text-right'>
+        {product.unitprice.toLocaleString('ru-RU')}{' '}
+        <span className='text-blue-900'>USD</span>
+      </li>
+      <li className='td border-green-700  border-r-2 text-right col-span-2 '>
+        {product.totalprice.toLocaleString('ru-RU')}{' '}
+        <span className='text-green-800'>USD</span>
       </li>
       <li className='td border-r text-right'>
         <EditBtn editHandler={() => changeEditProduct(product)} />

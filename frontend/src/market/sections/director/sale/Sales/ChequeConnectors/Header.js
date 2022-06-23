@@ -37,7 +37,7 @@ export const Header = ({ auth, sales }) => {
         </div>
         <div className='flex justify-end'>
           <div>
-            <span className='font-bold'>Sotuvchi:</span> {auth.user.firstname}{' '}
+            <span className='font-bold'>Sotuvchi:</span> {auth.user.firstname}
             {auth.user.lastname}
           </div>
         </div>

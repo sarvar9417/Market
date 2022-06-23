@@ -62,7 +62,6 @@ export const Rows = ({
       </li>
       <li className='td col-span-2 border-r'>
         {saleconnector.payments.map((payment, index) => {
-          console.log(payment);
           if (payment.comment) {
             return <p key={index}>{payment.comment}</p>;
           }

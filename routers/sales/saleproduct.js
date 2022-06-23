@@ -244,11 +244,14 @@ module.exports.register = async (req, res) => {
       .populate({
         path: 'products',
         select: 'totalprice unitprice totalpriceuzs unitpriceuzs pieces',
-        options: { sort: { createdAt: -1 } },
         populate: {
           path: 'product',
           select: 'productdata',
-          populate: { path: 'productdata', select: 'code name' },
+          populate: {
+            path: 'productdata',
+            select: 'code name',
+            options: { sort: { code: 1 } },
+          },
         },
       })
       .populate('payment', 'payment paymentuzs')
