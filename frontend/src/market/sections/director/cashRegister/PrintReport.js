@@ -18,12 +18,8 @@ export const PrintReport = ({
     <>
       <div className='a4 m-auto w-[27cm] p-4' ref={componentRef}>
         <div className='w-full flex justify-between items-center px-6'>
-          <div className='text-blue-700 text-center'>
-            <div className='font-serif text-4xl font-bold'>ОТЧЕТ</div>
-            <div className='font-medium text-2xl'>
-              {new Date(startDate).toLocaleDateString()} -{' '}
-              {new Date(endDate).toLocaleDateString()}
-            </div>
+          <div className=''>
+            <p className='font-bold text-2xl'>Молиявий хисобот</p>
           </div>
           <div className='flex justify-center items-center gap-4 mb-4'>
             <img
@@ -33,6 +29,13 @@ export const PrintReport = ({
               }
               alt='market'
             />
+          </div>
+          <div className='text-blue-700 text-center'>
+            <div className='font-serif text-4xl font-bold'>ОТЧЕТ</div>
+            <div className='font-medium text-2xl'>
+              {new Date(startDate).toLocaleDateString()} -{' '}
+              {new Date(endDate).toLocaleDateString()}
+            </div>
           </div>
         </div>
         <div className='grid grid-cols-12 border-2 border-blue-700 py-4 mb-8'>
@@ -109,7 +112,10 @@ export const PrintReport = ({
             <p className='text-2xl font-medium text-blue-700'>Чистая прибыль</p>
           </div>
         </div>
-        <div className='grid grid-cols-12 border-2 border-blue-700 py-4 mb-6'>
+        <div className='font-bold text-2xl pl-4 mb-2'>
+          Сотилган махсулотлар хисоботи
+        </div>
+        <div className='grid grid-cols-12 border-2 border-blue-700 py-4 mb-8'>
           <div className='col-span-4 flex flex-col items-center'>
             <span className='text-xl font-bold text-black'>
               {salesReport.salecount &&
@@ -134,13 +140,28 @@ export const PrintReport = ({
             <p className='text-lg font-medium'>Общее количество товаров</p>
           </div>
         </div>
-        <div className='grid grid-cols-12 border-2 border-blue-700 py-4 mb-6'>
-          <div className='col-span-4 flex flex-col items-center'>
-            <span className='text-xl font-bold text-black'>
+        <div className='px-4 mb-2 flex justify-between items-center'>
+          <span className='font-bold text-2xl mr-6'>
+            Келтирилган махсулотлар хисоботи
+          </span>
+          <div className='flex items-center'>
+            <p className='text-2xl font-medium mr-4'>Количество приходов:</p>
+            <span className='text-2xl font-bold text-black'>
               {incomingsReport.incomingsCount &&
                 incomingsReport.incomingsCount.toLocaleString('ru-RU')}
             </span>
-            <p className='text-lg font-medium'>Количество Приходов</p>
+          </div>
+        </div>
+        <div className='grid grid-cols-12 border-2 border-blue-700 py-4 mb-8'>
+          <div className='col-span-4 flex flex-col items-center'>
+            <span className='text-xl font-bold text-black'>
+              {incomingsReport.totalIncomingsPrice &&
+                incomingsReport.totalIncomingsPrice.toLocaleString(
+                  'ru-RU'
+                )}{' '}
+              $
+            </span>
+            <p className='text-lg font-medium'>Общая сумма Приходов</p>
           </div>
           <div className='col-span-4 flex flex-col items-center'>
             <span className='text-xl font-bold text-black'>
@@ -158,18 +179,7 @@ export const PrintReport = ({
             <p className='text-lg font-medium'>Общее количество товаров</p>
           </div>
         </div>
-        <div className='w-full flex justify-center items-center py-4 mb-6 px-2'>
-          <div className='flex flex-col items-center'>
-            <span className='text-xl font-bold text-black'>
-              {incomingsReport.totalIncomingsPrice &&
-                incomingsReport.totalIncomingsPrice.toLocaleString(
-                  'ru-RU'
-                )}{' '}
-              $
-            </span>
-            <p className='text-lg font-medium'>Общая сумма Приходов</p>
-          </div>
-        </div>
+        <div className='font-bold text-2xl pl-4 mb-2'>Омборхона хисоботи</div>
         <div className='grid grid-cols-12 border-2 border-blue-700 py-4 mb-6 px-2'>
           <div className='col-span-4 flex flex-col items-center'>
             <span className='text-xl font-bold text-black'>

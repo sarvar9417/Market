@@ -6,12 +6,15 @@ export const Rows = ({ currentPage, index, payment, type }) => {
       <>
         <ul className='tr font-bold'>
           <li className='no'>{currentPage * 10 + 1 + index}</li>
-          <li className='col-span-2 td border-r font-bold text-right  flex justify-between'>
-            <span>{new Date(payment.createdAt).toLocaleTimeString()} </span>
+          <li className='col-span-1 td border-r font-bold text-right  flex justify-between'>
             <span>{new Date(payment.createdAt).toLocaleDateString()}</span>
           </li>
-          <li className='td col-span-3 border-r text-left'>
+          <li className='td col-span-2 border-r text-left'>
             {payment.client && payment.client}
+          </li>
+          <li className='td col-span-2 border-r text-right border-r-2 border-r-blue-800'>
+            {payment.cash + payment.card + payment.transfer}{' '}
+            <span className='text-blue-800'>USD</span>
           </li>
           <li className='td  col-span-2  text-right border-r-2 border-r-green-800'>
             {(Math.round(payment.cash * 10000) / 10000).toLocaleString('ru-RU')}{' '}

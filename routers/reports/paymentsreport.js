@@ -78,7 +78,11 @@ module.exports.getPayments = async (req, res) => {
     });
 
     res.status(201).json({
-      salesConnectors: salesConnectors.splice(currentPage, countPage),
+      salesCount: salesConnectors.length,
+      salesConnectors: salesConnectors.splice(
+        currentPage * countPage,
+        countPage
+      ),
       totalsales,
     });
   } catch (error) {
