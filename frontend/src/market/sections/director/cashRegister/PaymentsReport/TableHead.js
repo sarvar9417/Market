@@ -8,7 +8,7 @@ export const TableHead = ({ currentPayments, setCurrentPayments, type }) => {
       <ul className='thead shadow-xl'>
         <li className='th border-r'>№</li>
         <li className='th border-r col-span-2 flex justify-center'>
-          Sana
+          {t("Sana")}
           <Sort
             property={'createdAt'}
             data={currentPayments}
@@ -55,7 +55,7 @@ export const TableHead = ({ currentPayments, setCurrentPayments, type }) => {
     <ul className='thead shadow-xl'>
       <li className='th border-r'>№</li>
       <li className='th border-r col-span-2 flex justify-center'>
-        Sana
+        {t("Sana")}
         <Sort
           property={'createdAt'}
           data={currentPayments}

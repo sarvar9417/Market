@@ -806,7 +806,7 @@ export const Sale = () => {
     setClient({});
     setPaymentType({
       type: 'cash',
-      name: 'Naqt',
+      name: t('Naqt'),
     });
 
     setEditTotalPrice(0);
@@ -837,7 +837,7 @@ export const Sale = () => {
     });
     setPrePaymentType({
       type: 'cash',
-      name: 'Naqt',
+      name: t('Naqt'),
     });
     setPrePaymentDebt({
       debt: 0,
@@ -1093,7 +1093,7 @@ export const Sale = () => {
 
   const [paymentType, setPaymentType] = useState({
     type: 'cash',
-    name: 'Naqt',
+    name: t('Naqt'),
   });
 
   const typeHandler = (e) => {
@@ -1336,7 +1336,7 @@ export const Sale = () => {
   });
   const [paymentTypeEdit, setPaymentTypeEdit] = useState({
     type: 'cash',
-    name: 'Naqt',
+    name: t('Naqt'),
   });
   const [editSaleProducts, setEditSaleProducts] = useState([]);
   const [editSaleConnectorId, setEditSaleConnectorId] = useState({ _id: 0 });
@@ -1836,7 +1836,7 @@ export const Sale = () => {
   });
   const [prePaymentType, setPrePaymentType] = useState({
     type: 'cash',
-    name: 'Naqt',
+    name: t('Naqt'),
   });
 
   const [prePaymentDebt, setPrePaymentDebt] = useState({

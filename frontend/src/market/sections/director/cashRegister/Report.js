@@ -17,6 +17,7 @@ import { Discounts } from '../sale/Discounts';
 import { PaymentsReport } from './PaymentsReport';
 import { Loader } from '../../../loader/Loader';
 import { DebtsReport } from './DebtsReport';
+import { t } from 'i18next';
 
 export const Report = () => {
   //========================================================
@@ -302,7 +303,7 @@ export const Report = () => {
             className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
           >
             <p className='text-white font-bold text-lg mb-2 pointer-events-none	'>
-              Долги
+              {t('Qarzlar')}
             </p>
             <p className='text-white font-bold text-xl pointer-events-none	'>
               {debtsReport.debtcount} {'-'}{' '}
@@ -317,7 +318,7 @@ export const Report = () => {
             className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
           >
             <p className='text-white font-bold text-lg mb-2 pointer-events-none'>
-              Скидки
+              {t('Chegirmalar')}
             </p>
             <p className='text-white font-bold text-xl pointer-events-none'>
               {discountsReport.discountcount} {'-'}{' '}
@@ -332,7 +333,7 @@ export const Report = () => {
             className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
           >
             <p className='text-white font-bold text-lg mb-2 pointer-events-none'>
-              Расход
+              {t("Xarajatlar")}
             </p>
             <p className='text-white font-bold text-xl pointer-events-none'>
               {discountsReport.discountcount} {'-'}{' '}
@@ -344,19 +345,19 @@ export const Report = () => {
         </div>
         <div className='col-start-5 col-span-4 border-2 border-blue-700 p-4 flex flex-column items-center rounded-lg'>
           <p className='text-xl font-bold text-black mb-4'>
-            Общая сумма продаж
+            {t('Umumiy savdo')}
           </p>
           <span className='text-3xl font-bold text-black'>
             {salesReport.salecount}
           </span>
-          <p className='text-base font-medium mb-4'>Количество</p>
+          <p className='text-base font-medium mb-4'> {t("Miqdori")}</p>
           <span className='text-3xl font-bold text-black'>
             {(Math.round(salesReport.totalsale * 100) / 100).toLocaleString(
               'ru-RU'
             )}{' '}
             $
           </span>
-          <p className='text-base font-medium mb-4'>Сумма</p>
+          <p className='text-base font-medium mb-4'>{t("Summa")}</p>
           <Link
             to='/alo24/reports/paymentstypes'
             onClick={() => {
@@ -365,7 +366,7 @@ export const Report = () => {
             }}
             className='px-4 py-2 bg-blue-700 text-base text-white flex justify-around items-center'
           >
-            <p className='mr-2'>Подробно</p>
+            <p className='mr-2'>{t("Batafsil")}</p>
             <FontAwesomeIcon icon={faCircleInfo} />
           </Link>
         </div>
@@ -379,7 +380,7 @@ export const Report = () => {
             className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
           >
             <p className='text-white font-bold text-lg mb-2 pointer-events-none'>
-              Наличными
+              {t("Naqd")}
             </p>
             <p className='text-white font-bold text-xl pointer-events-none	'>
               {salesReport.cashcount} {'-'}{' '}
@@ -397,7 +398,7 @@ export const Report = () => {
             className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
           >
             <p className='text-white font-bold text-lg mb-2 pointer-events-none	'>
-              По карте
+              {t("Plastik")}
             </p>
             <p className='text-white font-bold text-xl pointer-events-none	'>
               {salesReport.cardcount} {'-'}{' '}
@@ -415,7 +416,7 @@ export const Report = () => {
             className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
           >
             <p className='text-white font-bold text-lg mb-2 pointer-events-none	'>
-              Переводы
+              {t("Otkazmalar")}
             </p>
             <p className='text-white font-bold text-xl pointer-events-none	'>
               {salesReport.transfercount} {'-'}{' '}

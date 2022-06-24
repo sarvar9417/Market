@@ -46,7 +46,7 @@ export const checkSellerId = (seller) => {
   if (seller.repassword && seller.password !== seller.repassword) {
     return {
       title:
-        t("Diqqat! Foydalanuvchi parolini ayta kiritishda xalikka yo'l qo'ydingiz!"),
+        t("Diqqat! Foydalanuvchi parolini qayta kiritishda xatolikka yo'l qo'ydingiz!"),
       description: t('Iltimos! Sotuvchi parolini qayta tasdiqlang.'),
       status: 'error',
     };

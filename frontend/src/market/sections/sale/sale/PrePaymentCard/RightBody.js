@@ -3,10 +3,10 @@ import {
   faMoneyBill1,
   faMoneyBillTransfer,
   faWallet,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { t } from "i18next";
-import React from "react";
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { t } from 'i18next';
+import React from 'react';
 
 export const RightBody = ({ payment, typeHandler, debt }) => {
   return (
@@ -17,17 +17,18 @@ export const RightBody = ({ payment, typeHandler, debt }) => {
             <button
               onClick={typeHandler}
               className='bg-blue-700 hover:bg-blue-800 text-white w-full rounded font-bold flex justify-between items-center px-3 py-2'
-              name={t("Naqt")}
-              data-type='cash'>
+              name={t('Naqt')}
+              data-type='cash'
+            >
               <span className='text-4xl pointer-events-none'>
                 <FontAwesomeIcon icon={faMoneyBill1} />
               </span>
               <p className='text-3xl font-bold pointer-events-none flex flex-col'>
                 <span className='text-black'>
-                  {payment.cash.toLocaleString("de-DE")} USD
+                  {payment.cash.toLocaleString('de-DE')} USD
                 </span>
                 <span className='text-lg text-right'>
-                  {payment.cashuzs.toLocaleString("de-DE")} UZS
+                  {payment.cashuzs.toLocaleString('de-DE')} UZS
                 </span>
               </p>
             </button>
@@ -35,16 +36,17 @@ export const RightBody = ({ payment, typeHandler, debt }) => {
               onClick={typeHandler}
               className='bg-blue-700 hover:bg-blue-800 text-white w-full rounded font-bold flex justify-between items-center px-3 py-3'
               name='Plastik'
-              data-type='card'>
+              data-type='card'
+            >
               <span className='text-4xl pointer-events-none'>
                 <FontAwesomeIcon icon={faCreditCard} />
               </span>
               <p className='text-3xl font-bold pointer-events-none flex flex-col'>
                 <span className='text-black'>
-                  {payment.card.toLocaleString("de-DE")} USD
+                  {payment.card.toLocaleString('de-DE')} USD
                 </span>
                 <span className='text-lg text-right'>
-                  {payment.carduzs.toLocaleString("de-DE")} UZS
+                  {payment.carduzs.toLocaleString('de-DE')} UZS
                 </span>
               </p>
             </button>
@@ -52,16 +54,17 @@ export const RightBody = ({ payment, typeHandler, debt }) => {
               onClick={typeHandler}
               className='bg-blue-700 hover:bg-blue-800 text-white w-full rounded font-bold flex justify-between items-center px-3 py-3'
               name={t("O'tkazma")}
-              data-type='transfer'>
+              data-type='transfer'
+            >
               <span className='text-4xl pointer-events-none'>
                 <FontAwesomeIcon icon={faMoneyBillTransfer} />
               </span>
               <p className='text-3xl font-bold pointer-events-none flex flex-col'>
                 <span className='text-black'>
-                  {payment.transfer.toLocaleString("de-DE")} USD
+                  {payment.transfer.toLocaleString('de-DE')} USD
                 </span>
                 <span className='text-lg text-right'>
-                  {payment.transferuzs.toLocaleString("de-DE")} UZS
+                  {payment.transferuzs.toLocaleString('de-DE')} UZS
                 </span>
               </p>
             </button>
@@ -72,8 +75,9 @@ export const RightBody = ({ payment, typeHandler, debt }) => {
             <button
               onClick={typeHandler}
               className='bg-blue-700 hover:bg-blue-800 text-white w-full rounded font-bold flex justify-center items-center px-3 py-3 h-full'
-              name='Aralash'
-              data-type='mixed'>
+              name={t('Aralash')}
+              data-type='mixed'
+            >
               <span className='text-2xl pointer-events-none flex flex-col w-[105px] h-[105px] justify-center  border-white border-2 rounded-full p-4'>
                 <span className='flex justify-between'>
                   <FontAwesomeIcon icon={faWallet} />
@@ -108,15 +112,16 @@ export const RightBody = ({ payment, typeHandler, debt }) => {
         <button
           onClick={typeHandler}
           className='bg-blue-700 hover:bg-blue-800 text-white w-full rounded font-bold flex flex-col justify-between items-center px-3 py-3'
-          name='Qarz'
-          data-type='debt'>
-          <h1 className=' pointer-events-none text-yellow-600'>{t("Qarz")}</h1>
+          name={t('Qarz')}
+          data-type='debt'
+        >
+          <h1 className=' pointer-events-none text-yellow-600'>{t('Qarz')}</h1>
           <p className='text-3xl font-bold pointer-events-none flex flex-col'>
             <span className='text-black'>
-              {debt.debt.toLocaleString("de-DE")} USD
+              {debt.debt.toLocaleString('de-DE')} USD
             </span>
             <span className='text-lg'>
-              {debt.debtuzs.toLocaleString("de-DE")} UZS
+              {debt.debtuzs.toLocaleString('de-DE')} UZS
             </span>
           </p>
         </button>

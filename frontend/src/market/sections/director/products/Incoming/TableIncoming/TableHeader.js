@@ -89,7 +89,7 @@ export const TableHeader = ({
           onClick={getImportsExcel}>
           <FontAwesomeIcon icon={faFileExcel} />
         </button>
-        <ExcelDownload filename={'Keltirilgan mahsulotlar'} />
+        <ExcelDownload filename={t('Keltirilgan mahsulotlar')} />
       </li>
     </ul>
   );

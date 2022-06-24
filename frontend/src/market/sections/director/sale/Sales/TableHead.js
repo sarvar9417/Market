@@ -169,7 +169,7 @@ export const TableHead = ({ sales, setSales }) => {
           />
         </div>
       </li>
-      <li className='th col-span-2 border-r'>Izoh</li>
+      <li className='th col-span-2 border-r'>{t("Izoh")}</li>
       <li className='th  border-r'>{t('Chek')}</li>
       <li className='th  border-r'>{t("Qo'shish")}</li>
       <li className='th  border-r'>{t('Qaytarish')}</li>

@@ -1,6 +1,7 @@
 import { faClose, faPrint } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
+import { t } from 'i18next'
 
 export const PrintReport = ({
   componentRef,
@@ -19,7 +20,7 @@ export const PrintReport = ({
       <div className='a4 m-auto w-[27cm] p-4' ref={componentRef}>
         <div className='w-full flex justify-between items-center px-6'>
           <div className='text-blue-700 text-center'>
-            <div className='font-serif text-4xl font-bold'>ОТЧЕТ</div>
+            <div className='font-serif text-4xl font-bold'>{t("HISOBOT")}</div>
             <div className='font-medium text-2xl'>
               {new Date(startDate).toLocaleDateString()} -{' '}
               {new Date(endDate).toLocaleDateString()}
@@ -41,7 +42,7 @@ export const PrintReport = ({
               {salesReport.salecount &&
                 salesReport.salecount.toLocaleString('ru-RU')}
             </span>
-            <p className='text-xl font-medium'>Количество продаж</p>
+            <p className='text-xl font-medium'>{t("Sotilganlar soni")}</p>
           </div>
           <div className='col-span-4 flex flex-col items-center'>
             <span className='text-2xl font-bold text-black'>
@@ -49,11 +50,11 @@ export const PrintReport = ({
                 salesReport.totalsale.toLocaleString('ru-RU')}{' '}
               $
             </span>
-            <p className='text-xl font-medium'>Общая сумма продаж</p>
+            <p className='text-xl font-medium'>{t("Umumiy savdo")}</p>
           </div>
           <div className='col-span-4 flex flex-col items-center'>
             <span className='text-2xl font-bold text-red-400 '>{123456} $</span>
-            <p className='text-xl font-medium'>Общая сумма расходов</p>
+            <p className='text-xl font-medium'>{t("Umumiy xarajatlar")}</p>
           </div>
         </div>
         <div className='grid grid-cols-12 mb-12'>
@@ -62,7 +63,7 @@ export const PrintReport = ({
               <thead>
                 <tr>
                   <th className='border-2 border-blue-700 py-2 px-4'>
-                    Количество продаж
+                  {t("Sotish soni")}
                   </th>
                   <th className='border-2 border-blue-700 py-2 px-2 text-right text-base font-medium'>
                     {salesReport.salecount &&
@@ -73,7 +74,7 @@ export const PrintReport = ({
               <tbody>
                 <tr>
                   <td className='border-2 border-blue-700 py-2 px-4 text-lg font-bold'>
-                    Наличнами
+                    {t("Naqd")}
                   </td>
                   <td className='border-2 border-blue-700 py-2 px-2 text-right text-base font-medium'>
                     {salesReport.totalcash &&
@@ -83,7 +84,7 @@ export const PrintReport = ({
                 </tr>
                 <tr>
                   <td className='border-2 border-blue-700 py-2 px-4 text-lg font-bold'>
-                    По карте
+                    {t("Plastik")}
                   </td>
                   <td className='border-2 border-blue-700 py-2 px-2 text-right text-base font-medium'>
                     {salesReport.totalcard &&
@@ -93,7 +94,7 @@ export const PrintReport = ({
                 </tr>
                 <tr>
                   <td className='border-2 border-blue-700 py-2 px-4 text-lg font-bold'>
-                    Перевод
+                    {t("O'tkazma")}
                   </td>
                   <td className='border-2 border-blue-700 py-2 px-2 text-right text-base font-medium'>
                     {salesReport.totaltransfer &&
@@ -106,7 +107,7 @@ export const PrintReport = ({
           </div>
           <div className='col-span-5 flex flex-col items-center justify-center'>
             <span className='text-4xl font-bold text-green-500'>44 000 $</span>
-            <p className='text-2xl font-medium text-blue-700'>Чистая прибыль</p>
+            <p className='text-2xl font-medium text-blue-700'>{t("Sof foyda")}</p>
           </div>
         </div>
         <div className='grid grid-cols-12 border-2 border-blue-700 py-4 mb-6'>
@@ -115,7 +116,7 @@ export const PrintReport = ({
               {salesReport.salecount &&
                 salesReport.salecount.toLocaleString('ru-RU')}
             </span>
-            <p className='text-lg font-medium'>Количество продаж</p>
+            <p className='text-lg font-medium'>{t("Sotish soni")}</p>
           </div>
           <div className='col-span-4 flex flex-col items-center'>
             <span className='text-xl font-bold text-black'>
@@ -131,7 +132,7 @@ export const PrintReport = ({
               {productsReport.salesprodcutspieces &&
                 productsReport.salesprodcutspieces.toLocaleString('ru-RU')}
             </span>
-            <p className='text-lg font-medium'>Общее количество товаров</p>
+            <p className='text-lg font-medium'>{t("Tovarlarining umumiy soni")}</p>
           </div>
         </div>
         <div className='grid grid-cols-12 border-2 border-blue-700 py-4 mb-6'>
@@ -140,7 +141,7 @@ export const PrintReport = ({
               {incomingsReport.incomingsCount &&
                 incomingsReport.incomingsCount.toLocaleString('ru-RU')}
             </span>
-            <p className='text-lg font-medium'>Количество Приходов</p>
+            <p className='text-lg font-medium'> {t("Tushumlar miqdori")}</p>
           </div>
           <div className='col-span-4 flex flex-col items-center'>
             <span className='text-xl font-bold text-black'>
@@ -148,14 +149,14 @@ export const PrintReport = ({
                 productsReport.incomeproducts.toLocaleString('ru-RU')}{' '}
             </span>
             <p className='text-lg font-medium'>
-              Общее количество видов товаров
+            {t("Tovar turlarining umumiy soni")}
             </p>
           </div>
           <div className='col-span-4 flex flex-col items-center'>
             <span className='text-xl font-bold text-black'>
               {productsReport.incomeproductspieces}
             </span>
-            <p className='text-lg font-medium'>Общее количество товаров</p>
+            <p className='text-lg font-medium'>{t("Tovarlarining umumiy soni")}</p>
           </div>
         </div>
         <div className='w-full flex justify-center items-center py-4 mb-6 px-2'>
@@ -167,7 +168,7 @@ export const PrintReport = ({
                 )}{' '}
               $
             </span>
-            <p className='text-lg font-medium'>Общая сумма Приходов</p>
+            <p className='text-lg font-medium'>{t("Jami tushumlar")}</p>
           </div>
         </div>
         <div className='grid grid-cols-12 border-2 border-blue-700 py-4 mb-6 px-2'>
@@ -177,7 +178,7 @@ export const PrintReport = ({
                 productsReport.products.toLocaleString('ru-RU')}{' '}
             </span>
             <p className='text-lg font-medium'>
-              Общее количество видов товаров
+            {t("Tovar turlarining umumiy soni")}
             </p>
           </div>
           <div className='col-span-4 flex flex-col items-center'>
@@ -185,7 +186,7 @@ export const PrintReport = ({
               {productsReport.productspieces &&
                 productsReport.productspieces.toLocaleString('ru-RU')}{' '}
             </span>
-            <p className='text-lg font-medium'>Общее количество товаров</p>
+            <p className='text-lg font-medium'>{t("Tovarlarning umumiy soni")}</p>
           </div>
           <div className='col-start-9 col-span-4 flex flex-col items-center text-center'>
             <span className='text-xl font-bold text-black'>
@@ -193,7 +194,7 @@ export const PrintReport = ({
                 productsReport.productstotalprice.toLocaleString('ru-RU')}{' '}
               $
             </span>
-            <p className='text-lg font-medium'>Общая сумма товаров на складе</p>
+            <p className='text-lg font-medium'>{t("Ombordagi tovarlarning umumiy miqdori")}</p>
           </div>
         </div>
       </div>

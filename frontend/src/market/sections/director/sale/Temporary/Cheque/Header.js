@@ -6,19 +6,19 @@ export const Header = ({ auth, sales, client }) => {
     <div className='grid grid-cols-6 px-4 gap-x-4 items-center'>
       <div className='col-span-2 flex flex-col'>
         <p className='flex justify-between'>
-          <span className='font-bold'>Do'kon:</span>{' '}
+          <span className='font-bold'>{t("Do'kon")}:</span>{' '}
           <span>{auth.market.name}</span>
         </p>
         <p className='flex justify-between'>
-          <span className='font-bold'>Telefon:</span>{' '}
+          <span className='font-bold'>{t("Telefon")}:</span>{' '}
           <span>+998 {auth.market.phone1}</span>
         </p>
         <p className='flex justify-between'>
-          <span className='font-bold'>Mijoz:</span>{' '}
+          <span className='font-bold'>{t("Mijoz")}:</span>{' '}
           <span>{client && client.name}</span>
         </p>
         <p className='flex justify-between'>
-          <span className='font-bold'>Sana:</span>
+          <span className='font-bold'>{t("Sana")}:</span>
           <span>{new Date().toLocaleDateString()}</span>
         </p>
       </div>
