@@ -7,7 +7,7 @@ export const TableHead = ({ currentPayments, setCurrentPayments, type }) => {
     return (
       <ul className='thead shadow-xl'>
         <li className='th border-r'>№</li>
-        <li className='th border-r col-span-2 flex justify-center'>
+        <li className='th border-r col-span-1 flex justify-center'>
           Sana
           <Sort
             property={'createdAt'}
@@ -16,10 +16,18 @@ export const TableHead = ({ currentPayments, setCurrentPayments, type }) => {
           />
         </li>
 
-        <li className='th border-r col-span-3 flex justify-center'>
+        <li className='th border-r col-span-2 flex justify-center'>
           {t('Mijoz')}{' '}
           <Sort
             property={'name'}
+            data={currentPayments}
+            setData={setCurrentPayments}
+          />
+        </li>
+        <li className='th border-r col-span-2 flex justify-center'>
+          Umumiy
+          <Sort
+            property={'payments'}
             data={currentPayments}
             setData={setCurrentPayments}
           />

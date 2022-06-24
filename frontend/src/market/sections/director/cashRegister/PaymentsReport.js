@@ -60,7 +60,7 @@ export const PaymentsReport = ({ type }) => {
         }
       );
       setTotalPayments(data.totalsales);
-      setPaymentsCount(data.salesConnectors.length);
+      setPaymentsCount(data.salesCount);
       setCurrentPayments(data.salesConnectors);
     } catch (error) {
       notify({
@@ -153,7 +153,15 @@ export const PaymentsReport = ({ type }) => {
           })}
         {type === 'allpayments' ? (
           <ul className='tr font-bold text-base'>
-            <li className='td col-span-6 text-right border-r'>{t('Jami')}</li>
+            <li className='td col-span-4 text-right border-r'>{t('Jami')}</li>
+            <li className='td text-right col-span-2 border-r-2 border-blue-800'>
+              {(
+                totalPayments.cash +
+                totalPayments.card +
+                totalPayments.transfer
+              ).toLocaleString('ru-RU')}{' '}
+              <span className='text-blue-800'>USD</span>
+            </li>
             <li className='td text-right col-span-2 border-r-2 border-green-800'>
               {(Math.round(totalPayments.cash * 10000) / 10000).toLocaleString(
                 'ru-RU'
