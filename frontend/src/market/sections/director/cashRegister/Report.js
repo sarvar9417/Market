@@ -17,6 +17,8 @@ import { Discounts } from '../sale/Discounts';
 import { PaymentsReport } from './PaymentsReport';
 import { Loader } from '../../../loader/Loader';
 import { DebtsReport } from './DebtsReport';
+import { ChequeConnectors } from '../sale/Sales/ChequeConnectors';
+import { ReturnedProducts } from './ReturnedProducts';
 
 export const Report = () => {
   //========================================================
@@ -57,6 +59,18 @@ export const Report = () => {
 
   const [isPrint, setIsPrint] = useState(false);
   const [paymentType, setPaymentType] = useState('');
+
+  //========================================================
+  //========================================================
+
+  const [checkConnectors, setCheckConnectors] = useState(false);
+  const [checkSales, setCheckSales] = useState({
+    products: [],
+    payments: [],
+    debts: [],
+    discounts: [],
+    user: [],
+  });
 
   //========================================================
   //========================================================
@@ -229,6 +243,15 @@ export const Report = () => {
   //========================================================
   //========================================================
 
+  const changeCheck = (e) => {
+    setCheckSales(e);
+    setCheckConnectors(true);
+    window.scroll({ top: 0 });
+  };
+
+  //========================================================
+  //========================================================
+
   useEffect(() => {
     getSalesReport();
     getProductReport();
@@ -342,31 +365,41 @@ export const Report = () => {
             </p>
           </Link>
         </div>
-        <div className='col-start-5 col-span-4 border-2 border-blue-700 p-4 flex flex-column items-center rounded-lg'>
-          <p className='text-xl font-bold text-black mb-4'>
-            Общая сумма продаж
-          </p>
-          <span className='text-3xl font-bold text-black'>
-            {salesReport.salecount}
-          </span>
-          <p className='text-base font-medium mb-4'>Количество</p>
-          <span className='text-3xl font-bold text-black'>
-            {(Math.round(salesReport.totalsale * 100) / 100).toLocaleString(
-              'ru-RU'
-            )}{' '}
-            $
-          </span>
-          <p className='text-base font-medium mb-4'>Сумма</p>
+        <div className='col-start-5 col-span-4 gap-y-4 flex flex-col items-center'>
+          <div className='h-2/3 w-full border-2 border-blue-700 p-4 flex flex-column items-center rounded-lg'>
+            <p className='text-xl font-bold text-black mb-4'>
+              Общая сумма продаж
+            </p>
+            <div className='mb-4'>
+              <span className='text-3xl font-bold text-black'>
+                {salesReport.salecount} -{' '}
+              </span>
+              <span className='text-3xl font-bold text-black'>
+                {(Math.round(salesReport.totalsale * 100) / 100).toLocaleString(
+                  'ru-RU'
+                )}{' '}
+                $
+              </span>
+            </div>
+            <Link
+              to='/alo24/reports/paymentstypes'
+              onClick={() => {
+                setPaymentType('allpayments');
+                window.scroll(0, 500);
+              }}
+              className='px-4 py-2 bg-blue-700 text-base text-white flex justify-around items-center'
+            >
+              <p className='mr-2'>Подробно</p>
+              <FontAwesomeIcon icon={faCircleInfo} />
+            </Link>
+          </div>
           <Link
-            to='/alo24/reports/paymentstypes'
-            onClick={() => {
-              setPaymentType('allpayments');
-              window.scroll(0, 500);
-            }}
-            className='px-4 py-2 bg-blue-700 text-base text-white flex justify-around items-center'
+            to={'/alo24/reports/returnproducts'}
+            className='h-1/3 w-full bg-blue-800 text-center py-4 rounded-xl flex justify-center items-center transition ease-in-out hover:bg-blue-700'
           >
-            <p className='mr-2'>Подробно</p>
-            <FontAwesomeIcon icon={faCircleInfo} />
+            <p className='text-white font-bold text-center text-lg mb-2 pointer-events-none	'>
+              Qaytarilganlar
+            </p>
           </Link>
         </div>
         <div className='col-span-4 flex flex-column justify-between gap-y-3'>
@@ -440,7 +473,10 @@ export const Report = () => {
           <Discounts />
         </Route>
         <Route path='/alo24/reports/paymentstypes'>
-          <PaymentsReport type={paymentType} />
+          <PaymentsReport type={paymentType} changeCheck={changeCheck} />
+        </Route>
+        <Route path='/alo24/reports/returnproducts'>
+          <ReturnedProducts changeCheck={changeCheck} />
         </Route>
         <Redirect to='/alo24/reports' />
       </Switch>
@@ -462,6 +498,10 @@ export const Report = () => {
           print={print}
           setIsPrint={setIsPrint}
         />
+      </div>
+
+      <div className={`${checkConnectors ? '' : 'hidden'}`}>
+        <ChequeConnectors sales={checkSales} setCheck={setCheckConnectors} />
       </div>
     </div>
   );

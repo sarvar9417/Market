@@ -21,12 +21,22 @@ module.exports.getPayments = async (req, res) => {
         $lt: endDate,
       },
     })
-      .select(
-        '-isArchive -updatedAt -user  -__v -products -debts -discounts -dailyconnectors'
-      )
+      .select('-isArchive -updatedAt -dailyconnectors -__v ')
       .sort({ _id: -1 })
       .populate('payments', 'totalprice payment cash card transfer')
-      .populate('client', 'name');
+      .populate({
+        path: 'products',
+        select:
+          'totalprice unitprice totalpriceuzs unitpriceuzs pieces createdAt discount',
+        options: { sort: { createdAt: -1 } },
+        populate: {
+          path: 'product',
+          select: 'productdata',
+          populate: { path: 'productdata', select: 'name code' },
+        },
+      })
+      .populate('client', 'name')
+      .populate('user', 'firstname lastname');
 
     let salesConnectors = [];
     sales.map((sale) => {
@@ -43,6 +53,7 @@ module.exports.getPayments = async (req, res) => {
             (prev, payment) => prev + payment.transfer,
             0
           ),
+          saleconnector: sale,
         });
         return;
       }
@@ -57,6 +68,7 @@ module.exports.getPayments = async (req, res) => {
             (prev, payment) => prev + payment[`${type}`],
             0
           ),
+          saleconnector: sale,
         };
         salesConnectors.push(obj);
       }
