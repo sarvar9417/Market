@@ -1085,8 +1085,7 @@ export const Sale = () => {
       payment.cash +
       payment.transfer +
       debt.debt;
-    if (Math.round(total * 10000) / 10000 !== totalprice) {
-      alert(totalprice);
+    if (Math.round(total * 100) / 100 !== Math.round(totalprice * 100) / 100) {
       return notify({
         title: t("Diqqat! To'lov hisobida xatolik yuz bergan!"),
         description: '',
@@ -1147,6 +1146,10 @@ export const Sale = () => {
         deleteTemporarys(currenttemporary._id);
       }
       setCheckTemporary(false);
+      setSellingCard(false);
+      setSellingEditCard(false);
+      setTableCard(true);
+      setVisibleTemporary(false);
     } catch (error) {
       notify({
         title: error,
@@ -1219,6 +1222,11 @@ export const Sale = () => {
         deleteTemporarys(currenttemporary._id);
       }
       setCheckTemporary(false);
+      setCheckTemporary(false);
+      setSellingCard(false);
+      setSellingEditCard(false);
+      setTableCard(true);
+      setVisibleTemporary(false);
     } catch (error) {
       notify({
         title: error,
@@ -1554,20 +1562,29 @@ export const Sale = () => {
       });
     }
 
+    let yes = true;
     let EditDiscounts = [...editDiscounts];
-    if (EditDiscounts.length !== 0) {
-      for (const i in EditDiscounts) {
-        if (
-          EditDiscounts[i]._id === products[parseInt(e.target.id)].discount &&
-          EditDiscounts[i].procient > 0
-        ) {
-          EditDiscounts[i] = { ...editSaleConnector.discounts[i] };
-          setEditSaleProducts(returnProduct(products, e));
-          discountProcient(EditDiscounts, products, e, i);
-        }
+
+    for (const i in EditDiscounts) {
+      if (
+        EditDiscounts[i]._id === products[parseInt(e.target.id)].discount &&
+        EditDiscounts[i].procient > 0
+      ) {
+        yes = false;
+        const count =
+          products[parseInt(e.target.id)].pieces === ''
+            ? 0
+            : products[parseInt(e.target.id)].pieces;
+        setEditSaleProducts(returnProduct(products, e));
+        discountProcient(
+          EditDiscounts[i],
+          products[parseInt(e.target.id)],
+          count
+        );
       }
-      setEditDiscounts(EditDiscounts);
-    } else {
+    }
+    setEditDiscounts(EditDiscounts);
+    if (yes) {
       setEditSaleProducts(returnProduct(products, e));
     }
 
@@ -1698,6 +1715,11 @@ export const Sale = () => {
       clearDatas();
       setVisibleEdit(false);
       getSaleConnectors();
+      setCheckTemporary(false);
+      setSellingCard(false);
+      setSellingEditCard(false);
+      setTableCard(true);
+      setVisibleTemporary(false);
     } catch (error) {
       notify({
         title: error,
@@ -2270,6 +2292,11 @@ export const Sale = () => {
     setTotalPrice(
       e.temporary.products.reduce((summ, product) => {
         return summ + product.totalprice;
+      }, 0)
+    );
+    setTotalPriceUzs(
+      e.temporary.products.reduce((summ, product) => {
+        return summ + product.totalpriceuzs;
       }, 0)
     );
   };

@@ -23,7 +23,7 @@ export const Header = ({ auth, sales }) => {
         </p>
         <p className='flex justify-between'>
           <span className='font-bold'>Mijoz:</span>
-          <span>{sales.client && sales.client[0] && sales.client[0].name}</span>
+          <span>{sales.client && sales.client && sales.client.name}</span>
         </p>
       </div>
       <div className='col-span-4 h-full pl-8 pt-4 flex flex-col justify-between'>
@@ -39,8 +39,8 @@ export const Header = ({ auth, sales }) => {
           <div>
 
             <span className='font-bold'>Sotuvchi:</span>{' '}
-            {sales.user[0] && sales.user[0].firstname}{' '}
-            {sales.user[0] && sales.user[0].lastname}
+            {sales.user && sales.user.firstname}{' '}
+            {sales.user && sales.user.lastname}
 
           </div>
         </div>

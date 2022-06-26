@@ -19,19 +19,21 @@ export const returnProduct = (products, e) => {
   return products;
 };
 
-export const discountProcient = (EditDiscounts, products, e, i) => {
-  EditDiscounts[i].discount -=
+export const discountProcient = (EditDiscount, product, count) => {
+  const difference = product.pieces === '' ? 0 - count : product.pieces - count;
+  console.log(EditDiscount);
+  EditDiscount.discount =
     Math.round(
-      ((products[parseInt(e.target.id)].totalprice *
-        EditDiscounts[i].procient) /
-        100) *
+      (EditDiscount.discount -
+        (product.unitprice * difference * EditDiscount.procient) / 100) *
         10000
     ) / 10000;
-  EditDiscounts[i].discountuzs -=
+
+  EditDiscount.discountuzs =
     Math.round(
-      ((products[parseInt(e.target.id)].totalpriceuzs *
-        EditDiscounts[i].procient) /
-        100) *
-        10000
-    ) / 10000;
+      (EditDiscount.discountuzs -
+        (product.unitpriceuzs * difference * EditDiscount.procient) / 100) *
+        100
+    ) / 100;
+  console.log(EditDiscount);
 };

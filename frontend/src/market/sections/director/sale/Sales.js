@@ -3,7 +3,8 @@ import { TableHeader } from './Sales/TableHeader';
 import { TableHead } from './Sales/TableHead';
 import { Rows } from './Sales/Rows';
 
-export const Sales = ({keyPressed,
+export const Sales = ({
+  keyPressed,
   changeSearch,
   getSaleConnectorsExcel,
   changePrepayment,

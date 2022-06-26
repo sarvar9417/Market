@@ -18,7 +18,7 @@ export const Rows = ({
       <li className='no'>{currentPage * countPage + 1 + index}</li>
       <li className='no'>{saleconnector.id}</li>
       <li className='td border-r font-bold'>
-        {saleconnector.client[0] && saleconnector.client[0].name}
+        {saleconnector.client && saleconnector.client.name}
       </li>
       <li
         onClick={() => changePrepayment(saleconnector)}
