@@ -27,4 +27,13 @@ router.post('/getpayments', auth, (req, res) => {
 router.post('/getpaymentexcel', auth, (req, res) => {
   require('./paymentsreport').getPaymentsExcel(req, res);
 });
+
+router.post('/returnedproduct', auth, (req, res) => {
+  require('./returnedproducts').getReturnedProducts(req, res);
+});
+
+router.post('/returnedproductsexcel', auth, (req, res) => {
+  require('./returnedproducts').getReturnedProductsExcel(req, res);
+});
+
 module.exports = router;
