@@ -46,7 +46,7 @@ export const ChequeConnectors = ({ sales, setCheck }) => {
       returnS.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
     );
   }, [sales]);
-  console.log(sales);
+
   return (
     <div className='absolute top-0 w-full bg-white font-mono h-full right-0 z-50'>
       <div className='a4 m-auto w-[27cm]' ref={componentRef}>

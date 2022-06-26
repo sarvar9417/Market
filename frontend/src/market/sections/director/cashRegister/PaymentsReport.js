@@ -9,7 +9,7 @@ import { ExcelTable } from './PaymentsReport/ExcelTable';
 import { t } from 'i18next';
 import { Loader } from '../../../loader/Loader';
 
-export const PaymentsReport = ({ type }) => {
+export const PaymentsReport = ({ type, changeCheck }) => {
   // STATES
   const { request, loading } = useHttp();
   const auth = useContext(AuthContext);
@@ -148,6 +148,7 @@ export const PaymentsReport = ({ type }) => {
                 payment={payment}
                 currentPage={currentPage}
                 type={type}
+                changeCheck={changeCheck}
               />
             );
           })}

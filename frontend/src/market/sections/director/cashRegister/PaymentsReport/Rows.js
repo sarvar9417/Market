@@ -1,10 +1,13 @@
 import React from 'react';
 
-export const Rows = ({ currentPage, index, payment, type }) => {
+export const Rows = ({ currentPage, index, payment, type, changeCheck }) => {
   if (type === 'allpayments') {
     return (
       <>
-        <ul className='tr font-bold'>
+        <ul
+          className='tr font-bold'
+          onClick={() => changeCheck(payment.saleconnector)}
+        >
           <li className='no'>{currentPage * 10 + 1 + index}</li>
           <li className='col-span-1 td border-r font-bold text-right  flex justify-between'>
             <span>{new Date(payment.createdAt).toLocaleDateString()}</span>
@@ -36,7 +39,10 @@ export const Rows = ({ currentPage, index, payment, type }) => {
   }
   return (
     <>
-      <ul className='tr font-bold'>
+      <ul
+        className='tr font-bold'
+        onClick={() => changeCheck(payment.saleconnector)}
+      >
         <li className='no'>{currentPage * 10 + 1 + index}</li>
         <li className='col-span-2 td border-r font-bold text-right'>
           {new Date(payment.createdAt).toLocaleDateString()}

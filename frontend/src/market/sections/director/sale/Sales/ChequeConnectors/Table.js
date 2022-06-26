@@ -4,7 +4,7 @@ import React from 'react';
 export const Table = ({ sales, currentSales, returnSales }) => {
   return (
     <>
-      <div className='mt-3 mb-2 ml-2 font-bold text-xl'>Sotilganlar:</div>
+      <div className='mt-3 mb-2 ml-2 font-bold text-lg'>Sotilganlar:</div>
       <table className='relative text-black border-collapse w-full '>
         <thead>
           <tr>
@@ -42,10 +42,10 @@ export const Table = ({ sales, currentSales, returnSales }) => {
                   {new Date(product.createdAt).toLocaleDateString()}
                 </td>
                 <td className='font-bold text-right border border-black py-1 px-2'>
-                  {product.product.productdata.code}
+                  {product.product && product.product.productdata.code}
                 </td>
                 <td className='font-bold border border-black py-1 px-2'>
-                  {product.product.productdata.name}
+                  {product.product && product.product.productdata.name}
                 </td>
                 <td className='font-bold text-right border border-black py-1 px-2'>
                   {product.pieces.toLocaleString('ru-RU')}
@@ -64,10 +64,10 @@ export const Table = ({ sales, currentSales, returnSales }) => {
 
       {returnSales.length > 0 && (
         <>
-          <div className='mt-3 mb-2 ml-2 font-bold text-xl'>
+          <div className='mt-3 mb-2 ml-2 font-bold text-lg'>
             Qaytarilganlar:
           </div>
-          <table className='relative text-black border-collapse w-full'>
+          <table className='relative text-black border-collapse w-full mb-4'>
             <thead>
               <tr>
                 <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
@@ -104,10 +104,10 @@ export const Table = ({ sales, currentSales, returnSales }) => {
                       {new Date(product.createdAt).toLocaleDateString()}
                     </td>
                     <td className='font-bold text-right border border-black py-1 px-2'>
-                      {product.product.productdata.code}
+                      {product.product && product.product.productdata.code}
                     </td>
                     <td className='font-bold border border-black py-1 px-2'>
-                      {product.product.productdata.name}
+                      {product.product && product.product.productdata.name}
                     </td>
                     <td className='font-bold text-right border border-black py-1 px-2'>
                       {product.pieces.toLocaleString('ru-RU')}
