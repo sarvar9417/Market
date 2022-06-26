@@ -824,7 +824,8 @@ module.exports.registeredit = async (req, res) => {
       .populate('discounts', 'discount discountuzs procient products')
       .populate('debts', 'debt debtuzs')
       .populate('client', 'name')
-      .populate('packman', 'name');
+      .populate('packman', 'name')
+      .populate('user', 'firstname lastname');
 
     res.status(201).send(saleconnectors);
   } catch (error) {
