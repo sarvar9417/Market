@@ -1,13 +1,13 @@
-import { t } from "i18next";
-import React from "react";
+import { t } from 'i18next';
+import React from 'react';
 
-export const TableFooter = ({ sales }) => {
+export const TableFooter = ({ sales, returnSales }) => {
   return (
     <table className='table'>
       <tfoot className='text-base'>
         <tr>
           <th colSpan={6} className='py-1'>
-            {t("Jami")}:
+            {t('Jami')}:
           </th>
           <th className='text-right text-teal-900 py-1'>
             {sales.products
@@ -33,7 +33,18 @@ export const TableFooter = ({ sales }) => {
         </tr>
         <tr>
           <th colSpan={6} className='py-1'>
-            {t("Chegirma")}:
+            Qaytarilganlar jami:
+          </th>
+          <th className='text-right text-teal-900 py-1'>
+            {(
+              returnSales.reduce((prev, sale) => prev + sale.unitprice, 0) || 0
+            ).toLocaleString('ru-RU')}{' '}
+            USD
+          </th>
+        </tr>
+        <tr>
+          <th colSpan={6} className='py-1'>
+            {t('Chegirma')}:
           </th>
           <th className='text-right text-teal-900 py-1'>
             {sales.discounts
@@ -46,7 +57,7 @@ export const TableFooter = ({ sales }) => {
         </tr>
         <tr>
           <th colSpan={6} className='py-1'>
-            {t("Qarz")}:
+            {t('Qarz')}:
           </th>
           <th className='text-right text-teal-900 py-1'>
             {(
