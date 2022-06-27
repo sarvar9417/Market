@@ -1,4 +1,4 @@
-import { faAdd, faPenAlt, faPrint } from '@fortawesome/free-solid-svg-icons';
+import { faAdd, faPrint, faSync } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { t } from 'i18next';
 import React from 'react';
@@ -20,9 +20,6 @@ export const Rows = ({
       <li className='td border-r font-bold'>
         {saleconnector.client && saleconnector.client.name}
       </li>
-      {/* <li className='td border-r font-bold text-right'>
-        {saleconnector.products.length}
-      </li> */}
       <li
         onClick={() => changePrepayment(saleconnector)}
         className='td font-bold col-span-2 text-right border-r-2 border-r-green-700 hover:bg-blue-200 flex justify-between'>
@@ -32,12 +29,22 @@ export const Rows = ({
             .reduce((summ, product) => {
               return summ + product.totalprice;
             }, 0)
-            .toLocaleString('de-DE')}
+            .toLocaleString('ru-RU')}
           {'  '}
           <span className='text-green-900'>USD</span>
         </span>
       </li>
-      <li className='td border-r-2 border-red-600 font-bold col-span-2 text-right'>
+      <li className='td border-r-2 border-orange-500 font-bold text-right'>
+        <span>
+          {saleconnector.discounts
+            .reduce((summ, discount) => {
+              return summ + discount.discount;
+            }, 0)
+            .toLocaleString('ru-RU')}
+        </span>
+        {'  '}
+      </li>
+      <li className='td border-r-2 border-red-600 font-bold text-right'>
         <span>
           {(
             saleconnector.products.reduce((summ, product) => {
@@ -49,21 +56,17 @@ export const Rows = ({
             saleconnector.discounts.reduce((summ, discount) => {
               return summ + discount.discount;
             }, 0)
-          ).toLocaleString('de-DE')}
+          ).toLocaleString('ru-RU')}
         </span>
         {'  '}
-        <span className='text-red-600'>USD</span>
       </li>
-      <li className='td border-r-2 border-orange-500 font-bold col-span-2 text-right'>
-        <span>
-          {saleconnector.discounts
-            .reduce((summ, discount) => {
-              return summ + discount.discount;
-            }, 0)
-            .toLocaleString('de-DE')}
-        </span>
-        {'  '}
-        <span className='text-orange-600'>USD</span>
+      <li className='td col-span-2 border-r'>
+        {saleconnector.payments.map((payment, index) => {
+          if (payment.comment) {
+            return <p key={index}>{payment.comment}</p>;
+          }
+          return '';
+        })}
       </li>
       <li className='td-btn border-right'>
         <button
@@ -86,7 +89,7 @@ export const Rows = ({
         <button
           onClick={() => editHandler(saleconnector)}
           className='px-4 bg-red-600 text-white rounded-xl hover:bg-red-700'>
-          <FontAwesomeIcon icon={faPenAlt} />
+          <FontAwesomeIcon icon={faSync} />
         </button>
       </li>
     </ul>

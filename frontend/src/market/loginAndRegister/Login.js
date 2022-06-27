@@ -76,6 +76,7 @@ export const Login = () => {
     }
     try {
       const data = await request(`/api/user/login`, 'POST', { ...user });
+      console.log(data);
       auth.login(data.token, data.userId, data.user, data.market);
       notify({
         title: t(`Xush kelibsiz!`),
@@ -113,8 +114,7 @@ export const Login = () => {
     <>
       <div
         className='h-screen overflow-y-auto'
-        style={{ backgroundColor: '#0A3D3F' }}
-      >
+        style={{ backgroundColor: '#0A3D3F' }}>
         <div className='wrapper h-full overflow-y-auto'>
           <div className='w-full'>
             <Translate />
@@ -125,8 +125,7 @@ export const Login = () => {
               style={{
                 borderColor: '#17E7FE',
                 boxShadow: '0px 0px 30px #17E7FE',
-              }}
-            >
+              }}>
               <div className='max-w-[250px] max-h-[250px] text-center '>
                 <div className='text-white mb-4' style={{ fontSize: '2rem' }}>
                   {hour}
@@ -159,8 +158,7 @@ export const Login = () => {
                 <div className='text-white'>
                   <button
                     onClick={loginHandler}
-                    className='border-solid border-white border py-1 px-4'
-                  >
+                    className='border-solid border-white border py-1 px-4'>
                     {t('Kirish')}
                   </button>
                 </div>
@@ -178,8 +176,7 @@ export const Login = () => {
                     justifyContent: 'center',
                     alignItems: 'center',
                     transform: 'rotate(15deg)',
-                  }}
-                >
+                  }}>
                   <div
                     style={{
                       width: '65px',
@@ -190,8 +187,7 @@ export const Login = () => {
                       justifyContent: 'center',
                       alignItems: 'center',
                       transform: 'rotate(-15deg)',
-                    }}
-                  >
+                    }}>
                     <FontAwesomeIcon
                       icon={faPhone}
                       color='#17E7FE'
@@ -205,8 +201,7 @@ export const Login = () => {
                     fontWeight: '700',
                     color: '#17E7FE',
                     lineHeight: '100%',
-                  }}
-                >
+                  }}>
                   ALO
                   <br />
                   24
@@ -214,8 +209,7 @@ export const Login = () => {
               </div>
               <div
                 className='text-white font-bold'
-                style={{ fontSize: '1.25rem' }}
-              >
+                style={{ fontSize: '1.25rem' }}>
                 {t(weekDays[new Date().getDay()])},<span> </span>
                 {new Date().getDate()}
                 <span> </span>

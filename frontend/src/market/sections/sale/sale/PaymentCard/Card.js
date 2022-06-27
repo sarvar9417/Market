@@ -1,9 +1,10 @@
-import React from "react";
-import { LeftCard } from "./LeftCard";
-import { RightBody } from "./RightBody";
-import { CardHeader } from "./CardHeader";
+import React from 'react';
+import { LeftCard } from './LeftCard';
+import { RightBody } from './RightBody';
+import { CardHeader } from './CardHeader';
 
 export const Card = ({
+  paymentComment,
   totalpriceuzs,
   client,
   exchangerate,
@@ -30,6 +31,7 @@ export const Card = ({
       />
       <div className='grid grid-cols-1 md:grid-cols-2'>
         <LeftCard
+          paymentComment={paymentComment}
           exchangerate={exchangerate}
           checkHandler={checkHandler}
           discount={discount}

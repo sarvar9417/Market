@@ -1,7 +1,11 @@
+import { faFileExcel } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { t } from 'i18next';
 import React from 'react';
+import { ExcelUpload } from '../excelTable/ExcelUpload';
 import { Pagination } from '../../../components/Pagination';
 import { SearchInput } from '../../../components/Input';
+import { ExcelDownload } from '../../../components/ExcelDownload';
 
 export const TableHeader = ({
   search,
@@ -12,6 +16,10 @@ export const TableHeader = ({
   countPage,
   setCurrentPage,
   productsCount,
+  setImports,
+  setModal2,
+  loading,
+  getProductExcel,
 }) => {
   return (
     <ul className='tbody border-b border-t-2 border-blue-800'>
@@ -37,7 +45,7 @@ export const TableHeader = ({
           className='text-right'
         />
       </li>
-      <li className='th-h border-r col-span-10 flex justify-between'>
+      <li className='th-h border-r col-span-8 flex justify-between'>
         <SearchInput
           changeHandler={changeHandler}
           type={'text'}
@@ -64,6 +72,21 @@ export const TableHeader = ({
           setCurrentPage={setCurrentPage}
           countPage={countPage}
           totalDatas={productsCount}
+        />
+      </li>
+      <li className='th-h border-r col-span-1 flex justify-center'>
+        <button
+          className='px-4 bg-green-700 hover:bg-green-800 text-white rounded'
+          onClick={getProductExcel}>
+          <FontAwesomeIcon icon={faFileExcel} />
+        </button>
+        <ExcelDownload filename={t('Mahsulotlar')} />
+      </li>
+      <li className='th-h border-r col-span-1 flex justify-center'>
+        <ExcelUpload
+          setData={setImports}
+          setModal={setModal2}
+          loading={loading}
         />
       </li>
     </ul>

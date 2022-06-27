@@ -33,7 +33,7 @@ export const Cheque = ({ sales, setCheck }) => {
   return (
     <div className='absolute top-0 right-0 z-50 w-full min-h-screen bg-white overflow-auto font-mono'>
       <div className='a4 m-auto w-[27cm]' ref={componentRef}>
-        <Header auth={auth} sales={sales} />
+        <Header auth={auth} sales={sales}  />
         <hr />
         <Table sales={sales} />
         <TableFooter sales={sales} />

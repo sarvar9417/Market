@@ -1,7 +1,7 @@
 import { t } from 'i18next';
 import React from 'react';
 
-export const InputProduct = ({ setCounts, product }) => {
+export const InputProduct = ({ setCounts, product, changeEnter }) => {
   return (
     <div>
       <p className='font-bold flex justify-between'>
@@ -22,6 +22,7 @@ export const InputProduct = ({ setCounts, product }) => {
           <tr>
             <td className='border text-base p-0 font-bold px-2 w-1/3'>
               <input
+                onKeyUp={changeEnter}
                 type='number'
                 onChange={setCounts}
                 name='pieces'

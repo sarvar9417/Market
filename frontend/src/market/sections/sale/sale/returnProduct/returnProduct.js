@@ -6,32 +6,34 @@ export const returnProduct = (products, e) => {
       : Math.round(
           products[parseInt(e.target.id)].unitprice *
             parseFloat(e.target.value) *
-            100
-        ) / 100;
+            10000
+        ) / 10000;
   products[parseInt(e.target.id)].totalpriceuzs =
     e.target.value === ''
       ? 0
       : Math.round(
           products[parseInt(e.target.id)].unitpriceuzs *
             parseFloat(e.target.value) *
-            100
-        ) / 100;
+            10000
+        ) / 10000;
   return products;
 };
 
-export const discountProcient = (EditDiscounts, products, e, i) => {
-  EditDiscounts[i].discount -=
+export const discountProcient = (EditDiscount, product, count) => {
+  const difference = product.pieces === '' ? 0 - count : product.pieces - count;
+  console.log(EditDiscount);
+  EditDiscount.discount =
     Math.round(
-      ((products[parseInt(e.target.id)].totalprice *
-        EditDiscounts[i].procient) /
-        100) *
+      (EditDiscount.discount -
+        (product.unitprice * difference * EditDiscount.procient) / 100) *
+        10000
+    ) / 10000;
+
+  EditDiscount.discountuzs =
+    Math.round(
+      (EditDiscount.discountuzs -
+        (product.unitpriceuzs * difference * EditDiscount.procient) / 100) *
         100
     ) / 100;
-  EditDiscounts[i].discountuzs -=
-    Math.round(
-      ((products[parseInt(e.target.id)].totalpriceuzs *
-        EditDiscounts[i].procient) /
-        100) *
-        100
-    ) / 100;
+  console.log(EditDiscount);
 };

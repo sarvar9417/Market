@@ -24,27 +24,27 @@ export const RightBody = ({ payment, discount, debt, typeHandler }) => {
               </span>
               <p className='text-3xl font-bold pointer-events-none flex flex-col'>
                 <span className='text-black'>
-                  {payment.cash.toLocaleString("de-DE")} USD
+                  {payment.cash.toLocaleString("ru-RU")} USD
                 </span>
                 <span className='text-lg text-right'>
-                  {payment.cashuzs.toLocaleString("de-DE")} UZS
+                  {payment.cashuzs.toLocaleString("ru-RU")} UZS
                 </span>
               </p>
             </button>
             <button
               onClick={typeHandler}
               className='bg-blue-700 hover:bg-blue-800 text-white w-full rounded font-bold flex justify-between items-center px-3 py-3'
-              name='Plastik'
+              name={t('Plastik')}
               data-type='card'>
               <span className='text-4xl pointer-events-none'>
                 <FontAwesomeIcon icon={faCreditCard} />
               </span>
               <p className='text-3xl font-bold pointer-events-none flex flex-col'>
                 <span className='text-black'>
-                  {payment.card.toLocaleString("de-DE")} USD
+                  {payment.card.toLocaleString("ru-RU")} USD
                 </span>
                 <span className='text-lg text-right'>
-                  {payment.carduzs.toLocaleString("de-DE")} UZS
+                  {payment.carduzs.toLocaleString("ru-RU")} UZS
                 </span>
               </p>
             </button>
@@ -58,10 +58,10 @@ export const RightBody = ({ payment, discount, debt, typeHandler }) => {
               </span>
               <p className='text-3xl font-bold pointer-events-none flex flex-col'>
                 <span className='text-black'>
-                  {payment.transfer.toLocaleString("de-DE")} USD
+                  {payment.transfer.toLocaleString("ru-RU")} USD
                 </span>
                 <span className='text-lg text-right'>
-                  {payment.transferuzs.toLocaleString("de-DE")} UZS
+                  {payment.transferuzs.toLocaleString("ru-RU")} UZS
                 </span>
               </p>
             </button>
@@ -72,7 +72,7 @@ export const RightBody = ({ payment, discount, debt, typeHandler }) => {
             <button
               onClick={typeHandler}
               className='bg-blue-700 hover:bg-blue-800 text-white w-full rounded font-bold flex justify-center items-center px-3 py-3 h-full'
-              name='Aralash'
+              name={t('Aralash')}
               data-type='mixed'>
               <span className='text-2xl pointer-events-none flex flex-col w-[105px] h-[105px] justify-center  border-white border-2 rounded-full p-4'>
                 <span className='flex justify-between'>
@@ -91,32 +91,32 @@ export const RightBody = ({ payment, discount, debt, typeHandler }) => {
         <button
           onClick={typeHandler}
           className='bg-blue-700 hover:bg-blue-800 text-white w-full rounded font-bold flex flex-col justify-between items-center px-3 py-3'
-          name='Chegirma'
+          name={t('Chegirma')}
           data-type='discount'>
           <h1 className=' pointer-events-none text-yellow-600'>
             {t("Chegirma")}
           </h1>
           <p className='text-3xl font-bold pointer-events-none flex flex-col'>
             <span className='text-black'>
-              {discount.discount.toLocaleString("de-DE")} USD
+              {discount.discount.toLocaleString("ru-RU")} USD
             </span>
             <span className='text-lg'>
-              {discount.discountuzs.toLocaleString("de-DE")} UZS
+              {discount.discountuzs.toLocaleString("ru-RU")} UZS
             </span>
           </p>
         </button>
         <button
           onClick={typeHandler}
           className='bg-blue-700 hover:bg-blue-800 text-white w-full rounded font-bold flex flex-col justify-between items-center px-3 py-3'
-          name='Qarz'
+          name={t('Qarz')}
           data-type='debt'>
           <h1 className=' pointer-events-none text-yellow-600'>{t("Qarz")}</h1>
           <p className='text-3xl font-bold pointer-events-none flex flex-col'>
             <span className='text-black'>
-              {debt.debt.toLocaleString("de-DE")} USD
+              {debt.debt.toLocaleString("ru-RU")} USD
             </span>
             <span className='text-lg'>
-              {debt.debtuzs.toLocaleString("de-DE")} UZS
+              {debt.debtuzs.toLocaleString("ru-RU")} UZS
             </span>
           </p>
         </button>

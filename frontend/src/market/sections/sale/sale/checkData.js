@@ -1,4 +1,4 @@
-import { t } from "i18next";
+import { t } from 'i18next';
 
 // Check Packman
 export const checkPackman = (packman) => {
@@ -6,15 +6,15 @@ export const checkPackman = (packman) => {
     return {
       title: t("Diqqat! Avtorizatsiyadan o'tilmagan!"),
       description: t("Iltimos bo'limdan chiqib qayta kiring"),
-      status: "error",
+      status: 'error',
     };
   }
 
   if (!packman.name) {
     return {
-      title: t("Diqqat! Yetkazuvchi kiritilmagan!"),
-      description: t("Iltimos yetkazuvchini kiriting!"),
-      status: "error",
+      title: t('Diqqat! Yetkazuvchi kiritilmagan!'),
+      description: t('Iltimos yetkazuvchini kiriting!'),
+      status: 'error',
     };
   }
 
@@ -25,15 +25,15 @@ export const checkClient = (client) => {
     return {
       title: t("Diqqat! Avtorizatsiyadan o'tilmagan!"),
       description: t("Iltimos bo'limdan chiqib qayta kiring"),
-      status: "error",
+      status: 'error',
     };
   }
 
   if (!client.name) {
     return {
-      title: t("Diqqat! Mijoz kiritilmagan!"),
-      description: t("Iltimos mijozni kiriting!"),
-      status: "error",
+      title: t('Diqqat! Mijoz kiritilmagan!'),
+      description: t('Iltimos mijozni kiriting!'),
+      status: 'error',
     };
   }
 

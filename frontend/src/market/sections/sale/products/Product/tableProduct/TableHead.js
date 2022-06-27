@@ -17,7 +17,7 @@ export const TableHead = ({ currentProducts, setCurrentProducts }) => {
           />
         </div>
       </li>
-      <li className='th border-r flex  items-center justify-center col-span-6'>
+      <li className='th border-r flex  items-center justify-center col-span-5'>
         {t('Mahsulot nomi')}
         <Sort
           property={'name'}
@@ -25,7 +25,34 @@ export const TableHead = ({ currentProducts, setCurrentProducts }) => {
           setData={setCurrentProducts}
         />
       </li>
-      <li className='th border-r flex justify-center items-center col-span-2'>
+      {/* <li className='th border-r flex flex-column items-center col-span-2'>
+        {t('Brend')}
+        <div className='btn-group-vertical ml-2'>
+          <FontAwesomeIcon
+            onClick={() =>
+              setCurrentProducts(
+                [...currentProducts].sort((a, b) =>
+                  a.brand.name > b.brand.name ? 1 : -1
+                )
+              )
+            }
+            icon={faAngleUp}
+            style={{ cursor: 'pointer' }}
+          />
+          <FontAwesomeIcon
+            icon={faAngleDown}
+            style={{ cursor: 'pointer' }}
+            onClick={() =>
+              setCurrentProducts(
+                [...currentProducts].sort((a, b) =>
+                  b.brand.name > a.brand.name ? 1 : -1
+                )
+              )
+            }
+          />
+        </div>
+      </li> */}
+      <li className='th border-r flex flex-column items-center col-span-1'>
         {t("Soni - O'.B.")}
         <Sort
           property={'total'}
@@ -33,8 +60,17 @@ export const TableHead = ({ currentProducts, setCurrentProducts }) => {
           setData={setCurrentProducts}
         />
       </li>
-      <li className='th border-r flex justify-center items-center col-span-2'>
-        {t("Narxi")}
+      <li className='th border-r flex flex-column items-center col-span-1'>
+        {t("Olish")}
+        <SortDoubleProperty
+          property={'price'}
+          innnerProperty='incomingprice'
+          data={currentProducts}
+          setData={setCurrentProducts}
+        />
+      </li>
+      <li className='th border-r flex flex-column items-center col-span-1'>
+        {t("Sotish")}
         <SortDoubleProperty
           property={'price'}
           innnerProperty='sellingprice'
@@ -42,6 +78,8 @@ export const TableHead = ({ currentProducts, setCurrentProducts }) => {
           setData={setCurrentProducts}
         />
       </li>
+      <li className='th border-r'>{t('Tahrirlash')}</li>
+      <li className='th border-r'>{t("O'chirish")}</li>
     </ul>
   );
 };

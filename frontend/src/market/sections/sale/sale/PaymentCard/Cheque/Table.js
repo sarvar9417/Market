@@ -1,5 +1,5 @@
 import React from 'react';
-import {t} from "i18next"
+import { t } from 'i18next'
 
 export const Table = ({ sales }) => {
   return (
@@ -19,7 +19,7 @@ export const Table = ({ sales }) => {
             {t("Mahsulot")}
           </th>
           <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
-            {t("Soni")}
+           {t(" Soni")}
           </th>
           <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
             {t("Narxi (dona)")}
@@ -40,19 +40,19 @@ export const Table = ({ sales }) => {
                 {new Date(sales.createdAt).toLocaleDateString()}
               </td>
               <td className='font-bold text-right border border-black py-1 px-2'>
-                {product.product.code}
+                {product.product.productdata.code}
               </td>
               <td className='font-bold border border-black py-1 px-2'>
-                {product.product.name}
+                {product.product.productdata.name}
               </td>
               <td className='font-bold text-right border border-black py-1 px-2'>
-                {product.pieces.toLocaleString('de-DE')}
+                {product.pieces.toLocaleString('ru-RU')}
               </td>
               <td className='font-bold text-right border border-black py-1 px-2'>
-                {product.unitprice.toLocaleString('de-DE')} USD
+                {product.unitprice.toLocaleString('ru-RU')} USD
               </td>
               <td className='font-bold text-right border border-black py-1 px-2 text-teal-900'>
-                {product.totalprice.toLocaleString('de-DE')} USD
+                {product.totalprice.toLocaleString('ru-RU')} USD
               </td>
             </tr>
           );

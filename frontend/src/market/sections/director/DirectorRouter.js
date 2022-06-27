@@ -29,7 +29,6 @@ export const DirectorRouter = () => {
   return (
     <div>
       <Switch>
-        {/* Services */}
         <Route path='/alo24' exact>
           <HomePage />
         </Route>

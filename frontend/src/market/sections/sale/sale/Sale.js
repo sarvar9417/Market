@@ -17,6 +17,8 @@ import { CardEdit } from './EditPaymentCard/CardEdit';
 import { RouterBtns } from './RouterBtns/RouterBtns';
 import { ExcelTable } from './Sales/ExcelTable';
 import { PrePaymentCard } from './PrePaymentCard/PrepaymentCard';
+import { TemporayCheque } from './Temporary/TemporaryCheque';
+import { Temporaries } from './Temporary/Temporaries';
 
 export const Sale = () => {
   //====================================================================
@@ -75,7 +77,10 @@ export const Sale = () => {
   const [modal4, setModal4] = useState(false);
   const [modal5, setModal5] = useState(false);
   const [modal6, setModal6] = useState(false);
+  const [modal7, setModal7] = useState(false);
+  const [modal8, setModal8] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [visibleTemporary, setVisibleTemporary] = useState(false);
   const [visibleEdit, setVisibleEdit] = useState(false);
   const [check, setCheck] = useState(false);
   const [checkConnectors, setCheckConnectors] = useState(false);
@@ -87,174 +92,29 @@ export const Sale = () => {
     setTableCard(false);
     setSellingEditCard(false);
     setSellingCard(true);
+    setVisibleTemporary(false);
   };
 
   const changeTableCard = () => {
     setSellingCard(false);
     setSellingEditCard(false);
     setTableCard(true);
+    setVisibleTemporary(false);
   };
 
   const changeSellingEditCard = () => {
     setSellingCard(false);
     setTableCard(false);
     setSellingEditCard(true);
+    setVisibleTemporary(false);
   };
-  //====================================================================
-  //====================================================================
 
-  //====================================================================
-  //====================================================================
-  // Categories
-  // const [categories, setCategories] = useState([
-  //   {
-  //     label: t('Barcha kategoriyalar'),
-  //     value: 'all',
-  //   },
-  // ]);
-
-  // const getCategories = useCallback(async () => {
-  //   try {
-  //     const data = await request(
-  //       `/api/products/category/getall`,
-
-  //       'POST',
-  //       { market: auth.market._id },
-  //       {
-  //         Authorization: `Bearer ${auth.token}`,
-  //       }
-  //     );
-  //     let c = [
-  //       {
-  //         label: t('Barcha kategoriyalar'),
-  //         value: 'all',
-  //       },
-  //     ];
-  //     data.map((category) => {
-  //       return c.push({
-  //         label: category.code,
-  //         type: 'Category',
-  //         value: category,
-  //       });
-  //     });
-  //     setCategories(c);
-  //   } catch (error) {
-  //     notify({
-  //       title: error,
-  //       description: '',
-  //       status: 'error',
-  //     });
-  //   }
-  // }, [request, auth, notify]);
-
-  // const changeCategory = (e) => {
-  //   if (e.value === 'all') {
-  //     return setProductTypes(allproducttypes);
-  //   }
-  //   const filter = allproducttypes.filter((producttype) => {
-  //     return producttype.value.category._id === e.value._id;
-  //   });
-  //   setProductTypes(filter);
-  //   getProducts(e);
-  // };
-  //====================================================================
-  //====================================================================
-
-  //====================================================================
-  //====================================================================
-  // const [baseUrl, setBaseUrl] = useState();
-  // const getBaseUrl = useCallback(async () => {
-  //   try {
-  //     const data = await request("/api/baseurl", "GET", null);
-  //     setBaseUrl(data.baseUrl);
-  //   } catch (error) {
-  //     notify({
-  //       title: error,
-  //       description: "",
-  //       status: "error",
-  //     });
-  //   }
-  // }, [request, notify]);
-  //====================================================================
-  //====================================================================
-
-  //====================================================================
-  //====================================================================
-  // Producttypes
-  // const [allproducttypes, setAllProductTypes] = useState([]);
-  // const [producttypes, setProductTypes] = useState([]);
-
-  // const getProductTypes = useCallback(async () => {
-  //   try {
-  //     const data = await request(
-  //       `/api/products/producttype/getall`,
-  //       'POST',
-  //       { market: auth.market._id },
-  //       {
-  //         Authorization: `Bearer ${auth.token}`,
-  //       }
-  //     );
-  //     let c = [];
-  //     data.producttypes.map((type) => {
-  //       return c.push({
-  //         label: type.name,
-  //         type: 'ProductType',
-  //         value: type,
-  //       });
-  //     });
-  //     setProductTypes(c);
-  //     setAllProductTypes(c);
-  //   } catch (error) {
-  //     notify({
-  //       title: error,
-  //       description: '',
-  //       status: 'error',
-  //     });
-  //   }
-  // }, [request, auth, notify]);
-
-  // const changeProductType = (e) => {
-  //   getProducts(e);
-  // };
-  //====================================================================
-  //====================================================================
-
-  //====================================================================
-  //====================================================================
-  // Brands
-  // const [brands, setBrands] = useState([]);
-
-  // const getBrand = useCallback(async () => {
-  //   try {
-  //     const data = await request(
-  //       `/api/products/brand/getall`,
-  //       'POST',
-  //       { market: auth.market._id },
-  //       {
-  //         Authorization: `Bearer ${auth.token}`,
-  //       }
-  //     );
-  //     let c = [];
-  //     data.map((type) => {
-  //       return c.push({
-  //         label: type.name,
-  //         type: 'Brand',
-  //         value: type,
-  //       });
-  //     });
-  //     setBrands(c);
-  //   } catch (error) {
-  //     notify({
-  //       title: error,
-  //       description: '',
-  //       status: 'error',
-  //     });
-  //   }
-  // }, [request, auth, notify]);
-
-  // const changeBrand = (e) => {
-  //   getProducts(e);
-  // };
+  const changeVisibleTemporary = () => {
+    setSellingCard(false);
+    setTableCard(false);
+    setSellingEditCard(false);
+    setVisibleTemporary(true);
+  };
   //====================================================================
   //====================================================================
 
@@ -308,12 +168,14 @@ export const Sale = () => {
     payment: {},
     debt: {},
     discount: {},
+    user: {},
   });
   const [allSales, setAllSales] = useState({
     products: [],
     payments: [],
     debts: [],
     discounts: [],
+    user: [],
   });
   const [saleCounts, setSaleCounts] = useState(0);
 
@@ -369,7 +231,7 @@ export const Sale = () => {
     for (const saleproduct of saleproducts) {
       if (e.value._id === saleproduct.product._id) {
         return notify({
-          title: t("Diqqat! Ushbu mahsulot ro'yxatga qo'shilgan."),
+          title: t("Diqqat! Ushbu mahsulot ro'yxatga qo'shilgan. "),
           description: t(
             "Qayta qo'shmasdan qiymatini o'zgartirishingiz mumkin."
           ),
@@ -382,15 +244,15 @@ export const Sale = () => {
     setSaleProduct({
       total: e.value.total,
       product: e.value,
-      totalprice: Math.round(e.value.price.sellingprice * 100) / 100,
+      totalprice: Math.round(e.value.price.sellingprice * 10000) / 10000,
       totalpriceuzs:
         Math.round(
-          e.value.price.sellingprice * exchangerate.exchangerate * 100
-        ) / 100,
+          e.value.price.sellingprice * exchangerate.exchangerate * 10000
+        ) / 10000,
       pieces: 1,
-      unitprice: Math.round(e.value.price.sellingprice * 100) / 100,
+      unitprice: Math.round(e.value.price.sellingprice * 10000) / 10000,
       unitpriceuzs: Math.round(
-        (e.value.price.sellingprice * exchangerate.exchangerate) / 100
+        (e.value.price.sellingprice * exchangerate.exchangerate * 10000) / 10000
       ),
     });
   };
@@ -413,8 +275,8 @@ export const Sale = () => {
       }
       totalprice =
         Math.round(
-          (!unitprice ? 0 : unitprice) * parseFloat(e.target.value) * 100
-        ) / 100;
+          (!unitprice ? 0 : unitprice) * parseFloat(e.target.value) * 10000
+        ) / 10000;
       setSaleProduct({
         ...saleproduct,
         pieces: e.target.value === '' ? '' : parseFloat(e.target.value),
@@ -422,13 +284,15 @@ export const Sale = () => {
         totalpriceuzs:
           e.target.value === ''
             ? 0
-            : Math.round(totalprice * exchangerate.exchangerate * 100) / 100,
+            : Math.round(totalprice * exchangerate.exchangerate * 10000) /
+              10000,
       });
     }
     if (e.target.name === 'unitprice') {
       totalprice =
-        Math.round((!pieces ? 0 : pieces) * parseFloat(e.target.value) * 100) /
-        100;
+        Math.round(
+          (!pieces ? 0 : pieces) * parseFloat(e.target.value) * 10000
+        ) / 10000;
       setSaleProduct({
         ...saleproduct,
         unitprice: e.target.value === '' ? '' : parseFloat(e.target.value),
@@ -436,13 +300,14 @@ export const Sale = () => {
           e.target.value === ''
             ? ''
             : Math.round(
-                parseFloat(e.target.value) * exchangerate.exchangerate * 100
-              ) / 100,
+                parseFloat(e.target.value) * exchangerate.exchangerate * 10000
+              ) / 10000,
         totalprice: e.target.value === '' ? 0 : totalprice,
         totalpriceuzs:
           e.target.value === ''
             ? 0
-            : Math.round(totalprice * exchangerate.exchangerate * 100) / 100,
+            : Math.round(totalprice * exchangerate.exchangerate * 10000) /
+              10000,
       });
     }
   };
@@ -470,16 +335,16 @@ export const Sale = () => {
       return sale.totalpriceuzs + summ;
     }, 0);
 
-    setTotalPrice(Math.round(total * 100) / 100);
-    setTotalPriceUzs(Math.round(totaluzs * 100) / 100);
+    setTotalPrice(Math.round(total * 10000) / 10000);
+    setTotalPriceUzs(Math.round(totaluzs * 10000) / 10000);
 
     setPayment({
       ...payment,
-      totalprice: Math.round(total * 100) / 100,
-      totalpriceuzs: Math.round(totaluzs * 100) / 100,
+      totalprice: Math.round(total * 10000) / 10000,
+      totalpriceuzs: Math.round(totaluzs * 10000) / 10000,
       type: 'cash',
-      cash: Math.round(total * 100) / 100,
-      cashuzs: Math.round(totaluzs * 100) / 100,
+      cash: Math.round(total * 10000) / 10000,
+      cashuzs: Math.round(totaluzs * 10000) / 10000,
       discount: 0,
       discountuzs: 0,
     });
@@ -503,16 +368,16 @@ export const Sale = () => {
       return sale.totalpriceuzs + summ;
     }, 0);
 
-    setTotalPrice(Math.round(total * 100) / 100);
-    setTotalPriceUzs(Math.round(totaluzs * 100) / 100);
+    setTotalPrice(Math.round(total * 10000) / 10000);
+    setTotalPriceUzs(Math.round(totaluzs * 10000) / 10000);
 
     setPayment({
       ...payment,
-      totalprice: Math.round(total * 100) / 100,
-      totalpriceuzs: Math.round(totaluzs * 100) / 100,
+      totalprice: Math.round(total * 10000) / 10000,
+      totalpriceuzs: Math.round(totaluzs * 10000) / 10000,
       type: 'cash',
-      cash: Math.round(total * 100) / 100,
-      cashuzs: Math.round(totaluzs * 100) / 100,
+      cash: Math.round(total * 10000) / 10000,
+      cashuzs: Math.round(totaluzs * 10000) / 10000,
       discount: 0,
       discountuzs: 0,
     });
@@ -526,6 +391,13 @@ export const Sale = () => {
         status: 'warning',
       });
     }
+    // if (!client.name || client.name.length < 1) {
+    //   return notify({
+    //     title: t('Diqqat! Mijoz ismi kiritilmagan.'),
+    //     description: 'Iltimos! Mijoz ismini kiriting.',
+    //     status: 'warning',
+    //   });
+    // }
     setVisible(true);
   };
 
@@ -747,6 +619,33 @@ export const Sale = () => {
   //====================================================================
   //====================================================================
   // Discount and Payment
+  const [currenttemporary, setCurrentTemporary] = useState();
+  const deleteTemporarys = useCallback(
+    async (id) => {
+      try {
+        const data = await request(
+          `/api/sales/temporary/delete`,
+          'POST',
+          {
+            market: auth.market._id,
+            _id: id,
+          },
+          {
+            Authorization: `Bearer ${auth.token}`,
+          }
+        );
+
+        setTemporarys(data);
+      } catch (error) {
+        notify({
+          title: error,
+          description: '',
+          status: 'error',
+        });
+      }
+    },
+    [request, notify, auth]
+  );
   const [discount, setDiscount] = useState({
     discount: 0,
     discountuzs: 0,
@@ -849,16 +748,17 @@ export const Sale = () => {
   let types = ['cash', 'card', 'transfer'];
 
   const changeDiscount = (e, p) => {
-    if (discount.isProcient && e.target.value > 100) {
+    if (discount.isProcient && e.target.value > 5) {
       return notify({
-        title: t(
-          'Diqqat! Umumiy summadan yuqori chegirma kiritish mumkin emas!'
-        ),
+        title: t('Diqqat! 5% yuqori chegirma kiritish mumkin emas!'),
         description: '',
         status: 'error',
       });
     }
-    if (Math.round(e.target.value * 100) / 100 > totalprice) {
+    if (
+      !discount.isProcient &&
+      Math.round(e.target.value * 10000) / 10000 > totalprice
+    ) {
       return notify({
         title: t(
           'Diqqat! Umumiy summadan yuqori chegirma kiritish mumkin emas!'
@@ -868,9 +768,9 @@ export const Sale = () => {
       });
     }
     p.discount =
-      e.target.value === '' ? '' : Math.round(e.target.value * 100) / 100;
+      e.target.value === '' ? '' : Math.round(e.target.value * 10000) / 10000;
     p.discountuzs =
-      Math.round(e.target.value * exchangerate.exchangerate * 100) / 100;
+      Math.round(e.target.value * exchangerate.exchangerate * 10000) / 10000;
     p.cash = 0;
     p.card = 0;
     p.transfer = 0;
@@ -882,8 +782,8 @@ export const Sale = () => {
             (discount.isProcient
               ? (totalprice * e.target.value) / 100
               : e.target.value)) *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
       debtuzs:
         Math.round(
           (totalprice -
@@ -891,8 +791,8 @@ export const Sale = () => {
               ? (totalprice * e.target.value) / 100
               : e.target.value)) *
             exchangerate.exchangerate *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
     });
 
     discount.isProcient
@@ -900,21 +800,22 @@ export const Sale = () => {
           ...discount,
           procient: e.target.value,
           discount:
-            Math.round(((totalprice * e.target.value) / 100) * 100) / 100,
+            Math.round(((totalprice * e.target.value) / 100) * 10000) / 10000,
           discountuzs:
             Math.round(
               ((totalprice * e.target.value * exchangerate.exchangerate) /
                 100) *
-                100
-            ) / 100,
+                10000
+            ) / 10000,
         })
       : setDiscount({
           ...discount,
           procient:
-            Math.round(((e.target.value * 100) / totalprice) * 100) / 100,
-          discount: Math.round(e.target.value * 100) / 100,
+            Math.round(((e.target.value * 100) / totalprice) * 10000) / 10000,
+          discount: Math.round(e.target.value * 10000) / 10000,
           discountuzs:
-            Math.round(e.target.value * exchangerate.exchangerate * 100) / 100,
+            Math.round(e.target.value * exchangerate.exchangerate * 10000) /
+            10000,
         });
   };
 
@@ -929,7 +830,7 @@ export const Sale = () => {
       });
     }
     if (
-      Math.round((e.target.value / exchangerate.exchangerate) * 100) / 100 >
+      Math.round((e.target.value / exchangerate.exchangerate) * 10000) / 10000 >
       totalprice
     ) {
       return notify({
@@ -941,7 +842,7 @@ export const Sale = () => {
       });
     }
     p.discount =
-      Math.round((e.target.value / exchangerate.exchangerate) * 100) / 100;
+      Math.round((e.target.value / exchangerate.exchangerate) * 10000) / 10000;
     p.discountuzs = e.target.value === '' ? '' : e.target.value;
     p.cash = 0;
     p.card = 0;
@@ -955,8 +856,8 @@ export const Sale = () => {
               ? (totalprice * (e.target.value / exchangerate.exchangerate)) /
                 100
               : e.target.value / exchangerate.exchangerate)) *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
       debtuzs:
         Math.round(
           (totalprice -
@@ -965,21 +866,21 @@ export const Sale = () => {
                 100
               : e.target.value / exchangerate.exchangerate)) *
             exchangerate.exchangerate *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
     });
     discount.isProcient
       ? setDiscount({
           ...discount,
           procient: e.target.value,
           discount:
-            Math.round(((totalprice * e.target.value) / 100) * 100) / 100,
+            Math.round(((totalprice * e.target.value) / 100) * 10000) / 10000,
           discountuzs:
             Math.round(
               ((totalprice * e.target.value * exchangerate.exchangerate) /
                 100) *
-                100
-            ) / 100,
+                10000
+            ) / 10000,
         })
       : setDiscount({
           ...discount,
@@ -987,12 +888,12 @@ export const Sale = () => {
             Math.round(
               (((e.target.value / exchangerate.exchangerate) * 100) /
                 totalprice) *
-                100
-            ) / 100,
+                10000
+            ) / 10000,
           discount:
-            Math.round((e.target.value / exchangerate.exchangerate) * 100) /
-            100,
-          discountuzs: Math.round(e.target.value * 100) / 100,
+            Math.round((e.target.value / exchangerate.exchangerate) * 10000) /
+            10000,
+          discountuzs: Math.round(e.target.value * 10000) / 10000,
         });
   };
 
@@ -1001,20 +902,20 @@ export const Sale = () => {
       (e.target.dataset.type === 'cash'
         ? e.target.value === ''
           ? 0
-          : Math.round(e.target.value * 100) / 100
+          : Math.round(e.target.value * 10000) / 10000
         : payment.cash) +
       (e.target.dataset.type === 'card'
         ? e.target.value === ''
           ? 0
-          : Math.round(e.target.value * 100) / 100
+          : Math.round(e.target.value * 10000) / 10000
         : payment.card) +
       (e.target.dataset.type === 'transfer'
         ? e.target.value === ''
           ? 0
-          : Math.round(e.target.value * 100) / 100
+          : Math.round(e.target.value * 10000) / 10000
         : payment.transfer);
 
-    if (Math.round((total + discount.discount) * 100) / 100 > totalprice) {
+    if (Math.round((total + discount.discount) * 10000) / 10000 > totalprice) {
       return notify({
         title: t('Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!'),
         description: '',
@@ -1022,18 +923,19 @@ export const Sale = () => {
       });
     }
     p[e.target.dataset.type] =
-      e.target.value === '' ? '' : Math.round(e.target.value * 100) / 100;
+      e.target.value === '' ? '' : Math.round(e.target.value * 10000) / 10000;
     p[e.target.dataset.type + 'uzs'] =
-      Math.round(e.target.value * 100 * exchangerate.exchangerate) / 100;
+      Math.round(e.target.value * 10000 * exchangerate.exchangerate) / 10000;
     setDebt({
       ...debt,
-      debt: Math.round((totalprice - (total + discount.discount)) * 100) / 100,
+      debt:
+        Math.round((totalprice - (total + discount.discount)) * 10000) / 10000,
       debtuzs:
         Math.round(
           (totalprice - (total + discount.discount)) *
             exchangerate.exchangerate *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
     });
   };
 
@@ -1042,20 +944,23 @@ export const Sale = () => {
       (e.target.dataset.type === 'cash'
         ? e.target.value === ''
           ? 0
-          : Math.round((e.target.value / exchangerate.exchangerate) * 100) / 100
+          : Math.round((e.target.value / exchangerate.exchangerate) * 10000) /
+            10000
         : payment.cash) +
       (e.target.dataset.type === 'card'
         ? e.target.value === ''
           ? 0
-          : Math.round((e.target.value / exchangerate.exchangerate) * 100) / 100
+          : Math.round((e.target.value / exchangerate.exchangerate) * 10000) /
+            10000
         : payment.card) +
       (e.target.dataset.type === 'transfer'
         ? e.target.value === ''
           ? 0
-          : Math.round((e.target.value / exchangerate.exchangerate) * 100) / 100
+          : Math.round((e.target.value / exchangerate.exchangerate) * 10000) /
+            10000
         : payment.transfer);
 
-    if (Math.round((total + discount.discount) * 100) / 100 > totalprice) {
+    if (Math.round((total + discount.discount) * 10000) / 10000 > totalprice) {
       return notify({
         title: t('Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!'),
         description: '',
@@ -1063,18 +968,19 @@ export const Sale = () => {
       });
     }
     p[e.target.dataset.type] =
-      Math.round((e.target.value / exchangerate.exchangerate) * 100) / 100;
+      Math.round((e.target.value / exchangerate.exchangerate) * 10000) / 10000;
     p[e.target.dataset.type + 'uzs'] =
-      e.target.value === '' ? '' : Math.round(e.target.value * 100) / 100;
+      e.target.value === '' ? '' : Math.round(e.target.value * 10000) / 10000;
     setDebt({
       ...debt,
-      debt: Math.round((totalprice - (total + discount.discount)) * 100) / 100,
+      debt:
+        Math.round((totalprice - (total + discount.discount)) * 10000) / 10000,
       debtuzs:
         Math.round(
           (totalprice - (total + discount.discount)) *
             exchangerate.exchangerate *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
     });
   };
 
@@ -1105,20 +1011,23 @@ export const Sale = () => {
     ) {
       setDebt({
         ...debt,
-        debt: Math.round((totalprice - discount.discount) * 100) / 100,
+        debt: Math.round((totalprice - discount.discount) * 10000) / 10000,
         debtuzs:
           Math.round(
-            (totalprice - discount.discount) * exchangerate.exchangerate * 100
-          ) / 100,
+            (totalprice - discount.discount) * exchangerate.exchangerate * 10000
+          ) / 10000,
       });
     }
     types.map((type) => {
       return type === e.target.dataset.type
-        ? ((p[type] = Math.round((totalprice - discount.discount) * 100) / 100),
+        ? ((p[type] =
+            Math.round((totalprice - discount.discount) * 10000) / 10000),
           (p[type + 'uzs'] =
             Math.round(
-              (totalprice - discount.discount) * exchangerate.exchangerate * 100
-            ) / 100),
+              (totalprice - discount.discount) *
+                exchangerate.exchangerate *
+                10000
+            ) / 10000),
           (p.type = type),
           setDebt({
             ...debt,
@@ -1150,7 +1059,7 @@ export const Sale = () => {
 
     if (!discount.isProcient) {
       let procient =
-        Math.round(((discount.discount * 100) / totalprice) * 100) / 100;
+        Math.round(((discount.discount * 100) / totalprice) * 10000) / 10000;
       setPayment({
         ...payment,
         discount: procient,
@@ -1176,17 +1085,16 @@ export const Sale = () => {
       payment.cash +
       payment.transfer +
       debt.debt;
-    if (Math.round(total * 100) / 100 !== totalprice) {
-      alert(totalprice);
+    if (Math.round(total * 100) / 100 !== Math.round(totalprice * 100) / 100) {
       return notify({
         title: t("Diqqat! To'lov hisobida xatolik yuz bergan!"),
         description: '',
         status: 'error',
       });
     }
-    if (debt.debt > 0) {
-      return setModal2(true);
-    }
+    // if (debt.debt > 0) {
+    //   return setModal2(true);
+    // }
 
     return setModal3(true);
   };
@@ -1199,6 +1107,10 @@ export const Sale = () => {
 
   const changeComment = (e) => {
     setDebt({ ...debt, comment: e.target.value });
+  };
+
+  const paymentComment = (e) => {
+    setPayment({ ...payment, comment: e.target.value });
   };
 
   const createHandler = useCallback(async () => {
@@ -1222,11 +1134,22 @@ export const Sale = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+      data.products.sort((a, b) => {
+        return a.product.productdata.code > b.product.productdata.code ? 1 : -1;
+      });
       setCheck(true);
       setSales(data);
       clearDatas();
       setVisible(false);
       getSaleConnectors();
+      if (currenttemporary) {
+        deleteTemporarys(currenttemporary._id);
+      }
+      setCheckTemporary(false);
+      setSellingCard(false);
+      setSellingEditCard(false);
+      setTableCard(true);
+      setVisibleTemporary(false);
     } catch (error) {
       notify({
         title: error,
@@ -1246,6 +1169,8 @@ export const Sale = () => {
     saleproducts,
     clearDatas,
     getSaleConnectors,
+    currenttemporary,
+    deleteTemporarys,
   ]);
 
   //====================================================================
@@ -1284,12 +1209,24 @@ export const Sale = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+      data.products.sort((a, b) => {
+        return a.product.productdata.code > b.product.productdata.code ? 1 : -1;
+      });
       setCheck(true);
       setSales(data);
       clearDatas();
       setVisible(false);
       getSaleConnectors();
       setSaleConnectorId();
+      if (currenttemporary) {
+        deleteTemporarys(currenttemporary._id);
+      }
+      setCheckTemporary(false);
+      setCheckTemporary(false);
+      setSellingCard(false);
+      setSellingEditCard(false);
+      setTableCard(true);
+      setVisibleTemporary(false);
     } catch (error) {
       notify({
         title: error,
@@ -1310,6 +1247,8 @@ export const Sale = () => {
     clearDatas,
     getSaleConnectors,
     saleconnectorid,
+    currenttemporary,
+    deleteTemporarys,
   ]);
 
   //====================================================================
@@ -1389,8 +1328,8 @@ export const Sale = () => {
               editPayments.reduce((summ, payment) => {
                 return summ + payment.payment;
               }, 0)) *
-              100
-          ) / 100,
+              10000
+          ) / 10000,
         debtuzs:
           Math.round(
             (editTotalPriceUzs -
@@ -1400,8 +1339,8 @@ export const Sale = () => {
               editPayments.reduce((summ, payment) => {
                 return summ + payment.paymentuzs;
               }, 0)) *
-              100
-          ) / 100,
+              10000
+          ) / 10000,
       });
     }
     types.map((type) => {
@@ -1415,8 +1354,8 @@ export const Sale = () => {
                 editPayments.reduce((summ, payment) => {
                   return summ + payment.payment;
                 }, 0)) *
-                100
-            ) / 100),
+                10000
+            ) / 10000),
           (p[type + 'uzs'] =
             Math.round(
               (editTotalPriceUzs -
@@ -1426,8 +1365,8 @@ export const Sale = () => {
                 editPayments.reduce((summ, payment) => {
                   return summ + payment.paymentuzs;
                 }, 0)) *
-                100
-            ) / 100),
+                10000
+            ) / 10000),
           (p.type = type),
           setDebt({
             ...debt,
@@ -1448,17 +1387,17 @@ export const Sale = () => {
       (e.target.dataset.type === 'cash'
         ? e.target.value === ''
           ? 0
-          : Math.round(e.target.value * 100) / 100
+          : Math.round(e.target.value * 10000) / 10000
         : paymentEdit.cash) +
       (e.target.dataset.type === 'card'
         ? e.target.value === ''
           ? 0
-          : Math.round(e.target.value * 100) / 100
+          : Math.round(e.target.value * 10000) / 10000
         : paymentEdit.card) +
       (e.target.dataset.type === 'transfer'
         ? e.target.value === ''
           ? 0
-          : Math.round(e.target.value * 100) / 100
+          : Math.round(e.target.value * 10000) / 10000
         : paymentEdit.transfer);
 
     const disc = editDiscounts.reduce((summ, discount) => {
@@ -1467,14 +1406,14 @@ export const Sale = () => {
     const pays = editPayments.reduce((summ, payment) => {
       return summ + payment.payment;
     }, 0);
-    const val = Math.round(e.target.value * 100) / 100;
+    const val = Math.round(e.target.value * 10000) / 10000;
 
-    const totals = Math.round((editTotalPrice - pays - disc) * 100) / 100;
+    const totals = Math.round((editTotalPrice - pays - disc) * 10000) / 10000;
     if (
       (totals > 0 && val < 0) ||
       (totals < 0 && val > 0) ||
-      (totals < 0 && Math.round(total * 100) / 100 < totals) ||
-      (totals > 0 && Math.round(total * 100) / 100 > totals)
+      (totals < 0 && Math.round(total * 10000) / 10000 < totals) ||
+      (totals > 0 && Math.round(total * 10000) / 10000 > totals)
     ) {
       return notify({
         title: t('Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!'),
@@ -1483,9 +1422,9 @@ export const Sale = () => {
       });
     }
     p[e.target.dataset.type] =
-      e.target.value === '' ? '' : Math.round(e.target.value * 100) / 100;
+      e.target.value === '' ? '' : Math.round(e.target.value * 10000) / 10000;
     p[e.target.dataset.type + 'uzs'] =
-      Math.round(e.target.value * 100 * editExchanrate.exchangerate) / 100;
+      Math.round(e.target.value * 10000 * editExchanrate.exchangerate) / 10000;
     setDebt({
       ...debt,
       debt:
@@ -1500,8 +1439,8 @@ export const Sale = () => {
             p.cash -
             p.card -
             p.transfer) *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
       debtuzs:
         Math.round(
           (editTotalPriceUzs -
@@ -1514,8 +1453,8 @@ export const Sale = () => {
             p.cashuzs -
             p.carduzs -
             p.transferuzs) *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
     });
   };
 
@@ -1524,20 +1463,20 @@ export const Sale = () => {
       (e.target.dataset.type === 'cash'
         ? e.target.value === ''
           ? 0
-          : Math.round((e.target.value / editExchanrate.exchangerate) * 100) /
-            100
+          : Math.round((e.target.value / editExchanrate.exchangerate) * 10000) /
+            10000
         : payment.cash) +
       (e.target.dataset.type === 'card'
         ? e.target.value === ''
           ? 0
-          : Math.round((e.target.value / editExchanrate.exchangerate) * 100) /
-            100
+          : Math.round((e.target.value / editExchanrate.exchangerate) * 10000) /
+            10000
         : payment.card) +
       (e.target.dataset.type === 'transfer'
         ? e.target.value === ''
           ? 0
-          : Math.round((e.target.value / editExchanrate.exchangerate) * 100) /
-            100
+          : Math.round((e.target.value / editExchanrate.exchangerate) * 10000) /
+            10000
         : payment.transfer);
 
     const disc = editDiscounts.reduce((summ, discount) => {
@@ -1546,14 +1485,14 @@ export const Sale = () => {
     const pays = editPayments.reduce((summ, payment) => {
       return summ + payment.payment;
     }, 0);
-    const val = Math.round(e.target.value * 100) / 100;
+    const val = Math.round(e.target.value * 10000) / 10000;
 
-    const totals = Math.round((editTotalPrice - pays - disc) * 100) / 100;
+    const totals = Math.round((editTotalPrice - pays - disc) * 10000) / 10000;
     if (
       (totals > 0 && val < 0) ||
       (totals < 0 && val > 0) ||
-      (totals < 0 && Math.round(total * 100) / 100 < totals) ||
-      (totals > 0 && Math.round(total * 100) / 100 > totals)
+      (totals < 0 && Math.round(total * 10000) / 10000 < totals) ||
+      (totals > 0 && Math.round(total * 10000) / 10000 > totals)
     ) {
       return notify({
         title: t('Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!'),
@@ -1562,9 +1501,10 @@ export const Sale = () => {
       });
     }
     p[e.target.dataset.type] =
-      Math.round((e.target.value / editExchanrate.exchangerate) * 100) / 100;
+      Math.round((e.target.value / editExchanrate.exchangerate) * 10000) /
+      10000;
     p[e.target.dataset.type + 'uzs'] =
-      e.target.value === '' ? '' : Math.round(e.target.value * 100) / 100;
+      e.target.value === '' ? '' : Math.round(e.target.value * 10000) / 10000;
     setDebt({
       ...debt,
       debt:
@@ -1579,8 +1519,8 @@ export const Sale = () => {
             p.cash -
             p.card -
             p.transfer) *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
       debtuzs:
         Math.round(
           (editTotalPriceUzs -
@@ -1593,8 +1533,8 @@ export const Sale = () => {
             p.cashuzs -
             p.carduzs -
             p.transferuzs) *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
     });
   };
 
@@ -1622,20 +1562,29 @@ export const Sale = () => {
       });
     }
 
+    let yes = true;
     let EditDiscounts = [...editDiscounts];
-    if (EditDiscounts.length !== 0) {
-      for (const i in EditDiscounts) {
-        if (
-          EditDiscounts[i]._id === products[parseInt(e.target.id)].discount &&
-          EditDiscounts[i].procient > 0
-        ) {
-          EditDiscounts[i] = { ...editSaleConnector.discounts[i] };
-          setEditSaleProducts(returnProduct(products, e));
-          discountProcient(EditDiscounts, products, e, i);
-        }
+
+    for (const i in EditDiscounts) {
+      if (
+        EditDiscounts[i]._id === products[parseInt(e.target.id)].discount &&
+        EditDiscounts[i].procient > 0
+      ) {
+        yes = false;
+        const count =
+          products[parseInt(e.target.id)].pieces === ''
+            ? 0
+            : products[parseInt(e.target.id)].pieces;
+        setEditSaleProducts(returnProduct(products, e));
+        discountProcient(
+          EditDiscounts[i],
+          products[parseInt(e.target.id)],
+          count
+        );
       }
-      setEditDiscounts(EditDiscounts);
-    } else {
+    }
+    setEditDiscounts(EditDiscounts);
+    if (yes) {
       setEditSaleProducts(returnProduct(products, e));
     }
 
@@ -1647,8 +1596,8 @@ export const Sale = () => {
           products.reduce((summ, product) => {
             return summ + product.totalprice;
           }, 0)) *
-          100
-      ) / 100;
+          10000
+      ) / 10000;
 
     let totaluzs =
       Math.round(
@@ -1658,8 +1607,8 @@ export const Sale = () => {
           products.reduce((summ, product) => {
             return summ + product.totalpriceuzs;
           }, 0)) *
-          100
-      ) / 100;
+          10000
+      ) / 10000;
 
     let cashuzs =
       Math.round(
@@ -1670,8 +1619,8 @@ export const Sale = () => {
           editPayments.reduce((summ, payment) => {
             return summ + payment.paymentuzs;
           }, 0)) *
-          100
-      ) / 100;
+          10000
+      ) / 10000;
 
     let cash =
       Math.round(
@@ -1682,15 +1631,15 @@ export const Sale = () => {
           editPayments.reduce((summ, payment) => {
             return summ + payment.payment;
           }, 0)) *
-          100
-      ) / 100;
+          10000
+      ) / 10000;
 
     setEditTotalPrice(total);
     setEditTotalPriceUzs(totaluzs);
     setPaymentEdit({
       ...paymentEdit,
-      cash: Math.round(cash * 100) / 100,
-      cashuzs: Math.round(cashuzs * 100) / 100,
+      cash: Math.round(cash * 10000) / 10000,
+      cashuzs: Math.round(cashuzs * 10000) / 10000,
       type: 'cash',
     });
     setEditExchanrate({
@@ -1698,8 +1647,8 @@ export const Sale = () => {
         Math.round(
           (editSaleConnector.products[parseInt(e.target.id)].unitpriceuzs /
             editSaleConnector.products[parseInt(e.target.id)].unitprice) *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
     });
   };
 
@@ -1720,8 +1669,8 @@ export const Sale = () => {
       debt.debt;
 
     if (
-      Math.round(total * 100) / 100 !==
-      Math.round(editTotalPrice * 100) / 100
+      Math.round(total * 10000) / 10000 !==
+      Math.round(editTotalPrice * 10000) / 10000
     ) {
       return notify({
         title: t("Diqqat! To'lov hisobida xatolik yuz bergan!"),
@@ -1729,11 +1678,15 @@ export const Sale = () => {
         status: 'error',
       });
     }
-    if (debt.debt > 0) {
-      return setModal4(true);
-    }
+    // if (debt.debt > 0) {
+    //   return setModal4(true);
+    // }
 
     return setModal5(true);
+  };
+
+  const editPaymentComment = (e) => {
+    setPaymentEdit({ ...paymentEdit, comment: e.target.value });
   };
 
   const createHandlerEdit = useCallback(async () => {
@@ -1762,6 +1715,11 @@ export const Sale = () => {
       clearDatas();
       setVisibleEdit(false);
       getSaleConnectors();
+      setCheckTemporary(false);
+      setSellingCard(false);
+      setSellingEditCard(false);
+      setTableCard(true);
+      setVisibleTemporary(false);
     } catch (error) {
       notify({
         title: error,
@@ -1852,15 +1810,15 @@ export const Sale = () => {
       Math.round(
         e.products.reduce((summ, product) => {
           return summ + product.totalprice;
-        }, 0) * 100
-      ) / 100
+        }, 0) * 10000
+      ) / 10000
     );
     setPrePaymentTotalPriceUzs(
       Math.round(
         e.products.reduce((summ, product) => {
           return summ + product.totalpriceuzs;
-        }, 0) * 100
-      ) / 100
+        }, 0) * 10000
+      ) / 10000
     );
     setPrePaymentDebt({
       ...prePaymentDebt,
@@ -1875,8 +1833,8 @@ export const Sale = () => {
             e.payments.reduce((summ, payment) => {
               return summ + payment.payment;
             }, 0)) *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
       debtuzs:
         Math.round(
           (e.products.reduce((summ, product) => {
@@ -1888,8 +1846,8 @@ export const Sale = () => {
             e.payments.reduce((summ, payment) => {
               return summ + payment.paymentuzs;
             }, 0)) *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
     });
   };
 
@@ -1910,8 +1868,8 @@ export const Sale = () => {
               prePaymentSaleConnector.payments.reduce((summ, payment) => {
                 return summ + payment.payment;
               }, 0)) *
-              100
-          ) / 100,
+              10000
+          ) / 10000,
         debtuzs:
           Math.round(
             (prePaymentTotalPriceUzs -
@@ -1921,8 +1879,8 @@ export const Sale = () => {
               prePaymentSaleConnector.payments.reduce((summ, payment) => {
                 return summ + payment.paymentuzs;
               }, 0)) *
-              100
-          ) / 100,
+              10000
+          ) / 10000,
       });
     }
     types.map((type) => {
@@ -1936,8 +1894,8 @@ export const Sale = () => {
                 prePaymentSaleConnector.payments.reduce((summ, payment) => {
                   return summ + payment.payment;
                 }, 0)) *
-                100
-            ) / 100),
+                10000
+            ) / 10000),
           (p[type + 'uzs'] =
             Math.round(
               (prePaymentTotalPriceUzs -
@@ -1947,8 +1905,8 @@ export const Sale = () => {
                 prePaymentSaleConnector.payments.reduce((summ, payment) => {
                   return summ + payment.paymentuzs;
                 }, 0)) *
-                100
-            ) / 100),
+                10000
+            ) / 10000),
           (p.type = type),
           setPrePaymentDebt({
             ...prePaymentDebt,
@@ -1969,17 +1927,17 @@ export const Sale = () => {
       (e.target.dataset.type === 'cash'
         ? e.target.value === ''
           ? 0
-          : Math.round(e.target.value * 100) / 100
+          : Math.round(e.target.value * 10000) / 10000
         : prePayment.cash) +
       (e.target.dataset.type === 'card'
         ? e.target.value === ''
           ? 0
-          : Math.round(e.target.value * 100) / 100
+          : Math.round(e.target.value * 10000) / 10000
         : prePayment.card) +
       (e.target.dataset.type === 'transfer'
         ? e.target.value === ''
           ? 0
-          : Math.round(e.target.value * 100) / 100
+          : Math.round(e.target.value * 10000) / 10000
         : prePayment.transfer);
 
     const disc = prePaymentSaleConnector.discounts.reduce((summ, discount) => {
@@ -1988,14 +1946,15 @@ export const Sale = () => {
     const pays = prePaymentSaleConnector.payments.reduce((summ, payment) => {
       return summ + payment.payment;
     }, 0);
-    const val = Math.round(e.target.value * 100) / 100;
+    const val = Math.round(e.target.value * 10000) / 10000;
 
-    const totals = Math.round((prePaymentTotalPrice - pays - disc) * 100) / 100;
+    const totals =
+      Math.round((prePaymentTotalPrice - pays - disc) * 10000) / 10000;
     if (
       (totals > 0 && val < 0) ||
       (totals < 0 && val > 0) ||
-      (totals < 0 && Math.round(total * 100) / 100 < totals) ||
-      (totals > 0 && Math.round(total * 100) / 100 > totals)
+      (totals < 0 && Math.round(total * 10000) / 10000 < totals) ||
+      (totals > 0 && Math.round(total * 10000) / 10000 > totals)
     ) {
       return notify({
         title: t('Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!'),
@@ -2004,9 +1963,9 @@ export const Sale = () => {
       });
     }
     p[e.target.dataset.type] =
-      e.target.value === '' ? '' : Math.round(e.target.value * 100) / 100;
+      e.target.value === '' ? '' : Math.round(e.target.value * 10000) / 10000;
     p[e.target.dataset.type + 'uzs'] =
-      Math.round(e.target.value * 100 * exchangerate.exchangerate) / 100;
+      Math.round(e.target.value * 10000 * exchangerate.exchangerate) / 10000;
     setPrePaymentDebt({
       ...prePaymentDebt,
       debt:
@@ -2021,8 +1980,8 @@ export const Sale = () => {
             p.cash -
             p.card -
             p.transfer) *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
       debtuzs:
         Math.round(
           (prePaymentTotalPriceUzs -
@@ -2035,8 +1994,8 @@ export const Sale = () => {
             p.cashuzs -
             p.carduzs -
             p.transferuzs) *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
     });
   };
 
@@ -2045,17 +2004,20 @@ export const Sale = () => {
       (e.target.dataset.type === 'cash'
         ? e.target.value === ''
           ? 0
-          : Math.round((e.target.value / exchangerate.exchangerate) * 100) / 100
+          : Math.round((e.target.value / exchangerate.exchangerate) * 10000) /
+            10000
         : prePayment.cash) +
       (e.target.dataset.type === 'card'
         ? e.target.value === ''
           ? 0
-          : Math.round((e.target.value / exchangerate.exchangerate) * 100) / 100
+          : Math.round((e.target.value / exchangerate.exchangerate) * 10000) /
+            10000
         : prePayment.card) +
       (e.target.dataset.type === 'transfer'
         ? e.target.value === ''
           ? 0
-          : Math.round((e.target.value / exchangerate.exchangerate) * 100) / 100
+          : Math.round((e.target.value / exchangerate.exchangerate) * 10000) /
+            10000
         : prePayment.transfer);
 
     const disc = prePaymentSaleConnector.discounts.reduce((summ, discount) => {
@@ -2065,15 +2027,16 @@ export const Sale = () => {
       return summ + payment.payment;
     }, 0);
     const val =
-      Math.round((e.target.value / exchangerate.exchangerate) * 100) / 100;
+      Math.round((e.target.value / exchangerate.exchangerate) * 10000) / 10000;
 
-    const totals = Math.round((prePaymentTotalPrice - pays - disc) * 100) / 100;
+    const totals =
+      Math.round((prePaymentTotalPrice - pays - disc) * 10000) / 10000;
 
     if (
       (totals > 0 && val < 0) ||
       (totals < 0 && val > 0) ||
-      (totals < 0 && Math.round(total * 100) / 100 < totals) ||
-      (totals > 0 && Math.round(total * 100) / 100 > totals)
+      (totals < 0 && Math.round(total * 10000) / 10000 < totals) ||
+      (totals > 0 && Math.round(total * 10000) / 10000 > totals)
     ) {
       return notify({
         title: t('Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!'),
@@ -2082,9 +2045,9 @@ export const Sale = () => {
       });
     }
     p[e.target.dataset.type] =
-      Math.round((e.target.value / exchangerate.exchangerate) * 100) / 100;
+      Math.round((e.target.value / exchangerate.exchangerate) * 10000) / 10000;
     p[e.target.dataset.type + 'uzs'] =
-      e.target.value === '' ? '' : Math.round(e.target.value * 100) / 100;
+      e.target.value === '' ? '' : Math.round(e.target.value * 10000) / 10000;
 
     setPrePaymentDebt({
       ...prePaymentDebt,
@@ -2100,8 +2063,8 @@ export const Sale = () => {
             p.cash -
             p.card -
             p.transfer) *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
       debtuzs:
         Math.round(
           (prePaymentTotalPriceUzs -
@@ -2114,8 +2077,8 @@ export const Sale = () => {
             p.cashuzs -
             p.carduzs -
             p.transferuzs) *
-            100
-        ) / 100,
+            10000
+        ) / 10000,
     });
   };
 
@@ -2125,6 +2088,10 @@ export const Sale = () => {
       changeTypePrePaymentUzs(e, p);
     } else changeTypePrePayment(e, p);
     setPrePayment(p);
+  };
+
+  const prePaymentComment = (e) => {
+    setPrePayment({ ...prePayment, comment: e.target.value });
   };
 
   const checkPrePayment = () => {
@@ -2155,7 +2122,6 @@ export const Sale = () => {
         }
       );
       localStorage.setItem('data', data);
-
       setModal6(false);
       // setCheckConnectors(true);
       window.scroll({ top: 0 });
@@ -2181,9 +2147,181 @@ export const Sale = () => {
   //====================================================================
   //====================================================================
 
+  const changeEnter = (e) => {
+    if (e.key === 'Enter') {
+      pushSaleProduct();
+    }
+  };
+
+  //====================================================================
+  // TEMPORARY
+  const [temporary, setTemporary] = useState({
+    saleconnectorid: '',
+    client: {},
+    packman: {},
+    discount: {},
+    payment: {},
+    debt: {},
+    products: [],
+  });
+  const [temporarys, setTemporarys] = useState([]);
+
+  const [checkTemporary, setCheckTemporary] = useState(false);
+
+  const saveTemporary = () => {
+    if (saleproducts.length === 0) {
+      return notify({
+        title:
+          "Diqqat! Sotuvni vaqtincha saqlash uchun kamida bitta mahsulot kiritilgan bo'lishi kerak.",
+        status: 'warning',
+      });
+    }
+    saleproducts.sort((a, b) => {
+      return a.product.code > b.product.code ? 1 : -1;
+    });
+    // if (!client.name) {
+    //   return notify({
+    //     title:
+    //       "Diqqat! Sotuvni vaqtincha saqlash uchun mijoz ma'lumotini kiriting",
+    //     status: 'warning',
+    //   });
+    // }
+    setModal7(true);
+  };
+
+  const confirmSaveTemporary = () => {
+    setModal7(false);
+    setTemporary({
+      saleconnectorid,
+      client,
+      packman,
+      discount,
+      payment,
+      debt,
+      products: saleproducts,
+    });
+    setCheckTemporary(true);
+    clearDatas();
+    createTemporary();
+    if (currenttemporary) {
+      deleteTemporarys(currenttemporary._id);
+      setCurrentTemporary();
+    }
+    setSellingCard(false);
+    setTableCard(false);
+    setSellingEditCard(false);
+    setVisibleTemporary(true);
+  };
+
+  const createTemporary = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/sales/temporary/register`,
+        'POST',
+        {
+          market: auth.market._id,
+          temporary: {
+            saleconnectorid,
+            client,
+            packman,
+            discount,
+            payment,
+            debt,
+            products: saleproducts,
+          },
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+
+      setTemporarys(data);
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [
+    request,
+    notify,
+    auth,
+    client,
+    debt,
+    discount,
+    saleconnectorid,
+    saleproducts,
+    packman,
+    payment,
+  ]);
+
+  const getTemporarys = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/sales/temporary/get`,
+        'POST',
+        {
+          market: auth.market._id,
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+
+      setTemporarys(data);
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [request, notify, auth]);
+
+  const changeTemporary = (e) => {
+    setVisibleTemporary(false);
+    setSellingCard(true);
+    setSaleConnectorId(e.temporary.saleconnectorid);
+    setClient(e.temporary.client ? e.temporary.client : {});
+    setDebt(e.temporary.debt);
+    setDiscount(e.temporary.discount);
+    setPayment(e.temporary.payment);
+    setSaleProducts(e.temporary.products);
+    setCurrentTemporary(e);
+    setTotalPrice(
+      e.temporary.products.reduce((summ, product) => {
+        return summ + product.totalprice;
+      }, 0)
+    );
+    setTotalPriceUzs(
+      e.temporary.products.reduce((summ, product) => {
+        return summ + product.totalpriceuzs;
+      }, 0)
+    );
+  };
+  const [delTemporary, setDelTemporary] = useState({});
+
+  const deleteTemporary = (e) => {
+    setDelTemporary(e);
+    setModal8(true);
+  };
+
+  const confirmDeleteTemporary = () => {
+    deleteTemporarys(delTemporary._id);
+    setModal8(false);
+    notify({
+      title: "Saqlangan sotuv amaliyoti muvaffaqqiyatli o'chirildi",
+      status: 'success',
+    });
+  };
+
   //====================================================================
   //====================================================================
   // UseEffect
+  useEffect(() => {
+    getTemporarys();
+  }, [getTemporarys]);
   const [n, setN] = useState();
   useEffect(() => {
     getSaleConnectors();
@@ -2196,31 +2334,28 @@ export const Sale = () => {
       getClients();
       getExchangerate();
       getProducts();
-      // getCategories();
-      // getProductTypes();
-      // getBrand();
-      // getBaseUrl();
     }
   }, [
-    // getCategories,
-    // getProductTypes,
-    // getBrand,
     getPackmans,
     getClients,
     getProducts,
     n,
-    // getBaseUrl,
     getExchangerate,
     getSaleConnectors,
   ]);
-  //====================================================================
-  //====================================================================
 
+  //====================================================================
+  //====================================================================
   return (
     <div className='m-3'>
-      {/* <div className={`${editVisible ? "" : "hidden"}`}>
-        <EditSaleProducts />
-      </div> */}
+      <div className={`${checkTemporary ? '' : 'hidden'}`}>
+        <TemporayCheque
+          sales={temporary}
+          client={client}
+          setCheck={setCheckTemporary}
+        />
+      </div>
+
       <div className={`${check ? '' : 'hidden'}`}>
         <Cheque sales={sales} setCheck={setCheck} />
       </div>
@@ -2229,6 +2364,7 @@ export const Sale = () => {
       </div>
       <div className={visible ? '' : 'hidden'}>
         <Card
+          paymentComment={paymentComment}
           totalpriceuzs={totalpriceuzs}
           client={client}
           exchangerate={exchangerate}
@@ -2248,6 +2384,7 @@ export const Sale = () => {
       </div>
       <div className={visibleEdit ? '' : 'hidden'}>
         <CardEdit
+          editPaymentComment={editPaymentComment}
           totalpriceuzs={totalpriceuzs}
           client={client}
           exchangerate={exchangerate}
@@ -2266,6 +2403,7 @@ export const Sale = () => {
       </div>
       <div className={prePaymentVisible ? '' : 'hidden'}>
         <PrePaymentCard
+          prePaymentComment={prePaymentComment}
           checkHandler={checkPrePayment}
           changeHandler={changeHandlerPrePayment}
           debt={prePaymentDebt}
@@ -2282,23 +2420,22 @@ export const Sale = () => {
       </div>
 
       <RouterBtns
+        changeVisibleTemporary={changeVisibleTemporary}
         changeSellingCard={changeSellingCard}
         changeSellingEditCard={changeSellingEditCard}
         changeTableCard={changeTableCard}
       />
-
-      <div className={sellingCard ? '' : 'hidden'}>
-        <Products
-          changeProduct={changeProduct}
-          products={products}
-          // changeBrand={changeBrand}
-          // changeProductType={changeProductType}
-          // changeCategory={changeCategory}
-          // categories={categories}
-          // producttypes={producttypes}
-          // brands={brands}
+      <div className={`${visibleTemporary ? '' : 'hidden'}`}>
+        <Temporaries
+          deleteTemporary={deleteTemporary}
+          temporarys={temporarys}
+          changeTemporary={changeTemporary}
         />
+      </div>
+      <div className={sellingCard ? ' ' : 'hidden'}>
+        <Products changeProduct={changeProduct} products={products} />
         <Selling
+          saveTemporary={saveTemporary}
           saleconnectorid={saleconnectorid}
           totalpriceuzs={totalpriceuzs}
           checkNumber={saleCounts}
@@ -2365,7 +2502,13 @@ export const Sale = () => {
       <Modal
         modal={modal}
         setModal={setModal}
-        basic={<InputProduct setCounts={setCounts} product={saleproduct} />}
+        basic={
+          <InputProduct
+            setCounts={setCounts}
+            product={saleproduct}
+            changeEnter={changeEnter}
+          />
+        }
         // text={"mahsulotnti o'chirishni tasdiqlaysizmi?"}
         handler={pushSaleProduct}
       />
@@ -2374,9 +2517,9 @@ export const Sale = () => {
         modal={modal2}
         setModal={setModal2}
         basic={`${t('Diqqat! Iltimos')} ${debt.debt.toLocaleString(
-          'de-DE'
+          'ru-RU'
         )}$ (${(debt.debt * exchangerate.exchangerate).toLocaleString(
-          'de-DE'
+          'ru-RU'
         )} ${t("so'm)  qarzdorlik uchun izoh kiriting")}`}
         text={
           <input
@@ -2399,9 +2542,9 @@ export const Sale = () => {
         modal={modal4}
         setModal={setModal4}
         basic={`${t('Diqqat! Iltimos')} ${debt.debt.toLocaleString(
-          'de-DE'
+          'ru-RU'
         )}$ (${(debt.debt * editExchanrate.exchangerate).toLocaleString(
-          'de-DE'
+          'ru-RU'
         )} ${t("so'm)  qarzdorlik uchun izoh kiriting")}`}
         text={
           <input
@@ -2425,6 +2568,19 @@ export const Sale = () => {
         setModal={setModal6}
         basic={t(`Mijozdan to'lov qabul qilishni tasdiqlaysizmi?`)}
         handler={createHandlerPrePayment}
+      />
+
+      <Modal
+        modal={modal7}
+        setModal={setModal7}
+        handler={confirmSaveTemporary}
+        basic={t('Mijoz uchun sotuvni vaqtincha saqlashni tasdiqlaysizmi?')}
+      />
+      <Modal
+        modal={modal8}
+        setModal={setModal8}
+        handler={confirmDeleteTemporary}
+        basic={t("Diqqat! Saqlangan sotuvni o'chirishni tasdiqlaysizmi?")}
       />
     </div>
   );

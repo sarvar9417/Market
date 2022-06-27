@@ -1,16 +1,15 @@
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
-import { InputPayment } from "./InputPayment";
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
+import { InputPayment } from './InputPayment';
 // import ToggleButton from "react-toggle-button";
-import { t } from "i18next";
+import { t } from 'i18next';
 
 export const LeftCard = ({
+  prePaymentComment,
   uzs,
   exchangerate,
   checkHandler,
-  // discount,
-  // changeProcient,
   payment,
   paymentType,
   changeHandler,
@@ -25,21 +24,20 @@ export const LeftCard = ({
     1,
     2,
     3,
-    ",",
+    ',',
     0,
     <FontAwesomeIcon icon={faArrowLeft} />,
   ];
 
   const types = [
-    { type: "cash", name: "Naqt" },
-    { type: "card", name: "Plastik" },
-    { type: "transfer", name: "O`tkazma" },
+    { type: 'cash', name: 'Naqt' },
+    { type: 'card', name: 'Plastik' },
+    { type: 'transfer', name: 'O`tkazma' },
   ];
-  // const borderRadiusStyle = { borderRadius: 2 };
   return (
     <div className='w-full text-white max-w-[400px] m-auto'>
       <div>
-        {paymentType.type === "mixed" ? (
+        {paymentType.type === 'mixed' ? (
           types.map((type, index) => {
             return (
               <div
@@ -48,7 +46,6 @@ export const LeftCard = ({
                 <InputPayment
                   uzs={uzs}
                   exchangerate={exchangerate}
-                  // discount={discount}
                   changeHandler={changeHandler}
                   paymentType={type}
                   payment={payment}
@@ -68,20 +65,6 @@ export const LeftCard = ({
             />
           </div>
         )}
-        {/* {paymentType.type === "discount" ? (
-          <div className='text-base text-right flex justify-end pt-2'>
-            <ToggleButton
-              thumbStyle={borderRadiusStyle}
-              trackStyle={borderRadiusStyle}
-              inactiveLabel={"$"}
-              activeLabel={"%"}
-              value={discount.isProcient}
-              onToggle={changeProcient}
-            />
-          </div>
-        ) : (
-          ""
-        )} */}
       </div>
       <div className='grid grid-cols-3 gap-2 p-4'>
         {number.map((num, index) => {
@@ -94,6 +77,11 @@ export const LeftCard = ({
           );
         })}
       </div>
+      <input
+        className='w-full mb-2 bg-[#54B1EC] text-white outline-none rounded px-3 py-1 text-base placeholder:text-[#AFD5EF] font-semibold'
+        placeholder={t("To'lov uchun izoh")}
+        onChange={prePaymentComment}
+      />
       <button
         onClick={checkHandler}
         className='w-full py-2 bg-[#54B1EC] font-bold text-lg hover:bg-[#54B3FF]'>

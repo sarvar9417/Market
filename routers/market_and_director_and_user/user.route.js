@@ -204,13 +204,19 @@ module.exports.login = async (req, res) => {
       { expiresIn: '12h' }
     );
 
+    const userr = await User.findById(user._id)
+      .populate('market')
+      .select('firstname lastname type')
+      .populate('market', 'name');
+
     res.send({
       token,
-      userId: user._id,
-      user: user,
-      market: user.market,
+      userId: userr._id,
+      user: userr,
+      market: userr.market,
     });
   } catch (e) {
+    console.log(e);
     res.status(500).json({ message: 'Serverda xatolik yuz berdi' });
   }
 };

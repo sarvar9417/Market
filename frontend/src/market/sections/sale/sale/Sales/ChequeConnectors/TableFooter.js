@@ -1,19 +1,33 @@
-import React from "react";
-import { t } from 'i18next'
+import { t } from 'i18next';
+import React from 'react';
+
 export const TableFooter = ({ sales }) => {
   return (
     <table className='table'>
       <tfoot className='text-base'>
         <tr>
           <th colSpan={6} className='py-1'>
-            {t("Jami")}:
+            {t('Jami')}:
           </th>
           <th className='text-right text-teal-900 py-1'>
             {sales.products
               .reduce((summ, product) => {
                 return summ + product.totalprice;
               }, 0)
-              .toLocaleString("de-DE")}{" "}
+              .toLocaleString('ru-RU')}{' '}
+            USD
+          </th>
+        </tr>
+        <tr>
+          <th colSpan={6} className='py-1'>
+            {t('Chegirma')}:
+          </th>
+          <th className='text-right text-teal-900 py-1'>
+            {sales.discounts
+              .reduce((summ, discount) => {
+                return summ + discount.discount;
+              }, 0)
+              .toLocaleString('ru-RU')}{' '}
             USD
           </th>
         </tr>
@@ -26,26 +40,13 @@ export const TableFooter = ({ sales }) => {
               .reduce((summ, payment) => {
                 return summ + payment.payment;
               }, 0)
-              .toLocaleString("de-DE")}{" "}
+              .toLocaleString('ru-RU')}{' '}
             USD
           </th>
         </tr>
         <tr>
           <th colSpan={6} className='py-1'>
-            {t("Chegirma")}:
-          </th>
-          <th className='text-right text-teal-900 py-1'>
-            {sales.discounts
-              .reduce((summ, discount) => {
-                return summ + discount.discount;
-              }, 0)
-              .toLocaleString("de-DE")}{" "}
-            USD
-          </th>
-        </tr>
-        <tr>
-          <th colSpan={6} className='py-1'>
-            {t("Qarz")}:
+            {t('Qarz')}:
           </th>
           <th className='text-right text-teal-900 py-1'>
             {(
@@ -58,7 +59,7 @@ export const TableFooter = ({ sales }) => {
               sales.discounts.reduce((summ, discount) => {
                 return summ + discount.discount;
               }, 0)
-            ).toLocaleString("de-DE")}{" "}
+            ).toLocaleString('ru-RU')}{' '}
             USD
           </th>
         </tr>
