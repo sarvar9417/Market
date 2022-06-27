@@ -76,6 +76,8 @@ export const Incoming = () => {
     setVisible(false);
     setVisibleTemporary(false);
     setVisibleReport(true);
+    setReportSuppliersVisible(false);
+    setDailyVisible(true);
   };
 
   const changeVisibleTemporary = () => {
@@ -108,6 +110,51 @@ export const Incoming = () => {
     [toast]
   );
 
+  //====================================================================
+  //====================================================================
+  const [reportSuppliersVisible, setReportSuppliersVisible] = useState(false);
+  const [dailyVisible, setDailyVisible] = useState(true);
+  const [suppliersConnector, setSuppliersConnector] = useState([]);
+
+  const connectSuppliers = useCallback((data) => {
+    let sup = [];
+    data.map((item, index) => {
+      let obj = {
+        _id: item.supplier._id,
+        createdAt: item.createdAt,
+        supplier: item.supplier.name,
+        pieces: item.pieces,
+        totalprice: item.totalprice,
+        incomings: 1,
+      };
+      data.map((el, ind) => {
+        if (
+          index !== ind &&
+          el.supplier._id.toString() === item.supplier._id.toString()
+        ) {
+          obj.pieces += el.pieces;
+          obj.totalprice += el.totalprice;
+          obj.incomings += 1;
+          return item;
+        }
+        return item;
+      });
+      return sup.push(obj);
+    });
+    let filter = sup.filter(
+      (v, i, a) => a.findIndex((v2) => v2.supplier === v.supplier) === i
+    );
+    setSuppliersConnector(filter);
+  }, []);
+
+  const changeSupplier = (e) => {
+    const filter = searchStorage.filter((item) => item.supplier._id === e);
+    setCurrentImports(filter);
+    setVisibleReport(false);
+    setVisibleTable(true);
+  };
+
+  //====================================================================
   //====================================================================
   // SUPPLIERS
   const [suppliers, setSuppliers] = useState([]);
@@ -395,8 +442,10 @@ export const Incoming = () => {
     setCurrentPage(0);
     setStartDate(new Date(new Date(e).setHours(0, 0, 0, 0)).toISOString());
     setEndDate(new Date(new Date(e).setHours(23, 59, 59, 0)).toISOString());
-    setVisibleReport(false);
-    setVisibleTable(true);
+    // setVisibleReport(false);
+    // setVisibleTable(true);
+    setDailyVisible(false);
+    setReportSuppliersVisible(true);
   }, []);
 
   //====================================================================
@@ -431,6 +480,7 @@ export const Incoming = () => {
       setCountData(data.count);
       setSearchStorage(data.incomings);
       setCurrentImports(data.incomings);
+      connectSuppliers(data.incomings);
     } catch (error) {
       notify({
         title: error,
@@ -447,6 +497,7 @@ export const Incoming = () => {
     startDate,
     endDate,
     sendingsearch,
+    connectSuppliers,
   ]);
 
   const getImportsExcel = useCallback(async () => {
@@ -1057,6 +1108,8 @@ export const Incoming = () => {
         changeVisible={changeVisible}
         changeVisibleTable={changeVisibleTable}
         changeVisibleReport={changeVisibleReport}
+        setDailyVisible={setDailyVisible}
+        setReportSuppliersVisible={setReportSuppliersVisible}
       />
       <div className={`${visibleTemporary ? 'm-3' : 'hidden'}`}>
         <Temporaries
@@ -1090,6 +1143,12 @@ export const Incoming = () => {
       <div className='m-3'>
         <div className={visibleReport ? '' : 'hidden'}>
           <ReportIncomings
+            changeSupplier={changeSupplier}
+            suppliersConnector={suppliersConnector}
+            dailyVisible={dailyVisible}
+            setDailyVisible={setDailyVisible}
+            reportSuppliersVisible={reportSuppliersVisible}
+            setReportSuppliersVisible={setReportSuppliersVisible}
             changeIncomingCard={changeIncomingCard}
             setBeginDay={setBeginDay}
             setEndDay={setEndDay}
