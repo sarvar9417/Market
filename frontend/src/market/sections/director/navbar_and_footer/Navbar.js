@@ -640,7 +640,7 @@ export const Navbar = ({ baseUrl }) => {
                   onClick={changeLink}
                   to='/alo24/packman'
                   className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
-                  {t('Santexnikla')}
+                  {t('Santexniklar')}
                 </Link>
               </li>
               <li>

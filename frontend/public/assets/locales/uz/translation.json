@@ -408,6 +408,7 @@
   "HISOBOT": "ҲИСОБОТ",
   "Umumiy savdo": "Умумий савдо",
   "Umumiy xarajatlar": "Умумий харажатлар",
+  "Xarajatlar":"Харажатлар",
   "Sotish soni": "Сотиш сони",
   "Naqd": "Нақд",
   "Sof foyda": "Соф фойда",
@@ -497,5 +498,21 @@
   "Mijoz uchun sotuvni vaqtincha saqlashni tasdiqlaysizmi?":"Мижоз учун сотувни вақтинча сақлашни тасдиқлайсизми?",
   "Diqqat! Saqlangan sotuvni o'chirishni tasdiqlaysizmi?":"Диққат! Сақланган сотувни ўчиришни тасдиқлайсизми?",
   "Sotuvchi Muvaffaqqiyatli yaratildi.":"Сотувчи муваффаққиятли яратилди",
-  "Diqqat! Yangi sotuvchi yaratishni tasdiqlaysizmi?":"Диққат! Янги сотувчи яратишни тасдиқлайсизми?"
+  "Diqqat! Yangi sotuvchi yaratishni tasdiqlaysizmi?":"Диққат! Янги сотувчи яратишни тасдиқлайсизми?",
+  "Keltirilgan va sotilgan mahsulotlar":"Келтирилган ва сотилган махсулотлар",
+  "Keltirilgan":"Келтирилган",
+  "Sotilgan": "Сотилган",
+  "Narxi (jami)":"Нархи (Жами)",
+  "Soni o'lchov birligi":"",
+  "Kelish narxi":"",
+  "Diqqat! Ushbu mahsulot ro'yxatga":"",
+  "Diqqat! Qabul qilish uchun mahsulotlar tanlanmagan.":"",
+  "Diqqat! Qabulni vaqtincha saqlash uchun kamida bitta mahsulot kiritilgan bo'lishi kerak.":"",
+  "Saqlangan qabul qilish amaliyoti muvaffaqqiyatli o'chirildi":"",
+  "Qabul qilishni vaqtincha saqlashni tasdiqlaysizmi?":"",
+  "Diqqat! Saqlangan qabul qilishni o'chirishni tasdiqlaysizmi?":"",
+  "Diqqat! Barcha qabul qilingan mahsulotlarni omborga kirim qilishni tasdiqlaysizmi?":"",
+  "Sotuvchi":"Сотувчи",
+  "Diqqat! 5% yuqori chegirma kiritish mumkin emas!":""
+
 }

@@ -154,7 +154,7 @@ export const DirectorRegistor = () => {
         })
       );
       notify({
-        title: `Tabriklaymiz ${
+        title: `${t("Tabriklaymiz")} ${
           director.firstname + " " + director.lastname
         } ${t("Siz uchun direktor bo'limi ham muvaffaqqiyatli yaratildi.")}`,
         description: "",

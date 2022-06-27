@@ -14,7 +14,7 @@ export const Header = ({ auth, inventoriesConnector }) => {
       </div>
       <div>
         <div className='text-center text-xl font-bold'>
-          Inventarizatsiya: {inventoriesConnector.id}
+          {t("Inventarizatsiya")}: {inventoriesConnector.id}
         </div>
       </div>
       <div className='text-right text-2xl font-bold '>PIPE HOUSE</div>

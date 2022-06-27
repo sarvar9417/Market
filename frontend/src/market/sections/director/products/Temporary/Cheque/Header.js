@@ -1,15 +1,16 @@
 import React from 'react';
+import { t } from 'i18next'
 
 export const Header = ({ auth, supplier }) => {
   return (
     <div className='grid grid-cols-3 items-center'>
       <div className='flex flex-col'>
         <p className='flex justify-between'>
-          <span className='font-bold'>Do'kon:</span>{' '}
+          <span className='font-bold'>{t("Do'kon")}:</span>{' '}
           <span>{auth.market.name}</span>
         </p>
         <p className='flex justify-between'>
-          <span className='font-bold'>Telefon:</span>{' '}
+          <span className='font-bold'>{t("Telefon")}:</span>{' '}
           <span>+998 {auth.market.phone1}</span>
         </p>
         <p className='flex justify-between'></p>
@@ -17,11 +18,11 @@ export const Header = ({ auth, supplier }) => {
       </div>
       <div className='px-5'>
         <p className='flex justify-between'>
-          <span className='font-bold'>Yetkazib beruvchi:</span>{' '}
+          <span className='font-bold'>{t("Yetkazib beruvchi")}:</span>{' '}
           <span>{supplier && supplier.name}</span>
         </p>
         <p className='flex justify-between'>
-          <span className='font-bold'>Sana:</span>
+          <span className='font-bold'>{t("Sana")}:</span>
           <span>{new Date().toLocaleDateString()}</span>
         </p>
       </div>
