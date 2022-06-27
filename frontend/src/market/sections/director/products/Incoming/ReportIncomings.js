@@ -3,6 +3,7 @@ import { Datapicker } from './components/Datepicker';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { t } from 'i18next';
+import { ReportSuppliers } from './ReportSuppliers';
 
 const animatedComponents = makeAnimated();
 
@@ -15,10 +16,16 @@ export const ReportIncomings = ({
   totalprice,
   totalproducttypes,
   sortSuppliers,
+  suppliersConnector,
+  dailyVisible,
+  reportSuppliersVisible,
+  changeSupplier,
 }) => {
   return (
     <div className='w-full shadow-lg'>
-      <div className='card-header text-lg'>{t("Qabul qilingan mahsulotlar")}</div>
+      <div className='card-header text-lg'>
+        {t('Qabul qilingan mahsulotlar')}
+      </div>
       <div className='grid grid-cols-12 p-3 grid-rows-6'>
         <div className='col-span-12 sm:col-span-6 lg:col-span-3 row-span-6'>
           <div className=' xsm:text-center sm:text-start'>
@@ -45,15 +52,23 @@ export const ReportIncomings = ({
             {Math.round(totalprice * 10000) / 10000} USD
           </span>
         </div>
-        <div className='col-span-12 lg:col-span-9 grid grid-cols-12 row-span-5'>
+        <div
+          className={`${
+            dailyVisible
+              ? 'col-span-12 lg:col-span-9 grid grid-cols-12 row-span-5'
+              : 'hidden'
+          }`}
+        >
           {dailyConnectors.map((connector, index) => {
             return (
               <div
                 key={index}
-                className='col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3 m-2'>
+                className='col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3 m-2'
+              >
                 <button
                   onClick={() => changeIncomingCard(connector.day)}
-                  className='bg-[#216BA5] font-bold rounded text-white text-left py-2 px-3 inline-block w-100'>
+                  className='bg-[#216BA5] font-bold rounded text-white text-left py-2 px-3 inline-block w-100'
+                >
                   <p className='font-bold  text-right  flex justify-between'>
                     <span className='font-bold text-orange-700'>
                       {/* {connector.suppliers && connector.suppliers} */}
@@ -83,6 +98,18 @@ export const ReportIncomings = ({
               </div>
             );
           })}
+        </div>
+        <div
+          className={`${
+            reportSuppliersVisible
+              ? 'col-span-12 lg:col-span-9 grid grid-cols-12 row-span-5'
+              : 'hidden'
+          }`}
+        >
+          <ReportSuppliers
+            suppliersConnector={suppliersConnector}
+            changeSupplier={changeSupplier}
+          />
         </div>
       </div>
     </div>
