@@ -54,10 +54,10 @@ export const Table = ({ inventories, minusInventories }) => {
                     {inventory.productdata.name}
                   </td>
                   <td className='font-bold text-right border border-black py-1 px-2'>
-                    {inventory.productcount}
+                    {inventory.productcount.toLocaleString('ru-RU')}
                   </td>
                   <td className='font-bold text-right border border-black py-1 px-2'>
-                    {inventory.inventorycount}
+                    {inventory.inventorycount.toLocaleString('ru-RU')}
                   </td>
                   <td className='font-bold text-right border border-black py-1 px-2 text-teal-900'>
                     {inventory.inventorycount - inventory.productcount > 0
@@ -94,14 +94,18 @@ export const Table = ({ inventories, minusInventories }) => {
                 {t('Jami')}:
               </th>
               <th className='text-right text-teal-900 p-1 border'>
-                {inventories.reduce((summ, inventory) => {
-                  return summ + inventory.productcount;
-                }, 0)}
+                {inventories
+                  .reduce((summ, inventory) => {
+                    return summ + inventory.productcount;
+                  }, 0)
+                  .toLocaleString('ru-RU')}
               </th>
               <th className='text-right text-teal-900 p-1 border'>
-                {inventories.reduce((summ, inventory) => {
-                  return summ + inventory.inventorycount;
-                }, 0)}
+                {inventories
+                  .reduce((summ, inventory) => {
+                    return summ + inventory.inventorycount;
+                  }, 0)
+                  .toLocaleString('ru-RU')}
               </th>
               <th className='text-right text-teal-900 p-1 border'>
                 {inventories
@@ -178,7 +182,7 @@ export const Table = ({ inventories, minusInventories }) => {
                     {inventory.productdata.name}
                   </td>
                   <td className='font-bold text-right border border-black py-1 px-2'>
-                    {inventory.productcount}
+                    {inventory.productcount.toLocaleString('ru-RU')}
                   </td>
                   <td className='font-bold text-right border border-black py-1 px-2'>
                     {inventory.inventorycount}
@@ -218,14 +222,18 @@ export const Table = ({ inventories, minusInventories }) => {
                 {t('Jami')}:
               </th>
               <th className='text-right text-teal-900 p-1 border'>
-                {minusInventories.reduce((summ, inventory) => {
-                  return summ + inventory.productcount;
-                }, 0)}
+                {minusInventories
+                  .reduce((summ, inventory) => {
+                    return summ + inventory.productcount;
+                  }, 0)
+                  .toLocaleString('ru-RU')}
               </th>
               <th className='text-right text-teal-900 p-1 border'>
-                {minusInventories.reduce((summ, inventory) => {
-                  return summ + inventory.inventorycount;
-                }, 0)}
+                {minusInventories
+                  .reduce((summ, inventory) => {
+                    return summ + inventory.inventorycount;
+                  }, 0)
+                  .toLocaleString('ru-RU')}
               </th>
               <th className='text-right text-teal-900 p-1 border'>
                 {minusInventories
