@@ -1,7 +1,7 @@
 import { t } from 'i18next';
 import React from 'react';
 
-export const TableFooter = ({ sales, returnSales }) => {
+export const TableFooter = ({ sales }) => {
   return (
     <table className='table'>
       <tfoot className='text-base'>
@@ -28,17 +28,6 @@ export const TableFooter = ({ sales, returnSales }) => {
                 return summ + discount.discount;
               }, 0)
               .toLocaleString('ru-RU')}{' '}
-            USD
-          </th>
-        </tr>
-        <tr>
-          <th colSpan={6} className='py-1'>
-            Qaytarilganlar jami:
-          </th>
-          <th className='text-right text-teal-900 py-1'>
-            {(
-              returnSales.reduce((prev, sale) => prev + sale.totalprice, 0) || 0
-            ).toLocaleString('ru-RU')}{' '}
             USD
           </th>
         </tr>

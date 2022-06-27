@@ -4,7 +4,6 @@ import { AuthContext } from '../../../../context/AuthContext';
 import { Control } from './ChequeConnectors/Control';
 import { Header } from './ChequeConnectors/Header';
 import { Table } from './ChequeConnectors/Table';
-import { TableFooter } from './ChequeConnectors/TableFooter';
 // import QRCode from "qrcode";
 
 export const ChequeConnectors = ({ sales, setCheck }) => {
@@ -46,6 +45,7 @@ export const ChequeConnectors = ({ sales, setCheck }) => {
       returnS.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
     );
   }, [sales]);
+
   return (
     <div className='absolute top-0 w-full bg-white font-mono h-full right-0 z-50'>
       <div className='a4 m-auto w-[27cm]' ref={componentRef}>
@@ -56,7 +56,6 @@ export const ChequeConnectors = ({ sales, setCheck }) => {
           currentSales={currentSales}
           returnSales={returnSales}
         />
-        <TableFooter sales={sales} returnSales={returnSales} />
       </div>
       <div className='py-4 w-full'>
         <Control setCheck={setCheck} print={print} />

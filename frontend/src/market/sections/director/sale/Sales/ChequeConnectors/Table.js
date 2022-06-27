@@ -1,11 +1,12 @@
 import { t } from 'i18next';
 import React from 'react';
+import { TableFooter } from './TableFooter';
 
 export const Table = ({ sales, currentSales, returnSales }) => {
   return (
     <>
       <div className='mt-3 mb-2 ml-2 font-bold text-lg'>Sotilganlar:</div>
-      <table className='relative text-black border-collapse w-full '>
+      <table className='relative text-black border-collapse w-full mb-3 '>
         <thead>
           <tr>
             <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
@@ -61,13 +62,14 @@ export const Table = ({ sales, currentSales, returnSales }) => {
           })}
         </tbody>
       </table>
+      <TableFooter sales={sales} />
 
       {returnSales.length > 0 && (
         <>
           <div className='mt-3 mb-2 ml-2 font-bold text-lg'>
             Qaytarilganlar:
           </div>
-          <table className='relative text-black border-collapse w-full mb-4'>
+          <table className='relative text-black border-collapse w-full mb-3'>
             <thead>
               <tr>
                 <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
@@ -122,6 +124,24 @@ export const Table = ({ sales, currentSales, returnSales }) => {
                 );
               })}
             </tbody>
+          </table>
+          <table className='table'>
+            <tfoot className='text-base'>
+              <tr>
+                <th colSpan={6} className='py-1'>
+                  Qaytarilganlar jami:
+                </th>
+                <th className='text-right text-teal-900 py-1'>
+                  {(
+                    returnSales.reduce(
+                      (prev, sale) => prev + sale.totalprice,
+                      0
+                    ) || 0
+                  ).toLocaleString('ru-RU')}{' '}
+                  USD
+                </th>
+              </tr>
+            </tfoot>
           </table>
         </>
       )}
