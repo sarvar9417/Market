@@ -21,9 +21,7 @@ export const ReportSuppliers = ({ suppliersConnector, changeSupplier }) => {
               </p>
               <p className='font-bold  flex justify-around text-2xl py-1'>
                 <span className='text-amber-100'>
-                  {connector.totalprice &&
-                    Math.round(connector.totalprice * 10000) / 10000}{' '}
-                  USD
+                  {connector.supplier && connector.supplier}
                 </span>
               </p>
               <p className='font-bold text-sm flex justify-between'>
