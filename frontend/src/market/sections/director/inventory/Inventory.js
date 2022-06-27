@@ -112,6 +112,7 @@ export const Inventory = () => {
           description: '',
           status: 'success',
         });
+        getProducts();
       } catch (error) {
         notify({
           title: error,
@@ -120,7 +121,7 @@ export const Inventory = () => {
         });
       }
     },
-    [request, auth, notify, currentProducts]
+    [request, auth, notify, currentProducts, getProducts]
   );
 
   const completeInventory = useCallback(async () => {
