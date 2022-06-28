@@ -232,3 +232,49 @@ module.exports.getDebtAndDiscountReports = async (req, res) => {
     res.status(400).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
+
+module.exports.getProfit = async (req, res) => {
+  try {
+    const { market, startDate, endDate } = req.body;
+
+    const marke = await Market.findById(market);
+    if (!marke) {
+      res
+        .status(401)
+        .json({ message: `Diqqat! Do'kon haqida malumotlar topilmadi!` });
+    }
+
+    const saleproducts = await SaleProduct.find({
+      market,
+      createdAt: {
+        $gte: startDate,
+        $lt: endDate,
+      },
+    })
+      .select('totalprice price pieces market createdAt discount')
+      .populate('price', 'incomingprice')
+      .populate('discount', 'discount discountuzs');
+
+    const totalsaleproducts = saleproducts.reduce((summ, sale) => {
+      return summ + sale.totalprice - sale.price.incomingprice * sale.pieces;
+    }, 0);
+
+    const discounts = await Discount.find({
+      market,
+      createdAt: {
+        $gte: startDate,
+        $lt: endDate,
+      },
+    }).select('discount market discountuzs');
+
+    const totaldiscount = discounts.reduce((summ, discount) => {
+      return summ + discount.discount;
+    }, 0);
+
+    const profit = totalsaleproducts - totaldiscount;
+
+    res.status(201).json({ profit });
+  } catch (error) {
+    res.status(400).json({ error: 'Serverda xatolik yuz berdi...' });
+  }
+};

@@ -36,4 +36,8 @@ router.post('/returnedproductsexcel', auth, (req, res) => {
   require('./returnedproducts').getReturnedProductsExcel(req, res);
 });
 
+router.post('/profit', auth, (req, res) => {
+  require('./reports').getProfit(req, res);
+});
+
 module.exports = router;

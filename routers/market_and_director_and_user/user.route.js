@@ -207,7 +207,7 @@ module.exports.login = async (req, res) => {
     const userr = await User.findById(user._id)
       .populate('market')
       .select('firstname lastname type')
-      .populate('market', 'name');
+      .populate('market', 'name image');
 
     res.send({
       token,
