@@ -193,7 +193,7 @@ export const Product = () => {
       );
       let s = [
         {
-          label: "O'lchov birligi",
+          label: t("O'lchov birligi"),
           value: 'delete',
         },
       ];
@@ -534,7 +534,7 @@ export const Product = () => {
         modal={modal}
         setModal={setModal}
         basic={remove && remove.name}
-        text={t("mahsulotnti o'chirishni tasdiqlaysizmi?")}
+        text={t("mahsulotni o'chirishni tasdiqlaysizmi?")}
         handler={deleteHandler}
       />
 

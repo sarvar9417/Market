@@ -158,7 +158,7 @@ export const FilialDirector = () => {
         }
       );
       notify({
-        title: `Tabriklaymiz ${data.firstname + ' ' + data.lastname} ${t(
+        title: `${("Tabriklaymiz!")} ${data.firstname + ' ' + data.lastname} ${t(
           "Siz uchun direktor bo'limi ham muvaffaqqiyatli yaratildi."
         )}`,
         description: '',

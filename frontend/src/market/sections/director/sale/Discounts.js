@@ -6,6 +6,7 @@ import { TableHeader } from './Discount/TableHeader';
 import { Rows } from './Discount/Rows';
 import { ExcelTable } from './Discount/ExcelTable';
 import { useToast } from '@chakra-ui/react';
+import { t } from 'i18next';
 
 export const Discounts = () => {
   // STATES
@@ -184,7 +185,7 @@ export const Discounts = () => {
           );
         })}
         <ul className='tr font-bold text-base'>
-          <li className='td col-span-6 text-right border-r'>Jami</li>
+          <li className='td col-span-6 text-right border-r'>{t("Jami")}</li>
           <li className='td text-right col-span-2 border-r-2 border-green-800'>
             {(
               Math.round(totalDiscounts.totalprice * 10000) / 10000

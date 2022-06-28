@@ -34,7 +34,7 @@ export const RightBody = ({ payment, typeHandler, debt }) => {
             <button
               onClick={typeHandler}
               className='bg-blue-700 hover:bg-blue-800 text-white w-full rounded font-bold flex justify-between items-center px-3 py-3'
-              name='Plastik'
+              name={t('Plastik')}
               data-type='card'>
               <span className='text-4xl pointer-events-none'>
                 <FontAwesomeIcon icon={faCreditCard} />

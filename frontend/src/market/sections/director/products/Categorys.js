@@ -224,7 +224,7 @@ export const Category = () => {
         }
       );
       notify({
-        title: `${data.name} kategoriyasi yangilandi!`,
+        title: `${data.name} ${t("kategoriyasi yangilandi!")}`,
         description: '',
         status: 'success',
       });
@@ -270,7 +270,7 @@ export const Category = () => {
         }
       );
       notify({
-        title: `${data.name} kategoriyasi o'chirildi!`,
+        title: `${data.name} ${t("kategoriyasi o'chirildi!")}`,
         description: '',
         status: 'success',
       });

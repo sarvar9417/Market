@@ -30,9 +30,9 @@ export const LeftCard = ({
   ];
 
   const types = [
-    { type: 'cash', name: 'Naqt' },
-    { type: 'card', name: 'Plastik' },
-    { type: 'transfer', name: 'O`tkazma' },
+    { type: "cash", name: t("Naqt") },
+    { type: "card", name: t("Plastik") },
+    { type: "transfer", name: t("O`tkazma") },
   ];
   return (
     <div className='w-full text-white max-w-[400px] m-auto'>

@@ -105,7 +105,7 @@ export const Unit = () => {
         }
       );
       notify({
-        title: `${data.name} ${t("o'lchov birliki yaratildi!")}`,
+        title: `${data.name} ${t("o'lchov birligi yaratildi!")}`,
         description: '',
         status: 'success',
       });
@@ -134,7 +134,7 @@ export const Unit = () => {
         }
       );
       notify({
-        title: `${data.name} ${t("o'lchov birliki yangilandi!")}`,
+        title: `${data.name} ${t("o'lchov birligi yangilandi!")}`,
         description: '',
         status: 'success',
       });
@@ -255,7 +255,7 @@ export const Unit = () => {
         modal={modal}
         setModal={setModal}
         basic={remove && remove.name}
-        text={t("o'lchov birlikini o'chirishni tasdiqlaysizmi?")}
+        text={t("o'lchov birligini o'chirishni tasdiqlaysizmi?")}
         handler={deleteHandler}
       />
     </div>

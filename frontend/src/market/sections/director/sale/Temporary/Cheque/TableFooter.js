@@ -6,7 +6,7 @@ export const TableFooter = ({ sales }) => {
       <tfoot className='text-base'>
         <tr>
           <th colSpan={6} className='py-1'>
-            Jami:
+            {this("Jami")}:
           </th>
           <th className='text-right text-teal-900 py-1'>
             {sales.products

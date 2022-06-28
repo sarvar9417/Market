@@ -4,6 +4,7 @@ import { Pagination } from '../../components/Pagination';
 import { ExcelDownload } from '../../components/ExcelDownload';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileExcel } from '@fortawesome/free-solid-svg-icons';
+import { t } from 'i18next';
 
 export const TableHeader = ({
   startDate,
@@ -61,7 +62,7 @@ export const TableHeader = ({
           onClick={getDiscountsExcel}>
           <FontAwesomeIcon icon={faFileExcel} />
         </button>
-        <ExcelDownload filename={'Chegirmalar'} />
+        <ExcelDownload filename={t('Chegirmalar')} />
       </li>
     </ul>
   );

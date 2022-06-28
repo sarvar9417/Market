@@ -866,7 +866,7 @@ export const Incoming = () => {
       });
       setModal2(false);
       notify({
-        title: `Mahsulot tahrirlandi!`,
+        title: t(`Mahsulot tahrirlandi!`),
         description: '',
         status: 'success',
       });
@@ -923,7 +923,7 @@ export const Incoming = () => {
       });
       setModal3(false);
       notify({
-        title: `Mahsulot o'chirildi!`,
+        title: t(`Mahsulot o'chirildi!`),
         description: '',
         status: 'success',
       });
@@ -1219,7 +1219,7 @@ export const Incoming = () => {
         modal={modal3}
         basic={`${
           deleteProduct.product && deleteProduct.product.name
-        } qabul qilingan mahsulotini o'chirishni tasdiqlaysizmi?`}
+        } ${t("qabul qilingan mahsulotini o'chirishni tasdiqlaysizmi?")}`}
         handler={deleteProductHandler}
       />
 

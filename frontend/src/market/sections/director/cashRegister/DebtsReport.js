@@ -224,7 +224,7 @@ export const DebtsReport = ({
   const checkPrePayment = () => {
     if (prePayment.card + prePayment.cash + prePayment.transfer === 0) {
       return notify({
-        title: "Diqqat! To'lov summasi kiritilmagan",
+        title: t("Diqqat! To'lov summasi kiritilmagan"),
         description: '',
         status: 'error',
       });
@@ -478,7 +478,7 @@ export const DebtsReport = ({
       (totals > 0 && Math.round(total * 10000) / 10000 > totals)
     ) {
       return notify({
-        title: t('Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas!'),
+        title: t('Diqqat! Umumiy summadan yuqori summa kiritish mumkin ema'),
         description: '',
         status: 'error',
       });
@@ -650,7 +650,7 @@ export const DebtsReport = ({
           );
         })}
         <ul className='tr font-bold text-base'>
-          <li className='td col-span-9 text-right border-r'>Jami</li>
+          <li className='td col-span-9 text-right border-r'>{t("Jami")}</li>
           <li className='td text-right col-span-3 border-r-2 border-orange-600'>
             {(Math.round(totalDebts * 10000) / 10000).toLocaleString('ru-RU')}{' '}
             <span className='text-orange-600'>USD</span>
