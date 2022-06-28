@@ -489,43 +489,40 @@ export const Sale = () => {
   const [storageClients, setStorageClients] = useState([]);
   const [client, setClient] = useState({});
 
-  const getClients = useCallback(
-    async (s) => {
-      try {
-        const data = await request(
-          `/api/sales/client/getall`,
-          'POST',
-          { market: auth.market._id },
-          {
-            Authorization: `Bearer ${auth.token}`,
-          }
-        );
-        let v = [
-          {
-            label: t('Barcha mijozlar'),
-            value: 'all',
-          },
-        ];
+  const getClients = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/sales/client/getall`,
+        'POST',
+        { market: auth.market._id },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      let v = [
+        {
+          label: t('Barcha mijozlar'),
+          value: 'all',
+        },
+      ];
 
-        data.map((type) => {
-          return v.push({
-            label: type.name,
-            value: type._id,
-            packman: type.packman && type.packman._id,
-          });
+      data.map((type) => {
+        return v.push({
+          label: type.name,
+          value: type._id,
+          packman: type.packman && type.packman._id,
         });
-        setStorageClients(v);
-        setClients(v);
-      } catch (error) {
-        notify({
-          title: error,
-          description: '',
-          status: 'error',
-        });
-      }
-    },
-    [request, auth, notify]
-  );
+      });
+      setStorageClients(v);
+      setClients(v);
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [request, auth, notify]);
 
   const changeClient = (e) => {
     setClient({
@@ -2346,6 +2343,7 @@ export const Sale = () => {
   ]);
   //====================================================================
   //====================================================================
+
   return (
     <div className='m-3'>
       <div className={`${checkTemporary ? '' : 'hidden'}`}>
