@@ -311,8 +311,7 @@ export const Report = () => {
         <div className='col-end-13 col-span-3 text-right'>
           <button
             className='bg-blue-700 hover:bg-blue-800 text-white m-auto px-10 py-1 text-lg rounded mr-4'
-            onClick={() => setIsPrint(true)}
-          >
+            onClick={() => setIsPrint(true)}>
             <FontAwesomeIcon icon={faPrint} />
           </button>
         </div>
@@ -326,8 +325,7 @@ export const Report = () => {
               window.scroll(0, 500);
               setPaymentType('debts');
             }}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
-          >
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'>
             <p className='text-white font-bold text-lg mb-2 pointer-events-none	'>
               {t('Qarzlar')}
             </p>
@@ -341,8 +339,7 @@ export const Report = () => {
           <Link
             to='/alo24/reports/discounts'
             onClick={() => window.scroll(0, 500)}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
-          >
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'>
             <p className='text-white font-bold text-lg mb-2 pointer-events-none'>
               {t('Chegirmalar')}
             </p>
@@ -356,10 +353,9 @@ export const Report = () => {
           <Link
             to='/alo24/reports/discounts'
             onClick={() => window.scroll(0, 500)}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
-          >
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'>
             <p className='text-white font-bold text-lg mb-2 pointer-events-none'>
-              {t("Xarajatlar")}
+              {t('Xarajatlar')}
             </p>
             <p className='text-white font-bold text-xl pointer-events-none'>
               {discountsReport.discountcount} {'-'}{' '}
@@ -391,16 +387,14 @@ export const Report = () => {
                 setPaymentType('allpayments');
                 window.scroll(0, 500);
               }}
-              className='px-4 py-2 bg-blue-700 text-base text-white flex justify-around items-center'
-            >
+              className='px-4 py-2 bg-blue-700 text-base text-white flex justify-around items-center'>
               <p className='mr-2'>Подробно</p>
               <FontAwesomeIcon icon={faCircleInfo} />
             </Link>
           </div>
           <Link
             to={'/alo24/reports/returnproducts'}
-            className='h-1/3 w-full bg-blue-800 text-center py-4 rounded-xl flex justify-center items-center transition ease-in-out hover:bg-blue-700'
-          >
+            className='h-1/3 w-full bg-blue-800 text-center py-4 rounded-xl flex justify-center items-center transition ease-in-out hover:bg-blue-700'>
             <p className='text-white font-bold text-center text-lg mb-2 pointer-events-none	'>
               Qaytarilganlar
             </p>
@@ -413,10 +407,9 @@ export const Report = () => {
               setPaymentType('cash');
               window.scroll(0, 500);
             }}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
-          >
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'>
             <p className='text-white font-bold text-lg mb-2 pointer-events-none'>
-              {t("Naqd")}
+              {t('Naqd')}
             </p>
             <p className='text-white font-bold text-xl pointer-events-none	'>
               {salesReport.cashcount} {'-'}{' '}
@@ -431,10 +424,9 @@ export const Report = () => {
               setPaymentType('card');
               window.scroll(0, 500);
             }}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
-          >
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'>
             <p className='text-white font-bold text-lg mb-2 pointer-events-none	'>
-              {t("Plastik")}
+              {t('Plastik')}
             </p>
             <p className='text-white font-bold text-xl pointer-events-none	'>
               {salesReport.cardcount} {'-'}{' '}
@@ -449,10 +441,9 @@ export const Report = () => {
               setPaymentType('transfer');
               window.scroll(0, 500);
             }}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
-          >
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'>
             <p className='text-white font-bold text-lg mb-2 pointer-events-none	'>
-              {t("Otkazmalar")}
+              {t('Otkazmalar')}
             </p>
             <p className='text-white font-bold text-xl pointer-events-none	'>
               {salesReport.transfercount} {'-'}{' '}
@@ -488,8 +479,7 @@ export const Report = () => {
       <div
         className={`${
           isPrint ? 'fixed' : 'hidden'
-        } top-0 left-0 w-full h-full z-10 bg-white overflow-auto pb-4`}
-      >
+        } top-0 left-0 w-full h-full z-10 bg-white overflow-auto pb-4`}>
         <PrintReport
           startDate={startDate}
           endDate={endDate}
