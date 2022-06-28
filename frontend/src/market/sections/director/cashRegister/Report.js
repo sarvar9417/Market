@@ -455,7 +455,7 @@ export const Report = () => {
               $
             </p>
           </Link>
-          <div className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out relative'>
+          <div className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'>
             <span className='absolute top-4 left-4'>
               <FontAwesomeIcon
                 icon={faWallet}
@@ -472,7 +472,7 @@ export const Report = () => {
           </div>
           <Link
             to={'/alo24/reports/returnproducts'}
-            className='h-1/3 w-full bg-blue-800 text-center py-4 rounded-xl flex justify-center items-center transition ease-in-out relative'
+            className='h-1/3 w-full bg-blue-800 text-center py-4 rounded-xl flex justify-center items-center transition ease-in-out hover:bg-blue-700 relative'
           >
             <span className='absolute top-4 left-4'>
               <FontAwesomeIcon
@@ -493,7 +493,7 @@ export const Report = () => {
               setPaymentType('cash');
               window.scroll(0, 500);
             }}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out relative'
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
           >
             <span className='absolute top-4 left-4'>
               <FontAwesomeIcon
@@ -518,7 +518,7 @@ export const Report = () => {
               setPaymentType('card');
               window.scroll(0, 500);
             }}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out relative'
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
           >
             <span className='absolute top-4 left-4'>
               <FontAwesomeIcon
@@ -543,7 +543,7 @@ export const Report = () => {
               setPaymentType('transfer');
               window.scroll(0, 500);
             }}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out relative'
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
           >
             <span className='absolute top-4 left-4'>
               <FontAwesomeIcon
