@@ -115,7 +115,7 @@ module.exports.get = async (req, res) => {
     })
       .select('exchangerate')
       .sort({ _id: -1 });
-    res.send(exchangerates);
+    res.status(201).send(exchangerates);
   } catch (error) {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }

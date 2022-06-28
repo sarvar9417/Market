@@ -181,7 +181,7 @@ export const Report = () => {
         '/api/reports/debtdiscount',
         'POST',
         {
-          market: auth.market && auth.market._id,
+          market: auth.market._id,
           startDate,
           endDate,
         },
@@ -224,10 +224,6 @@ export const Report = () => {
     }
   }, [request, notify]);
 
-  useEffect(() => {
-    getBaseUrl();
-  }, [getBaseUrl]);
-
   //========================================================
   //========================================================
 
@@ -266,6 +262,10 @@ export const Report = () => {
     startDate,
     endDate,
   ]);
+
+  useEffect(() => {
+    getBaseUrl();
+  }, [getBaseUrl]);
 
   //========================================================
   //========================================================
@@ -322,7 +322,10 @@ export const Report = () => {
         <div className='col-span-4 flex flex-column justify-between gap-y-3'>
           <Link
             to='/alo24/reports/debts'
-            onClick={() => window.scroll(0, 500)}
+            onClick={() => {
+              window.scroll(0, 500);
+              setPaymentType('debts');
+            }}
             className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
           >
             <p className='text-white font-bold text-lg mb-2 pointer-events-none	'>
