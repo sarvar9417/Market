@@ -47,8 +47,11 @@ export const Rows = ({ currentPage, index, payment, type, changeCheck }) => {
         <li className='col-span-2 td border-r font-bold text-right'>
           {new Date(payment.createdAt).toLocaleDateString()}
         </li>
-        <li className='td col-span-5 border-r text-left'>
-          {payment.client ? payment.client : payment.id}
+        <li className='td col-span-2 border-r text-right'>
+          {payment.id && payment.id}
+        </li>
+        <li className='td col-span-3 border-r text-left'>
+          {payment.client && payment.client}
         </li>
         <li className='td  col-span-4  text-right border-r-2 border-r-orange-600'>
           {(payment.payment || 0).toLocaleString('de-DE')}{' '}

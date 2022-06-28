@@ -71,7 +71,15 @@ export const TableHead = ({ currentPayments, setCurrentPayments, type }) => {
         />
       </li>
 
-      <li className='th border-r col-span-5 flex justify-center'>
+      <li className='th border-r col-span-2 flex justify-center'>
+        {t('ID')}{' '}
+        <Sort
+          property={'id'}
+          data={currentPayments}
+          setData={setCurrentPayments}
+        />
+      </li>
+      <li className='th border-r col-span-3 flex justify-center'>
         {t('Mijoz')}{' '}
         <Sort
           property={'name'}
