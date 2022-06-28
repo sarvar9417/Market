@@ -224,7 +224,7 @@ export const Category = () => {
         }
       );
       notify({
-        title: `${data.name} kategoriyasi yangilandi!`,
+        title: `${data.name} ${t("kategoriyasi yangilandi!")}`,
         description: '',
         status: 'success',
       });
@@ -270,7 +270,7 @@ export const Category = () => {
         }
       );
       notify({
-        title: `${data.name} kategoriyasi o'chirildi!`,
+        title: `${data.name} ${t("kategoriyasi o'chirildi!")}`,
         description: '',
         status: 'success',
       });
@@ -326,6 +326,7 @@ export const Category = () => {
           currentCategories.map((c, key) => {
             return (
               <Rows
+              loading={loading}
                 index={key}
                 currentPage={currentPage}
                 key={key}

@@ -34,7 +34,7 @@ export const Login = () => {
   //====================================================================
   const [hour, setHour] = useState(new Date().toLocaleTimeString());
 
-  const weekDays = ['Yak', 'Du', 'Se', 'Cho', 'Paysh', 'Juma', 'Shanba'];
+  const weekDays = ['Yak', 'Du', 'Se', 'Chor', 'Paysh', 'Juma', 'Shanba'];
   const monthNames = [
     'Yanvar',
     'Fevral',

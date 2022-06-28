@@ -3,9 +3,11 @@ import i18next from 'i18next';
 import cookie from 'js-cookie';
 
 const language = [
-  { code: 'uz', name: 'Ўзбек', country_code: 'уз' },
+  { code: 'uz', name: 'Ўзбек', country_code: 'uz' },
+
   { code: 'ru', name: 'Русский', country_code: 'ru' },
-  { code: 'uz', name: 'Lotin', country_code: 'uz' },
+
+  { code: 'gb', name: 'Lotin', country_code: 'gb' },
 ];
 
 const GlobeIcon = ({ width = 20, height = 20 }) => (
@@ -43,9 +45,9 @@ function Translaste() {
         className={`${visible ? 'block' : 'hidden'} bg-[#0c5154] rounded `}
         aria-labelledby='dropdownMenuButton'
       >
-        {language.map(({ code, name, country_code }, index) => {
+        {language.map(({ code, name, country_code }) => {
           return (
-            <li key={index}>
+            <li key={country_code}>
               <button
                 className='dropdown-item text-white hover:text-black'
                 onClick={() => {

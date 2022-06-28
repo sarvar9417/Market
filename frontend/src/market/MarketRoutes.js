@@ -28,7 +28,6 @@ export const MarketRoutes = (isAuthenticated, user) => {
       <Route path='/newdirector'>
         <DirectorRegistor />
       </Route>
-
       <Redirect to='/alo24' />
     </Switch>
   );

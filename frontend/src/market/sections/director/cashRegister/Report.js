@@ -19,6 +19,7 @@ import { Loader } from '../../../loader/Loader';
 import { DebtsReport } from './DebtsReport';
 import { ChequeConnectors } from '../sale/Sales/ChequeConnectors';
 import { ReturnedProducts } from './ReturnedProducts';
+import { t } from 'i18next';
 
 export const Report = () => {
   //========================================================
@@ -325,7 +326,7 @@ export const Report = () => {
             className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
           >
             <p className='text-white font-bold text-lg mb-2 pointer-events-none	'>
-              Долги
+              {t('Qarzlar')}
             </p>
             <p className='text-white font-bold text-xl pointer-events-none	'>
               {debtsReport.debtcount} {'-'}{' '}
@@ -340,7 +341,7 @@ export const Report = () => {
             className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
           >
             <p className='text-white font-bold text-lg mb-2 pointer-events-none'>
-              Скидки
+              {t('Chegirmalar')}
             </p>
             <p className='text-white font-bold text-xl pointer-events-none'>
               {discountsReport.discountcount} {'-'}{' '}
@@ -355,7 +356,7 @@ export const Report = () => {
             className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
           >
             <p className='text-white font-bold text-lg mb-2 pointer-events-none'>
-              Расход
+              {t("Xarajatlar")}
             </p>
             <p className='text-white font-bold text-xl pointer-events-none'>
               {discountsReport.discountcount} {'-'}{' '}
@@ -412,7 +413,7 @@ export const Report = () => {
             className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
           >
             <p className='text-white font-bold text-lg mb-2 pointer-events-none'>
-              Наличными
+              {t("Naqd")}
             </p>
             <p className='text-white font-bold text-xl pointer-events-none	'>
               {salesReport.cashcount} {'-'}{' '}
@@ -430,7 +431,7 @@ export const Report = () => {
             className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
           >
             <p className='text-white font-bold text-lg mb-2 pointer-events-none	'>
-              По карте
+              {t("Plastik")}
             </p>
             <p className='text-white font-bold text-xl pointer-events-none	'>
               {salesReport.cardcount} {'-'}{' '}
@@ -448,7 +449,7 @@ export const Report = () => {
             className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
           >
             <p className='text-white font-bold text-lg mb-2 pointer-events-none	'>
-              Переводы
+              {t("Otkazmalar")}
             </p>
             <p className='text-white font-bold text-xl pointer-events-none	'>
               {salesReport.transfercount} {'-'}{' '}

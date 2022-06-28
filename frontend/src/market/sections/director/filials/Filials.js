@@ -286,19 +286,19 @@ export const Filials = () => {
         <button
           className='w-full bg-blue-800 font-bold text-white py-1 rounded'
           onClick={() => setIsHide(!isHide)}>
-          Tahrirlash
+          {t("Tahrirlash")}
         </button>
         <div className={`${isHide ? 'row g-3 ' : 'd-none'}`}>
           <div className='col-md-6'>
             <div className='col-md-12'>
               <FormControl isRequired>
                 <FormLabel style={{ color: '#38B2AC', marginTop: '1rem' }}>
-                  Filial nomi
+                  {t("Filial nomi")}
                 </FormLabel>
                 <Input
                   onKeyUp={keyPressed}
                   className='is-valid'
-                  placeholder={'Filial nomini kiriting'}
+                  placeholder={t('Filial nomini kiriting')}
                   size='sm'
                   style={
                     branch.name && branch.name.length > 0
@@ -314,11 +314,11 @@ export const Filials = () => {
             <div className='col-md-12'>
               <FormControl>
                 <FormLabel style={{ color: '#38B2AC', marginTop: '1rem' }}>
-                  {'Tashkilot nomi'}
+                  {t('Tashkilot nomi')}
                 </FormLabel>
                 <Input
                   onKeyUp={keyPressed}
-                  placeholder={'Tashkilot nomini kiriting'}
+                  placeholder={t('Tashkilot nomini kiriting')}
                   size='sm'
                   style={
                     branch.organitionName && branch.organitionName.length > 0
@@ -334,11 +334,11 @@ export const Filials = () => {
             <div className='col-md-12'>
               <FormControl>
                 <FormLabel style={{ color: '#38B2AC', marginTop: '1rem' }}>
-                  {'Manzil'}
+                  {t('Manzil')}
                 </FormLabel>
                 <Input
                   onKeyUp={keyPressed}
-                  placeholder={'Manzilni kiriting'}
+                  placeholder={t('Manzilni kiriting')}
                   size='sm'
                   style={
                     branch.address && branch.address.length > 0
@@ -354,11 +354,11 @@ export const Filials = () => {
             <div className='col-md-12'>
               <FormControl>
                 <FormLabel style={{ color: '#38B2AC', marginTop: '1rem' }}>
-                  {"Mo'ljal"}
+                  {t("Mo'ljal")}
                 </FormLabel>
                 <Input
                   onKeyUp={keyPressed}
-                  placeholder={"Mo'ljalni kiriting"}
+                  placeholder={t("Mo'ljalni kiriting")}
                   size='sm'
                   style={
                     branch.orientation && branch.orientation.length > 0
@@ -374,7 +374,7 @@ export const Filials = () => {
             <div className='col-md-12'>
               <FormControl isRequired>
                 <FormLabel style={{ color: '#38B2AC', marginTop: '1rem' }}>
-                  {'Telefon raqam1'}
+                  {t('Telefon raqam1')}
                 </FormLabel>
                 <InputGroup>
                   <InputLeftAddon
@@ -388,7 +388,7 @@ export const Filials = () => {
                   <Input
                     onKeyUp={keyPressed}
                     type='tel'
-                    placeholder={'Telefon raqamni kiriting'}
+                    placeholder={t('Telefon raqamni kiriting')}
                     size='sm'
                     style={
                       branch.phone1 && branch.phone1.length > 0
@@ -405,7 +405,7 @@ export const Filials = () => {
             <div className='col-md-12'>
               <FormControl>
                 <FormLabel style={{ color: '#38B2AC', marginTop: '1rem' }}>
-                  {'Telefon raqam2'}
+                  {t('Telefon raqam2')}
                 </FormLabel>
                 <InputGroup>
                   <InputLeftAddon
@@ -419,7 +419,7 @@ export const Filials = () => {
                   <Input
                     onKeyUp={keyPressed}
                     type='tel'
-                    placeholder={'Telefon raqamni kiriting'}
+                    placeholder={t('Telefon raqamni kiriting')}
                     size='sm'
                     style={
                       branch.phone2 && branch.phone2.length > 0
@@ -436,7 +436,7 @@ export const Filials = () => {
             <div className='col-md-12'>
               <FormControl>
                 <FormLabel style={{ color: '#38B2AC', marginTop: '1rem' }}>
-                  {'Telefon raqam3'}
+                  {t('Telefon raqam3')}
                 </FormLabel>
                 <InputGroup>
                   <InputLeftAddon
@@ -450,7 +450,7 @@ export const Filials = () => {
                   <Input
                     onKeyUp={keyPressed}
                     type='tel'
-                    placeholder={'Telefon raqamni kiriting'}
+                    placeholder={t('Telefon raqamni kiriting')}
                     size='sm'
                     style={
                       branch.phone3 && branch.phone3.length > 0
@@ -469,11 +469,11 @@ export const Filials = () => {
             <div className='col-md-12'>
               <FormControl>
                 <FormLabel style={{ color: '#38B2AC', marginTop: '1rem' }}>
-                  {'Bank nomi'}
+                  {t('Bank nomi')}
                 </FormLabel>
                 <Input
                   onKeyUp={keyPressed}
-                  placeholder={'Bank nomini kiriting'}
+                  placeholder={t('Bank nomini kiriting')}
                   size='sm'
                   style={
                     branch.bank && branch.bank.length > 0
@@ -489,12 +489,12 @@ export const Filials = () => {
             <div className='col-md-12'>
               <FormControl>
                 <FormLabel style={{ color: '#38B2AC', marginTop: '1rem' }}>
-                  {'INN'}
+                  {t('INN')}
                 </FormLabel>
                 <Input
                   onKeyUp={keyPressed}
                   type='number'
-                  placeholder={'INN ni kiriting'}
+                  placeholder={t('INN ni kiriting')}
                   size='sm'
                   style={
                     branch.inn && branch.inn.length > 0
@@ -510,12 +510,12 @@ export const Filials = () => {
             <div className='col-md-12'>
               <FormControl>
                 <FormLabel style={{ color: '#38B2AC', marginTop: '1rem' }}>
-                  {'Hisob raqam'}
+                  {t('Hisob raqam')}
                 </FormLabel>
                 <Input
                   onKeyUp={keyPressed}
                   type='number'
-                  placeholder={'Hisob raqamni kiriting'}
+                  placeholder={t('Hisob raqamni kiriting')}
                   size='sm'
                   style={
                     branch.bankNumber && branch.bankNumber.length > 0
@@ -551,7 +551,7 @@ export const Filials = () => {
                 colorScheme='teal'
                 variant='solid'
                 onClick={updateHandler}>
-                {'Tahrirlash'}
+                {t('Tahrirlash')}
               </Button>
             )}
           </div>

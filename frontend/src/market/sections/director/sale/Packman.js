@@ -188,7 +188,7 @@ export const Packman = () => {
         market: auth.market && auth.market._id,
       });
       notify({
-        title: `${data.name} ${t('degan yetkazuvchi yaratildi!')}`,
+        title: `${data.name} ${t('nomli yetkazuvchi yaratildi!')}`,
         description: '',
         status: 'success',
       });
@@ -221,7 +221,7 @@ export const Packman = () => {
       });
       getPackmans();
       notify({
-        title: `${data.name} ${t('degan yetkazuvchi yangilandi!')}`,
+        title: `${data.name} ${t('nomli yetkazuvchi yangilandi!')}`,
         description: '',
         status: 'success',
       });
@@ -252,7 +252,7 @@ export const Packman = () => {
       });
       getPackmans();
       notify({
-        title: `${data.name} ${t("degan yetkazuvchi o'chirildi!")}`,
+        title: `${data.name} ${t("nomli yetkazuvchi o'chirildi!")}`,
         description: '',
         status: 'success',
       });

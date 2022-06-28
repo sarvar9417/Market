@@ -25,7 +25,7 @@ export const RouterBtns = ({
         <span className='w-[20px] h-[20px] bg-white text-red-600 flex items-center justify-center mr-1 rounded-full'>
           <FontAwesomeIcon icon={faIdCard} />
         </span>{' '}
-        Saqlanganlar
+        {t("Saqlanganlar")}
       </button>
       <button
         onClick={changeTableCard}

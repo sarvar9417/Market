@@ -16,7 +16,7 @@ export const CardHeader = ({
         <div className='sm:flex justify-evenly items-center text-white m-auto sm:m-0 '>
           <div className='flex'>
             <button className='bg-[#FD9584] font-semibold  text-3xl w-[80px]  h-[80px] rounded-full mr-7'>
-              KP
+              {t("KP")}
             </button>
             <div>
               <h1 className='font-semibold text-xl  '>{t('Buyurtma')}</h1>

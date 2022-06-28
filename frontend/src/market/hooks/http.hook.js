@@ -27,7 +27,7 @@ export const useHttp = () => {
           throw new Error(
             data.message ||
               data.error ||
-              t('Ko`zda tutilmagan xatolik yuzberdi')
+              t('Ko`zda tutilmagan xatolik yuz berdi')
           );
         }
         setLoading(false);

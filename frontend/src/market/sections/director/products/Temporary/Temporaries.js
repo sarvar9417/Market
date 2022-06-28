@@ -1,5 +1,6 @@
 import { faPenAlt, faPrint, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { t } from 'i18next';
 import React from 'react';
 
 export const Temporaries = ({
@@ -10,7 +11,7 @@ export const Temporaries = ({
 }) => {
   return (
     <div className='shadow-2xl'>
-      <div className='card-header text-base'>Vaqtincha saqlanayotganlar</div>
+      <div className='card-header text-base'>{t("Vaqtincha saqlanayotganlar")}</div>
       <div className='grid grid-cols-12 gap-1 m-auto'>
         {temporarys &&
           temporarys &&
@@ -20,15 +21,15 @@ export const Temporaries = ({
                 key={index}
                 className='col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3 xl:col-span-2 py-2 font-bold bg-blue-800  flex flex-col items-center m-2 rounded  transition-all px-3 shadow text-white'>
                 <p className='flex justify-between w-full font-bold'>
-                  <span>Yetkazib beruvchi:</span>{' '}
+                  <span>{t("Yetkazib beruvchi")}:</span>{' '}
                   <span>{temporary.temporaryincoming.supplier.name}</span>
                 </p>
                 <p className='flex justify-between w-full font-bold'>
-                  <span>Mahsulotlar:</span>{' '}
+                  <span>{t("Mahsulotlar")}:</span>{' '}
                   <span>{temporary.temporaryincoming.incomings.length}</span>
                 </p>
                 <p className='flex justify-between w-full font-bold'>
-                  <span>Jami:</span>{' '}
+                  <span>{t("Jami")}:</span>{' '}
                   <span>
                     {temporary.temporaryincoming.incomings
                       .reduce((summ, product) => {

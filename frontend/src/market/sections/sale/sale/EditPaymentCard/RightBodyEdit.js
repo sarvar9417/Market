@@ -91,7 +91,7 @@ export const RightBodyEdit = ({ payment, discount, debt, typeHandler }) => {
         <button
           // onClick={typeHandler}
           className='bg-blue-700 hover:bg-blue-800 text-white w-full rounded font-bold flex flex-col justify-between items-center px-3 py-3'
-          name='Chegirma'
+          name={t('Chegirma')}
           data-type='discount'>
           <h1 className=' pointer-events-none text-yellow-600'>
             {t("Chegirma")}
@@ -118,7 +118,7 @@ export const RightBodyEdit = ({ payment, discount, debt, typeHandler }) => {
         <button
           onClick={typeHandler}
           className='bg-blue-700 hover:bg-blue-800 text-white w-full rounded font-bold flex flex-col justify-between items-center px-3 py-3'
-          name='Qarz'
+          name={t('Qarz')}
           data-type='debt'>
           <h1 className=' pointer-events-none text-yellow-600'>{t("Qarz")}</h1>
           <p className='text-3xl font-bold pointer-events-none flex flex-col'>

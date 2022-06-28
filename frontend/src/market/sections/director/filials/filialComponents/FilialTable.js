@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { TableHead } from './TableHead';
 import { TableHeader } from './TableHeader';
 
@@ -16,7 +17,7 @@ export const FilialTable = ({
       <TableHeader
         setPageSize={setPageSize}
         branchInputChange={branchInputChange}
-        filename={'Filiallar'}
+        filename={t('Filiallar')}
         countPage={countPage}
         totalDatas={totalDatas}
         setCurrentPage={setCurrentPage}

@@ -22,7 +22,7 @@ export const Header = ({ auth, sales }) => {
           <span>{new Date(sales.createdAt).toLocaleDateString()}</span>
         </p>
         <p className='flex justify-between'>
-          <span className='font-bold'>Mijoz:</span>
+          <span className='font-bold'>{t("Mijoz")}:</span>
           <span>{sales.client && sales.client.name && sales.client.name}</span>
         </p>
       </div>
@@ -30,7 +30,7 @@ export const Header = ({ auth, sales }) => {
         <div className='flex justify-between items-center'>
           <div>
             <div className='text-center text-xl font-bold'>
-              Sotuv: A{sales.saleconnector && sales.saleconnector.id}
+              {t("Sotuv")}: A{sales.saleconnector && sales.saleconnector.id}
             </div>
             <div className='text-center text-xl font-bold'>
               {t('Check')}: {sales.id}
@@ -42,7 +42,7 @@ export const Header = ({ auth, sales }) => {
         </div>
         <div className='flex justify-end'>
           <div>
-            <span className='font-bold'>Sotuvchi:</span>{' '}
+            <span className='font-bold'>{t("Sotuvchi")}:</span>{' '}
             {sales.user && sales.user.firstname}{' '}
             {sales.user && sales.user.lastname}
           </div>

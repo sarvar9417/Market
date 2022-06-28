@@ -59,7 +59,7 @@ export const Sellers = () => {
         }
       );
       notify({
-        title: 'Sotuvchi Muvaffaqqiyatli yaratildi.',
+        title: t('Sotuvchi Muvaffaqqiyatli yaratildi.'),
         description: '',
         status: 'success',
       });

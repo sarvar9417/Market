@@ -221,7 +221,7 @@ export const ProductType = () => {
         }
       );
       notify({
-        title: `${data.name} mahsulot turi yaratildi!`,
+        title: `${data.name} ${t("mahsulot turi yaratildi!")}`,
         description: '',
         status: 'success',
       });
@@ -250,7 +250,7 @@ export const ProductType = () => {
         }
       );
       notify({
-        title: `${data.name} mahsulot turi yangilandi!`,
+        title: `${data.name} ${t("mahsulot turi yangilandi!")}`,
         description: '',
         status: 'success',
       });
@@ -296,7 +296,7 @@ export const ProductType = () => {
         }
       );
       notify({
-        title: `${data.name} nomli mahsulot turi o'chirildi!`,
+        title: `${data.name} ${t("nomli mahsulot turi o'chirildi!")}`,
         description: '',
         status: 'success',
       });

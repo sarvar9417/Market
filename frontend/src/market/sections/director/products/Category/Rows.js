@@ -1,7 +1,8 @@
 import React from 'react';
-import { DeleteBtn, EditBtn } from '../../components/TableButtons';
+import { ClearBtnLoad, DeleteBtn, EditBtn, SaveBtnLoad } from '../../components/TableButtons';
 
 export const Rows = ({
+  loading,
   currentPage,
   index,
   c,
@@ -16,10 +17,10 @@ export const Rows = ({
       <li className='no'>{c.code}</li>
       <li className='col-span-6 td border-r font-bold'>{c.name}</li>
       <li className='td-btn col-span-2 border-r'>
-        {<EditBtn editHandler={() => setCategory({ ...category, ...c })} />}
+        { loading ? <SaveBtnLoad />: <EditBtn editHandler={() => setCategory({ ...category, ...c })} />}
       </li>
       <li className='td-btn col-span-2'>
-        {
+        {loading ? <ClearBtnLoad />:
           <DeleteBtn
             deleteHandler={() => {
               setRemove(c);

@@ -184,7 +184,7 @@ export const PaymentsReport = ({ type, changeCheck }) => {
           </ul>
         ) : (
           <ul className='tr font-bold text-base'>
-            <li className='td col-span-8 text-right border-r'>Jami</li>
+            <li className='td col-span-8 text-right border-r'>{t("Jami")}</li>
             <li className='td text-right col-span-4 border-r-2 border-orange-600'>
               {(
                 Math.round(totalPayments[`${type}`] * 100) / 100
