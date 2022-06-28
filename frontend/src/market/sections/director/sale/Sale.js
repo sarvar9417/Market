@@ -68,7 +68,7 @@ export const Sale = () => {
   //====================================================================
   //====================================================================
   // AUTH
-  const { request } = useHttp();
+  const { request, loading } = useHttp();
   const auth = useContext(AuthContext);
 
   const [modal, setModal] = useState(false);
@@ -2171,8 +2171,9 @@ export const Sale = () => {
   const saveTemporary = () => {
     if (saleproducts.length === 0) {
       return notify({
-        title:
-          t("Diqqat! Sotuvni vaqtincha saqlash uchun kamida bitta mahsulot kiritilgan bo'lishi kerak."),
+        title: t(
+          "Diqqat! Sotuvni vaqtincha saqlash uchun kamida bitta mahsulot kiritilgan bo'lishi kerak."
+        ),
         status: 'warning',
       });
     }
@@ -2499,6 +2500,7 @@ export const Sale = () => {
       />
 
       <Modal
+        loading={loading}
         modal={modal}
         setModal={setModal}
         basic={

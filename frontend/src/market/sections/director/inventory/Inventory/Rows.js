@@ -1,6 +1,6 @@
 import { t } from 'i18next';
 import React from 'react';
-import { SaveBtn } from '../../components/TableButtons';
+import { SaveBtn, SaveBtnLoad} from '../../components/TableButtons';
 
 export const Rows = ({
   currentPage,
@@ -11,6 +11,7 @@ export const Rows = ({
   updateInventory,
   keyPressed,
   commitHandler,
+  loading,
 }) => {
   return (
     <ul
@@ -85,7 +86,7 @@ export const Rows = ({
         />
       </li>
       <li className='td-btn'>
-        {
+        {loading ? <SaveBtnLoad/> :
           <SaveBtn
             saveHandler={() => {
               updateInventory(product.inventory, index);

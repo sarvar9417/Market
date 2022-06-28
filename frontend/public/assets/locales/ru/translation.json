@@ -499,13 +499,12 @@
   "Saqlangan sotuv amaliyoti muvaffaqqiyatli o'chirildi": "Сақланган сотув амалиёти мувоффаққиятли ўчирилди",
   "Mijoz uchun sotuvni vaqtincha saqlashni tasdiqlaysizmi?": "Мижоз учун сотувни вақтинча сақлашни тасдиқлайсизми?",
   "Diqqat! Saqlangan sotuvni o'chirishni tasdiqlaysizmi?": "Диққат! Сақланган сотувни ўчиришни тасдиқлайсизми?",
-  "raqamda kiritilgan.":"",
-  "Diqqat! Ushbu mahsulot ro'yxatga":"",
-  "nomli yetkazuvchi yaratildi!": "",
-  "nomli yetkazuvchi yangilandi!": "",
-  "nomli yetkazuvchi o'chirildi!": "",
-  "Keltirilgan va sotilgan mahsulotlar":"Привезенные и проданные товары",
-  "Keltirilgan":"Привезенные",
+  "raqamda kiritilgan.": "",
+  "Diqqat! Ushbu mahsulot ro'yxatga": "",
+  "nomli yetkazuvchi yaratildi!": "поставщик создан!",
+  "nomli yetkazuvchi yangilandi!": "поставщик обновлен!",
+  "nomli yetkazuvchi o'chirildi!": "поставщик удален!",
+  "Keltirilgan va sotilgan mahsulotlar": "Привезенные и проданные товары",
+  "Keltirilgan": "Привезенные",
   "Sotilgan": "Проданные"
-  
 }

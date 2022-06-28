@@ -326,6 +326,7 @@ export const Category = () => {
           currentCategories.map((c, key) => {
             return (
               <Rows
+              loading={loading}
                 index={key}
                 currentPage={currentPage}
                 key={key}

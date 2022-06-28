@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  ClearBtn,
+  ClearBtnLoad,
   DeleteBtn,
   EditBtn,
   SaveBtnLoad,
@@ -38,7 +38,7 @@ export const TableRow = ({
       </li>
       <li className='td-btn col-span-1'>
         {loading ? (
-          <ClearBtn />
+          <ClearBtnLoad />
         ) : (
           <DeleteBtn
             deleteHandler={() => {
