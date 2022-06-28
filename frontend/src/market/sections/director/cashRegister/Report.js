@@ -10,7 +10,18 @@ import { useReactToPrint } from 'react-to-print';
 import { AuthContext } from '../../../context/AuthContext';
 import { useHttp } from '../../../hooks/http.hook';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPrint } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCircleInfo,
+  faCommentsDollar,
+  faCreditCard,
+  faHandHoldingDollar,
+  faMoneyBill,
+  faMoneyBillTransfer,
+  faPrint,
+  faRotate,
+  faTags,
+  faWallet,
+} from '@fortawesome/free-solid-svg-icons';
 import { PrintReport } from './PrintReport';
 import { Link, Redirect, Route, Switch } from 'react-router-dom';
 import { Discounts } from '../sale/Discounts';
@@ -358,8 +369,15 @@ export const Report = () => {
               window.scroll(0, 500);
               setPaymentType('debts');
             }}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
           >
+            <span className='absolute top-4 left-4'>
+              <FontAwesomeIcon
+                icon={faHandHoldingDollar}
+                color='white'
+                fontSize={'24px'}
+              />
+            </span>
             <p className='text-white font-bold text-lg mb-2 pointer-events-none	'>
               {t('Qarzlar')}
             </p>
@@ -373,8 +391,11 @@ export const Report = () => {
           <Link
             to='/alo24/reports/discounts'
             onClick={() => window.scroll(0, 500)}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
           >
+            <span className='absolute top-4 left-4'>
+              <FontAwesomeIcon icon={faTags} color='white' fontSize={'24px'} />
+            </span>
             <p className='text-white font-bold text-lg mb-2 pointer-events-none'>
               {t('Chegirmalar')}
             </p>
@@ -388,8 +409,15 @@ export const Report = () => {
           <Link
             to='/alo24/reports/discounts'
             onClick={() => window.scroll(0, 500)}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
           >
+            <span className='absolute top-4 left-4'>
+              <FontAwesomeIcon
+                icon={faCommentsDollar}
+                color='white'
+                fontSize={'24px'}
+              />
+            </span>
             <p className='text-white font-bold text-lg mb-2 pointer-events-none'>
               {t('Xarajatlar')}
             </p>
@@ -408,8 +436,15 @@ export const Report = () => {
               setPaymentType('allpayments');
               window.scroll(0, 500);
             }}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
           >
+            <span className='absolute top-4 left-4'>
+              <FontAwesomeIcon
+                icon={faCircleInfo}
+                color='white'
+                fontSize={'24px'}
+              />
+            </span>
             <p className='text-white font-bold text-lg mb-2 pointer-events-none	'>
               Общая сумма продаж
             </p>
@@ -420,7 +455,14 @@ export const Report = () => {
               $
             </p>
           </Link>
-          <div className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'>
+          <div className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out relative'>
+            <span className='absolute top-4 left-4'>
+              <FontAwesomeIcon
+                icon={faWallet}
+                color='white'
+                fontSize={'24px'}
+              />
+            </span>
             <p className='text-white font-bold text-lg mb-2 pointer-events-none	'>
               Чистая прибыль
             </p>
@@ -430,8 +472,15 @@ export const Report = () => {
           </div>
           <Link
             to={'/alo24/reports/returnproducts'}
-            className='h-1/3 w-full bg-blue-800 text-center py-4 rounded-xl flex justify-center items-center transition ease-in-out hover:bg-blue-700'
+            className='h-1/3 w-full bg-blue-800 text-center py-4 rounded-xl flex justify-center items-center transition ease-in-out relative'
           >
+            <span className='absolute top-4 left-4'>
+              <FontAwesomeIcon
+                icon={faRotate}
+                color='white'
+                fontSize={'24px'}
+              />
+            </span>
             <p className='text-white font-bold text-center text-lg mb-2 pointer-events-none	'>
               Qaytarilganlar
             </p>
@@ -444,8 +493,15 @@ export const Report = () => {
               setPaymentType('cash');
               window.scroll(0, 500);
             }}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out relative'
           >
+            <span className='absolute top-4 left-4'>
+              <FontAwesomeIcon
+                icon={faMoneyBill}
+                color='white'
+                fontSize={'24px'}
+              />
+            </span>
             <p className='text-white font-bold text-lg mb-2 pointer-events-none'>
               {t('Naqd')}
             </p>
@@ -462,8 +518,15 @@ export const Report = () => {
               setPaymentType('card');
               window.scroll(0, 500);
             }}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out relative'
           >
+            <span className='absolute top-4 left-4'>
+              <FontAwesomeIcon
+                icon={faCreditCard}
+                color='white'
+                fontSize={'24px'}
+              />
+            </span>
             <p className='text-white font-bold text-lg mb-2 pointer-events-none	'>
               {t('Plastik')}
             </p>
@@ -480,8 +543,15 @@ export const Report = () => {
               setPaymentType('transfer');
               window.scroll(0, 500);
             }}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out relative'
           >
+            <span className='absolute top-4 left-4'>
+              <FontAwesomeIcon
+                icon={faMoneyBillTransfer}
+                color='white'
+                fontSize={'24px'}
+              />
+            </span>
             <p className='text-white font-bold text-lg mb-2 pointer-events-none	'>
               {t('Otkazmalar')}
             </p>
