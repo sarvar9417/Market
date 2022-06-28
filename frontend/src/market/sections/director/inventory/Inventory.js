@@ -31,7 +31,7 @@ export const Inventory = () => {
   const [modal, setModal] = useState(false);
 
   //Context
-  const { request } = useHttp();
+  const { request, loading } = useHttp();
   const auth = useContext(AuthContext);
   const history = useHistory();
   // ===========================================================
@@ -202,7 +202,7 @@ export const Inventory = () => {
   };
 
   const keyPressedUpdate = (e, inventory, i) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && !loading) {
       updateInventory(inventory, i);
     }
   };
@@ -236,6 +236,7 @@ export const Inventory = () => {
         {currentProducts.map((product, index) => {
           return (
             <Rows
+              loading={loading}
               commitHandler={commitHandler}
               keyPressed={keyPressedUpdate}
               updateInventory={updateInventory}

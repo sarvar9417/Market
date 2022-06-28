@@ -1,6 +1,6 @@
 import { t } from 'i18next';
 import React from 'react';
-import { SaveBtn, SaveBtnLoad} from '../../components/TableButtons';
+import { SaveBtn, SaveBtnLoad } from '../../components/TableButtons';
 
 export const Rows = ({
   currentPage,
@@ -32,6 +32,7 @@ export const Rows = ({
       </li>
       <li className='td  border-r text-right '>
         <input
+          disabled={loading}
           id='update'
           onKeyUp={(e) => keyPressed(e, product.inventory, index)}
           onChange={countHandler}
@@ -71,6 +72,7 @@ export const Rows = ({
       </li>
       <li className='td  border-r text-right col-span-2'>
         <input
+          disabled={loading}
           id={index}
           placeholder={t('Izoh')}
           onKeyUp={(e) => keyPressed(e, product.inventory, index)}
@@ -86,13 +88,15 @@ export const Rows = ({
         />
       </li>
       <li className='td-btn'>
-        {loading ? <SaveBtnLoad/> :
+        {loading ? (
+          <SaveBtnLoad />
+        ) : (
           <SaveBtn
             saveHandler={() => {
               updateInventory(product.inventory, index);
             }}
           />
-        }
+        )}
       </li>
     </ul>
   );
