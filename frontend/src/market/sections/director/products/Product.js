@@ -83,7 +83,7 @@ export const Product = () => {
     }
 
     selectRef.unit.current.selectOption({
-      label: "O'lchov birligi",
+      label: t("O'lchov birligi"),
       value: 'delete',
     });
     setProduct({

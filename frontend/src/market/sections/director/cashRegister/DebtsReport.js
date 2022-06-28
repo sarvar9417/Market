@@ -478,7 +478,7 @@ export const DebtsReport = ({
       (totals > 0 && Math.round(total * 10000) / 10000 > totals)
     ) {
       return notify({
-        title: t('Diqqat! Umumiy summadan yuqori summa kiritish mumkin ema'),
+        title: t('Diqqat! Umumiy summadan yuqori summa kiritish mumkin emas'),
         description: '',
         status: 'error',
       });

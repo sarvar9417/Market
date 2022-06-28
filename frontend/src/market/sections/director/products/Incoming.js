@@ -292,7 +292,7 @@ export const Incoming = () => {
     if (incoming.pieces === 0 || incoming.pieces === '') {
       return notify({
         title: t('Diqqat! Mahsulot soni kiritilmagan.'),
-        description: t('Iltimos Qabul qilinayotgan mahsulot sonini kiriting.'),
+        description: t('Iltimos Qabul qilinayotgan mahsulot sonini kiriting'),
         status: 'warning',
       });
     }
@@ -697,7 +697,7 @@ export const Incoming = () => {
   const changeSaveIncoming = () => {
     if (incomings.length === 0) {
       return notify({
-        title: 'Diqqat! Qabul qilish uchun mahsulotlar tanlanmagan.',
+        title: t('Diqqat! Qabul qilish uchun mahsulotlar tanlanmagan.'),
         status: 'warning',
       });
     }
@@ -964,7 +964,7 @@ export const Incoming = () => {
     if (incomings.length === 0) {
       return notify({
         title:
-          "Diqqat! Qabulni vaqtincha saqlash uchun kamida bitta mahsulot kiritilgan bo'lishi kerak.",
+          t("Diqqat! Qabulni vaqtincha saqlash uchun kamida bitta mahsulot kiritilgan bo'lishi kerak."),
         status: 'warning',
       });
     }
@@ -1061,7 +1061,7 @@ export const Incoming = () => {
     deleteTemporarys(delTemporary._id);
     setModal5(false);
     notify({
-      title: "Saqlangan qabul qilish amaliyoti muvaffaqqiyatli o'chirildi",
+      title: t("Saqlangan qabul qilish amaliyoti muvaffaqqiyatli o'chirildi"),
       status: 'success',
     });
   };

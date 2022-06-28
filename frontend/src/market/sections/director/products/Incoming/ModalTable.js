@@ -10,7 +10,7 @@ export const ModalTable = ({ incoming, inputHandler, keyPressed }) => {
   return (
     <>
       <div className='font-bold text-black mb-1'>
-        Mahsulot: {incoming.product && incoming.product.name}
+        {t("Mahsulot")}: {incoming.product && incoming.product.name}
       </div>
       <div className='table-responsive'>
         <table className='table'>

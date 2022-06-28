@@ -14,6 +14,7 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { Loader } from '../../../loader/Loader';
+import { t } from 'i18next';
 
 ChartJS.register(
   CategoryScale,
@@ -166,7 +167,7 @@ export const HomePage = () => {
             },
             title: {
               display: true,
-              text: 'Keltirilgan va sotilgan mahsulotlar',
+              text: t('Keltirilgan va sotilgan mahsulotlar'),
             },
           },
         }}
@@ -176,14 +177,14 @@ export const HomePage = () => {
           datasets: [
             {
               id: 1,
-              label: 'Keltirilgan',
+              label: t('Keltirilgan'),
               data: incomingPrice,
               borderColor: 'rgb(255, 99, 132)',
               backgroundColor: 'rgba(255, 99, 132, 0.5)',
             },
             {
               id: 2,
-              label: 'Sotilgan',
+              label: t('Sotilgan'),
               data: sellingPrice,
               borderColor: 'rgb(75, 192, 192)',
               backgroundColor: 'rgba(75, 192, 192, 0.5)',

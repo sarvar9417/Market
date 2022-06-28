@@ -8,7 +8,7 @@ export const ExcelTable = ({ datas }) => {
         <thead>
           <tr className='bg-blue-700'>
             <th className='border border-black'>№</th>
-            <th>{t('Brand nomi')}</th>
+            <th>{t('Brend nomi')}</th>
           </tr>
         </thead>
         <tbody>

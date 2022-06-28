@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import React from 'react';
 
 export const Table = ({ incomings }) => {
@@ -9,26 +10,25 @@ export const Table = ({ incomings }) => {
             №
           </th>
           <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
-            Kodi
+            {t("Kodi")}
           </th>
           <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
-            Mahsulot
+            {t("Mahsulot")}
           </th>
           <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
-            Soni
+            {t("Soni")}
           </th>
           <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
-            Narxi (dona)
+            {t("Narxi (dona)")}
           </th>
           <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
-            Jami
+            {t("Jami")}
           </th>
         </tr>
       </thead>
       <tbody>
         {incomings &&
           incomings.map((product, index) => {
-            console.log(product);
             return (
               <tr key={index}>
                 <td className='font-bold text-center border border-black py-1 px-2'>
@@ -56,7 +56,7 @@ export const Table = ({ incomings }) => {
       <tfoot className='text-base'>
         <tr>
           <th colSpan={3} className='p-1  text-right border'>
-            Jami:
+            {t("Jami")}:
           </th>
           <th className='text-right text-teal-900 py-1 border p-1'>
             {incomings
