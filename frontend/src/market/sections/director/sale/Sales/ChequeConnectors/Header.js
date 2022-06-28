@@ -14,6 +14,14 @@ export const Header = ({ auth, sales }) => {
           <span>+998 {auth.market.phone1}</span>
         </p>
         <p className='flex justify-between'>
+          <span className='font-bold'></span>{' '}
+          <span>{auth.market.phone2 && '+998 ' + auth.market.phone2} </span>
+        </p>
+        <p className='flex justify-between'>
+          <span className='font-bold'></span>{' '}
+          <span>{auth.market.phone3 && '+998 ' + auth.market.phone3} </span>
+        </p>
+        <p className='flex justify-between'>
           <span className='font-bold'>{t('Manzil')}:</span>{' '}
           <span>{auth.market.address}</span>
         </p>
