@@ -174,7 +174,6 @@ export const DebtsReport = ({
     try {
       const data = await request(
         `/api/exchangerate/get`,
-
         'POST',
         { market: auth.market._id },
         {

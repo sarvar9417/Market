@@ -18,7 +18,7 @@ export const PaymentsReport = ({ type, changeCheck }) => {
   const [countPage, setCountPage] = useState(10);
 
   const [currentPayments, setCurrentPayments] = useState([]);
-  const [paymentsCount, setPaymentsCount] = useState([]);
+  const [paymentsCount, setPaymentsCount] = useState();
   const [tableExcel, setTableExcel] = useState([]);
   const [startDate, setStartDate] = useState(
     new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString()
@@ -44,24 +44,26 @@ export const PaymentsReport = ({ type, changeCheck }) => {
   // GETDATA
   const getPayments = useCallback(async () => {
     try {
-      const data = await request(
-        '/api/reports/getpayments',
-        'POST',
-        {
-          market: auth.market._id,
-          currentPage,
-          countPage,
-          type,
-          startDate,
-          endDate,
-        },
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
-      );
-      setTotalPayments(data.totalsales);
-      setPaymentsCount(data.salesCount);
-      setCurrentPayments(data.salesConnectors);
+      if (type) {
+        const data = await request(
+          '/api/reports/getpayments',
+          'POST',
+          {
+            market: auth.market._id,
+            currentPage,
+            countPage,
+            type,
+            startDate,
+            endDate,
+          },
+          {
+            Authorization: `Bearer ${auth.token}`,
+          }
+        );
+        setTotalPayments(data.totalsales);
+        setPaymentsCount(data.salesCount);
+        setCurrentPayments(data.salesConnectors);
+      }
     } catch (error) {
       notify({
         title: error,
@@ -115,6 +117,11 @@ export const PaymentsReport = ({ type, changeCheck }) => {
 
   useEffect(() => {
     getPayments();
+    return () => {
+      setCurrentPayments([]);
+      setPaymentsCount();
+      setTotalPayments(0);
+    };
   }, [getPayments, currentPage, countPage, startDate, endDate]);
 
   if (loading) {
