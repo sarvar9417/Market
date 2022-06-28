@@ -16,20 +16,18 @@ export const Rows = ({
       <li className='td col-span-2 border-r font-bold'>
         {saleconnector.product.productdata.name}
       </li>
-      <li className='td font-bold col-span-2 text-right border-r-2 border-r-green-700 flex justify-between'>
-        <span>
-          {saleconnector.pieces.toLocaleString('ru-RU')}
-          {'  '}
-          <span className='text-green-900'>USD</span>
-        </span>
+      <li className='td font-bold col-span-2 text-right border-r-2 border-r-green-700'>
+        <span>{saleconnector.pieces.toLocaleString('ru-RU')}</span>
       </li>
       <li className='td border-r-2 col-span-2 border-orange-500 font-bold text-right'>
         <span>{saleconnector.unitprice.toLocaleString('ru-RU')}</span>
         {'  '}
+        <span className='text-orange-500'>USD</span>
       </li>
       <li className='td border-r-2 col-span-2 border-red-600 font-bold text-right'>
         <span>{saleconnector.totalprice.toLocaleString('ru-RU')}</span>
         {'  '}
+        <span className='text-red-600'>USD</span>
       </li>
     </ul>
   );
