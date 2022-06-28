@@ -10,7 +10,7 @@ import { useReactToPrint } from 'react-to-print';
 import { AuthContext } from '../../../context/AuthContext';
 import { useHttp } from '../../../hooks/http.hook';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPrint, faCircleInfo } from '@fortawesome/free-solid-svg-icons';
+import { faPrint } from '@fortawesome/free-solid-svg-icons';
 import { PrintReport } from './PrintReport';
 import { Link, Redirect, Route, Switch } from 'react-router-dom';
 import { Discounts } from '../sale/Discounts';
@@ -227,6 +227,36 @@ export const Report = () => {
   //========================================================
   //========================================================
 
+  const [profit, setProfit] = useState(0);
+
+  const getNetProfit = useCallback(async () => {
+    try {
+      const data = await request(
+        '/api/reports/profit',
+        'POST',
+        {
+          market: auth.market._id,
+          startDate,
+          endDate,
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+
+      setProfit(data.profit);
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [auth, notify, request, startDate, endDate]);
+
+  //========================================================
+  //========================================================
+
   const changeDate = (e) => {
     e.target.name === 'startDate'
       ? setStartDate(
@@ -254,11 +284,13 @@ export const Report = () => {
     getProductReport();
     getIncomingsReport();
     getDebtAndDiscountReports();
+    getNetProfit();
   }, [
     getSalesReport,
     getProductReport,
     getIncomingsReport,
     getDebtAndDiscountReports,
+    getNetProfit,
     startDate,
     endDate,
   ]);
@@ -311,7 +343,8 @@ export const Report = () => {
         <div className='col-end-13 col-span-3 text-right'>
           <button
             className='bg-blue-700 hover:bg-blue-800 text-white m-auto px-10 py-1 text-lg rounded mr-4'
-            onClick={() => setIsPrint(true)}>
+            onClick={() => setIsPrint(true)}
+          >
             <FontAwesomeIcon icon={faPrint} />
           </button>
         </div>
@@ -325,7 +358,8 @@ export const Report = () => {
               window.scroll(0, 500);
               setPaymentType('debts');
             }}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'>
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
+          >
             <p className='text-white font-bold text-lg mb-2 pointer-events-none	'>
               {t('Qarzlar')}
             </p>
@@ -339,7 +373,8 @@ export const Report = () => {
           <Link
             to='/alo24/reports/discounts'
             onClick={() => window.scroll(0, 500)}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'>
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
+          >
             <p className='text-white font-bold text-lg mb-2 pointer-events-none'>
               {t('Chegirmalar')}
             </p>
@@ -353,7 +388,8 @@ export const Report = () => {
           <Link
             to='/alo24/reports/discounts'
             onClick={() => window.scroll(0, 500)}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'>
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
+          >
             <p className='text-white font-bold text-lg mb-2 pointer-events-none'>
               {t('Xarajatlar')}
             </p>
@@ -365,36 +401,37 @@ export const Report = () => {
             </p>
           </Link>
         </div>
-        <div className='col-start-5 col-span-4 gap-y-4 flex flex-col items-center'>
-          <div className='h-2/3 w-full border-2 border-blue-700 p-4 flex flex-column items-center rounded-lg'>
-            <p className='text-xl font-bold text-black mb-4'>
+        <div className='col-start-5 col-span-4 gap-y-3 flex flex-col justify-between'>
+          <Link
+            to='/alo24/reports/paymentstypes'
+            onClick={() => {
+              setPaymentType('allpayments');
+              window.scroll(0, 500);
+            }}
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
+          >
+            <p className='text-white font-bold text-lg mb-2 pointer-events-none	'>
               Общая сумма продаж
             </p>
-            <div className='mb-4'>
-              <span className='text-3xl font-bold text-black'>
-                {salesReport.salecount} -{' '}
-              </span>
-              <span className='text-3xl font-bold text-black'>
-                {(Math.round(salesReport.totalsale * 100) / 100).toLocaleString(
-                  'ru-RU'
-                )}{' '}
-                $
-              </span>
-            </div>
-            <Link
-              to='/alo24/reports/paymentstypes'
-              onClick={() => {
-                setPaymentType('allpayments');
-                window.scroll(0, 500);
-              }}
-              className='px-4 py-2 bg-blue-700 text-base text-white flex justify-around items-center'>
-              <p className='mr-2'>Подробно</p>
-              <FontAwesomeIcon icon={faCircleInfo} />
-            </Link>
+            <p className='text-white font-bold text-xl pointer-events-none	'>
+              {(Math.round(salesReport.totalsale * 100) / 100).toLocaleString(
+                'ru-RU'
+              )}{' '}
+              $
+            </p>
+          </Link>
+          <div className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'>
+            <p className='text-white font-bold text-lg mb-2 pointer-events-none	'>
+              Чистая прибыль
+            </p>
+            <p className='text-white font-bold text-xl pointer-events-none	'>
+              {(Math.round(profit * 100) / 100).toLocaleString('ru-RU')} $
+            </p>
           </div>
           <Link
             to={'/alo24/reports/returnproducts'}
-            className='h-1/3 w-full bg-blue-800 text-center py-4 rounded-xl flex justify-center items-center transition ease-in-out hover:bg-blue-700'>
+            className='h-1/3 w-full bg-blue-800 text-center py-4 rounded-xl flex justify-center items-center transition ease-in-out hover:bg-blue-700'
+          >
             <p className='text-white font-bold text-center text-lg mb-2 pointer-events-none	'>
               Qaytarilganlar
             </p>
@@ -407,7 +444,8 @@ export const Report = () => {
               setPaymentType('cash');
               window.scroll(0, 500);
             }}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'>
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
+          >
             <p className='text-white font-bold text-lg mb-2 pointer-events-none'>
               {t('Naqd')}
             </p>
@@ -424,7 +462,8 @@ export const Report = () => {
               setPaymentType('card');
               window.scroll(0, 500);
             }}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'>
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
+          >
             <p className='text-white font-bold text-lg mb-2 pointer-events-none	'>
               {t('Plastik')}
             </p>
@@ -441,7 +480,8 @@ export const Report = () => {
               setPaymentType('transfer');
               window.scroll(0, 500);
             }}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'>
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700'
+          >
             <p className='text-white font-bold text-lg mb-2 pointer-events-none	'>
               {t('Otkazmalar')}
             </p>
@@ -479,7 +519,8 @@ export const Report = () => {
       <div
         className={`${
           isPrint ? 'fixed' : 'hidden'
-        } top-0 left-0 w-full h-full z-10 bg-white overflow-auto pb-4`}>
+        } top-0 left-0 w-full h-full z-10 bg-white overflow-auto pb-4`}
+      >
         <PrintReport
           startDate={startDate}
           endDate={endDate}
@@ -491,6 +532,7 @@ export const Report = () => {
           auth={auth}
           print={print}
           setIsPrint={setIsPrint}
+          profit={profit}
         />
       </div>
 
