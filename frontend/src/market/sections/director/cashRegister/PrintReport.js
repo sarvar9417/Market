@@ -26,7 +26,9 @@ export const PrintReport = ({
             <img
               src={
                 baseUrl &&
-                `${baseUrl}/api/upload/file/${auth && auth.market.image}`
+                `${baseUrl}/api/upload/file/${
+                  auth && auth.market && auth.market.image
+                }`
               }
               alt='market'
             />
