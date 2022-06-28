@@ -14,6 +14,7 @@ export const PrintReport = ({
   baseUrl,
   print,
   setIsPrint,
+  profit,
 }) => {
   return (
     <>
@@ -111,7 +112,9 @@ export const PrintReport = ({
             </table>
           </div>
           <div className='col-span-5 flex flex-col items-center justify-center'>
-            <span className='text-4xl font-bold text-green-500'>44 000 $</span>
+            <span className='text-4xl font-bold text-green-500'>
+              {profit} <span>USD</span>
+            </span>
             <p className='text-2xl font-medium text-blue-700'>
               {t('Sof foyda')}
             </p>
@@ -133,7 +136,9 @@ export const PrintReport = ({
               {productsReport.salesproducts &&
                 productsReport.salesproducts.toLocaleString('ru-RU')}{' '}
             </span>
-            <p className='text-lg font-medium'>{t("Tovar turlarining umumiy soni")}</p>
+            <p className='text-lg font-medium'>
+              {t('Tovar turlarining umumiy soni')}
+            </p>
           </div>
           <div className='col-span-4 flex flex-col items-center text-center'>
             <span className='text-xl font-bold text-black'>
