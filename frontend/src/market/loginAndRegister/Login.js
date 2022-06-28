@@ -76,7 +76,6 @@ export const Login = () => {
     }
     try {
       const data = await request(`/api/user/login`, 'POST', { ...user });
-      console.log(data);
       auth.login(data.token, data.userId, data.user, data.market);
       notify({
         title: t(`Xush kelibsiz!`),
