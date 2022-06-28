@@ -14,6 +14,7 @@ const administration = new Schema(
 function validateAdministration(administration) {
   const schema = Joi.object({
     password: Joi.string().required(),
+    confirmpassword: Joi.string(),
     login: Joi.string().required(),
   });
 

@@ -1,5 +1,5 @@
-const { Schema, model, Types } = require('mongoose')
-const Joi = require('joi')
+const { Schema, model, Types } = require('mongoose');
+const Joi = require('joi');
 
 const market = new Schema(
   {
@@ -16,13 +16,16 @@ const market = new Schema(
     address: { type: String },
     orientation: { type: String },
     isArchive: { type: Boolean, default: false },
+    director: { type: Schema.Types.ObjectId, ref: 'User' },
     market: { type: Schema.Types.ObjectId, ref: 'Market' },
+    mainmarket: { type: Schema.Types.ObjectId, ref: 'Market' },
     filials: [{ type: Schema.Types.ObjectId, ref: 'Market' }],
+    connections: [{ type: Schema.Types.ObjectId, ref: 'Market' }],
   },
   {
     timestamps: true,
-  },
-)
+  }
+);
 
 function validateMarket(market) {
   const schema = Joi.object({
@@ -38,11 +41,11 @@ function validateMarket(market) {
     mfo: Joi.number(),
     address: Joi.string(),
     orientation: Joi.string(),
-    market: Joi.string()
-  })
+    market: Joi.string(),
+  });
 
-  return schema.validate(market)
+  return schema.validate(market);
 }
 
-module.exports.validateMarket = validateMarket
-module.exports.Market = model('Market', market)
+module.exports.validateMarket = validateMarket;
+module.exports.Market = model('Market', market);

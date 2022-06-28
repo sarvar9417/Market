@@ -963,8 +963,9 @@ export const Incoming = () => {
   const saveTemporary = () => {
     if (incomings.length === 0) {
       return notify({
-        title:
-          t("Diqqat! Qabulni vaqtincha saqlash uchun kamida bitta mahsulot kiritilgan bo'lishi kerak."),
+        title: t(
+          "Diqqat! Qabulni vaqtincha saqlash uchun kamida bitta mahsulot kiritilgan bo'lishi kerak."
+        ),
         status: 'warning',
       });
     }
@@ -1217,9 +1218,9 @@ export const Incoming = () => {
       <Modal
         setModal={setModal3}
         modal={modal3}
-        basic={`${
-          deleteProduct.product && deleteProduct.product.name
-        } ${t("qabul qilingan mahsulotini o'chirishni tasdiqlaysizmi?")}`}
+        basic={`${deleteProduct.product && deleteProduct.product.name} ${t(
+          "qabul qilingan mahsulotini o'chirishni tasdiqlaysizmi?"
+        )}`}
         handler={deleteProductHandler}
       />
 

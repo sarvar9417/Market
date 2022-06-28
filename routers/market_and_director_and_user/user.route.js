@@ -148,6 +148,10 @@ module.exports.registerDirector = async (req, res) => {
     });
     await newUser.save();
 
+    await Market.findByIdAndUpdate(market, {
+      director: newUser._id,
+    });
+
     const token = jwt.sign(
       {
         userId: newUser._id,

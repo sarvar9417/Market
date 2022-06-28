@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 
 const storageName = 'userData';
+const storageAdmin = 'adminData';
 export const useAuth = () => {
+  const [administrator, setAdministrator] = useState(null);
   const [token, setToken] = useState(null);
   const [userId, setUserId] = useState(null);
   const [user, setUser] = useState(null);
@@ -23,11 +25,25 @@ export const useAuth = () => {
     );
   }, []);
 
+  const loginAdministrator = useCallback((jwtToken, administrator) => {
+    setToken(jwtToken);
+    setAdministrator(administrator);
+
+    localStorage.setItem(
+      storageAdmin,
+      JSON.stringify({
+        token: jwtToken,
+        administrator: administrator,
+      })
+    );
+  }, []);
+
   const logout = useCallback(() => {
     setToken(null);
     setUserId(null);
     setUser(null);
     setMarket(null);
+    setAdministrator(null);
     localStorage.removeItem(storageName);
   }, []);
 
@@ -38,5 +54,21 @@ export const useAuth = () => {
     }
   }, [login]);
 
-  return { login, logout, token, userId, user, market, setUser };
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem(storageAdmin));
+    if (data && data.token) {
+      loginAdministrator(data.token, data.administrator);
+    }
+  }, [loginAdministrator]);
+  return {
+    login,
+    logout,
+    token,
+    userId,
+    user,
+    market,
+    setUser,
+    administrator,
+    loginAdministrator,
+  };
 };
