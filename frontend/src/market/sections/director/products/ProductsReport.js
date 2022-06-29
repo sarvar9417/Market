@@ -190,6 +190,7 @@ export const ProductsReport = () => {
                   p={p}
                   index={index}
                   currentPage={currentPage}
+                  key={index}
                 />
               );
             })}
