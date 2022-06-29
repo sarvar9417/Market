@@ -25,7 +25,7 @@ export const TableHead = ({ currentPayments, setCurrentPayments, type }) => {
           />
         </li>
         <li className='th border-r col-span-2 flex justify-center'>
-          Umumiy
+          {t("Umumiy")}
           <Sort
             property={'payments'}
             data={currentPayments}

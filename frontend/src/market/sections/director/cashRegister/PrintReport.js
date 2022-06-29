@@ -21,7 +21,7 @@ export const PrintReport = ({
       <div className='a4 m-auto w-[27cm] p-4' ref={componentRef}>
         <div className='w-full flex justify-between items-center px-6'>
           <div className=''>
-            <p className='font-bold text-2xl'>Молиявий хисобот</p>
+            <p className='font-bold text-2xl'>{t("Moliyaviy hisobot")}</p>
           </div>
           <div className='flex justify-center items-center gap-4 mb-4'>
             <img
@@ -35,7 +35,7 @@ export const PrintReport = ({
             />
           </div>
           <div className='text-blue-700 text-center'>
-            <div className='font-serif text-4xl font-bold'>ОТЧЕТ</div>
+            <div className='font-serif text-4xl font-bold'>{t("HISOBOT")}</div>
             <div className='font-medium text-2xl'>
               {new Date(startDate).toLocaleDateString()} -{' '}
               {new Date(endDate).toLocaleDateString()}
@@ -121,7 +121,7 @@ export const PrintReport = ({
           </div>
         </div>
         <div className='font-bold text-2xl pl-4 mb-2'>
-          Сотилган махсулотлар хисоботи
+          {t("Sotilgan mahsulotlar hisoboti")}
         </div>
         <div className='grid grid-cols-12 border-2 border-blue-700 py-4 mb-8'>
           <div className='col-span-4 flex flex-col items-center'>
@@ -152,10 +152,10 @@ export const PrintReport = ({
         </div>
         <div className='px-4 mb-2 flex justify-between items-center'>
           <span className='font-bold text-2xl mr-6'>
-            Келтирилган махсулотлар хисоботи
+            {t("Keltirilgan mahsulotlar hisoboti")}
           </span>
           <div className='flex items-center'>
-            <p className='text-2xl font-medium mr-4'>Количество приходов:</p>
+            <p className='text-2xl font-medium mr-4'>{t("Tushumlar miqdori")}</p>
             <span className='text-2xl font-bold text-black'>
               {incomingsReport.incomingsCount &&
                 incomingsReport.incomingsCount.toLocaleString('ru-RU')}
@@ -171,7 +171,7 @@ export const PrintReport = ({
                 )}{' '}
               $
             </span>
-            <p className='text-lg font-medium'>Общая сумма Приходов</p>
+            <p className='text-lg font-medium'>{t("Jami tushumlar")}</p>
           </div>
           <div className='col-span-4 flex flex-col items-center'>
             <span className='text-xl font-bold text-black'>
@@ -191,7 +191,7 @@ export const PrintReport = ({
             </p>
           </div>
         </div>
-        <div className='font-bold text-2xl pl-4 mb-2'>Омборхона хисоботи</div>
+        <div className='font-bold text-2xl pl-4 mb-2'>{t("Omborxona hisoboti")}</div>
         <div className='grid grid-cols-12 border-2 border-blue-700 py-4 mb-6 px-2'>
           <div className='col-span-4 flex flex-col items-center'>
             <span className='text-xl font-bold text-black'>

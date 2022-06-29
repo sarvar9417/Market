@@ -1,5 +1,10 @@
 import React from 'react';
-import { DeleteBtn, EditBtn } from '../../components/TableButtons';
+import {
+  DeleteBtn,
+  EditBtn,
+  ClearBtnLoad,
+  SaveBtnLoad,
+} from '../../components/TableButtons';
 
 export const Rows = ({
   s,
@@ -8,6 +13,7 @@ export const Rows = ({
   setRemove,
   setModal,
   remove,
+  loading,
 }) => {
   return (
     <ul className='tr'>
@@ -19,17 +25,23 @@ export const Rows = ({
         1 USD - {s.exchangerate} UZS
       </li>
       <li className='td-btn col-span-2 border-r'>
-        {<EditBtn editHandler={() => setExchangerate({ ...s })} />}
+        {loading ? (
+          <SaveBtnLoad />
+        ) : (
+          <EditBtn editHandler={() => setExchangerate({ ...s })} />
+        )}
       </li>
       <li className='td-btn col-span-2'>
-        {
+        {loading ? (
+          <ClearBtnLoad />
+        ) : (
           <DeleteBtn
             deleteHandler={() => {
               setRemove({ ...remove, ...s });
               setModal(true);
             }}
           />
-        }
+        )}
       </li>
     </ul>
   );

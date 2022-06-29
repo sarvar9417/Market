@@ -1,3 +1,4 @@
+import { t } from 'i18next'
 import React, { useState } from 'react'
 import DatePicker from 'react-datepicker'
 
@@ -8,18 +9,18 @@ export const DatePickers = ({ changeDate }) => {
     (v, k) => k + new Date().getFullYear() - 80,
   )
   const months = [
-    'Yanvar',
-    'Fevral',
-    'Mart',
-    'Aprel',
-    'May',
-    'Iyun',
-    'Iyul',
-    'Avgust',
-    'Sentabr',
-    'Oktabr',
-    'Noyabr',
-    'Dekabr',
+    t('Yanvar'),
+    t('Fevral'),
+    t('Mart'),
+    t('Aprel'),
+    t('May'),
+    t('Iyun'),
+    t('Iyul'),
+    t('Avgust'),
+    t('Sentabr'),
+    t('Oktabr'),
+    t('Noyabr'),
+    t('Dekabr'),
   ]
   return (
     <div

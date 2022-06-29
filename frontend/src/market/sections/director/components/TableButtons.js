@@ -54,3 +54,11 @@ export const DeleteBtn = ({ deleteHandler }) => {
     </button>
   );
 };
+
+export const PrintBtnLoad = () => {
+  return (
+    <button className='print-btn px-4'disabled>
+      <span className='spinner-border spinner-border-sm'></span>
+    </button>
+  );
+};

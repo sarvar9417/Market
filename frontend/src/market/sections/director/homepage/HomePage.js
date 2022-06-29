@@ -39,18 +39,18 @@ export const HomePage = () => {
   //=============================================================
 
   const months = [
-    'Yanvar',
-    'Fevral',
-    'Mart',
-    'Aprel',
-    'May',
-    'Iyun',
-    'Iyul',
-    'Avgust',
-    'Sentyabr',
-    'Oktyabr',
-    'Noyabr',
-    'Dekabr',
+    t('Yanvar'),
+    t('Fevral'),
+    t('Mart'),
+    t('Aprel'),
+    t('May'),
+    t('Iyun'),
+    t('Iyul'),
+    t('Avgust'),
+    t('Sentyabr'),
+    t('Oktyabr'),
+    t('Noyabr'),
+    t('Dekabr'),
   ];
 
   //=============================================================

@@ -429,46 +429,33 @@ export const Report = () => {
             </p>
           </Link>
         </div>
-        <div className='col-start-5 col-span-4 gap-y-3 flex flex-col justify-between'>
-          <Link
-            to='/alo24/reports/paymentstypes'
-            onClick={() => {
-              setPaymentType('allpayments');
-              window.scroll(0, 500);
-            }}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
-          >
-            <span className='absolute top-4 left-4'>
-              <FontAwesomeIcon
-                icon={faCircleInfo}
-                color='white'
-                fontSize={'24px'}
-              />
-            </span>
-            <p className='text-white font-bold text-lg mb-2 pointer-events-none	'>
-              Общая сумма продаж
+        <div className='col-start-5 col-span-4 gap-y-4 flex flex-col items-center'>
+          <div className='h-2/3 w-full border-2 border-blue-700 p-4 flex flex-column items-center rounded-lg'>
+            <p className='text-xl font-bold text-black mb-4'>
+              {t('Umumiy savdo summasi')}
             </p>
-            <p className='text-white font-bold text-xl pointer-events-none	'>
-              {(Math.round(salesReport.totalsale * 100) / 100).toLocaleString(
-                'ru-RU'
-              )}{' '}
-              $
-            </p>
-          </Link>
-          <div className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'>
-            <span className='absolute top-4 left-4'>
-              <FontAwesomeIcon
-                icon={faWallet}
-                color='white'
-                fontSize={'24px'}
-              />
-            </span>
-            <p className='text-white font-bold text-lg mb-2 pointer-events-none	'>
-              Чистая прибыль
-            </p>
-            <p className='text-white font-bold text-xl pointer-events-none	'>
-              {(Math.round(profit * 100) / 100).toLocaleString('ru-RU')} $
-            </p>
+            <div className='mb-4'>
+              <span className='text-3xl font-bold text-black'>
+                {salesReport.salecount} -{' '}
+              </span>
+              <span className='text-3xl font-bold text-black'>
+                {(Math.round(salesReport.totalsale * 100) / 100).toLocaleString(
+                  'ru-RU'
+                )}{' '}
+                $
+              </span>
+            </div>
+            <Link
+              to='/alo24/reports/paymentstypes'
+              onClick={() => {
+                setPaymentType('allpayments');
+                window.scroll(0, 500);
+              }}
+              className='px-4 py-2 bg-blue-700 hover:bg-blue-600 text-base text-white flex justify-around items-center'
+            >
+              <p className='mr-2'>{t("Batafsil")}</p>
+              <FontAwesomeIcon icon={faCircleInfo} />
+            </Link>
           </div>
           <Link
             to={'/alo24/reports/returnproducts'}
@@ -482,7 +469,7 @@ export const Report = () => {
               />
             </span>
             <p className='text-white font-bold text-center text-lg mb-2 pointer-events-none	'>
-              Qaytarilganlar
+              {t("Qaytarilganlar")}
             </p>
           </Link>
         </div>

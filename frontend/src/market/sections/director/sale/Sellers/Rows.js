@@ -1,5 +1,5 @@
 import React from 'react';
-import { EditBtn } from './../../components/TableButtons';
+import { EditBtn} from './../../components/TableButtons';
 export const Rows = ({ index, seller, setSeller }) => {
   return (
     <ul className='tr font-bold'>
@@ -13,7 +13,7 @@ export const Rows = ({ index, seller, setSeller }) => {
       </li>
       <li className='td  col-span-2  text-right border-r'>{seller.login}</li>
       <li className='td  col-span-2 text-center'>
-        <EditBtn editHandler={() => setSeller(seller)} />
+        {<EditBtn editHandler={() => setSeller(seller)} />}
       </li>
     </ul>
   );

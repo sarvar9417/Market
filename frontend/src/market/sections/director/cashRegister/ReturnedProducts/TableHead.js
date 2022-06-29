@@ -23,7 +23,7 @@ export const TableHead = ({ sales, setSales }) => {
         />
       </li>
       <li className='th border-r col-span-2 flex justify-center'>
-        Mahsulot
+        {t("Mahsulot")}
         <div className='flex flex-col pl-2'>
           <FontAwesomeIcon
             onClick={() =>
