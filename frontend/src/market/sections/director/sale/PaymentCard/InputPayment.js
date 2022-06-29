@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export const InputPayment = ({
   exchangerate,
@@ -9,21 +9,22 @@ export const InputPayment = ({
 }) => {
   return (
     <div
-      className={`flex text-xl items-center font-bold border-white border-b-2`}>
+      className={`flex text-xl items-center font-bold border-white border-b-2`}
+    >
       <div className='flex'>
         <span className='pb-1 opacity-60'>
-          {" "}
+          {' '}
           {discount.isProcient &&
-          paymentType.type !== "cash" &&
-          paymentType.type !== "card" &&
-          paymentType.type !== "transfer" &&
-          paymentType.type !== "mixed"
-            ? "%"
-            : "UZS"}
+          paymentType.type !== 'cash' &&
+          paymentType.type !== 'card' &&
+          paymentType.type !== 'transfer' &&
+          paymentType.type !== 'mixed'
+            ? '%'
+            : 'UZS'}
         </span>
         <input
-          value={payment[paymentType.type + "uzs"]}
-          id={paymentType.type + "uzs"}
+          value={payment[paymentType.type + 'uzs']}
+          id={paymentType.type + 'uzs'}
           name={paymentType.name}
           onChange={changeHandler}
           type='number'
@@ -44,14 +45,14 @@ export const InputPayment = ({
           className='bg-[#3695D7]  text-right font-bold  mb-1  w-full outline-none px-2'
         />
         <span className='pb-1 opacity-60'>
-          {" "}
+          {' '}
           {discount.isProcient &&
-          paymentType.type !== "cash" &&
-          paymentType.type !== "card" &&
-          paymentType.type !== "transfer" &&
-          paymentType.type !== "mixed"
-            ? "%"
-            : "USD"}
+          paymentType.type !== 'cash' &&
+          paymentType.type !== 'card' &&
+          paymentType.type !== 'transfer' &&
+          paymentType.type !== 'mixed'
+            ? '%'
+            : 'USD'}
         </span>
       </div>
     </div>

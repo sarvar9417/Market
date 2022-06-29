@@ -1,7 +1,7 @@
 import { t } from 'i18next';
 import React from 'react';
 
-export const Modal = ({ modal, text, setModal, handler, basic }) => {
+export const Modal = ({ modal, text, setModal, handler, basic, loading }) => {
   return (
     <div
       className={`modal fade show ${modal ? '' : 'd-none'}`}
@@ -42,10 +42,10 @@ export const Modal = ({ modal, text, setModal, handler, basic }) => {
                 {t('Bekor qilish')}
               </button>
             </div>
-            <div className='divider' />
-            <div className='right-side'>
-              <button onClick={handler} className='btn btn-link success w-100'>
-                {t('Tasdiqlash')}
+            <div className="divider" />
+            <div className="right-side">
+              <button disabled={loading} onClick={handler} className="btn btn-link success w-100">
+                {t("Tasdiqlash")}
               </button>
             </div>
           </div>

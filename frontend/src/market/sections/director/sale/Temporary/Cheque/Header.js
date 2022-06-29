@@ -39,9 +39,9 @@ export const Header = ({ auth, client, sales }) => {
             {auth.market.name}
           </div>
         </div>
-        <div className='flex justify-end items-center'>
-          <div className='text-center  font-bold'>Sotuvchi:</div>
-          <div className='text-right font-bold'>
+        <div className='flex justify-between items-center'>
+          <div className='text-center text-xl font-bold'>{t("Sotuvchi")}:</div>
+          <div className='text-right text-2xl font-bold'>
             {auth.user.firstname} {auth.user.lastname}
           </div>
         </div>

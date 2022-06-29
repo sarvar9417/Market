@@ -1,5 +1,9 @@
 import { faAdd, faPrint, faSync } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  SaveBtnLoad,
+  PrintBtnLoad,
+} from '../../../director/components/TableButtons';
 import { t } from 'i18next';
 import React from 'react';
 export const Rows = ({
@@ -12,6 +16,7 @@ export const Rows = ({
   addProducts,
   currentPage,
   editHandler,
+  loading,
 }) => {
   return (
     <ul className='tr'>
@@ -22,7 +27,8 @@ export const Rows = ({
       </li>
       <li
         onClick={() => changePrepayment(saleconnector)}
-        className='td font-bold col-span-2 text-right border-r-2 border-r-green-700 hover:bg-blue-200 flex justify-between'>
+        className='td font-bold col-span-2 text-right border-r-2 border-r-green-700 hover:bg-blue-200 flex justify-between'
+      >
         <span className='text-white'>{t("To'lov")}</span>
         <span>
           {saleconnector.products
@@ -69,26 +75,37 @@ export const Rows = ({
         })}
       </li>
       <li className='td-btn border-right'>
-        <button
-          onClick={() => changeCheck(saleconnector)}
-          className='px-4 bg-blue-700 text-white rounded-xl hover:bg-blue-800'>
-          <FontAwesomeIcon icon={faPrint} />
-        </button>
+        {loading ? (
+          <PrintBtnLoad />
+        ) : (
+          <button
+            onClick={() => changeCheck(saleconnector)}
+            className='px-4 bg-blue-700 text-white rounded-xl hover:bg-blue-800'
+          >
+            <FontAwesomeIcon icon={faPrint} />
+          </button>
+        )}
       </li>
       <li className='td-btn border-right'>
-        <button
-          onClick={() => {
-            addProducts(saleconnector);
-            Clear();
-          }}
-          className='px-4 bg-green-700 text-white rounded-xl hover:bg-green-800'>
-          <FontAwesomeIcon icon={faAdd} />
-        </button>
+        {loading ? (
+          <SaveBtnLoad />
+        ) : (
+          <button
+            onClick={() => {
+              addProducts(saleconnector);
+              Clear();
+            }}
+            className='px-4 bg-green-700 text-white rounded-xl hover:bg-green-800'
+          >
+            <FontAwesomeIcon icon={faAdd} />
+          </button>
+        )}
       </li>
       <li className='td-btn'>
         <button
           onClick={() => editHandler(saleconnector)}
-          className='px-4 bg-red-600 text-white rounded-xl hover:bg-red-700'>
+          className='px-4 bg-red-600 text-white rounded-xl hover:bg-red-700'
+        >
           <FontAwesomeIcon icon={faSync} />
         </button>
       </li>

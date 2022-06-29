@@ -32,7 +32,8 @@ export const CreateClient = ({
             style={{ minWidth: '70px', maxWidth: '200px' }}
             className='text-center text-black py-1 px-3 border focus:ring focus:outline-green-800 rounded'
             placeholder={t('Santexnikni tanlang')}
-            onChange={selectHandler}>
+            onChange={selectHandler}
+          >
             <option value='delete'>{t('Santexnikni tanlang')}</option>
             {packmans &&
               packmans.map((packman, index) => {
