@@ -36,7 +36,7 @@ export const ProductsReport = () => {
   const { request } = useHttp();
   const auth = useContext(AuthContext);
 
-  //====================================================================
+  //===================================================================
   //====================================================================
   const [productsCount, setProductsCount] = useState(0);
   const [search, setSearch] = useState({
