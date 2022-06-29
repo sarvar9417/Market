@@ -21,6 +21,7 @@ const market = new Schema(
     mainmarket: { type: Schema.Types.ObjectId, ref: 'Market' },
     filials: [{ type: Schema.Types.ObjectId, ref: 'Market' }],
     connections: [{ type: Schema.Types.ObjectId, ref: 'Market' }],
+    permission: { type: Schema.Types.ObjectId, ref: 'Permission' },
   },
   {
     timestamps: true,

@@ -64,7 +64,7 @@ module.exports.getmarketcontrols = async (req, res) => {
 
     const markets = await Market.find({ name: name, _id: { $ne: marketId } })
       .sort({ createdAt: -1 })
-      .select('filials connections mainmarket image name')
+      .select('filials connections mainmarket image name phone1')
       .populate({
         path: 'director',
         select: 'firstname lastname',
@@ -78,7 +78,7 @@ module.exports.getmarketcontrols = async (req, res) => {
     const count = filter.length;
 
     const market = await Market.findById(marketId)
-      .select('name filials connections')
+      .select('name filials connections phone1 phone2 phone3 permission')
       .populate('director', 'firstname lastname phone');
 
     filter = filter.splice(currentPage * countPage, countPage);

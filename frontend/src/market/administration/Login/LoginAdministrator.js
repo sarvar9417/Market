@@ -1,6 +1,6 @@
 import { useToast } from '@chakra-ui/react';
 import React, { useCallback, useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { useHttp } from '../../hooks/http.hook';
 import img from './img/draw2.webp';
@@ -9,6 +9,7 @@ export const LoginAdministrator = () => {
   const { request } = useHttp();
   const auth = useContext(AuthContext);
   const toast = useToast();
+  const history = useHistory();
   const notify = useCallback(
     (data) => {
       toast({
@@ -66,19 +67,19 @@ export const LoginAdministrator = () => {
       const data = await request('/api/administrator/login', 'POST', {
         ...loginPassword,
       });
-
       auth.loginAdministrator(data.token, data.administrator);
       notify({
         title: "Administrator bo'limiga xush kelibsiz",
         status: 'success',
       });
+      history.push('/alo24administration');
     } catch (error) {
       notify({
         title: error,
         status: 'error',
       });
     }
-  }, [request, loginPassword, notify, auth]);
+  }, [request, loginPassword, notify, auth, history]);
 
   return (
     <div className='container'>

@@ -37,6 +37,18 @@ export const Navbar = ({ baseUrl }) => {
     [toast]
   );
 
+  const [permission, setPermission] = useState({
+    creates: false,
+    incomings: false,
+    inventories: false,
+    sales: false,
+    reporters: false,
+    sellers: false,
+    calculations: false,
+    branches: false,
+    mainmarket: false,
+  });
+
   const [menu, setMenu] = useState('');
   const [submenu, setSubMenu] = useState('');
 
@@ -71,11 +83,39 @@ export const Navbar = ({ baseUrl }) => {
     }
   }, [request, auth, notify]);
 
+  const getPermission = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/administrator/getpermission`,
+        'POST',
+        {
+          permissionid: auth.market && auth.market.permission,
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      if (data) {
+        setPermission(data);
+      }
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [request, auth, notify]);
+
   const [bar, setBar] = useState(false);
 
   const handleClick = () => {
     setBar(!bar);
   };
+
+  useEffect(() => {
+    getPermission();
+  }, [getPermission]);
 
   useEffect(() => {
     getUser();
@@ -139,19 +179,21 @@ export const Navbar = ({ baseUrl }) => {
                   }>
                   <div className='p-2 bg-white absolute -top-1 rotate-45 left-2 -z-10'></div>
                   <li className='relative'>
-                    <Link
-                      id='Create'
-                      onClick={changeSubMenu}
-                      to='#'
-                      className='w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] relative flex justify-between border-b'>
-                      <span className='pointer-events-none'>
-                        {t('Yaratish')}
-                      </span>
-                      <FontAwesomeIcon
-                        icon={faAngleRight}
-                        className='pointer-events-none text-[10px]'
-                      />
-                    </Link>
+                    {permission.creates && (
+                      <Link
+                        id='Create'
+                        onClick={changeSubMenu}
+                        to='#'
+                        className='w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] relative flex justify-between border-b'>
+                        <span className='pointer-events-none'>
+                          {t('Yaratish')}
+                        </span>
+                        <FontAwesomeIcon
+                          icon={faAngleRight}
+                          className='pointer-events-none text-[10px]'
+                        />
+                      </Link>
+                    )}
 
                     <ul
                       className={
@@ -195,27 +237,31 @@ export const Navbar = ({ baseUrl }) => {
                     </ul>
                   </li>
                   <li>
-                    <Link
-                      onClick={changeLink}
-                      to='/alo24/incoming'
-                      className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
-                      {t('Qabul qilish')}
-                    </Link>
+                    {permission.incomings && (
+                      <Link
+                        onClick={changeLink}
+                        to='/alo24/incoming'
+                        className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
+                        {t('Qabul qilish')}
+                      </Link>
+                    )}
                   </li>
                   <li className='relative'>
-                    <Link
-                      id='Inventory'
-                      onClick={changeSubMenu}
-                      to='#'
-                      className='w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] relative flex justify-between'>
-                      <span className='pointer-events-none'>
-                        {t('Inventarizatsiya')}
-                      </span>
-                      <FontAwesomeIcon
-                        icon={faAngleRight}
-                        className='pointer-events-none text-[10px]'
-                      />
-                    </Link>
+                    {permission.inventories && (
+                      <Link
+                        id='Inventory'
+                        onClick={changeSubMenu}
+                        to='#'
+                        className='w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] relative flex justify-between'>
+                        <span className='pointer-events-none'>
+                          {t('Inventarizatsiya')}
+                        </span>
+                        <FontAwesomeIcon
+                          icon={faAngleRight}
+                          className='pointer-events-none text-[10px]'
+                        />
+                      </Link>
+                    )}
                     <ul
                       className={
                         submenu === 'Inventory'
@@ -271,12 +317,14 @@ export const Navbar = ({ baseUrl }) => {
                   }>
                   <div className='p-2 bg-white absolute -top-1 rotate-45 left-2 -z-10'></div>
                   <li>
-                    <Link
-                      onClick={changeLink}
-                      to='/alo24/sales'
-                      className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
-                      {t('Sotuv')}
-                    </Link>
+                    {permission.sales && (
+                      <Link
+                        onClick={changeLink}
+                        to='/alo24/sales'
+                        className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
+                        {t('Sotuv')}
+                      </Link>
+                    )}
                   </li>
                   <li>
                     <Link
@@ -295,43 +343,52 @@ export const Navbar = ({ baseUrl }) => {
                     </Link>
                   </li>
                   <li>
-                    <Link
-                      onClick={changeLink}
-                      to='/alo24/sellers'
-                      className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
-                      {t('Sotuvchilar')}
-                    </Link>
+                    {permission.sellers && (
+                      <Link
+                        onClick={changeLink}
+                        to='/alo24/sellers'
+                        className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
+                        {t('Sotuvchilar')}
+                      </Link>
+                    )}
                   </li>
                 </ul>
               </li>
               <li className='inline-block'>
-                <Link
-                  onClick={changeHeadMenu}
-                  id='reports'
-                  to='/alo24/reports'
-                  className={
-                    currentPage === '/alo24/reports'
-                      ? 'active-page'
-                      : 'unactive-page'
-                  }>
-                  {t('Kassa')}
-                </Link>
+                {permission.calculations && (
+                  <Link
+                    onClick={changeHeadMenu}
+                    id='reports'
+                    to='/alo24/reports'
+                    className={
+                      currentPage === '/alo24/reports'
+                        ? 'active-page'
+                        : 'unactive-page'
+                    }>
+                    {t('Kassa')}
+                  </Link>
+                )}
               </li>
               <li className='inline-block relative'>
-                <Link
-                  to='#'
-                  id='Branch'
-                  onClick={changeHeadMenu}
-                  className={
-                    currentPage === '/alo24/branches' ||
-                    currentPage === '/alo24/branchregister' ||
-                    menu === 'Branch'
-                      ? 'active-page'
-                      : 'unactive-page'
-                  }>
-                  {t('Filial')}{' '}
-                  <FontAwesomeIcon icon={faAngleDown} className='text-[10px]' />
-                </Link>
+                {permission.branches && (
+                  <Link
+                    to='#'
+                    id='Branch'
+                    onClick={changeHeadMenu}
+                    className={
+                      currentPage === '/alo24/branches' ||
+                      currentPage === '/alo24/branchregister' ||
+                      menu === 'Branch'
+                        ? 'active-page'
+                        : 'unactive-page'
+                    }>
+                    {t('Filial')}{' '}
+                    <FontAwesomeIcon
+                      icon={faAngleDown}
+                      className='text-[10px]'
+                    />
+                  </Link>
+                )}
                 <ul
                   className={
                     menu !== 'Branch'
@@ -497,17 +554,19 @@ export const Navbar = ({ baseUrl }) => {
               }>
               <div className='p-2 bg-white absolute -top-1 rotate-45 left-2 -z-10'></div>
               <li className='relative'>
-                <Link
-                  id='Create'
-                  onClick={changeSubMenu}
-                  to='#'
-                  className='w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] relative flex justify-between border-b'>
-                  <span className='pointer-events-none'>{t('Yaratish')}</span>
-                  <FontAwesomeIcon
-                    icon={faAngleRight}
-                    className='pointer-events-none text-[10px]'
-                  />
-                </Link>
+                {permission.creates && (
+                  <Link
+                    id='Create'
+                    onClick={changeSubMenu}
+                    to='#'
+                    className='w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] relative flex justify-between border-b'>
+                    <span className='pointer-events-none'>{t('Yaratish')}</span>
+                    <FontAwesomeIcon
+                      icon={faAngleRight}
+                      className='pointer-events-none text-[10px]'
+                    />
+                  </Link>
+                )}
 
                 <ul
                   className={
@@ -551,27 +610,31 @@ export const Navbar = ({ baseUrl }) => {
                 </ul>
               </li>
               <li>
-                <Link
-                  onClick={changeLink}
-                  to='/alo24/incoming'
-                  className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
-                  {t('Qabul qilish')}
-                </Link>
+                {permission.incomings && (
+                  <Link
+                    onClick={changeLink}
+                    to='/alo24/incoming'
+                    className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
+                    {t('Qabul qilish')}
+                  </Link>
+                )}
               </li>
               <li className='relative'>
-                <Link
-                  id='Inventory'
-                  onClick={changeSubMenu}
-                  to='#'
-                  className='w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] relative flex justify-between'>
-                  <span className='pointer-events-none'>
-                    {t('Inventarizatsiya')}
-                  </span>
-                  <FontAwesomeIcon
-                    icon={faAngleRight}
-                    className='pointer-events-none text-[10px]'
-                  />
-                </Link>
+                {permission.inventories && (
+                  <Link
+                    id='Inventory'
+                    onClick={changeSubMenu}
+                    to='#'
+                    className='w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] relative flex justify-between'>
+                    <span className='pointer-events-none'>
+                      {t('Inventarizatsiya')}
+                    </span>
+                    <FontAwesomeIcon
+                      icon={faAngleRight}
+                      className='pointer-events-none text-[10px]'
+                    />
+                  </Link>
+                )}
                 <ul
                   className={
                     submenu === 'Inventory'
@@ -628,12 +691,14 @@ export const Navbar = ({ baseUrl }) => {
               }>
               <div className='p-2 bg-white absolute -top-1 rotate-45 left-2 -z-10'></div>
               <li>
-                <Link
-                  onClick={changeLink}
-                  to='/alo24/sales'
-                  className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
-                  {t('Sotuv')}
-                </Link>
+                {permission.sales && (
+                  <Link
+                    onClick={changeLink}
+                    to='/alo24/sales'
+                    className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
+                    {t('Sotuv')}
+                  </Link>
+                )}
               </li>
               <li>
                 <Link
@@ -652,43 +717,49 @@ export const Navbar = ({ baseUrl }) => {
                 </Link>
               </li>
               <li>
-                <Link
-                  onClick={changeLink}
-                  to='/alo24/sellers'
-                  className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
-                  {t('Sotuvchilar')}
-                </Link>
+                {permission.sellers && (
+                  <Link
+                    onClick={changeLink}
+                    to='/alo24/sellers'
+                    className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
+                    {t('Sotuvchilar')}
+                  </Link>
+                )}
               </li>
             </ul>
           </li>
           <li className='sm: py-1'>
-            <Link
-              onClick={changeHeadMenu}
-              id='reports'
-              to='/alo24/reports'
-              className={
-                currentPage === '/alo24/reports'
-                  ? 'active-page py-1 border text-center rounded-xl block'
-                  : 'unactive-page py-1 border text-center rounded-xl block'
-              }>
-              {t('Kassa')}
-            </Link>
+            {permission.calculations && (
+              <Link
+                onClick={changeHeadMenu}
+                id='reports'
+                to='/alo24/reports'
+                className={
+                  currentPage === '/alo24/reports'
+                    ? 'active-page py-1 border text-center rounded-xl block'
+                    : 'unactive-page py-1 border text-center rounded-xl block'
+                }>
+                {t('Kassa')}
+              </Link>
+            )}
           </li>
           <li className='relative sm: py-1'>
-            <Link
-              to='#'
-              id='Branch'
-              onClick={changeHeadMenu}
-              className={
-                currentPage === '/alo24/branches' ||
-                currentPage === '/alo24/branchregister' ||
-                menu === 'Branch'
-                  ? 'active-page py-1 border text-center block rounded-xl'
-                  : 'unactive-page py-1 border text-center block rounded-xl'
-              }>
-              {t('Filial')}{' '}
-              <FontAwesomeIcon icon={faAngleRight} className='text-[10px]' />
-            </Link>
+            {permission.branches && (
+              <Link
+                to='#'
+                id='Branch'
+                onClick={changeHeadMenu}
+                className={
+                  currentPage === '/alo24/branches' ||
+                  currentPage === '/alo24/branchregister' ||
+                  menu === 'Branch'
+                    ? 'active-page py-1 border text-center block rounded-xl'
+                    : 'unactive-page py-1 border text-center block rounded-xl'
+                }>
+                {t('Filial')}{' '}
+                <FontAwesomeIcon icon={faAngleRight} className='text-[10px]' />
+              </Link>
+            )}
             <ul
               className={
                 menu !== 'Branch'

@@ -45,6 +45,7 @@ export const useAuth = () => {
     setMarket(null);
     setAdministrator(null);
     localStorage.removeItem(storageName);
+    localStorage.removeItem(storageAdmin);
   }, []);
 
   useEffect(() => {

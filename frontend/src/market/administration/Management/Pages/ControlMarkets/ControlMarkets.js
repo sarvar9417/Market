@@ -1,3 +1,5 @@
+import { faSave } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Requests } from '../../components/Requests';
@@ -6,7 +8,13 @@ import { TableHead } from './Table/TableHead';
 import { TableHeader } from './Table/TableHeader';
 
 export const ControlMarkets = () => {
-  const { getBaseUrl, getMarketControls, updateMarkets } = Requests();
+  const {
+    getBaseUrl,
+    getMarketControls,
+    updateMarkets,
+    getPermission,
+    createPermission,
+  } = Requests();
   const [baseUrl, setBaseUrl] = useState();
   const marketId = useParams().market;
   //====================================================================
@@ -25,7 +33,32 @@ export const ControlMarkets = () => {
     director: '',
     name: '',
   });
-
+  const [permission, setPermission] = useState({
+    creates: false,
+    incomings: false,
+    inventories: false,
+    sales: false,
+    reporters: false,
+    sellers: false,
+    calculations: false,
+    branches: false,
+    mainmarket: false,
+    market: marketId,
+  });
+  const permissions = [
+    { name: 'creates', title: 'Yaratish va tahrirlash' },
+    { name: 'incomings', title: 'Mahsulot kirim qilish' },
+    { name: 'inventories', title: 'Inventorizatsiya' },
+    { name: 'sales', title: "Sotuv bo'limi" },
+    { name: 'reporters', title: 'Yetkazib beruvchilar' },
+    { name: 'sellers', title: 'Sotuvchilar' },
+    { name: 'calculations', title: 'Kassa' },
+    { name: 'branches', title: 'Filiallar' },
+    { name: 'mainmarket', title: "Bosh do'kon" },
+  ];
+  const changePermission = (e) => {
+    setPermission({ ...permission, [e.target.name]: e.target.checked });
+  };
   const setPageSize = (e) => {
     setCurrentPage(0);
     setCountPage(e.target.value);
@@ -111,6 +144,10 @@ export const ControlMarkets = () => {
   }, [getBaseUrl]);
 
   useEffect(() => {
+    getPermission(setPermission, market.permission);
+  }, [getPermission, market]);
+
+  useEffect(() => {
     getMarketControls(
       setMarket,
       currentPage,
@@ -122,19 +159,73 @@ export const ControlMarkets = () => {
       marketId
     );
   }, [getMarketControls, countPage, currentPage, sendingsearch, marketId]);
+
   return (
-    <div className='p-3'>
-      <div className='border-blue-800 border-t-2 rounded grid grid-cols-1 md:grid-cols-2 p-3'>
-        <div className='flex justify-between w-4/5 text-base m-1'>
-          <span className='text-darkblue-100'>Do'kon</span>
-          <span className='font-bold'>{market.name && market.name}</span>
+    <div className='p-3 '>
+      <div className='grid grid-cols-6 gap-4 mb-3'>
+        <div className='rounded overflow-hidden col-span-6  md:col-span-2 shadow-2xl'>
+          <div className='py-1 bg-blue-800 text-base font-bold text-white text-center'>
+            Do'kon ma'lumotlari
+          </div>
+          <div className='p-3'>
+            <div className='flex justify-between text-base font-bold'>
+              <span className='text-blue-900'>Do'kon:</span>
+              <span>{market.name}</span>
+            </div>
+            <div className='flex justify-between text-base font-bold'>
+              <span className='text-blue-900'>Direktor:</span>
+              <span>
+                {market.director &&
+                  market.director.firstname + ' ' + market.director.lastname}
+              </span>
+            </div>
+            <div className='flex justify-between text-base font-bold'>
+              <span className='text-blue-900'>Telefon</span>
+              <span>{market.phone1 && '+998 ' + market.phone1}</span>
+            </div>
+            <div className='flex justify-between text-base font-bold'>
+              <span></span>
+              <span>{market.phone2 && '+998 ' + market.phone2}</span>
+            </div>
+            <div className='flex justify-between text-base font-bold'>
+              <span></span>
+              <span>{market.phone3 && '+998 ' + market.phone3}</span>
+            </div>
+          </div>
         </div>
-        <div className='flex justify-between w-4/5 text-base m-1'>
-          <span className='text-darkblue-100'>Director</span>
-          <span className='font-bold'>
-            {market.director &&
-              market.director.firstname + ' ' + market.director.lastname}
-          </span>
+        <div className='rounded overflow-hidden col-span-6  md:col-span-4 shadow-2xl'>
+          <div className='py-1 bg-blue-800 text-base font-bold text-white text-center'>
+            Ruxsat etilgan xizmatlar
+          </div>
+          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 p-3'>
+            {permissions.map((data, key) => {
+              return (
+                <div key={key}>
+                  <label className='flex items-center'>
+                    <input
+                      checked={permission[data.name]}
+                      onChange={changePermission}
+                      type='checkbox'
+                      className='w-[15px] h-[15px]'
+                      name={data.name}
+                    />
+                    <span className='font-bold pl-2 text-[#777]'>
+                      {data.title}
+                    </span>
+                  </label>
+                </div>
+              );
+            })}
+          </div>
+          <div className='text-right px-3  mb-2'>
+            <button
+              className='px-4 py-1 bg-green-700 hover:bg-green-800 text-white rounded'
+              onClick={() => {
+                createPermission(permission, setPermission);
+              }}>
+              <FontAwesomeIcon icon={faSave} />
+            </button>
+          </div>
         </div>
       </div>
       <TableHeader

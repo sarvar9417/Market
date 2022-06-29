@@ -209,9 +209,8 @@ module.exports.login = async (req, res) => {
     );
 
     const userr = await User.findById(user._id)
-      .populate('market')
       .select('firstname lastname type')
-      .populate('market', 'name phone1 image phone2 phone3');
+      .populate('market', 'name phone1 phone2 phone3 image permission');
 
     res.send({
       token,
@@ -220,7 +219,6 @@ module.exports.login = async (req, res) => {
       market: userr.market,
     });
   } catch (e) {
-    console.log(e);
     res.status(500).json({ message: 'Serverda xatolik yuz berdi' });
   }
 };
