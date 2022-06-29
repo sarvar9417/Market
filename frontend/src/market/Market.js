@@ -5,12 +5,31 @@ import { useAuth } from './hooks/auth.hook';
 import { AuthContext } from './context/AuthContext';
 
 export const Market = () => {
-  const { login, token, logout, userId, user, market } = useAuth();
+  const {
+    login,
+    token,
+    logout,
+    userId,
+    user,
+    market,
+    administrator,
+    loginAdministrator,
+  } = useAuth();
   const isAuthenticated = !!token;
-  const userRouter = MarketRoutes(isAuthenticated, user);
+  const userRouter = MarketRoutes(isAuthenticated, user, administrator);
   return (
     <AuthContext.Provider
-      value={{ login, token, logout, userId, user, market, isAuthenticated }}>
+      value={{
+        login,
+        token,
+        logout,
+        userId,
+        user,
+        market,
+        isAuthenticated,
+        administrator,
+        loginAdministrator,
+      }}>
       <Router>{userRouter}</Router>
     </AuthContext.Provider>
   );

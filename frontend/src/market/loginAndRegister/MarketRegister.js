@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { useHttp } from "../hooks/http.hook";
+import React, { useCallback, useEffect, useState } from 'react';
+import { useHttp } from '../hooks/http.hook';
 import {
   Input,
   FormControl,
@@ -7,27 +7,27 @@ import {
   InputGroup,
   InputLeftAddon,
   Button,
-} from "@chakra-ui/react";
-import { FileUpload } from "./fileUpLoad/FileUpload";
-import { useToast } from "@chakra-ui/react";
-import { checkMarketData } from "./checkData";
-import { useHistory } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHouseMedical } from "@fortawesome/free-solid-svg-icons";
-import { Loader } from "../loader/Loader";
-import { t } from "i18next";
-const storageName = "marketData";
+} from '@chakra-ui/react';
+import { FileUpload } from './fileUpLoad/FileUpload';
+import { useToast } from '@chakra-ui/react';
+import { checkMarketData } from './checkData';
+import { useHistory } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHouseMedical } from '@fortawesome/free-solid-svg-icons';
+import { Loader } from '../loader/Loader';
+import { t } from 'i18next';
+const storageName = 'marketData';
 
 const styleDefault = {
-  border: "1.5px solid #eee",
-  boxShadow: "none",
-  height: "32px",
+  border: '1.5px solid #eee',
+  boxShadow: 'none',
+  height: '32px',
 };
 
 const styleGreen = {
-  border: "1.5px solid #38B2AC",
-  boxShadow: "none",
-  height: "32px",
+  border: '1.5px solid #38B2AC',
+  boxShadow: 'none',
+  height: '32px',
 };
 
 export const MarketRegister = () => {
@@ -43,7 +43,7 @@ export const MarketRegister = () => {
         status: data.status && data.status,
         duration: 5000,
         isClosable: true,
-        position: "top-right",
+        position: 'top-right',
       });
     },
     [toast]
@@ -65,13 +65,13 @@ export const MarketRegister = () => {
 
   const getBaseUrl = useCallback(async () => {
     try {
-      const data = await request("/api/baseurl", "GET", null);
+      const data = await request('/api/baseurl', 'GET', null);
       setBaseUrl(data.baseUrl);
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   }, [request, notify]);
@@ -91,41 +91,42 @@ export const MarketRegister = () => {
   const handleImage = async (e) => {
     if (market.image) {
       return notify({
-        title: t("Diqqat! Surat avval yuklangan"),
-        description:
-          t("Suratni qayta yuklash uchun suratni ustiga bir marotaba bosib uni o'chiring!"),
-        status: "error",
+        title: t('Diqqat! Surat avval yuklangan'),
+        description: t(
+          "Suratni qayta yuklash uchun suratni ustiga bir marotaba bosib uni o'chiring!"
+        ),
+        status: 'error',
       });
     }
     const files = e.target.files[0];
     const data = new FormData();
-    data.append("file", files);
+    data.append('file', files);
     setLoad(true);
-    const res = await fetch("/api/upload", { method: "POST", body: data });
+    const res = await fetch('/api/upload', { method: 'POST', body: data });
     const file = await res.json();
     setMarket({ ...market, image: file.filename });
     setLoad(false);
     notify({
-      status: "success",
-      description: "",
-      title: t("Surat muvaffaqqiyatli yuklandi"),
+      status: 'success',
+      description: '',
+      title: t('Surat muvaffaqqiyatli yuklandi'),
     });
   };
 
   const removeImage = async (filename) => {
     try {
-      const data = await request(`/api/upload/del`, "POST", { filename });
+      const data = await request(`/api/upload/del`, 'POST', { filename });
       setMarket({ ...market, image: null });
-      document.getElementById("default-btn").value = null;
+      document.getElementById('default-btn').value = null;
       notify({
-        status: "success",
-        description: "",
+        status: 'success',
+        description: '',
         title: data.accept,
       });
     } catch (error) {
       notify({
-        status: "error",
-        description: "",
+        status: 'error',
+        description: '',
         title: error,
       });
     }
@@ -144,7 +145,7 @@ export const MarketRegister = () => {
       return notify(checkMarketData(market));
     }
     try {
-      const data = await request("/api/market/register", "POST", {
+      const data = await request('/api/market/register', 'POST', {
         ...market,
       });
       localStorage.setItem(
@@ -154,17 +155,18 @@ export const MarketRegister = () => {
         })
       );
       notify({
-        title:
-          t("Tabriklaymiz! Do'koningiz 'Alo24' dasturida muvaffaqqiyatli ro'yxatga olindi"),
-        description: "",
-        status: "success",
+        title: t(
+          "Tabriklaymiz! Do'koningiz 'Alo24' dasturida muvaffaqqiyatli ro'yxatga olindi"
+        ),
+        description: '',
+        status: 'success',
       });
-      history.push("/newdirector");
+      history.push('/newdirector');
     } catch (error) {
       notify({
         title: error,
-        description: "",
-        status: "error",
+        description: '',
+        status: 'error',
       });
     }
   };
@@ -174,7 +176,7 @@ export const MarketRegister = () => {
   //====================================================================
   //====================================================================
   const keyPressed = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       return createHandler();
     }
   };
@@ -195,121 +197,115 @@ export const MarketRegister = () => {
 
   return (
     <>
-      <div className="page-content container-fluid">
-        <div className="row mt-5">
-          <div className="col-xl-7 mx-auto">
-            <div className="card " style={{ borderTop: "4px solid #38B2AC " }}>
-              <div className="card-body p-5">
+      <div className='page-content container-fluid'>
+        <div className='row mt-5'>
+          <div className='col-xl-7 mx-auto'>
+            <div className='card ' style={{ borderTop: '4px solid #38B2AC ' }}>
+              <div className='card-body p-5'>
                 <div
-                  className="card-title d-flex align-items-center"
-                  style={{ fontSize: "20pt", color: "#38B2AC" }}
-                >
+                  className='card-title d-flex align-items-center'
+                  style={{ fontSize: '20pt', color: '#38B2AC' }}>
                   <div>
                     <FontAwesomeIcon icon={faHouseMedical} />
                   </div>
-                  <h5 className="mb-0 fs-5 ml-2" style={{ fontWeight: "600" }}>
+                  <h5 className='mb-0 fs-5 ml-2' style={{ fontWeight: '600' }}>
                     {t("Do'kon")}
                   </h5>
                 </div>
                 <hr />
-                <div className="row g-3">
-                  <div className="col-md-6">
-                    <div className="col-md-12">
+                <div className='row g-3'>
+                  <div className='col-md-6'>
+                    <div className='col-md-12'>
                       <FormControl isRequired>
                         <FormLabel
-                          style={{ color: "#38B2AC", marginTop: "1rem" }}
-                        >
+                          style={{ color: '#38B2AC', marginTop: '1rem' }}>
                           {t("Do'kon nomi")}
                         </FormLabel>
                         <Input
                           onKeyUp={keyPressed}
-                          className="is-valid"
+                          className='is-valid'
                           placeholder={t("Do'kon nomini kiriting")}
-                          size="sm"
+                          size='sm'
                           style={
                             market.name && market.name.length > 0
                               ? styleGreen
                               : styleDefault
                           }
                           onChange={changeHandler}
-                          name="name"
+                          name='name'
                         />
                       </FormControl>
                     </div>
-                    <div className="col-md-12">
+                    <div className='col-md-12'>
                       <FormControl>
                         <FormLabel
-                          style={{ color: "#38B2AC", marginTop: "1rem" }}
-                        >
-                          {t("Tashkilot nomi")}
+                          style={{ color: '#38B2AC', marginTop: '1rem' }}>
+                          {t('Tashkilot nomi')}
                         </FormLabel>
                         <Input
                           onKeyUp={keyPressed}
-                          placeholder={t("Tashkilot nomini kiriting")}
-                          size="sm"
+                          placeholder={t('Tashkilot nomini kiriting')}
+                          size='sm'
                           style={
                             market.organitionName &&
                             market.organitionName.length > 0
                               ? styleGreen
                               : styleDefault
                           }
-                          name="organitionName"
+                          name='organitionName'
                           onChange={changeHandler}
                         />
                       </FormControl>
                     </div>
-                    <div className="col-md-12">
+                    <div className='col-md-12'>
                       <FormControl>
                         <FormLabel
-                          style={{ color: "#38B2AC", marginTop: "1rem" }}
-                        >
-                          {t("Manzil")}
+                          style={{ color: '#38B2AC', marginTop: '1rem' }}>
+                          {t('Manzil')}
                         </FormLabel>
                         <Input
                           onKeyUp={keyPressed}
-                          placeholder={t("Manzilni kiriting")}
-                          size="sm"
+                          placeholder={t('Manzilni kiriting')}
+                          size='sm'
                           style={
                             market.address && market.address.length > 0
                               ? styleGreen
                               : styleDefault
                           }
-                          name="address"
+                          name='address'
                           onChange={changeHandler}
                         />
                       </FormControl>
                     </div>
-                    <div className="col-md-12">
+                    <div className='col-md-12'>
                       <FormControl>
                         <FormLabel
-                          style={{ color: "#38B2AC", marginTop: "1rem" }}
-                        >
+                          style={{ color: '#38B2AC', marginTop: '1rem' }}>
                           {t("Mo'ljal")}
                         </FormLabel>
                         <Input
                           onKeyUp={keyPressed}
                           placeholder={t("Mo'ljalni kiriting")}
-                          size="sm"
+                          size='sm'
                           style={
                             market.orientation && market.orientation.length > 0
                               ? styleGreen
                               : styleDefault
                           }
-                          name="orientation"
+                          name='orientation'
                           onChange={changeHandler}
                         />
                       </FormControl>
                     </div>
-                    <div className="col-md-12">
+                    <div className='col-md-12'>
                       <FormControl isRequired>
                         <FormLabel
-                          style={{ color: "#38B2AC", marginTop: "1rem" }}
-                        >
-                          {t("Telefon raqam1")}
+                          style={{ color: '#38B2AC', marginTop: '1rem' }}>
+                          {t('Telefon raqam1')}
                         </FormLabel>
                         <InputGroup>
                           <InputLeftAddon
-                            children="+998"
+                            children='+998'
                             style={
                               market.phone1 && market.phone1.length > 0
                                 ? styleGreen
@@ -318,30 +314,29 @@ export const MarketRegister = () => {
                           />
                           <Input
                             onKeyUp={keyPressed}
-                            type="tel"
-                            placeholder={t("Telefon raqamni kiriting")}
-                            size="sm"
+                            type='tel'
+                            placeholder={t('Telefon raqamni kiriting')}
+                            size='sm'
                             style={
                               market.phone1 && market.phone1.length > 0
                                 ? styleGreen
                                 : styleDefault
                             }
-                            name="phone1"
+                            name='phone1'
                             onChange={changeHandler}
                           />
                         </InputGroup>
                       </FormControl>
                     </div>
-                    <div className="col-md-12">
+                    <div className='col-md-12'>
                       <FormControl>
                         <FormLabel
-                          style={{ color: "#38B2AC", marginTop: "1rem" }}
-                        >
-                          {t("Telefon raqam2")}
+                          style={{ color: '#38B2AC', marginTop: '1rem' }}>
+                          {t('Telefon raqam2')}
                         </FormLabel>
                         <InputGroup>
                           <InputLeftAddon
-                            children="+998"
+                            children='+998'
                             style={
                               market.phone2 && market.phone2.length > 0
                                 ? styleGreen
@@ -350,30 +345,29 @@ export const MarketRegister = () => {
                           />
                           <Input
                             onKeyUp={keyPressed}
-                            type="tel"
-                            placeholder={t("Telefon raqamni kiriting")}
-                            size="sm"
+                            type='tel'
+                            placeholder={t('Telefon raqamni kiriting')}
+                            size='sm'
                             style={
                               market.phone2 && market.phone2.length > 0
                                 ? styleGreen
                                 : styleDefault
                             }
-                            name="phone2"
+                            name='phone2'
                             onChange={changeHandler}
                           />
                         </InputGroup>
                       </FormControl>
                     </div>
-                    <div className="col-md-12">
+                    <div className='col-md-12'>
                       <FormControl>
                         <FormLabel
-                          style={{ color: "#38B2AC", marginTop: "1rem" }}
-                        >
-                          {t("Telefon raqam3")}
+                          style={{ color: '#38B2AC', marginTop: '1rem' }}>
+                          {t('Telefon raqam3')}
                         </FormLabel>
                         <InputGroup>
                           <InputLeftAddon
-                            children="+998"
+                            children='+998'
                             style={
                               market.phone3 && market.phone3.length > 0
                                 ? styleGreen
@@ -382,83 +376,80 @@ export const MarketRegister = () => {
                           />
                           <Input
                             onKeyUp={keyPressed}
-                            type="tel"
-                            placeholder={t("Telefon raqamni kiriting")}
-                            size="sm"
+                            type='tel'
+                            placeholder={t('Telefon raqamni kiriting')}
+                            size='sm'
                             style={
                               market.phone3 && market.phone3.length > 0
                                 ? styleGreen
                                 : styleDefault
                             }
-                            name="phone3"
+                            name='phone3'
                             onChange={changeHandler}
                           />
                         </InputGroup>
                       </FormControl>
                     </div>
                   </div>
-                  <div className="col-md-6">
-                    <div className="col-md-12">
+                  <div className='col-md-6'>
+                    <div className='col-md-12'>
                       <FormControl>
                         <FormLabel
-                          style={{ color: "#38B2AC", marginTop: "1rem" }}
-                        >
-                          {t("Bank nomi")}
+                          style={{ color: '#38B2AC', marginTop: '1rem' }}>
+                          {t('Bank nomi')}
                         </FormLabel>
                         <Input
                           onKeyUp={keyPressed}
-                          placeholder={t("Bank nomini kiriting")}
-                          size="sm"
+                          placeholder={t('Bank nomini kiriting')}
+                          size='sm'
                           style={
                             market.bank && market.bank.length > 0
                               ? styleGreen
                               : styleDefault
                           }
-                          name="bank"
+                          name='bank'
                           onChange={changeHandler}
                         />
                       </FormControl>
                     </div>
-                    <div className="col-md-12">
+                    <div className='col-md-12'>
                       <FormControl>
                         <FormLabel
-                          style={{ color: "#38B2AC", marginTop: "1rem" }}
-                        >
-                          {t("INN")}
+                          style={{ color: '#38B2AC', marginTop: '1rem' }}>
+                          {t('INN')}
                         </FormLabel>
                         <Input
                           onKeyUp={keyPressed}
-                          type="number"
-                          placeholder={t("INN ni kiriting")}
-                          size="sm"
+                          type='number'
+                          placeholder={t('INN ni kiriting')}
+                          size='sm'
                           style={
                             market.inn && market.inn.length > 0
                               ? styleGreen
                               : styleDefault
                           }
-                          name="inn"
+                          name='inn'
                           onChange={changeHandler}
                         />
                       </FormControl>
                     </div>
-                    <div className="col-md-12">
+                    <div className='col-md-12'>
                       <FormControl>
                         <FormLabel
-                          style={{ color: "#38B2AC", marginTop: "1rem" }}
-                        >
-                          {t("Hisob raqam")}
+                          style={{ color: '#38B2AC', marginTop: '1rem' }}>
+                          {t('Hisob raqam')}
                         </FormLabel>
                         <Input
                           onKeyUp={keyPressed}
-                          type="number"
-                          placeholder={t("Hisob raqamni kiriting")}
-                          size="sm"
+                          type='number'
+                          placeholder={t('Hisob raqamni kiriting')}
+                          size='sm'
                           style={
                             market.bankNumber && market.bankNumber.length > 0
                               ? styleGreen
                               : styleDefault
                           }
-                          name="bankNumber"
+                          name='bankNumber'
                           onChange={changeHandler}
                         />
                       </FormControl>
@@ -478,20 +469,18 @@ export const MarketRegister = () => {
                     </FormControl>
                   </div>
 
-                  <div className="col-md-6 text-center mt-2">
+                  <div className='col-md-6 text-center mt-2'>
                     {loading || load ? (
                       <Button
                         isLoading
-                        colorScheme="teal"
-                        variant="solid"
-                      ></Button>
+                        colorScheme='teal'
+                        variant='solid'></Button>
                     ) : (
                       <Button
-                        colorScheme="teal"
-                        variant="solid"
-                        onClick={createHandler}
-                      >
-                        {t("Registratsiya")}
+                        colorScheme='teal'
+                        variant='solid'
+                        onClick={createHandler}>
+                        {t('Registratsiya')}
                       </Button>
                     )}
                   </div>

@@ -37,7 +37,7 @@ export const TableHeader = ({
       <li className='th-h border-r col-span-1'>
         <SearchInput
           changeHandler={changeHandler}
-          type={'number'}
+          type={'text'}
           placeholder={t('Kodi')}
           name='code'
           value={search.code}
