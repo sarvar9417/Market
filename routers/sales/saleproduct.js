@@ -729,6 +729,12 @@ module.exports.registeredit = async (req, res) => {
           user,
         });
 
+        await SaleProduct.findByIdAndUpdate(saleproduct._id, {
+          $push: {
+            saleproducts: newSaleProduct._id,
+          },
+        });
+
         all.push(newSaleProduct);
       }
     }
