@@ -101,6 +101,7 @@ export const DirectorRouter = () => {
             <Supplier />
           </Route>
         )}
+
         <Route path='/alo24/exchangerate'>
           <Exchangerate />
         </Route>
