@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { EditDirector } from './editDirector/EditDirector';
 import { EditDirectorPassword } from './editDirector/EditDirectorPassword';
 import { Category } from './products/Categorys';
@@ -169,7 +169,7 @@ export const DirectorRouter = () => {
           </Route>
         )}
 
-        <Redirect to='/alo24' />
+        {/* <Redirect to='/alo24' /> */}
       </Switch>
     </div>
   );

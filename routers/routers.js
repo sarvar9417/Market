@@ -12,7 +12,6 @@ module.exports.routers = (app) => {
   app.use('/api/supplier', require('./supplier/supplier.route'));
   app.use('/api/exchangerate', require('./exchangerate/exchangerate.route'));
   app.use('/api/sales', require('./sales/packman_client'));
-  // filials
   app.use(
     '/api/filialproducts',
     require('./filialproducts/filialproducts.route')
@@ -20,8 +19,6 @@ module.exports.routers = (app) => {
   app.use('/api/inventory', require('./inventory/inventory.routes'));
   app.use('/api', require('./charts/chars.routes'));
   app.use('/api/reports', require('./reports/reports.route'));
-  app.use(
-    '/api/administrator',
-    require('./administrator/administrator.router')
-  );
+  app.use('/api/administrator', require('./administrator/administrator.route'));
+  app.use('/api/connections', require('./connections/connections.route'));
 };
