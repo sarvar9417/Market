@@ -11,9 +11,7 @@ import { Supplier } from './products/Supplier';
 import { Sale } from './sale/Sale';
 import { Packman } from './sale/Packman';
 import { Client } from './sale/Client';
-import { FilialRegister } from './filials/FilialRegister';
 import { Filials } from './filials/Filials';
-import { FilialDirector } from './filials/FilialDirector';
 import { Discounts } from './sale/Discounts';
 import { Payments } from './sale/Payments';
 import { Debts } from './sale/Debts';
@@ -111,21 +109,13 @@ export const DirectorRouter = () => {
             <Incoming />
           </Route>
         )}
-        {permission.branches && (
-          <Route path='/alo24/branchregister'>
-            <FilialRegister />
-          </Route>
-        )}
+
         {permission.branches && (
           <Route path='/alo24/branches'>
             <Filials />
           </Route>
         )}
-        {permission.branches && (
-          <Route path='/alo24/branchdirector'>
-            <FilialDirector />
-          </Route>
-        )}
+
         <Route path='/alo24/packman'>
           <Packman />
         </Route>
