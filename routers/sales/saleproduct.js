@@ -735,6 +735,13 @@ module.exports.registeredit = async (req, res) => {
           },
         });
 
+        const saleproductprice = await SaleProduct.findById(
+          saleproduct._id
+        ).select('price');
+
+        newSaleProduct.price = saleproductprice.price;
+        newSaleProduct.save();
+
         all.push(newSaleProduct);
       }
     }

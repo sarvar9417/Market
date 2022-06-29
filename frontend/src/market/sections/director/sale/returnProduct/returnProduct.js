@@ -21,7 +21,6 @@ export const returnProduct = (products, e) => {
 
 export const discountProcient = (EditDiscount, product, count) => {
   const difference = product.pieces === '' ? 0 - count : product.pieces - count;
-  console.log(EditDiscount);
   EditDiscount.discount =
     Math.round(
       (EditDiscount.discount -

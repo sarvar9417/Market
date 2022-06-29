@@ -256,7 +256,7 @@ module.exports.getProfit = async (req, res) => {
       .populate('discount', 'discount discountuzs');
 
     const totalsaleproducts = saleproducts.reduce((summ, sale) => {
-      return summ + sale.totalprice - sale.price.incomingprice * sale.pieces;
+      return summ + (sale.totalprice - sale.price.incomingprice * sale.pieces);
     }, 0);
 
     const discounts = await Discount.find({
@@ -273,7 +273,7 @@ module.exports.getProfit = async (req, res) => {
 
     const profit = totalsaleproducts - totaldiscount;
 
-    res.status(201).json({ profit });
+    res.status(201).json(profit);
   } catch (error) {
     res.status(400).json({ error: 'Serverda xatolik yuz berdi...' });
   }
