@@ -369,7 +369,22 @@ export const Navbar = ({ baseUrl }) => {
                   </Link>
                 )}
               </li>
-              <li className='inline-block relative'>
+              <li className='inline-block'>
+                {permission.branches && (
+                  <Link
+                    onClick={changeHeadMenu}
+                    id='reports'
+                    to='/alo24/branches'
+                    className={
+                      currentPage === '/alo24/branches'
+                        ? 'active-page'
+                        : 'unactive-page'
+                    }>
+                    {t('Filiallar')}
+                  </Link>
+                )}
+              </li>
+              {/* <li className='inline-block relative'>
                 {permission.branches && (
                   <Link
                     to='#'
@@ -399,21 +414,13 @@ export const Navbar = ({ baseUrl }) => {
                   <li>
                     <Link
                       onClick={changeLink}
-                      to='/alo24/branchregister'
-                      className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
-                      {t('Filial yaratish')}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      onClick={changeLink}
                       to='/alo24/branches'
                       className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
                       {t('Filiallar')}
                     </Link>
                   </li>
                 </ul>
-              </li>
+              </li> */}
               <li className='inline-block'>
                 <Link
                   onClick={changeHeadMenu}

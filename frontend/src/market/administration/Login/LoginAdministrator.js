@@ -125,11 +125,11 @@ export const LoginAdministrator = () => {
                     Kirish
                   </button>
                   <p className='text-sm font-semibold mt-2 pt-1 mb-0'>
-                    Agar administrator yaratilgan bo'lsa ... <br />
+                    Agar administrator yaratilmagan bo'lsa ... <br />
                     <Link
-                      to='/alo24administration'
+                      to='/administrationregister'
                       className='text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out'>
-                      Kirish qismiga o'tish
+                      Registratsiya qismiga o'tish
                     </Link>
                   </p>
                 </div>
