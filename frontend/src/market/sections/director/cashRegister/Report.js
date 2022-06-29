@@ -255,7 +255,7 @@ export const Report = () => {
         }
       );
 
-      setProfit(data.profit);
+      setProfit(data);
     } catch (error) {
       notify({
         title: error,

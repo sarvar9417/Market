@@ -2,7 +2,6 @@ import { t } from 'i18next';
 import React from 'react';
 
 export const Header = ({ auth, client, sales }) => {
-  console.log(auth);
   return (
     <div className='grid grid-cols-6 px-4 gap-x-4 items-center'>
       <div className='col-span-2 flex flex-col'>
