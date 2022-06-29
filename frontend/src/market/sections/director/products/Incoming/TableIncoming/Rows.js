@@ -1,5 +1,10 @@
 import React from 'react';
-import { DeleteBtn, EditBtn } from '../../../components/TableButtons';
+import {
+  DeleteBtn,
+  EditBtn,
+  SaveBtnLoad,
+  ClearBtnLoad,
+} from '../../../components/TableButtons';
 
 export const Rows = ({
   product,
@@ -8,6 +13,7 @@ export const Rows = ({
   countPage,
   changeEditProduct,
   changeDeleteProduct,
+  loading,
 }) => {
   return (
     <ul className='tr font-bold'>
@@ -32,10 +38,18 @@ export const Rows = ({
         <span className='text-green-800'>USD</span>
       </li>
       <li className='td border-r text-right'>
-        <EditBtn editHandler={() => changeEditProduct(product)} />
+        {!loading ? (
+          <SaveBtnLoad />
+        ) : (
+          <EditBtn editHandler={() => changeEditProduct(product)} />
+        )}
       </li>
       <li className='td border-r text-right'>
-        <DeleteBtn deleteHandler={() => changeDeleteProduct(product)} />
+        {loading ? (
+          <ClearBtnLoad />
+        ) : (
+          <DeleteBtn deleteHandler={() => changeDeleteProduct(product)} />
+        )}
       </li>
     </ul>
   );

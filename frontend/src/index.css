@@ -34,6 +34,10 @@
     @apply px-4 py-0 text-white shadow rounded-xl bg-red-600 hover:bg-red-700;
   }
 
+  .print-btn {
+    @apply px-4 py-0 text-white shadow rounded-xl bg-blue-700 hover:bg-blue-800;
+  }
+
   .input {
     @apply px-2 py-1 w-full border rounded focus:outline focus:outline-blue-800;
   }

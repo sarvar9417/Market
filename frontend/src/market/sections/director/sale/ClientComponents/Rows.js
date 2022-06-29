@@ -1,5 +1,10 @@
 import React from 'react';
-import { DeleteBtn, EditBtn } from '../../components/TableButtons';
+import {
+  DeleteBtn,
+  EditBtn,
+  SaveBtnLoad,
+  ClearBtnLoad,
+} from '../../components/TableButtons';
 
 export const Rows = ({
   currentPage,
@@ -9,6 +14,7 @@ export const Rows = ({
   setModal,
   c,
   updateInputs,
+  loading,
 }) => {
   return (
     <ul className='tr'>
@@ -16,17 +22,23 @@ export const Rows = ({
       <li className='col-span-3 td border-r'>{c.packman && c.packman.name}</li>
       <li className='col-span-3 td border-r'>{c.name}</li>
       <li className='td-btn col-span-2 border-r'>
-        {<EditBtn editHandler={() => updateInputs(c)} />}
+        {loading ? (
+          <SaveBtnLoad />
+        ) : (
+          <EditBtn editHandler={() => updateInputs(c)} />
+        )}
       </li>
       <li className='td-btn col-span-2'>
-        {
+        {loading ? (
+          <ClearBtnLoad />
+        ) : (
           <DeleteBtn
             deleteHandler={() => {
               setRemove({ ...c });
               setModal(true);
             }}
           />
-        }
+        )}
       </li>
     </ul>
   );

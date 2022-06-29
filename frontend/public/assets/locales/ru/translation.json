@@ -114,7 +114,7 @@
   "Brendlar": "Бренды",
   "O'lchov birliklari": "Ед.Из-я",
   "Yetkazib beruvchilar": "Поставщик",
-  "Qabul qilish": "Принят",
+  "Qabul qilish": "Принять",
   "Sotuv": "Продажи",
   "Yetkazuvchi": "Поставщик",
   "Mijoz": "Покупатель",
@@ -411,7 +411,7 @@
   "Inventarizatsiyalar": "Инвентаризации",
   "Sotilganlar soni": "Количество продаж",
   "HISOBOT": "ОТЧЕТ",
-  "Umumiy savdo": "Общая сумма продаж",
+  "Umumiy savdo summasi": "Общая сумма продаж",
   "Umumiy xarajatlar": "Общая сумма расходов",
   "Sotish soni": "Количество продаж",
   "Naqd": "Наличными",
@@ -506,5 +506,6 @@
   "nomli yetkazuvchi o'chirildi!": "поставщик удален!",
   "Keltirilgan va sotilgan mahsulotlar": "Привезенные и проданные товары",
   "Keltirilgan": "Привезенные",
-  "Sotilgan": "Проданные"
+  "Sotilgan": "Проданные",
+  "Qaytarilganlar":"Қайтарилганлар"
 }

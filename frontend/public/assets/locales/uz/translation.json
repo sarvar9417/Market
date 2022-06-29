@@ -406,7 +406,7 @@
   "Diqqat! To'lov summasi kiritilmagan": "",
   "Sotilganlar soni": "Сотилганлар сони",
   "HISOBOT": "ҲИСОБОТ",
-  "Umumiy savdo": "Умумий савдо",
+  "Umumiy savdo summasi": "Умумий савдо суммаси",
   "Umumiy xarajatlar": "Умумий харажатлар",
   "Xarajatlar":"Харажатлар",
   "Sotish soni": "Сотиш сони",
@@ -513,6 +513,11 @@
   "Diqqat! Saqlangan qabul qilishni o'chirishni tasdiqlaysizmi?":"Диққат! Сақланган қабул қилишни ўчиришни тасдиқлайсизми?",
   "Diqqat! Barcha qabul qilingan mahsulotlarni omborga kirim qilishni tasdiqlaysizmi?":"Диққат! Барча қабул қилинган махсулотларни омборга кирим қилишни тасдиқлайсизми?",
   "Sotuvchi":"Сотувчи",
-  "Diqqat! 5% yuqori chegirma kiritish mumkin emas!":"Диққат! 5% дан юқори чегирма киритиш мумкин эмас!"
+  "Diqqat! 5% yuqori chegirma kiritish mumkin emas!":"Диққат! 5% дан юқори чегирма киритиш мумкин эмас!",
+  "Moliyaviy hisobot":"Молиявий хисобот",
+  "Sotilgan mahsulotlar hisoboti":"Сотилган махсулотлар хисоботи",
+  "Keltirilgan mahsulotlar hisoboti":"Келтирилган махсулотлар хисоботи",
+  "Omborxona hisoboti":"Омборхона хисоботи",
+  "Qaytarilganlar":"Қайтарилганлар"
 
 }

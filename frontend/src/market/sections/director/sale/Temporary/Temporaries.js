@@ -1,5 +1,6 @@
 import { faPenAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ClearBtnLoad, SaveBtnLoad } from '../../components/TableButtons';
 import React from 'react';
 import { t } from 'i18next'
 
@@ -7,6 +8,7 @@ export const Temporaries = ({
   temporarys,
   changeTemporary,
   deleteTemporary,
+  loading
 }) => {
   return (
     <div className='shadow-2xl'>
@@ -53,16 +55,16 @@ export const Temporaries = ({
                   {index + 1}
                 </span>
                 <span>
-                  <button
+                  {loading ? <SaveBtnLoad/>: <button
                     onClick={() => changeTemporary(temporary)}
                     className='px-4 py-1 mr-2 bg-green-800 hover:bg-green-700 rounded text-white font-bold text-xs'>
                     <FontAwesomeIcon icon={faPenAlt} />
-                  </button>{' '}
-                  <button
+                  </button>}{' '}
+                  {loading ? <ClearBtnLoad/>: <button
                     onClick={() => deleteTemporary(temporary)}
                     className='px-4 py-1 bg-red-700 hover:bg-red-600 rounded text-white font-bold text-xs'>
                     <FontAwesomeIcon icon={faTrash} />
-                  </button>
+                  </button>}
                 </span>
               </p>
             </div>

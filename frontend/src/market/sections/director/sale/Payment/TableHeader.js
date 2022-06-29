@@ -57,7 +57,8 @@ export const TableHeader = ({
       <li className='text-center flex justify-center items-center font-bold border-r py-2 col-span-2 bg-white'>
         <button
           className='px-4 bg-green-700 hover:bg-green-800 text-white rounded'
-          onClick={getPaymentsExcel}>
+          onClick={getPaymentsExcel}
+        >
           <FontAwesomeIcon icon={faFileExcel} />
         </button>
         <ExcelDownload filename={t("To'lovlar")} />

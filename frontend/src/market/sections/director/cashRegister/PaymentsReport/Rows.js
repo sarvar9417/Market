@@ -15,7 +15,7 @@ export const Rows = ({ currentPage, index, payment, type, changeCheck }) => {
           <li className='td col-span-2 border-r text-left'>
             {payment.client ? payment.client : payment.id}
           </li>
-          <li className='td col-span-2 border-r text-right border-r-2 border-r-blue-800'>
+          <li className='td col-span-2 text-right border-r-2 border-r-blue-800'>
             {payment.cash + payment.card + payment.transfer}{' '}
             <span className='text-blue-800'>USD</span>
           </li>
