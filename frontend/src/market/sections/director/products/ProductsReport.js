@@ -1,20 +1,8 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 // import { Loader } from '../../../loader/Loader';
 import { useToast } from '@chakra-ui/react';
 import { useHttp } from '../../../hooks/http.hook';
 import { AuthContext } from '../../../context/AuthContext';
-import { checkProduct, checkProducts } from './checkData';
-import { Modal } from './modal/Modal';
-import { TableProduct } from './Product/TableProduct';
-import { ExcelCols } from './Product/excelTable/ExcelCols';
-import { CreateProduct } from './Product/CreateProduct';
-import { t } from 'i18next';
 import { ExcelTable } from './Product/ExcelTable';
 import { TableHeader } from './ProductsReport/TableHeader';
 import { TableHead } from './ProductsReport/TableHead';
@@ -82,6 +70,7 @@ export const ProductsReport = () => {
       );
       setSearchStorage(data.products);
       setCurrentProducts(data.products);
+      setProducts(data.products);
       setProductsCount(data.count);
     } catch (error) {
       notify({

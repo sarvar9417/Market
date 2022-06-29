@@ -42,7 +42,7 @@ export const TableHead = ({ currentProducts, setCurrentProducts }) => {
           setData={setCurrentProducts}
         />
       </li>
-      <li>
+      <li className='th border-r flex flex-column items-center col-span-1'>
         Olish jami
         <SortDoubleProperty
           property={'price'}
