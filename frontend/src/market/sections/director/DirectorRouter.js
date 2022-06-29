@@ -24,6 +24,7 @@ import { Report } from './cashRegister/Report';
 import { Sellers } from './sale/Sellers';
 import { useHttp } from '../../hooks/http.hook';
 import { AuthContext } from '../../context/AuthContext';
+import { ProductsReport } from './products/ProductsReport';
 
 export const DirectorRouter = () => {
   const { request } = useHttp();
@@ -101,6 +102,7 @@ export const DirectorRouter = () => {
             <Supplier />
           </Route>
         )}
+
         <Route path='/alo24/exchangerate'>
           <Exchangerate />
         </Route>
@@ -129,6 +131,9 @@ export const DirectorRouter = () => {
         </Route>
         <Route path='/alo24/client'>
           <Client />
+        </Route>
+        <Route path={'/alo24/productsreport'}>
+          <ProductsReport />
         </Route>
         <Route path='/alo24/reports'>
           <Report />
