@@ -3,7 +3,7 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useToast } from '@chakra-ui/react';
 import { useHttp } from '../../../hooks/http.hook';
 import { AuthContext } from '../../../context/AuthContext';
-import { ExcelTable } from './Product/ExcelTable';
+import { ExcelTable } from './ProductsReport/ExcelTable';
 import { TableHeader } from './ProductsReport/TableHeader';
 import { TableHead } from './ProductsReport/TableHead';
 import { TableRow } from './ProductsReport/TableRow';
@@ -33,7 +33,7 @@ export const ProductsReport = () => {
     [toast]
   );
 
-  const { request, loading } = useHttp();
+  const { request } = useHttp();
   const auth = useContext(AuthContext);
 
   //====================================================================
