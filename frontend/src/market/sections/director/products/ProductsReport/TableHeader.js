@@ -23,8 +23,7 @@ export const TableHeader = ({
         <select
           className='form-control form-control-sm selectpicker'
           placeholder={t("Bo'limni tanlang")}
-          onChange={setPageSize}
-        >
+          onChange={setPageSize}>
           <option value={10}>10</option>
           <option value={25}>25</option>
           <option value={50}>50</option>
@@ -34,7 +33,7 @@ export const TableHeader = ({
       <li className='th-h border-r col-span-1'>
         <SearchInput
           changeHandler={changeHandler}
-          type={'number'}
+          type={'text'}
           placeholder={t('Kodi')}
           name='code'
           value={search.code}
@@ -62,8 +61,7 @@ export const TableHeader = ({
       <li className='th-h border-r col-span-2 flex justify-center'>
         <button
           className='px-4 bg-green-700 hover:bg-green-800 text-white rounded'
-          onClick={getProductExcel}
-        >
+          onClick={getProductExcel}>
           <FontAwesomeIcon icon={faFileExcel} />
         </button>
         <ExcelDownload filename={t('Mahsulotlar')} />

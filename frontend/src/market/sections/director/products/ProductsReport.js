@@ -161,7 +161,6 @@ export const ProductsReport = () => {
   return (
     <>
       {/* {loading ? <Loader /> : ''} */}
-
       <div className='overflow-x-auto'>
         <div className='m-3 min-w-[800px]'>
           <TableHeader
@@ -193,7 +192,6 @@ export const ProductsReport = () => {
             })}
         </div>
       </div>
-
       <ExcelTable products={excelDatas} />
     </>
   );
