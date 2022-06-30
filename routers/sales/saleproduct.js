@@ -563,12 +563,22 @@ module.exports.getsaleconnectors = async (req, res) => {
       .populate({
         path: 'products',
         select:
-          'totalprice unitprice totalpriceuzs unitpriceuzs pieces createdAt discount',
+          'totalprice unitprice totalpriceuzs unitpriceuzs pieces createdAt discount saleproducts product',
         options: { sort: { createdAt: -1 } },
         populate: {
           path: 'product',
           select: 'productdata',
           populate: { path: 'productdata', select: 'name code' },
+        },
+      })
+      .populate({
+        path: 'products',
+        select:
+          'totalprice unitprice totalpriceuzs unitpriceuzs pieces createdAt discount saleproducts product',
+        options: { sort: { createdAt: -1 } },
+        populate: {
+          path: 'saleproducts',
+          select: 'totalprice unitprice totalpriceuzs unitpriceuzs pieces',
         },
       })
       .populate('payments', 'payment paymentuzs comment')
@@ -578,16 +588,52 @@ module.exports.getsaleconnectors = async (req, res) => {
       .populate('packman', 'name')
       .populate('user', 'firstname lastname');
 
-    const filter = saleconnectors.filter((item) => {
-      return (
-        (search.client.length > 0 && item.client !== null && item.client) ||
+    let filterconnector = [];
+    saleconnectors.map((connector) => {
+      if (
+        (search.client.length > 0 &&
+          connector.client !== null &&
+          connector.client) ||
         search.client.length === 0
-      );
+      ) {
+        let productss = [];
+        connector.products.map((product) => {
+          if (product.pieces > 0) {
+            if (product.saleproducts.length > 0) {
+              product.pieces += product.saleproducts.reduce(
+                (prev, sale) => prev + sale.pieces,
+                0
+              );
+              product.totalprice += product.saleproducts.reduce(
+                (prev, sale) => prev + sale.totalprice,
+                0
+              );
+              product.totalpriceuzs += product.saleproducts.reduce(
+                (prev, sale) => prev + sale.totalpriceuzs,
+                0
+              );
+            }
+            productss.push(product);
+          }
+        });
+        connector.products = productss;
+        filterconnector.push(connector);
+      }
     });
-    const count = filter.length;
+
+    // const filter = saleconnectors.filter((item) => {
+    //   return (
+    //     (search.client.length > 0 && item.client !== null && item.client) ||
+    //     search.client.length === 0
+    //   );
+    // });
+    const count = filterconnector.length;
 
     res.status(200).json({
-      saleconnectors: filter.splice(countPage * currentPage, countPage),
+      saleconnectors: filterconnector.splice(
+        countPage * currentPage,
+        countPage
+      ),
       count,
     });
   } catch (error) {
@@ -727,6 +773,7 @@ module.exports.registeredit = async (req, res) => {
           product: product._id,
           market,
           user,
+          saleproduct: saleproduct._id,
         });
 
         await SaleProduct.findByIdAndUpdate(saleproduct._id, {
