@@ -145,8 +145,7 @@ export const Navbar = ({ baseUrl }) => {
                     menu === 'HeadMenu'
                       ? 'active-page'
                       : 'unactive-page'
-                  }
-                >
+                  }>
                   {t('Bosh sahifa')}
                 </Link>
               </li>
@@ -167,8 +166,7 @@ export const Navbar = ({ baseUrl }) => {
                     menu === 'Products'
                       ? 'active-page'
                       : 'unactive-page'
-                  }
-                >
+                  }>
                   {t('Mahsulotlar')}{' '}
                   <FontAwesomeIcon icon={faAngleDown} className='text-[10px]' />
                 </Link>
@@ -178,8 +176,7 @@ export const Navbar = ({ baseUrl }) => {
                     menu !== 'Products'
                       ? 'hidden'
                       : 'absolute z-50 top-9 bg-white w-[200px] animate-fadeInUp shadow-2xl'
-                  }
-                >
+                  }>
                   <div className='p-2 bg-white absolute -top-1 rotate-45 left-2 -z-10'></div>
                   <li className='relative'>
                     {permission.creates && (
@@ -187,8 +184,7 @@ export const Navbar = ({ baseUrl }) => {
                         id='Create'
                         onClick={changeSubMenu}
                         to='#'
-                        className='w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] relative flex justify-between border-b'
-                      >
+                        className='w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] relative flex justify-between border-b'>
                         <span className='pointer-events-none'>
                           {t('Yaratish')}
                         </span>
@@ -204,15 +200,13 @@ export const Navbar = ({ baseUrl }) => {
                         submenu === 'Create'
                           ? 'left-52 absolute bg-white top-0 w-[200px] animate-fadeInRight shadow-2xl'
                           : 'hidden'
-                      }
-                    >
+                      }>
                       <div className='p-2 bg-white absolute top-1 rotate-45 -left-1 -z-10'></div>
                       <li>
                         <Link
                           onClick={changeLink}
                           to='/alo24/category'
-                          className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
-                        >
+                          className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
                           {t('Kategoriyalar')}
                         </Link>
                       </li>
@@ -220,8 +214,7 @@ export const Navbar = ({ baseUrl }) => {
                         <Link
                           onClick={changeLink}
                           to='/alo24/product'
-                          className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
-                        >
+                          className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
                           {t('Mahsulotlar')}
                         </Link>
                       </li>
@@ -229,8 +222,7 @@ export const Navbar = ({ baseUrl }) => {
                         <Link
                           onClick={changeLink}
                           to='/alo24/unit'
-                          className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
-                        >
+                          className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
                           {t("O'lchov birliklari")}
                         </Link>
                       </li>
@@ -238,8 +230,7 @@ export const Navbar = ({ baseUrl }) => {
                         <Link
                           onClick={changeLink}
                           to='/alo24/supplier'
-                          className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
-                        >
+                          className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
                           {t('Yetkazib beruvchilar')}
                         </Link>
                       </li>
@@ -249,8 +240,7 @@ export const Navbar = ({ baseUrl }) => {
                     <Link
                       onClick={changeLink}
                       to='/alo24/productsreport'
-                      className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
-                    >
+                      className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
                       Mahsulotlar hisoboti
                     </Link>
                   </li>
@@ -259,8 +249,7 @@ export const Navbar = ({ baseUrl }) => {
                       <Link
                         onClick={changeLink}
                         to='/alo24/incoming'
-                        className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
-                      >
+                        className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
                         {t('Qabul qilish')}
                       </Link>
                     )}
@@ -271,8 +260,7 @@ export const Navbar = ({ baseUrl }) => {
                         id='Inventory'
                         onClick={changeSubMenu}
                         to='#'
-                        className='w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] relative flex justify-between'
-                      >
+                        className='w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] relative flex justify-between'>
                         <span className='pointer-events-none'>
                           {t('Inventarizatsiya')}
                         </span>
@@ -287,15 +275,13 @@ export const Navbar = ({ baseUrl }) => {
                         submenu === 'Inventory'
                           ? 'left-52 absolute bg-white top-0 w-[200px] animate-fadeInRight shadow-2xl'
                           : 'hidden'
-                      }
-                    >
+                      }>
                       <div className='p-2 bg-white absolute top-1 rotate-45 -left-1 -z-10'></div>
                       <li>
                         <Link
                           onClick={changeLink}
                           to='/alo24/inventory'
-                          className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
-                        >
+                          className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
                           {t('Inventarizatsiya')}
                         </Link>
                       </li>
@@ -303,8 +289,7 @@ export const Navbar = ({ baseUrl }) => {
                         <Link
                           onClick={changeLink}
                           to='/alo24/inventories'
-                          className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
-                        >
+                          className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
                           {t('Inventarizatsiyalar')}
                         </Link>
                       </li>
@@ -328,8 +313,7 @@ export const Navbar = ({ baseUrl }) => {
                     menu === 'Sale'
                       ? 'active-page'
                       : 'unactive-page'
-                  }
-                >
+                  }>
                   {t('Sotuv')}{' '}
                   <FontAwesomeIcon icon={faAngleDown} className='text-[10px]' />
                 </Link>
@@ -338,16 +322,14 @@ export const Navbar = ({ baseUrl }) => {
                     menu !== 'Sale'
                       ? 'hidden'
                       : 'absolute z-50 top-9 bg-white w-[200px] animate-fadeInUp shadow-2xl'
-                  }
-                >
+                  }>
                   <div className='p-2 bg-white absolute -top-1 rotate-45 left-2 -z-10'></div>
                   <li>
                     {permission.sales && (
                       <Link
                         onClick={changeLink}
                         to='/alo24/sales'
-                        className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
-                      >
+                        className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
                         {t('Sotuv')}
                       </Link>
                     )}
@@ -356,8 +338,7 @@ export const Navbar = ({ baseUrl }) => {
                     <Link
                       onClick={changeLink}
                       to='/alo24/packman'
-                      className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
-                    >
+                      className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
                       {t('Santexniklar')}
                     </Link>
                   </li>
@@ -365,8 +346,7 @@ export const Navbar = ({ baseUrl }) => {
                     <Link
                       onClick={changeLink}
                       to='/alo24/client'
-                      className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
-                    >
+                      className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
                       {t('Mijozlar')}
                     </Link>
                   </li>
@@ -375,8 +355,7 @@ export const Navbar = ({ baseUrl }) => {
                       <Link
                         onClick={changeLink}
                         to='/alo24/sellers'
-                        className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
-                      >
+                        className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
                         {t('Sotuvchilar')}
                       </Link>
                     )}
@@ -393,8 +372,7 @@ export const Navbar = ({ baseUrl }) => {
                       currentPage === '/alo24/reports'
                         ? 'active-page'
                         : 'unactive-page'
-                    }
-                  >
+                    }>
                     {t('Kassa')}
                   </Link>
                 )}
@@ -409,9 +387,23 @@ export const Navbar = ({ baseUrl }) => {
                       currentPage === '/alo24/branches'
                         ? 'active-page'
                         : 'unactive-page'
-                    }
-                  >
+                    }>
                     {t('Filiallar')}
+                  </Link>
+                )}
+              </li>
+              <li className='inline-block'>
+                {permission.mainmarket && (
+                  <Link
+                    onClick={changeHeadMenu}
+                    id='reports'
+                    to='/alo24/mainmarket'
+                    className={
+                      currentPage === '/alo24/mainmarket'
+                        ? 'active-page'
+                        : 'unactive-page'
+                    }>
+                    {t("Bosh do'kon")}
                   </Link>
                 )}
               </li>
@@ -461,8 +453,7 @@ export const Navbar = ({ baseUrl }) => {
                     currentPage === '/alo24/exchangerate'
                       ? 'active-page'
                       : 'unactive-page'
-                  }
-                >
+                  }>
                   {t('Valyuta kursi')}
                 </Link>
               </li>
@@ -474,8 +465,7 @@ export const Navbar = ({ baseUrl }) => {
                 id='userSettings'
                 className='user-settings'
                 data-toggle='dropdown'
-                aria-haspopup='true'
-              >
+                aria-haspopup='true'>
                 <span className='user-name'>
                   {user.firstname} {user.lastname}
                 </span>
@@ -497,8 +487,7 @@ export const Navbar = ({ baseUrl }) => {
               </span>
               <div
                 className='dropdown-menu dropdown-menu-right'
-                aria-labelledby='userSettings'
-              >
+                aria-labelledby='userSettings'>
                 <div className='header-profile-actions'>
                   <div className='header-user-profile'>
                     <div className='header-user'>
@@ -522,8 +511,7 @@ export const Navbar = ({ baseUrl }) => {
                     onClick={() => {
                       auth.logout();
                       history.push('/');
-                    }}
-                  >
+                    }}>
                     <i className='icon-log-out1' /> {t('Tizimdan chiqish')}
                   </button>
                 </div>
@@ -562,8 +550,7 @@ export const Navbar = ({ baseUrl }) => {
                 menu === 'HeadMenu'
                   ? 'active-page py-1 block  border text-center rounded-xl'
                   : 'unactive-page block py-1 border text-center rounded-xl'
-              }
-            >
+              }>
               {t('Bosh sahifa')}
             </Link>
           </li>
@@ -584,8 +571,7 @@ export const Navbar = ({ baseUrl }) => {
                 menu === 'Products'
                   ? 'active-page py-1 border text-center rounded-xl block '
                   : 'unactive-page py-1 border text-center rounded-xl block'
-              }
-            >
+              }>
               {t('Mahsulotlar')}{' '}
               <FontAwesomeIcon icon={faAngleRight} className='text-[10px]' />
             </Link>
@@ -595,8 +581,7 @@ export const Navbar = ({ baseUrl }) => {
                 menu !== 'Products'
                   ? 'hidden'
                   : 'absolute z-50  left-1 bg-white w-[200px] animate-fadeInLeft shadow-2xl'
-              }
-            >
+              }>
               <div className='p-2 bg-white absolute -top-1 rotate-45 left-2 -z-10'></div>
               <li className='relative'>
                 {permission.creates && (
@@ -604,8 +589,7 @@ export const Navbar = ({ baseUrl }) => {
                     id='Create'
                     onClick={changeSubMenu}
                     to='#'
-                    className='w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] relative flex justify-between border-b'
-                  >
+                    className='w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] relative flex justify-between border-b'>
                     <span className='pointer-events-none'>{t('Yaratish')}</span>
                     <FontAwesomeIcon
                       icon={faAngleRight}
@@ -619,15 +603,13 @@ export const Navbar = ({ baseUrl }) => {
                     submenu === 'Create'
                       ? ' absolute bg-white top-8 w-[200px] animate-fadeInRight shadow-2xl z-30'
                       : 'hidden'
-                  }
-                >
+                  }>
                   <div className='p-2 bg-white absolute -top-2 rotate-45 left-2 z-30'></div>
                   <li>
                     <Link
                       onClick={changeLink}
                       to='/alo24/category'
-                      className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
-                    >
+                      className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
                       {t('Kategoriyalar')}
                     </Link>
                   </li>
@@ -635,8 +617,7 @@ export const Navbar = ({ baseUrl }) => {
                     <Link
                       onClick={changeLink}
                       to='/alo24/product'
-                      className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
-                    >
+                      className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
                       {t('Mahsulotlar')}
                     </Link>
                   </li>
@@ -644,8 +625,7 @@ export const Navbar = ({ baseUrl }) => {
                     <Link
                       onClick={changeLink}
                       to='/alo24/unit'
-                      className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
-                    >
+                      className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
                       {t("O'lchov birliklari")}
                     </Link>
                   </li>
@@ -653,8 +633,7 @@ export const Navbar = ({ baseUrl }) => {
                     <Link
                       onClick={changeLink}
                       to='/alo24/supplier'
-                      className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
-                    >
+                      className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
                       {t('Yetkazib beruvchilar')}
                     </Link>
                   </li>
@@ -665,8 +644,7 @@ export const Navbar = ({ baseUrl }) => {
                   <Link
                     onClick={changeLink}
                     to='/alo24/incoming'
-                    className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
-                  >
+                    className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
                     {t('Qabul qilish')}
                   </Link>
                 )}
@@ -677,8 +655,7 @@ export const Navbar = ({ baseUrl }) => {
                     id='Inventory'
                     onClick={changeSubMenu}
                     to='#'
-                    className='w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] relative flex justify-between'
-                  >
+                    className='w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] relative flex justify-between'>
                     <span className='pointer-events-none'>
                       {t('Inventarizatsiya')}
                     </span>
@@ -693,15 +670,13 @@ export const Navbar = ({ baseUrl }) => {
                     submenu === 'Inventory'
                       ? 'left-0 absolute bg-white top-8 w-[200px] animate-fadeInRight shadow-2xl z-30'
                       : 'hidden'
-                  }
-                >
+                  }>
                   <div className='p-2 bg-white absolute -top-2 rotate-45 left-2 z-30'></div>
                   <li>
                     <Link
                       onClick={changeLink}
                       to='/alo24/inventory'
-                      className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
-                    >
+                      className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
                       {t('Inventarizatsiya')}
                     </Link>
                   </li>
@@ -709,8 +684,7 @@ export const Navbar = ({ baseUrl }) => {
                     <Link
                       onClick={changeLink}
                       to='/alo24/inventories'
-                      className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
-                    >
+                      className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
                       {t('Inventarizatsiyalar')}
                     </Link>
                   </li>
@@ -735,8 +709,7 @@ export const Navbar = ({ baseUrl }) => {
                 menu === 'Sale'
                   ? 'active-page py-1 border text-center rounded-xl block '
                   : 'unactive-page py-1 border text-center rounded-xl block '
-              }
-            >
+              }>
               {t('Sotuv')}{' '}
               <FontAwesomeIcon icon={faAngleRight} className='text-[10px]' />
             </Link>
@@ -745,16 +718,14 @@ export const Navbar = ({ baseUrl }) => {
                 menu !== 'Sale'
                   ? 'hidden'
                   : 'absolute z-50 top-8 left-0 bg-white w-[200px] animate-fadeInLeft shadow-2xl'
-              }
-            >
+              }>
               <div className='p-2 bg-white absolute -top-1 rotate-45 left-2 -z-10'></div>
               <li>
                 {permission.sales && (
                   <Link
                     onClick={changeLink}
                     to='/alo24/sales'
-                    className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
-                  >
+                    className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
                     {t('Sotuv')}
                   </Link>
                 )}
@@ -763,8 +734,7 @@ export const Navbar = ({ baseUrl }) => {
                 <Link
                   onClick={changeLink}
                   to='/alo24/packman'
-                  className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
-                >
+                  className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
                   {t('Santexniklar')}
                 </Link>
               </li>
@@ -772,8 +742,7 @@ export const Navbar = ({ baseUrl }) => {
                 <Link
                   onClick={changeLink}
                   to='/alo24/client'
-                  className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
-                >
+                  className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
                   {t('Mijozlar')}
                 </Link>
               </li>
@@ -782,8 +751,7 @@ export const Navbar = ({ baseUrl }) => {
                   <Link
                     onClick={changeLink}
                     to='/alo24/sellers'
-                    className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
-                  >
+                    className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
                     {t('Sotuvchilar')}
                   </Link>
                 )}
@@ -800,8 +768,7 @@ export const Navbar = ({ baseUrl }) => {
                   currentPage === '/alo24/reports'
                     ? 'active-page py-1 border text-center rounded-xl block'
                     : 'unactive-page py-1 border text-center rounded-xl block'
-                }
-              >
+                }>
                 {t('Kassa')}
               </Link>
             )}
@@ -818,8 +785,7 @@ export const Navbar = ({ baseUrl }) => {
                   menu === 'Branch'
                     ? 'active-page py-1 border text-center block rounded-xl'
                     : 'unactive-page py-1 border text-center block rounded-xl'
-                }
-              >
+                }>
                 {t('Filial')}{' '}
                 <FontAwesomeIcon icon={faAngleRight} className='text-[10px]' />
               </Link>
@@ -829,15 +795,13 @@ export const Navbar = ({ baseUrl }) => {
                 menu !== 'Branch'
                   ? 'hidden'
                   : 'absolute z-50 top-8 left-0 bg-white w-[200px] animate-fadeInLeft shadow-2xl'
-              }
-            >
+              }>
               <div className='p-2 bg-white absolute -top-1 rotate-45 left-2 -z-10'></div>
               <li>
                 <Link
                   onClick={changeLink}
                   to='/alo24/branchregister'
-                  className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
-                >
+                  className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
                   {t('Filial yaratish')}
                 </Link>
               </li>
@@ -845,8 +809,7 @@ export const Navbar = ({ baseUrl }) => {
                 <Link
                   onClick={changeLink}
                   to='/alo24/branches'
-                  className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
-                >
+                  className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
                   {t('Filiallar')}
                 </Link>
               </li>
@@ -861,8 +824,7 @@ export const Navbar = ({ baseUrl }) => {
                 currentPage === '/alo24/exchangerate'
                   ? 'active-page py-1 border text-center rounded-xl block'
                   : 'unactive-page py-1 border text-center rounded-xl block'
-              }
-            >
+              }>
               {t('Valyuta kursi')}
             </Link>
           </li>

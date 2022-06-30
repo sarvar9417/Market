@@ -23,6 +23,7 @@ import { Sellers } from './sale/Sellers';
 import { useHttp } from '../../hooks/http.hook';
 import { AuthContext } from '../../context/AuthContext';
 import { ProductsReport } from './products/ProductsReport';
+import { Mainmarket } from './mainmarket/Mainmarket';
 
 export const DirectorRouter = () => {
   const { request } = useHttp();
@@ -161,6 +162,12 @@ export const DirectorRouter = () => {
         {permission.sellers && (
           <Route path='/alo24/sellers'>
             <Sellers />
+          </Route>
+        )}
+
+        {permission.mainmarket && (
+          <Route path='/alo24/mainmarket'>
+            <Mainmarket />
           </Route>
         )}
 

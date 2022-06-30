@@ -210,7 +210,10 @@ module.exports.login = async (req, res) => {
 
     const userr = await User.findById(user._id)
       .select('firstname lastname type')
-      .populate('market', 'name phone1 phone2 phone3 image permission');
+      .populate(
+        'market',
+        'name phone1 phone2 phone3 image permission mainmarket'
+      );
 
     res.send({
       token,
