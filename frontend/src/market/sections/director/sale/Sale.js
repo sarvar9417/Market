@@ -41,8 +41,51 @@ export const Sale = () => {
   const [countPage, setCountPage] = useState(10);
 
   const [currentProducts, setCurrentProducts] = useState([]);
+  const [sortedSaleConnectors, setSortedSaleConnectors] = useState([]);
   //====================================================================
   //====================================================================
+
+  const sortSaleConnectors = useCallback((data) => {
+    let filterconnectors = [];
+    data.map((connector) => {
+      let productss = [];
+      connector.products.map((product) => {
+        if (product.pieces > 0) {
+          if (product.saleproducts.length > 0) {
+            let obj = {
+              ...product,
+              pieces:
+                product.pieces +
+                product.saleproducts.reduce(
+                  (prev, sale) => prev + sale.pieces,
+                  0
+                ),
+              totalprice:
+                product.totalprice +
+                product.saleproducts.reduce(
+                  (prev, sale) => prev + sale.totalprice,
+                  0
+                ),
+              totalpriceuzs:
+                product.totalpriceuzs +
+                product.saleproducts.reduce(
+                  (prev, sale) => prev + sale.totalpriceuzs,
+                  0
+                ),
+            };
+            productss.push(obj);
+            return product;
+          }
+          productss.push(product);
+          return product;
+        }
+        return null;
+      });
+      filterconnectors.push({ ...connector, products: [...productss] });
+      return connector;
+    });
+    setSortedSaleConnectors(filterconnectors);
+  }, []);
 
   //====================================================================
   //====================================================================
@@ -100,6 +143,7 @@ export const Sale = () => {
     setSellingEditCard(false);
     setTableCard(true);
     setVisibleTemporary(false);
+    setEditSaleConnector({});
   };
 
   const changeSellingEditCard = () => {
@@ -428,9 +472,11 @@ export const Sale = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+      let dataClone = JSON.parse(JSON.stringify(data));
       setSaleCounts(data.count);
-      setCurrentProducts(data.saleconnectors);
       setSaleConnectors(data.saleconnectors);
+      setCurrentProducts(data.saleconnectors);
+      sortSaleConnectors(dataClone.saleconnectors);
     } catch (error) {
       notify({
         title: error,
@@ -447,6 +493,7 @@ export const Sale = () => {
     startDate,
     endDate,
     sendingsearch,
+    sortSaleConnectors,
   ]);
 
   const getSaleConnectorsExcel = useCallback(async () => {
@@ -1098,6 +1145,13 @@ export const Sale = () => {
 
   const changeCheck = (e) => {
     setCheckConnectors(true);
+    // unsortedProducts.map((product) => {
+    //   if (product._id.toString() === e._id.toString()) {
+    //     setAllSales(product);
+    //     return product;
+    //   }
+    //   return product;
+    // });
     setAllSales(e);
     window.scroll({ top: 0 });
   };
@@ -1283,25 +1337,29 @@ export const Sale = () => {
   const [editTotalPriceUzs, setEditTotalPriceUzs] = useState(0);
 
   const editHandler = (e) => {
+    let connectorArr = sortedSaleConnectors.filter(
+      (item) => item._id === e._id
+    );
+    let connector = connectorArr[0];
     setEditTotalPrice(
-      e.products.reduce((summ, product) => {
+      connector.products.reduce((summ, product) => {
         return summ + product.totalprice;
       }, 0)
     );
     setEditTotalPriceUzs(
-      e.products.reduce((summ, product) => {
+      connector.products.reduce((summ, product) => {
         return summ + product.totalpriceuzs;
       }, 0)
     );
-    setEditSaleConnector(e);
+    setEditSaleConnector(connector);
     let products = [];
-    e.products.forEach((product) => {
+    connector.products.forEach((product) => {
       products.push({ ...product, pieces: 0, totalprice: 0, totalpriceuzs: 0 });
     });
     setEditSaleProducts(products);
-    setEditSaleConnectorId(e._id);
-    setEditPayments([...e.payments]);
-    setEditDiscounts([...e.discounts]);
+    setEditSaleConnectorId(connector._id);
+    setEditPayments([...connector.payments]);
+    setEditDiscounts([...connector.discounts]);
     // setSaleProducts([...e.products]);
     setTableCard(false);
     setSellingEditCard(true);
