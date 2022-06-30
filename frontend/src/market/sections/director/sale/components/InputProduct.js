@@ -1,7 +1,7 @@
 import { t } from 'i18next';
 import React from 'react';
 
-export const InputProduct = ({ setCounts, product, changeEnter }) => {
+export const InputProduct = ({ setCounts, product, changeEnter, loading }) => {
   return (
     <div>
       <p className='font-bold flex justify-between'>
@@ -25,6 +25,7 @@ export const InputProduct = ({ setCounts, product, changeEnter }) => {
                 onKeyUp={changeEnter}
                 type='number'
                 onChange={setCounts}
+                loading={loading}
                 name='pieces'
                 value={product ? product.pieces : ''}
                 className='w-full outline-none text-right font-bold'

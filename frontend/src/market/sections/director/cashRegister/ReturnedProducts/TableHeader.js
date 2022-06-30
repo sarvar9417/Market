@@ -20,6 +20,7 @@ export const TableHeader = ({
   setCurrentPage,
   totalDatas,
   countPage,
+  loading,
 }) => {
   return (
     <ul className='tbody border-b border-t-2 border-blue-800'>
@@ -54,6 +55,7 @@ export const TableHeader = ({
       <li className='th-h col-span-8'>
         <input
           onChange={changeDate}
+          disabled={loading}
           defaultValue={new Date(startDate).toISOString().slice(0, 10)}
           type='date'
           name='startDate'
@@ -61,6 +63,7 @@ export const TableHeader = ({
         />
         <input
           onChange={changeDate}
+          disabled={loading}
           defaultValue={new Date(endDate).toISOString().slice(0, 10)}
           type='date'
           name='endDate'

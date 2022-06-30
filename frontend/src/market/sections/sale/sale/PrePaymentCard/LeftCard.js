@@ -13,6 +13,7 @@ export const LeftCard = ({
   payment,
   paymentType,
   changeHandler,
+  loading
 }) => {
   const number = [
     7,
@@ -81,6 +82,7 @@ export const LeftCard = ({
         className='w-full mb-2 bg-[#54B1EC] text-white outline-none rounded px-3 py-1 text-base placeholder:text-[#AFD5EF] font-semibold'
         placeholder={t("To'lov uchun izoh")}
         onChange={prePaymentComment}
+        disabled={loading}
       />
       <button
         onClick={checkHandler}

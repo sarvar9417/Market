@@ -23,6 +23,7 @@ export const CreateBody = ({
           name={'name'}
           data={supplier.name}
           placeholder={t('Yetkazib beruvchi nomini kiriting')}
+          loading={loading}
           type={'text'}
           keyPressed={keyPressed}
           changeHandler={inputHandler}

@@ -17,6 +17,7 @@ export const TableHeader = ({
   setCurrentPage,
   debtsCount,
   countPage,
+  
   // keyPressed,
 }) => {
   return (

@@ -9,6 +9,7 @@ export const Input = ({
   type,
   placeholder,
   name,
+  loading,
 }) => {
   return (
     <div>
@@ -17,6 +18,7 @@ export const Input = ({
         onKeyUp={keyPressed}
         onChange={changeHandler}
         type={type}
+        disabled={loading}
         className={`input ${classes}`}
         name={name}
         placeholder={t(placeholder)}
@@ -33,6 +35,7 @@ export const SearchInput = ({
   placeholder,
   name,
   value,
+  loading,
 }) => {
   return (
     <div>
@@ -40,6 +43,7 @@ export const SearchInput = ({
         onKeyUp={keyPressed}
         onChange={changeHandler}
         type={type}
+        disabled={loading}
         className={`input ${className}`}
         name={name}
         placeholder={t(placeholder)}

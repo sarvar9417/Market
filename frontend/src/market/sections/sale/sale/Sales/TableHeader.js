@@ -20,6 +20,7 @@ export const TableHeader = ({
   setCurrentPage,
   categoryCount,
   countPage,
+  loading,
 }) => {
   return (
     <ul className='tbody border-b border-t-2 border-blue-800'>
@@ -31,6 +32,7 @@ export const TableHeader = ({
           changeHandler={changeSearch}
           name='id'
           placeholder={'ID'}
+          loading={loading}
           type='number'
           keyPressed={keyPressed}
         />
@@ -39,6 +41,7 @@ export const TableHeader = ({
         <SearchInput
           changeHandler={changeSearch}
           name='client'
+          loading={loading}
           placeholder={t('Mijoz')}
           keyPressed={keyPressed}
         />
@@ -56,6 +59,7 @@ export const TableHeader = ({
           onChange={changeDate}
           defaultValue={new Date(startDate).toISOString().slice(0, 10)}
           type='date'
+          loading={loading}
           name='startDate'
           className='border rounded p-1 focus:outline-green-800'
         />
@@ -63,6 +67,7 @@ export const TableHeader = ({
           onChange={changeDate}
           defaultValue={new Date(endDate).toISOString().slice(0, 10)}
           type='date'
+          loading={loading}
           name='endDate'
           className='border rounded p-1 focus:outline-green-800 ml-2'
         />

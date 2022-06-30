@@ -1,7 +1,7 @@
 import React from 'react';
 import { t } from 'i18next';
 
-export const Table = ({ editSaleConnector, saleproducts, changeBack }) => {
+export const Table = ({ editSaleConnector, saleproducts, changeBack, loading }) => {
   return (
     <table className='bg-white w-full relative text-base'>
       <thead className='border text-center text-base text-white py-4'>
@@ -44,6 +44,7 @@ export const Table = ({ editSaleConnector, saleproducts, changeBack }) => {
                     value={saleproducts[index].pieces}
                     id={index}
                     type='number'
+                    loading={loading}
                     onChange={changeBack}
                     className='w-full border outline-none rounded font-bold text-right px-2'
                   />

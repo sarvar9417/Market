@@ -23,6 +23,7 @@ export const CreateBody = ({
           name={'name'}
           data={unit.name}
           placeholder={t("O'lchov birligini kiriting")}
+          loading={loading}
           type={'text'}
           keyPressed={keyPressed}
           changeHandler={inputHandler}

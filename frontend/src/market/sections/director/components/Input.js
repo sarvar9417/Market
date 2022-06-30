@@ -9,12 +9,14 @@ export const Input = ({
   type,
   placeholder,
   name,
+  loading,
 }) => {
   return (
     <div>
       <input
         value={data ? data : ''}
         onKeyUp={keyPressed}
+        disabled={loading}
         onChange={changeHandler}
         type={type}
         className={`input ${classes}`}
@@ -33,12 +35,14 @@ export const SearchInput = ({
   placeholder,
   name,
   value,
+  loading,
 }) => {
   return (
     <div>
       <input
         onKeyUp={keyPressed}
         onChange={changeHandler}
+        disabled={loading}
         type={type}
         className={`input ${className}`}
         name={name}

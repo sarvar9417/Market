@@ -17,6 +17,7 @@ export const TableHeader = ({
   setCurrentPage,
   debtsCount,
   countPage,
+  loading,
   // keyPressed,
 }) => {
   return (
@@ -41,6 +42,7 @@ export const TableHeader = ({
         />
         <input
           onChange={changeDate}
+          disabled={loading}
           defaultValue={new Date(startDate).toISOString().slice(0, 10)}
           type='date'
           name='startDate'

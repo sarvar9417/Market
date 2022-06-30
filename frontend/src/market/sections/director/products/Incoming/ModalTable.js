@@ -1,7 +1,7 @@
 import { t } from 'i18next';
 import React from 'react';
 
-export const ModalTable = ({ incoming, inputHandler, keyPressed }) => {
+export const ModalTable = ({ incoming, inputHandler, keyPressed, loading, }) => {
   const changeHandler = (e) => {
     if (e.key === 'Enter') {
       keyPressed();
@@ -27,6 +27,7 @@ export const ModalTable = ({ incoming, inputHandler, keyPressed }) => {
               <td className='border m-0 px-3 py-2 font-bold text-center'>
                 <input
                   onChange={inputHandler}
+                  disabled={loading}
                   value={incoming.pieces}
                   type='number'
                   step={0.001}
@@ -39,6 +40,7 @@ export const ModalTable = ({ incoming, inputHandler, keyPressed }) => {
               <td className='border m-0 px-3 py-2 font-bolds text-center'>
                 <input
                   onChange={inputHandler}
+                  disabled={loading}
                   value={incoming.unitprice}
                   type='number'
                   className='outline-none text-right text-black font-bold'
@@ -50,6 +52,7 @@ export const ModalTable = ({ incoming, inputHandler, keyPressed }) => {
               <td className='border m-0 px-3 py-2 font-bold text-center'>
                 <input
                   onChange={inputHandler}
+                  disabled={loading}
                   value={incoming.totalprice}
                   type='number'
                   style={{ maxWidth: '100px' }}

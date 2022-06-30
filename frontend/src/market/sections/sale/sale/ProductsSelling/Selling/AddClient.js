@@ -14,6 +14,7 @@ export const AddClient = ({
   clients,
   client,
   inputClient,
+  loading,
 }) => {
   return (
     <div className='p-3'>
@@ -46,6 +47,7 @@ export const AddClient = ({
           name='name'
           changeHandler={inputClient}
           placeholder={t("Xaridor")}
+          loading={loading}
         />
       </div>
     </div>

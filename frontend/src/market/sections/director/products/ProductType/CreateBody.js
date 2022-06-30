@@ -42,6 +42,7 @@ export const CreateBody = ({
           name={"name"}
           data={producttype.name}
           placeholder={t("Kategotiya nomini kiriting")}
+          loading={loading}
           type={"text"}
           keyPressed={keyPressed}
           changeHandler={changeHandler}

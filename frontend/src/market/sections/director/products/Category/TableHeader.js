@@ -16,6 +16,7 @@ export const TableHeader = ({
   totalDatas,
   countPage,
   search,
+  loading,
   nameKeyPressed,
   codeKeyPressed,
 }) => {
@@ -26,6 +27,7 @@ export const TableHeader = ({
       </li>
       <li className='th-h border-r'>
         <SearchInput
+          loading={loading}
           changeHandler={searchCategory}
           type={'search'}
           placeholder={t('Kategoriya kodi')}
@@ -36,6 +38,7 @@ export const TableHeader = ({
       </li>
       <li className='th-h col-span-4'>
         <SearchInput
+          loading={loading}
           changeHandler={searchCategory}
           type={'search'}
           placeholder={t('Kategoriya nomi')}
@@ -55,7 +58,8 @@ export const TableHeader = ({
       <li className='text-center flex justify-center items-center font-bold border-r py-2 col-span-2 bg-white'>
         <button
           className='px-4 bg-green-700 hover:bg-green-800 text-white rounded'
-          onClick={getCategoryExcel}>
+          onClick={getCategoryExcel}
+        >
           <FontAwesomeIcon icon={faFileExcel} />
         </button>
         <ExcelDownload filename={t('Kategoriyalar')} />

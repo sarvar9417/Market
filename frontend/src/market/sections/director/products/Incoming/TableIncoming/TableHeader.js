@@ -21,6 +21,7 @@ export const TableHeader = ({
   countPage,
   currentPage,
   setCurrentPage,
+  loading,
 }) => {
   return (
     <ul className='tbody border-b border-t-2 border-blue-800'>
@@ -31,6 +32,7 @@ export const TableHeader = ({
         <input
           onKeyUp={searchKeypress}
           onChange={searchSupplier}
+          loading={loading}
           type='search'
           className='input'
           placeholder={t('Yetkazib beruvchi')}
@@ -40,6 +42,7 @@ export const TableHeader = ({
         <input
           onKeyUp={searchKeypress}
           onChange={searchProductCode}
+          loading={loading}
           type='search'
           className='input'
           placeholder={t('Kodi')}
@@ -49,6 +52,7 @@ export const TableHeader = ({
         <input
           onKeyUp={searchKeypress}
           onChange={searchProduct}
+          loading={loading}
           type='search'
           className='input w-[150px] h-8'
           placeholder={t('Mahsulot')}
@@ -63,6 +67,7 @@ export const TableHeader = ({
       <li className='th-h border-r col-span-4   '>
         <input
           onChange={changeDate}
+          loading={loading}
           value={new Date(
             new Date(startDate).setHours(new Date(startDate).getHours() + 5)
           )
@@ -74,6 +79,7 @@ export const TableHeader = ({
         />
         <input
           onChange={changeDate}
+          loading={loading}
           value={new Date(
             new Date(endDate).setHours(new Date(endDate).getHours() + 5)
           )
