@@ -1,9 +1,17 @@
-import { faCashRegister, faTable } from '@fortawesome/free-solid-svg-icons';
+import {
+  faMoneyBillTransfer,
+  faShoppingCart,
+  faTable,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 
-export const Card = ({ filial }) => {
-  console.log(filial);
+export const Card = ({
+  filial,
+  changeProducts,
+  changeSales,
+  changePayments,
+}) => {
   return (
     <div className='bg-blue-800 rounded px-3 py-2  text-white opacity-90 shadow-2xl'>
       <div className='flex justify-center font-bold mb-2 text-lg '>
@@ -31,11 +39,23 @@ export const Card = ({ filial }) => {
         <span>{filial.totalprice.toLocaleString('ru-RU')} USD</span>
       </div>
       <div className='flex justify-end font-bold mb-2 text-base'>
-        <button className='px-4 py-1 bg-red-700 rounded  hover:bg-red-600 ml-2'>
-          <FontAwesomeIcon icon={faCashRegister} />
+        <button
+          onClick={changePayments}
+          name={filial.market._id}
+          className='px-4 py-1 bg-red-700 rounded  hover:bg-red-600 ml-2'>
+          <FontAwesomeIcon icon={faMoneyBillTransfer} />
         </button>
-        <button className='px-4 py-1 bg-green-600 rounded  hover:bg-green-500 ml-2'>
-          <FontAwesomeIcon icon={faTable} />
+        <button
+          onClick={changeSales}
+          name={filial.market._id}
+          className='px-4 py-1 bg-orange-600 rounded  hover:bg-orange-500 ml-2'>
+          <FontAwesomeIcon icon={faShoppingCart} />
+        </button>
+        <button
+          name={filial.market._id}
+          onClick={changeProducts}
+          className='px-4 py-1 bg-green-600 rounded  hover:bg-green-500 ml-2'>
+          <FontAwesomeIcon icon={faTable} className='pointer-events-none' />
         </button>
       </div>
     </div>
