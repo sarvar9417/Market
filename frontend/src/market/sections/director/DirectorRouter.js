@@ -74,6 +74,9 @@ export const DirectorRouter = () => {
         <Route path='/alo24' exact>
           <HomePage />
         </Route>
+        <Route path='/'>
+          <HomePage />
+        </Route>
         <Route path='/alo24/editdirector'>
           <EditDirector />
         </Route>

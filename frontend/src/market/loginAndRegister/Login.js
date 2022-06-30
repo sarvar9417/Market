@@ -8,6 +8,7 @@ import PasswordInput from './PasswordInput';
 import { InputGroup, useToast, Input } from '@chakra-ui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPhone } from '@fortawesome/free-solid-svg-icons';
+import { useHistory } from 'react-router-dom';
 
 export const Login = () => {
   //====================================================================
@@ -32,6 +33,8 @@ export const Login = () => {
 
   //====================================================================
   //====================================================================
+
+  const history = useHistory();
   const [hour, setHour] = useState(new Date().toLocaleTimeString());
 
   const weekDays = ['Yak', 'Du', 'Se', 'Chor', 'Paysh', 'Juma', 'Shanba'];
@@ -77,6 +80,7 @@ export const Login = () => {
     try {
       const data = await request(`/api/user/login`, 'POST', { ...user });
       auth.login(data.token, data.userId, data.user, data.market);
+      history.push('/alo24');
       notify({
         title: t(`Xush kelibsiz!`),
         description: t('Kirish muvaffaqqiyatli amalga oshirildi'),
