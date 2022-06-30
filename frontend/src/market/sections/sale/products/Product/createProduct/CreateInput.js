@@ -23,6 +23,7 @@ export const CreateInput = ({
           keyPressed={keyPressed}
           changeHandler={inputHandler}
           placeholder={t('Mahsulot kodini kiriting')}
+          loading={loading}
           name={'code'}
           type={'text'}
           classes={'text-right'}
@@ -37,6 +38,7 @@ export const CreateInput = ({
           placeholder={t('Mahsulot nomini kiriting')}
           type={'text'}
           name='name'
+          loading={loading}
         />
       </div>
 
@@ -47,6 +49,7 @@ export const CreateInput = ({
           keyPressed={keyPressed}
           changeHandler={inputHandler}
           placeholder={t('Sonini kiriting')}
+          loading={loading}
           name={'total'}
           type={'number'}
           classes={'text-right'}
@@ -60,6 +63,7 @@ export const CreateInput = ({
           keyPressed={keyPressed}
           changeHandler={inputHandler}
           placeholder={t('Olish narxini kiriting')}
+          loading={loading}
           name={'incomingprice'}
           type={'number'}
           classes={'text-right'}
@@ -71,6 +75,7 @@ export const CreateInput = ({
         <Input
           data={product.sellingprice}
           keyPressed={keyPressed}
+          loading={loading}
           changeHandler={inputHandler}
           placeholder={t('Sotish narxini kiriting')}
           name={'sellingprice'}

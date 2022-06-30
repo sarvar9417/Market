@@ -50,6 +50,7 @@ export const CreateClient = ({
             name={'name'}
             data={client && client.name}
             placeholder={t('Mijoz ismini kiriting')}
+            loading={loading}
             type={'text'}
             keyPressed={keyPressed}
             changeHandler={changeHandler}

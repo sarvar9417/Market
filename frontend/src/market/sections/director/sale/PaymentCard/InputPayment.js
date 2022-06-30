@@ -6,6 +6,7 @@ export const InputPayment = ({
   changeHandler,
   paymentType,
   payment,
+  loading,
 }) => {
   return (
     <div
@@ -27,6 +28,7 @@ export const InputPayment = ({
           id={paymentType.type + 'uzs'}
           name={paymentType.name}
           onChange={changeHandler}
+          loading={loading}
           type='number'
           data-money='UZS'
           data-type={paymentType.type}
@@ -39,6 +41,7 @@ export const InputPayment = ({
           id={paymentType.type}
           name={paymentType.name}
           onChange={changeHandler}
+          loading={loading}
           type='number'
           data-money='USD'
           data-type={paymentType.type}

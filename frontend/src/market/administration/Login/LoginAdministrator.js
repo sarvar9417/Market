@@ -79,7 +79,7 @@ export const LoginAdministrator = () => {
         status: 'error',
       });
     }
-  }, [request, loginPassword, notify, auth, history]);
+  }, [request, loginPassword, notify, auth, history,]);
 
   return (
     <div className='container'>

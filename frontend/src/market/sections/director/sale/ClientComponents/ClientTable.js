@@ -21,6 +21,7 @@ export const ClientTable = ({
   setRemove,
   setModal,
   updateInputs,
+  loading,
 }) => {
   return (
     <>
@@ -33,6 +34,7 @@ export const ClientTable = ({
             changeHandler={searchClient}
             type={'search'}
             placeholder={t('Santexniklar')}
+            loading={loading}
             keyPressed={searchKeypress}
             name='packman'
           />
@@ -41,6 +43,7 @@ export const ClientTable = ({
           <SearchInput
             changeHandler={searchClient}
             type={'search'}
+            loading={loading}
             placeholder={t('Mijozlar')}
             keyPressed={searchKeypress}
             name='client'

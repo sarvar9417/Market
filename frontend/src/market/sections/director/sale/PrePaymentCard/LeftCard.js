@@ -13,6 +13,7 @@ export const LeftCard = ({
   payment,
   paymentType,
   changeHandler,
+  loading,
 }) => {
   const number = [
     7,
@@ -42,7 +43,8 @@ export const LeftCard = ({
             return (
               <div
                 key={index}
-                className='flex text-3xl items-center font-bold border-white border-b-1'>
+                className='flex text-3xl items-center font-bold border-white border-b-1'
+              >
                 <InputPayment
                   uzs={uzs}
                   exchangerate={exchangerate}
@@ -71,7 +73,8 @@ export const LeftCard = ({
           return (
             <button
               key={index}
-              className='bg-[#54B1EC] text-3xl rounded-full w-[80px] h-[80px] hover:bg-[#54B3FF] m-auto'>
+              className='bg-[#54B1EC] text-3xl rounded-full w-[80px] h-[80px] hover:bg-[#54B3FF] m-auto'
+            >
               {num}
             </button>
           );
@@ -81,10 +84,13 @@ export const LeftCard = ({
         className='w-full mb-2 bg-[#54B1EC] text-white outline-none rounded px-3 py-1 text-base placeholder:text-[#AFD5EF] font-semibold'
         placeholder={t("To'lov uchun izoh")}
         onChange={prePaymentComment}
+        loading={loading}
+        
       />
       <button
         onClick={checkHandler}
-        className='w-full py-2 bg-[#54B1EC] font-bold text-lg hover:bg-[#54B3FF]'>
+        className='w-full py-2 bg-[#54B1EC] font-bold text-lg hover:bg-[#54B3FF]'
+      >
         {t("To'lash")}
       </button>
     </div>

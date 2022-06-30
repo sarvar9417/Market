@@ -2,7 +2,7 @@ import { t } from 'i18next';
 import React from 'react';
 import { Input } from '../../components/Input';
 
-export const Register = ({ seller, changeHandler }) => {
+export const Register = ({ seller, changeHandler, loading }) => {
   return (
     <div className='shadow-2xl'>
       <div className='card-header text-base'>{t("Sotuvchi ma'lumotlari")}</div>
@@ -13,6 +13,7 @@ export const Register = ({ seller, changeHandler }) => {
             changeHandler={changeHandler}
             data={seller.firstname}
             placeholder={t('Ismni kiriting')}
+            loading={loading}
             classes='text-right'
             name='firstname'
           />
@@ -25,6 +26,7 @@ export const Register = ({ seller, changeHandler }) => {
             changeHandler={changeHandler}
             data={seller.lastname}
             placeholder={t('Familiya kiriting')}
+            loading={loading}
             classes='text-right'
             name='lastname'
           />
@@ -37,6 +39,7 @@ export const Register = ({ seller, changeHandler }) => {
             changeHandler={changeHandler}
             data={seller.phone}
             placeholder={t('Telefon raqamini kiriting')}
+            loading={loading}
             type='number'
             classes='text-right'
             name='phone'

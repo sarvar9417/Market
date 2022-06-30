@@ -11,6 +11,7 @@ export const TableHeader = ({
   setCurrentPage,
   connectorsCount,
   countPage,
+  loading,
 }) => {
   return (
     <ul className='tbody border-b border-t-2 border-blue-800'>
@@ -20,6 +21,7 @@ export const TableHeader = ({
       <li className='th-h col-span-5'>
         <input
           onChange={changeDate}
+          loading={loading}
           defaultValue={new Date(startDate).toISOString().slice(0, 10)}
           type='date'
           name='startDate'

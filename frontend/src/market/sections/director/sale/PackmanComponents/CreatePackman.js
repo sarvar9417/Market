@@ -29,6 +29,7 @@ export const CreatePackman = ({
             name={'name'}
             data={packman && packman.name}
             placeholder={t('Santexnikni kiriting')}
+            loading={loading}
             type={'text'}
             keyPressed={keyPressed}
             changeHandler={changeHandler}

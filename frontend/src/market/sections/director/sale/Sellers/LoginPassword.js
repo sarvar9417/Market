@@ -2,7 +2,7 @@ import { t } from 'i18next';
 import React from 'react';
 import { Input } from '../../components/Input';
 
-export const LoginPassword = ({ seller, changeHandler, checkData }) => {
+export const LoginPassword = ({ seller, changeHandler, checkData, loading }) => {
   return (
     <div className='shadow-2xl'>
       <div className='card-header text-base'>{t("Login va parol")}</div>
@@ -15,6 +15,7 @@ export const LoginPassword = ({ seller, changeHandler, checkData }) => {
             placeholder={t('Loginni kiriting')}
             name='login'
             classes='text-right'
+            loading={loading}
           />
         </div>
       </div>
@@ -28,6 +29,7 @@ export const LoginPassword = ({ seller, changeHandler, checkData }) => {
             name='password'
             type='password'
             classes='text-right'
+            loading={loading}
           />
         </div>
       </div>
@@ -41,6 +43,7 @@ export const LoginPassword = ({ seller, changeHandler, checkData }) => {
             name='confirmPassword'
             placeholder={t('Parolni qayta kiriting')}
             classes='text-right'
+            loading={loading}
           />
         </div>
       </div>

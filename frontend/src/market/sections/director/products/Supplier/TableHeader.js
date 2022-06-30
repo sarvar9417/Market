@@ -16,6 +16,7 @@ export const TableHeader = ({
   countPage,
   keyPressed,
   suppliersCount,
+  loading,
 }) => {
   return (
     <ul className='tbody border-b border-t-2 border-blue-800'>
@@ -27,6 +28,7 @@ export const TableHeader = ({
           changeHandler={searchSupplier}
           type={'text'}
           placeholder={t('Yetkazib beruvchi nomi')}
+          loading={loading}
           name='name'
           keyPressed={keyPressed}
         />

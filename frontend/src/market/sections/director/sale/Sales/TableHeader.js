@@ -20,6 +20,7 @@ export const TableHeader = ({
   setCurrentPage,
   categoryCount,
   countPage,
+  loading,
 }) => {
   return (
     <ul className='tbody border-b border-t-2 border-blue-800'>
@@ -31,6 +32,7 @@ export const TableHeader = ({
           changeHandler={changeSearch}
           name='id'
           placeholder={'ID'}
+          loading={loading}
           type='number'
           keyPressed={keyPressed}
         />
@@ -41,6 +43,7 @@ export const TableHeader = ({
           name='client'
           placeholder={t('Mijoz')}
           keyPressed={keyPressed}
+          loading={loading}
         />
       </li>
       {/* <li className='th-h border-r'>
@@ -57,6 +60,7 @@ export const TableHeader = ({
           defaultValue={new Date(startDate).toISOString().slice(0, 10)}
           type='date'
           name='startDate'
+          loading={loading}
           className='border rounded p-1 focus:outline-green-800'
         />
         <input
@@ -65,6 +69,7 @@ export const TableHeader = ({
           type='date'
           name='endDate'
           className='border rounded p-1 focus:outline-green-800 ml-2'
+          loading={loading}
         />
         <Pagination
           currentPage={currentPage}

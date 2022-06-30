@@ -22,6 +22,7 @@ export const CreateBody = ({
         <Input
           name={"name"}
           data={brand.name}
+          loading={loading}
           placeholder={t("Brend nomini kiriting")}
           type={"text"}
           keyPressed={keyPressed}
