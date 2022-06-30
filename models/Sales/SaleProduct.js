@@ -13,6 +13,7 @@ const saleproduct = new Schema(
     product: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
     market: { type: Schema.Types.ObjectId, ref: 'Market', required: true },
     saleproducts: [{ type: Schema.Types.ObjectId, ref: 'SaleProduct' }],
+    saleproduct: { type: Schema.Types.ObjectId, ref: 'SaleProduct' },
     isArchive: { type: Boolean, default: false },
   },
   {

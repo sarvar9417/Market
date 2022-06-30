@@ -1546,6 +1546,13 @@ export const Sale = () => {
 
   const changeBack = (e) => {
     let products = [...editSaleProducts];
+    if (parseFloat(e.target.value) < 0) {
+      return notify({
+        title: t('Diqqat! Qaytarilgan soni 0 kam bumaslik kerak!'),
+        description: '',
+        status: 'warning',
+      });
+    }
     if (
       parseFloat(e.target.value) >
       editSaleConnector.products[parseInt(e.target.id)].pieces
