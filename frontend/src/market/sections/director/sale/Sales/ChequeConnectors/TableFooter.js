@@ -5,11 +5,11 @@ export const TableFooter = ({ sales }) => {
   return (
     <table className='table'>
       <tfoot className='text-base'>
-        <tr>
-          <th colSpan={6} className='py-1'>
+        <tr className=' border-top-4'>
+          <th colSpan={6} className='py-1 pt-5'>
             {t('Jami')}:
           </th>
-          <th className='text-right text-teal-900 py-1'>
+          <th className='text-right text-teal-900 py-1 pt-5'>
             {sales.products
               .reduce((summ, product) => {
                 return summ + product.totalprice;

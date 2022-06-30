@@ -62,7 +62,24 @@ export const Table = ({ sales, currentSales, returnSales }) => {
           })}
         </tbody>
       </table>
-      <TableFooter sales={sales} />
+      <table className='table mb-6'>
+        <tfoot className='text-base'>
+          <tr>
+            <th className='text-right text-teal-900 py-1'>
+              <span className='mr-4'>Sotilganlar jami:</span>
+              <span>
+                {(
+                  currentSales.reduce(
+                    (prev, sale) => prev + sale.totalprice,
+                    0
+                  ) || 0
+                ).toLocaleString('ru-RU')}{' '}
+                USD
+              </span>
+            </th>
+          </tr>
+        </tfoot>
+      </table>
 
       {returnSales.length > 0 && (
         <>
@@ -125,26 +142,27 @@ export const Table = ({ sales, currentSales, returnSales }) => {
               })}
             </tbody>
           </table>
-          <table className='table'>
+          <table className='table mb-8'>
             <tfoot className='text-base'>
               <tr>
-                <th colSpan={6} className='py-1'>
-                  Qaytarilganlar jami:
-                </th>
                 <th className='text-right text-teal-900 py-1'>
-                  {(
-                    returnSales.reduce(
-                      (prev, sale) => prev + sale.totalprice,
-                      0
-                    ) || 0
-                  ).toLocaleString('ru-RU')}{' '}
-                  USD
+                  <span className='mr-4'>Qaytarilganlar jami:</span>
+                  <span>
+                    {(
+                      returnSales.reduce(
+                        (prev, sale) => prev + sale.totalprice,
+                        0
+                      ) || 0
+                    ).toLocaleString('ru-RU')}{' '}
+                    USD
+                  </span>
                 </th>
               </tr>
             </tfoot>
           </table>
         </>
       )}
+      <TableFooter sales={sales} />
     </>
   );
 };
