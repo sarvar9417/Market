@@ -80,12 +80,12 @@ export const Login = () => {
     try {
       const data = await request(`/api/user/login`, 'POST', { ...user });
       auth.login(data.token, data.userId, data.user, data.market);
-      history.push('/alo24');
       notify({
         title: t(`Xush kelibsiz!`),
         description: t('Kirish muvaffaqqiyatli amalga oshirildi'),
         status: 'success',
       });
+      history.push('/alo24');
     } catch (error) {
       notify({
         title: error,
