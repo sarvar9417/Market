@@ -16,6 +16,7 @@ export const TableHeader = ({
   setCurrentPage,
   productsCount,
   getProductExcel,
+  loading,
 }) => {
   return (
     <ul className='tbody border-b border-t-2 border-blue-800'>
@@ -36,6 +37,7 @@ export const TableHeader = ({
           type={'text'}
           placeholder={t('Kodi')}
           name='code'
+          loading={loading}
           value={search.code}
           keyPressed={keyPress}
           className='text-right'
@@ -47,6 +49,7 @@ export const TableHeader = ({
           type={'text'}
           placeholder={t('Mahsulot nomi')}
           name='name'
+          loading={loading}
           value={search.name}
           keyPressed={keyPress}
           className={'w-[200px]'}

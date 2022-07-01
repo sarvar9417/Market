@@ -22,7 +22,7 @@ export const Rows = ({
         {new Date(s.createdAt).toLocaleDateString()}
       </li>
       <li className='col-span-4 td border-r font-bold'>
-        1 USD - {s.exchangerate} UZS
+        1 USD - {(s.exchangerate).toLocaleString('ru-RU')} UZS
       </li>
       <li className='td-btn col-span-2 border-r'>
         {loading ? (

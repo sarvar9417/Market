@@ -20,7 +20,7 @@ export const TableRow = ({ countPage, p, index, currentPage }) => {
         USD
       </li>
       <li className='col-span-1 td no flex justify-end px-1 border-green-800 border-r-2'>
-        {p.price && p.price.sellingprice.toLocaleString('ru-RU')} USD
+        {p.price && (p.price.sellingprice).toLocaleString('ru-RU')} USD
       </li>
       <li className='col-span-2 td no flex justify-end px-1 border-green-800 border-r-2'>
         {((p.price && p.price.sellingprice) * p.total).toLocaleString('ru-RU')}{' '}

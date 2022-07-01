@@ -28,7 +28,7 @@ export const Rows = ({
         {product.productdata.name}
       </li>
       <li className='td border-r text-right'>
-        <span>{Math.round(product.total * 100) / 100}</span>{' '}
+        <span>{(Math.round(product.total * 100) / 100).toLocaleString('ru-RU')}</span>{' '}
       </li>
       <li className='td  border-r text-right '>
         <input
@@ -53,17 +53,17 @@ export const Rows = ({
                 product.inventory.productcount >
               0
               ? '+' +
-                Math.round(
+                (Math.round(
                   (product.inventory.inventorycount -
                     product.inventory.productcount) *
                     100
                 ) /
-                  100
-              : Math.round(
+                  100).toLocaleString('ru-RU')
+              : (Math.round(
                   (product.inventory.inventorycount -
                     product.inventory.productcount) *
                     100
-                ) / 100
+                ) / 100).toLocaleString('ru-RU')
             : 0}
         </span>
         <span className='text-red-600 w-1/4 inline-block'>

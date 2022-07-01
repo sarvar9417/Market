@@ -18,12 +18,12 @@ export const Rows = ({
       <li className='no'>{1 + index}</li>
       <li className='no'>{product.product.code}</li>
       <li className='col-span-3 td border-r'>{product.product.name}</li>
-      <li className='td border-r text-right'>{product.pieces}</li>
+      <li className='td border-r text-right'>{(product.pieces).toLocaleString('ru-RU')}</li>
       <li className='col-span-2 td border-r text-right'>
-        {product.unitprice} USD
+        {(product.unitprice).toLocaleString('ru-RU')} USD
       </li>
       <li className='col-span-2 td border-r text-right'>
-        {product.totalprice} USD
+        {(product.totalprice).toLocaleString('ru-RU')} USD
       </li>
       <li className='td-btn border-r'>
         {loading ? (

@@ -12,9 +12,9 @@ export const ExcelTable = ({ products }) => {
             <th className='border'>{t('Nomi')}</th>
             <th className='border'>{t("Soni o'lchov birligi")}</th>
             <th className='border'>{t('Kelish narxi')}</th>
-            <th className='border'>Kelish jami</th>
+            <th className='border'>{t("Kelish jami")}</th>
             <th className='border'>{t('Sotish narxi')}</th>
-            <th className='border'>Sotish jami</th>
+            <th className='border'>{t("Sotish jami")}</th>
           </tr>
         </thead>
         <tbody>
