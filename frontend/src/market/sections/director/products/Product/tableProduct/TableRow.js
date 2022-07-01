@@ -24,14 +24,14 @@ export const TableRow = ({
       </li>
       <li className='col-span-5 td font-bold border-r'>{p.productdata.name}</li>
       <li className='col-span-1 td no flex justify-end px-1'>
-        <span>{p.total}</span>{' '}
+        <span>{(p.total).toLocaleString('ru-RU')}</span>{' '}
         <span className='ml-1'>{p.unit && p.unit.name}</span>
       </li>
       <li className='col-span-1 td no flex justify-end px-1'>
-        {p.price && p.price.incomingprice} USD
+        {p.price && (p.price.incomingprice).toLocaleString("ru-RU")} USD
       </li>
       <li className='col-span-1 td no flex justify-end px-1'>
-        {p.price && p.price.sellingprice} USD
+        {p.price && (p.price.sellingprice).toLocaleString('ru-RU')} USD
       </li>
       <li className='td-btn col-span-1 border-r'>
         {loading ? <SaveBtnLoad /> : <EditBtn editHandler={() => edit(p)} />}

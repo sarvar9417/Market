@@ -251,7 +251,7 @@ export const Navbar = ({ baseUrl }) => {
                       to='/alo24/productsreport'
                       className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
                     >
-                      Mahsulotlar hisoboti
+                      {t('Mahsulotlar hisoboti')}
                     </Link>
                   </li>
                   <li>
@@ -659,6 +659,15 @@ export const Navbar = ({ baseUrl }) => {
                     </Link>
                   </li>
                 </ul>
+              </li>
+              <li>
+                <Link
+                  onClick={changeLink}
+                  to='/alo24/productsreport'
+                  className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'
+                >
+                  {t('Mahsulotlar hisoboti')}
+                </Link>
               </li>
               <li>
                 {permission.incomings && (

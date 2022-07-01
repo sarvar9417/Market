@@ -1,5 +1,6 @@
 import { faSave } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { t } from 'i18next';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -33,7 +34,7 @@ export const Rows = ({
           <Link
             to={`/alo24administration/registerdirector/${market._id}`}
             className='px-4 py-1 bg-green-800 hover:bg-green-900 text-white font-bold rounded'>
-            Direktor yaratish
+            {t("Direktor yaratish")}
           </Link>
         )}
       </li>

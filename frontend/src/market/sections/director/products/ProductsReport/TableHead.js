@@ -43,7 +43,7 @@ export const TableHead = ({ currentProducts, setCurrentProducts }) => {
         />
       </li>
       <li className='th border-r flex flex-column items-center col-span-1'>
-        Olish jami
+        {t("Olish jami")}
         <SortDoubleProperty
           property={'price'}
           innnerProperty='incomingprice'
@@ -61,7 +61,7 @@ export const TableHead = ({ currentProducts, setCurrentProducts }) => {
         />
       </li>
       <li className='th border-r flex flex-column items-center col-span-1'>
-        Sotish jami
+        {t("Sotish jami")}
         <SortDoubleProperty
           property={'price'}
           innnerProperty='sellingprice'
