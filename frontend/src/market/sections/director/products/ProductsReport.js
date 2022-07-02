@@ -1,4 +1,10 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 // import { Loader } from '../../../loader/Loader';
 import { useToast } from '@chakra-ui/react';
 import { useHttp } from '../../../hooks/http.hook';
@@ -7,6 +13,8 @@ import { ExcelTable } from './ProductsReport/ExcelTable';
 import { TableHeader } from './ProductsReport/TableHeader';
 import { TableHead } from './ProductsReport/TableHead';
 import { TableRow } from './ProductsReport/TableRow';
+import { ProductCheque } from './ProductsReport/ProductCheque';
+import { useReactToPrint } from 'react-to-print';
 
 export const ProductsReport = () => {
   //====================================================================
@@ -116,6 +124,151 @@ export const ProductsReport = () => {
   //====================================================================
   //====================================================================
 
+  const componentRef = useRef();
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+    print: {
+      '@media print': {
+        display: 'block',
+      },
+    },
+  });
+
+  const print = useCallback(() => {
+    handlePrint();
+  }, [handlePrint]);
+
+  //====================================================================
+  //====================================================================
+
+  const [productCheques, setProductCheques] = useState([]);
+  const [productChequesCount, setProductsChequesCount] = useState(1);
+  const [productCheque, setProductCheque] = useState({
+    index: 0,
+    name: '',
+    code: '',
+    total: 0,
+    unit: '',
+    incomingprice: 0,
+    sellingprice: 0,
+  });
+
+  const checkCheque = useCallback(() => {
+    if (!productCheque.code) {
+      return {
+        title: 'Mahsulot kodi majburiy!',
+        description: '',
+        status: 'error',
+      };
+    }
+    if (!productCheque.name) {
+      return {
+        title: 'Mahsulot nomi majburiy!',
+        description: '',
+        status: 'error',
+      };
+    }
+    return false;
+  }, [productCheque]);
+
+  const addProductCheaques = useCallback(() => {
+    if (checkCheque()) {
+      return notify(checkCheque());
+    }
+    let arr = [];
+    let count = 0;
+    while (count !== productChequesCount) {
+      arr.push(productCheque);
+      count++;
+    }
+    setProductCheques(arr);
+    setTimeout(() => {
+      print();
+      setProductCheque({
+        index: 0,
+      });
+      setProductCheques([]);
+      setProductsChequesCount(1);
+    }, 1000);
+  }, [productChequesCount, productCheque, print, checkCheque, notify]);
+
+  const chooseProductCheque = (e, ind, val) => {
+    let property = e.target.dataset.property;
+    if (ind === productCheque.index) {
+      if (productCheque[`${property}`]) {
+        setProductCheque({
+          ...productCheque,
+          [property]: null,
+        });
+      } else {
+        setProductCheque({
+          ...productCheque,
+          [property]: val,
+        });
+      }
+    } else {
+      setProductCheque({
+        index: ind,
+        [property]: val,
+      });
+    }
+  };
+
+  //====================================================================
+  //====================================================================
+
+  const printAllProducts = useCallback(
+    (products) => {
+      let arr = [];
+      products.map((product, pos) => {
+        let count = 0;
+        let obj = {
+          index: pos,
+          name: product.productdata.name,
+          code: product.productdata.code,
+          total: product.total,
+          sellingprice: product.price.sellingprice,
+          unit: product.unit.name,
+        };
+        while (count !== productChequesCount) {
+          arr.push(obj);
+          count++;
+        }
+        return product;
+      });
+      setProductCheques(arr);
+      print();
+    },
+    [print, productChequesCount]
+  );
+
+  const getProductsForPrint = useCallback(async () => {
+    try {
+      const data = await request(
+        '/api/products/product/getexceldata',
+        'POST',
+        {
+          market: auth.market && auth.market._id,
+          search: sendingsearch,
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      printAllProducts(data);
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [auth, request, notify, sendingsearch, printAllProducts]);
+
+  //====================================================================
+  //====================================================================
+
   //====================================================================
   //====================================================================
   // SEARCH
@@ -141,6 +294,9 @@ export const ProductsReport = () => {
       setSendingSearch({ ...search });
     }
   };
+  //====================================================================
+  //====================================================================
+
   //====================================================================
   //====================================================================
   const setPageSize = useCallback(
@@ -173,6 +329,10 @@ export const ProductsReport = () => {
             setCurrentPage={setCurrentPage}
             productsCount={productsCount}
             getProductExcel={getProductExcel}
+            getProductsForPrint={getProductsForPrint}
+            setProductsChequesCount={setProductsChequesCount}
+            productChequesCount={productChequesCount}
+            productCheque={productCheque}
           />
           <TableHead
             currentProducts={currentProducts}
@@ -187,12 +347,23 @@ export const ProductsReport = () => {
                   index={index}
                   currentPage={currentPage}
                   key={index}
+                  productCheque={productCheque}
+                  productChequesCount={productChequesCount}
+                  setProductsChequesCount={setProductsChequesCount}
+                  addProductCheaques={addProductCheaques}
+                  chooseProductCheque={chooseProductCheque}
                 />
               );
             })}
         </div>
       </div>
       <ExcelTable products={excelDatas} />
+      <div className='hidden'>
+        <ProductCheque
+          productCheques={productCheques}
+          componentRef={componentRef}
+        />
+      </div>
     </>
   );
 };
