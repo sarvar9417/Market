@@ -17,7 +17,7 @@ export const TableHead = ({ currentProducts, setCurrentProducts }) => {
           />
         </div>
       </li>
-      <li className='th border-r flex  items-center justify-center col-span-5'>
+      <li className='th border-r flex  items-center justify-center col-span-3'>
         {t('Mahsulot nomi')}
         <Sort
           property={'name'}
@@ -68,6 +68,12 @@ export const TableHead = ({ currentProducts, setCurrentProducts }) => {
           data={currentProducts}
           setData={setCurrentProducts}
         />
+      </li>
+      <li className='th border-r flex flex-column items-center col-span-1'>
+        Soni
+      </li>
+      <li className='th border-r flex flex-column items-center col-span-1'>
+        Check
       </li>
     </ul>
   );

@@ -1,4 +1,4 @@
-import { faFileExcel } from '@fortawesome/free-solid-svg-icons';
+import { faFileExcel, faPrint } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { t } from 'i18next';
 import React from 'react';
@@ -16,7 +16,10 @@ export const TableHeader = ({
   setCurrentPage,
   productsCount,
   getProductExcel,
-  loading,
+  getProductsForPrint,
+  setProductsChequesCount,
+  productChequesCount,
+  productCheque,
 }) => {
   return (
     <ul className='tbody border-b border-t-2 border-blue-800'>
@@ -24,7 +27,8 @@ export const TableHeader = ({
         <select
           className='form-control form-control-sm selectpicker'
           placeholder={t("Bo'limni tanlang")}
-          onChange={setPageSize}>
+          onChange={setPageSize}
+        >
           <option value={10}>10</option>
           <option value={25}>25</option>
           <option value={50}>50</option>
@@ -43,7 +47,7 @@ export const TableHeader = ({
           className='text-right'
         />
       </li>
-      <li className='th-h border-r col-span-8 flex justify-between'>
+      <li className='th-h border-r col-span-6 flex justify-between'>
         <SearchInput
           changeHandler={changeHandler}
           type={'text'}
@@ -64,10 +68,30 @@ export const TableHeader = ({
       <li className='th-h border-r col-span-2 flex justify-center'>
         <button
           className='px-4 bg-green-700 hover:bg-green-800 text-white rounded'
-          onClick={getProductExcel}>
+          onClick={getProductExcel}
+        >
           <FontAwesomeIcon icon={faFileExcel} />
         </button>
         <ExcelDownload filename={t('Mahsulotlar')} />
+      </li>
+      <li className='th-h border-r col-span-1 flex justify-center'>
+        <input
+          onBlur={(e) => (e.target.value = 0)}
+          type='number'
+          className='max-w-[70%] outline-none text-ms border border-black px-2'
+          onChange={(e) => {
+            (isNaN(parseFloat(e.target.value)) && setProductsChequesCount(1)) ||
+              setProductsChequesCount(parseFloat(e.target.value));
+          }}
+        />
+      </li>
+      <li className='th-h border-r col-span-1 flex justify-center'>
+        <button
+          onClick={() => getProductsForPrint()}
+          className='px-4 bg-blue-700 text-white rounded-xl hover:bg-blue-800'
+        >
+          <FontAwesomeIcon icon={faPrint} />
+        </button>
       </li>
     </ul>
   );
