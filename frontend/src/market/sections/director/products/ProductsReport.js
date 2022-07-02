@@ -55,6 +55,9 @@ export const ProductsReport = () => {
   //====================================================================
   //====================================================================
 
+  //====================================================================
+  //====================================================================
+
   const [products, setProducts] = useState([]);
   const [searchStorage, setSearchStorage] = useState([]);
 
@@ -137,8 +140,13 @@ export const ProductsReport = () => {
   //====================================================================
   //====================================================================
 
+  const inputRef = useRef();
+
+  //====================================================================
+  //====================================================================
+
   const [productCheques, setProductCheques] = useState([]);
-  const [productChequesCount, setProductsChequesCount] = useState(1);
+  const [productChequesCount, setProductsChequesCount] = useState(0);
   const [productCheque, setProductCheque] = useState({
     index: 0,
     name: '',
@@ -149,7 +157,7 @@ export const ProductsReport = () => {
     sellingprice: 0,
   });
 
-  const checkCheque = useCallback(() => {
+  const checkCheque = () => {
     if (!productCheque.code) {
       return {
         title: 'Mahsulot kodi majburiy!',
@@ -165,9 +173,9 @@ export const ProductsReport = () => {
       };
     }
     return false;
-  }, [productCheque]);
+  };
 
-  const addProductCheaques = useCallback(() => {
+  const addProductCheaques = () => {
     if (checkCheque()) {
       return notify(checkCheque());
     }
@@ -185,8 +193,9 @@ export const ProductsReport = () => {
       });
       setProductCheques([]);
       setProductsChequesCount(1);
+      clearInputs();
     }, 1000);
-  }, [productChequesCount, productCheque, print, checkCheque, notify]);
+  };
 
   const chooseProductCheque = (e, ind, val) => {
     let property = e.target.dataset.property;
@@ -213,57 +222,42 @@ export const ProductsReport = () => {
   //====================================================================
   //====================================================================
 
-  const printAllProducts = useCallback(
-    (products) => {
-      let arr = [];
-      products.map((product, pos) => {
-        let count = 0;
-        let obj = {
-          index: pos,
-          name: product.productdata.name,
-          code: product.productdata.code,
-          total: product.total,
-          sellingprice: product.price.sellingprice,
-          unit: product.unit.name,
-        };
-        while (count !== productChequesCount) {
-          arr.push(obj);
-          count++;
-        }
-        return product;
-      });
+  //====================================================================
+  //====================================================================
+
+  const printAllProducts = () => {
+    let arr = [];
+    currentProducts.map((product, pos) => {
+      let count = 0;
+      let obj = {
+        index: pos,
+        name: product.productdata.name,
+        code: product.productdata.code,
+        total: product.total,
+        sellingprice: product.price.sellingprice,
+        unit: product.unit.name,
+      };
+      while (count !== productChequesCount) {
+        arr.push(obj);
+        count += 1;
+      }
+
+      return product;
+    });
+    setTimeout(() => {
       setProductCheques(arr);
       print();
-    },
-    [print, productChequesCount]
-  );
-
-  const getProductsForPrint = useCallback(async () => {
-    try {
-      const data = await request(
-        '/api/products/product/getexceldata',
-        'POST',
-        {
-          market: auth.market && auth.market._id,
-          search: sendingsearch,
-        },
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
-      );
-      printAllProducts(data);
-    } catch (error) {
-      notify({
-        title: error,
-        description: '',
-        status: 'error',
-      });
-    }
-  }, [auth, request, notify, sendingsearch, printAllProducts]);
+      clearInputs();
+    }, 1000);
+  };
 
   //====================================================================
   //====================================================================
-
+  const clearInputs = () => {
+    document.querySelectorAll('#checkinput').forEach((item) => {
+      item.value = '';
+    });
+  };
   //====================================================================
   //====================================================================
   // SEARCH
@@ -324,10 +318,11 @@ export const ProductsReport = () => {
             setCurrentPage={setCurrentPage}
             productsCount={productsCount}
             getProductExcel={getProductExcel}
-            getProductsForPrint={getProductsForPrint}
+            getProductsForPrint={printAllProducts}
             setProductsChequesCount={setProductsChequesCount}
             productChequesCount={productChequesCount}
             productCheque={productCheque}
+            inputRef={inputRef}
           />
           <TableHead
             currentProducts={currentProducts}
@@ -347,6 +342,7 @@ export const ProductsReport = () => {
                   setProductsChequesCount={setProductsChequesCount}
                   addProductCheaques={addProductCheaques}
                   chooseProductCheque={chooseProductCheque}
+                  inputRef={inputRef}
                 />
               );
             })}
