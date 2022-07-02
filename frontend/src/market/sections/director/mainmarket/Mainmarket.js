@@ -33,33 +33,35 @@ export const Mainmarket = () => {
     new Date(new Date().setHours(23, 59, 59, 0)).toISOString()
   );
 
-  const { getOrderProducts } = Requests();
+  const { registerOrderProducts, registerOrders, getOrdersList } = Requests();
   const { changeProduct, addOrder, inputHandler } = Functions();
 
   const [orders, setOrders] = useState([]);
-  const [order, setOrder] = useState({});
-  const [products, setProducts] = useState();
-  const [allProducts, setAllProducts] = useState();
+  const [ordersList, setOrdersList] = useState([]);
+  const [order, setOrder] = useState({
+    orderpieces: 0,
+    customermarket: auth.market._id,
+    receivermarket: auth.market.mainmarket,
+  });
+  const [products, setProducts] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
 
   const selectRef = {
     product: useRef(),
   };
 
   const clearSelect = useCallback(() => {
-    selectRef.supplier.current.selectOption({
-      label: t('Yetkazib beruvchilar'),
-      value: 'all',
-    });
     selectRef.product.current.selectOption({
       label: t('Barcha mahsulotlar'),
       value: 'all',
     });
     setOrders([]);
-  }, [selectRef.supplier, selectRef.product]);
+  }, [selectRef.product]);
 
   //====================================================================
   // Modal
   const [modal, setModal] = useState();
+  const [modal2, setModal2] = useState();
   //====================================================================
   // Visible
   const [visibleOrder, setVisibleOrder] = useState(false);
@@ -83,13 +85,44 @@ export const Mainmarket = () => {
   };
 
   const changeProductOrder = (e) => {
-    changeProduct({ e, setOrder, orders, setModal });
+    changeProduct({ e, setOrder, orders, setModal, order });
+  };
+
+  const editOrder = (product, index) => {
+    setOrder(product);
+    let i = [...orders];
+    i.splice(index, 1);
+    setOrders(i);
+    setModal(true);
+  };
+
+  const removeOrder = (index) => {
+    let i = [...orders];
+    i.splice(index, 1);
+    setOrders(i);
+  };
+
+  const sendingOrders = () => {
+    registerOrders({ orders, beginDay, endDay, setOrdersList });
+    setModal2(false);
+    clearSelect();
+    setOrder({
+      orderpieces: 0,
+      customermarket: auth.market._id,
+      receivermarket: auth.market.mainmarket,
+    });
+    setOrders([]);
+    setVisibleOrder(false);
+    setVisibleOrders(true);
   };
 
   useEffect(() => {
-    getOrderProducts({ setProducts, setAllProducts });
-  }, [getOrderProducts]);
+    registerOrderProducts({ setProducts, setAllProducts });
+  }, [registerOrderProducts]);
 
+  useEffect(() => {
+    getOrdersList({ setOrdersList, beginDay, endDay });
+  }, [getOrdersList, beginDay, endDay]);
   return (
     <div className='p-3 overflow-x-auto'>
       <RouterBtns changeVisible={changeVisible} />
@@ -99,10 +132,17 @@ export const Mainmarket = () => {
       </div>
 
       <div className={visibleOrders ? '' : 'hidden'}>
-        <Orders />
+        <Orders
+          ordersList={ordersList}
+          setBeginDay={setBeginDay}
+          setEndDay={setEndDate}
+        />
       </div>
       <div className={visibleOrder ? '' : 'hidden'}>
         <Order
+          setModal={setModal2}
+          removeOrder={removeOrder}
+          editOrder={editOrder}
           changeProduct={changeProductOrder}
           clearSelect={clearSelect}
           selectRef={selectRef}
@@ -114,16 +154,25 @@ export const Mainmarket = () => {
       <Modal
         modal={modal}
         setModal={setModal}
-        handler={() => addOrder(order, orders, setOrder, setOrders, setModal)}
+        handler={() =>
+          addOrder({ order, orders, setOrder, setOrders, setModal })
+        }
         text={
           <ModalTable
-            incoming={order}
+            order={order}
             inputHandler={(e) => inputHandler({ e, setOrder, order })}
             keyPressed={() =>
-              addOrder(order, orders, setOrder, setOrders, setModal)
+              addOrder({ order, orders, setOrder, setOrders, setModal })
             }
           />
         }
+      />
+
+      <Modal
+        modal={modal2}
+        setModal={setModal2}
+        basic={'Diqqat! Mahsulotlarga buyurtma berishi tasdiqaysizmi?'}
+        handler={sendingOrders}
       />
     </div>
   );

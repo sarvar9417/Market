@@ -5,14 +5,14 @@ import { TableHead } from './RegisterOrder/TableHead';
 import { Rows } from './RegisterOrder/Rows';
 import { ClearBtn, ClearBtnLoad } from '../../components/TableButtons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMoneyCheckDollar, faSave } from '@fortawesome/free-solid-svg-icons';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 
 export const Order = ({
-  saveTemporary,
-  changeSaveIncoming,
-  removeIncoming,
+  // saveTemporary,
+  setModal,
+  removeOrder,
   orders,
-  editIncoming,
+  editOrder,
   changeProduct,
   products,
   loading,
@@ -41,14 +41,14 @@ export const Order = ({
                   product={product}
                   key={key}
                   index={key}
-                  editIncoming={editIncoming}
-                  removeIncoming={removeIncoming}
+                  editOrder={editOrder}
+                  removeOrder={removeOrder}
                 />
               );
             })}
         </div>
         <div className='text-right px-3 py-2 rounded  bg-white shadow-xl'>
-          {loading ? (
+          {/* {loading ? (
             <button
               className='px-3 py-2 bg-orange-800 font-bold text-white rounded mr-3'
               disabled>
@@ -61,7 +61,7 @@ export const Order = ({
               className='px-3 py-1 bg-orange-800 font-bold text-white rounded mr-3 text-2xl'>
               <FontAwesomeIcon icon={faSave} />
             </button>
-          )}
+          )} */}
           {loading ? (
             <button
               className='px-3 py-2 bg-blue-800 font-bold text-white rounded'
@@ -71,9 +71,9 @@ export const Order = ({
             </button>
           ) : (
             <button
-              onClick={changeSaveIncoming}
+              onClick={() => setModal(true)}
               className='px-3 py-1 bg-blue-800 font-bold text-white rounded text-2xl'>
-              <FontAwesomeIcon icon={faMoneyCheckDollar} />
+              <FontAwesomeIcon icon={faShoppingCart} />
             </button>
           )}
         </div>

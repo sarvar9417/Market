@@ -81,11 +81,11 @@ module.exports = withAnimations({
         800: '#0090A3',
         900: '#006C7A',
       },
-
-      purple: '#e42c6a',
-      alo24: '#00A2B7',
+      
       white: '#FFFFFF',
       black: '#000000',
+      alo24: '#00A2B7',
+      purple: '#e42c6a',
       // orange: "#F7C200",
       // blue: "#00A2B7",
       // lightblue: "#0dcaf0",

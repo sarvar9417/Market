@@ -51,8 +51,8 @@ export const Requests = () => {
     [request, auth, notify]
   );
 
-  const getOrderProducts = useCallback(
-    async (setProducts, setAllProducts) => {
+  const registerOrderProducts = useCallback(
+    async ({ setProducts, setAllProducts }) => {
       try {
         const data = await request(
           `/api/products/product/getallincoming`,
@@ -97,8 +97,91 @@ export const Requests = () => {
     [request, auth, notify]
   );
 
+  const registerOrders = useCallback(
+    async ({ orders, beginDay, endDay, setOrdersList }) => {
+      try {
+        const data = await request(
+          `/api/connections/registerorders`,
+          'POST',
+          {
+            market: auth.market._id,
+            orders,
+            startDate: beginDay,
+            endDate: endDay,
+          },
+          {
+            Authorization: `Bearer ${auth.token}`,
+          }
+        );
+        setOrdersList(data);
+      } catch (error) {
+        notify({
+          title: error,
+          description: '',
+          status: 'error',
+        });
+      }
+    },
+    [request, auth, notify]
+  );
+
+  const getOrdersList = useCallback(
+    async ({ setOrdersList, beginDay, endDay }) => {
+      try {
+        const data = await request(
+          `/api/connections/getorders`,
+          'POST',
+          {
+            market: auth.market._id,
+            startDate: beginDay,
+            endDate: endDay,
+          },
+          {
+            Authorization: `Bearer ${auth.token}`,
+          }
+        );
+        setOrdersList(data);
+      } catch (error) {
+        notify({
+          title: error,
+          description: '',
+          status: 'error',
+        });
+      }
+    },
+    [request, auth, notify]
+  );
+
+  const getOrderProducts = useCallback(
+    async ({ orderConnector, setOrders }) => {
+      try {
+        const data = await request(
+          `/api/connections/getorders`,
+          'POST',
+          {
+            orderConnector,
+          },
+          {
+            Authorization: `Bearer ${auth.token}`,
+          }
+        );
+        setOrders(data);
+      } catch (error) {
+        notify({
+          title: error,
+          description: '',
+          status: 'error',
+        });
+      }
+    },
+    [request, auth, notify]
+  );
+
   return {
     getProducts,
+    registerOrderProducts,
+    registerOrders,
+    getOrdersList,
     getOrderProducts,
   };
 };

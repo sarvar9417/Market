@@ -11,7 +11,6 @@ import { AuthContext } from '../../../context/AuthContext';
 import { useHttp } from '../../../hooks/http.hook';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faCircleInfo,
   faCommentsDollar,
   faCreditCard,
   faHandHoldingDollar,
@@ -355,8 +354,7 @@ export const Report = () => {
         <div className='col-end-13 col-span-3 text-right'>
           <button
             className='bg-blue-700 hover:bg-blue-800 text-white m-auto px-10 py-1 text-lg rounded mr-4'
-            onClick={() => setIsPrint(true)}
-          >
+            onClick={() => setIsPrint(true)}>
             <FontAwesomeIcon icon={faPrint} />
           </button>
         </div>
@@ -370,8 +368,7 @@ export const Report = () => {
               window.scroll(0, 500);
               setPaymentType('debts');
             }}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
-          >
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'>
             <span className='absolute top-4 left-4'>
               <FontAwesomeIcon
                 icon={faHandHoldingDollar}
@@ -392,8 +389,7 @@ export const Report = () => {
           <Link
             to='/alo24/reports/discounts'
             onClick={() => window.scroll(0, 500)}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
-          >
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'>
             <span className='absolute top-4 left-4'>
               <FontAwesomeIcon icon={faTags} color='white' fontSize={'24px'} />
             </span>
@@ -410,8 +406,7 @@ export const Report = () => {
           <Link
             to='/alo24/reports/discounts'
             onClick={() => window.scroll(0, 500)}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
-          >
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'>
             <span className='absolute top-4 left-4'>
               <FontAwesomeIcon
                 icon={faCommentsDollar}
@@ -437,8 +432,7 @@ export const Report = () => {
               setPaymentType('allpayments');
               window.scroll(0, 500);
             }}
-            className='h-1/3 w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
-          >
+            className='h-1/3 w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'>
             <span className='absolute top-4 left-4'>
               <FontAwesomeIcon icon={faInfo} color='white' fontSize={'24px'} />
             </span>
@@ -463,8 +457,7 @@ export const Report = () => {
               setPaymentType('allpayments');
               window.scroll(0, 500);
             }}
-            className='h-1/3 w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
-          >
+            className='h-1/3 w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'>
             <span className='absolute top-4 left-4'>
               <FontAwesomeIcon
                 icon={faWallet}
@@ -481,8 +474,7 @@ export const Report = () => {
           </Link>
           <Link
             to={'/alo24/reports/returnproducts'}
-            className='h-1/3 w-full bg-blue-800 text-center py-4 rounded-xl flex justify-center items-center transition ease-in-out hover:bg-blue-700 relative'
-          >
+            className='h-1/3 w-full bg-blue-800 text-center py-4 rounded-xl flex justify-center items-center transition ease-in-out hover:bg-blue-700 relative'>
             <span className='absolute top-4 left-4'>
               <FontAwesomeIcon
                 icon={faRotate}
@@ -502,8 +494,7 @@ export const Report = () => {
               setPaymentType('cash');
               window.scroll(0, 500);
             }}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
-          >
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'>
             <span className='absolute top-4 left-4'>
               <FontAwesomeIcon
                 icon={faMoneyBill}
@@ -527,8 +518,7 @@ export const Report = () => {
               setPaymentType('card');
               window.scroll(0, 500);
             }}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
-          >
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'>
             <span className='absolute top-4 left-4'>
               <FontAwesomeIcon
                 icon={faCreditCard}
@@ -552,8 +542,7 @@ export const Report = () => {
               setPaymentType('transfer');
               window.scroll(0, 500);
             }}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
-          >
+            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'>
             <span className='absolute top-4 left-4'>
               <FontAwesomeIcon
                 icon={faMoneyBillTransfer}
@@ -598,8 +587,7 @@ export const Report = () => {
       <div
         className={`${
           isPrint ? 'fixed' : 'hidden'
-        } top-0 left-0 w-full h-full z-10 bg-white overflow-auto pb-4`}
-      >
+        } top-0 left-0 w-full h-full z-10 bg-white overflow-auto pb-4`}>
         <PrintReport
           startDate={startDate}
           endDate={endDate}
