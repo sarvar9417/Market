@@ -128,11 +128,6 @@ export const ProductsReport = () => {
 
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
-    print: {
-      '@media print': {
-        display: 'block',
-      },
-    },
   });
 
   const print = useCallback(() => {
