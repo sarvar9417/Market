@@ -20,6 +20,7 @@ export const TableHeader = ({
   setProductsChequesCount,
   productChequesCount,
   productCheque,
+  loading,
 }) => {
   return (
     <ul className='tbody border-b border-t-2 border-blue-800'>
@@ -76,8 +77,8 @@ export const TableHeader = ({
       </li>
       <li className='th-h border-r col-span-1 flex justify-center'>
         <input
-          onBlur={(e) => (e.target.value = 0)}
           type='number'
+          id='checkinput'
           className='max-w-[70%] outline-none text-ms border border-black px-2'
           onChange={(e) => {
             (isNaN(parseFloat(e.target.value)) && setProductsChequesCount(1)) ||

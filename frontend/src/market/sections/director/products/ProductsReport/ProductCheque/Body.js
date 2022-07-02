@@ -5,7 +5,9 @@ export const Body = ({ product }) => {
     <div className='w-full p-1 font-sans bg-white'>
       <div className='text-left text-xs mb-1'>Наименование:</div>
       <div className='flex justify-center mb-1'>
-        <p className='text-xs font-bold'>{product.name && product.name}</p>
+        <p className='text-xs font-bold text-center'>
+          {product.name && product.name}
+        </p>
       </div>
       <div className='flex justify-center text-base font-bold mb-1'>
         {product.code && product.code}
@@ -15,8 +17,10 @@ export const Body = ({ product }) => {
       </div>
       <div className='flex justify-between items-center text-xs text-black font-medium'>
         <div>
-          <span>Цена:</span>{' '}
-          <span>{product.sellingprice && product.sellingprice} $</span>
+          <span>{product.sellingprice ? 'Цена:' : ''}</span>{' '}
+          <span>
+            {(product.sellingprice && product.sellingprice + ' $') || ''}
+          </span>
         </div>
         <div>{new Date().toLocaleDateString()}</div>
       </div>
