@@ -9,14 +9,14 @@ export const ProductCheque = ({ productCheques, componentRef }) => {
   return (
     <div className='absolute top-0 w-full bg-white font-mono h-full right-0 z-50 py-4'>
       <div
-        className='a4 m-auto w-[27cm] flex justify-between flex-wrap gap-y-4 py-2'
+        className='a4 m-auto w-[27cm] flex flex-wrap gap-6 py-2'
         ref={componentRef}
       >
         {productCheques &&
           productCheques.map((product, pos) => {
             return (
               <div
-                className='w-[6cm] inline-block mb-2 mr-2 border-1 border-black'
+                className='w-[6cm] inline-block border-1 border-black'
                 key={pos}
               >
                 <Header auth={auth} />

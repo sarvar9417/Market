@@ -8,11 +8,9 @@ export const TableRow = ({
   index,
   currentPage,
   productCheque,
-  productChequesCount,
   setProductsChequesCount,
   addProductCheaques,
   chooseProductCheque,
-  print,
 }) => {
   return (
     <ul className='tr'>
@@ -49,8 +47,10 @@ export const TableRow = ({
         }`}
         data-property='unit'
       >
-        <span>{p.total}</span>{' '}
-        <span className='ml-1 pointer-'>{p.unit && p.unit.name}</span>
+        <span className='pointer-events-none'>{p.total}</span>{' '}
+        <span className='ml-1 pointer-events-none'>
+          {p.unit && p.unit.name}
+        </span>
       </li>
       <li className={`col-span-1 td no flex justify-end px-1`}>
         {p.price && p.price.incomingprice} USD
@@ -74,10 +74,10 @@ export const TableRow = ({
         {p.price && (p.price.sellingprice * p.total).toLocaleString('ru-RU')}{' '}
         USD
       </li>
-      <li className='col-span-1 td no flex justify-center px-4 '>
+      <li className='col-span-1 td-btn no px-4 '>
         <input
+          id='checkinput'
           type='number'
-          onBlur={(e) => (e.target.value = 0)}
           className='max-w-[70%] outline-none text-ms border border-black px-2'
           onChange={(e) => {
             (isNaN(parseFloat(e.target.value)) && setProductsChequesCount(1)) ||
@@ -85,7 +85,7 @@ export const TableRow = ({
           }}
         />
       </li>
-      <li className='col-span-1 td no flex justify-center px-1'>
+      <li className='col-span-1 td-btn no px-1'>
         <button
           onClick={() => addProductCheaques()}
           className='px-4 bg-blue-700 text-white rounded-xl hover:bg-blue-800'
