@@ -87,8 +87,7 @@ export const TableHeader = ({
       <li className='th-h border-r col-span-1 flex justify-center'>
         <button
           onClick={() => getProductsForPrint()}
-          className='px-4 bg-blue-700 text-white rounded hover:bg-blue-800'
-        >
+          className='px-4 bg-blue-700 text-white rounded hover:bg-blue-800'>
           <FontAwesomeIcon icon={faPrint} />
         </button>
       </li>
