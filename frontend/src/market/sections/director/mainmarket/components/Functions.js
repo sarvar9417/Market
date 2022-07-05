@@ -32,8 +32,9 @@ export const Functions = () => {
     setOrder({
       ...order,
       productdata: e.product.productdata,
-      productprice: e.product.price,
+      price: e.product.price,
       product: e.product._id,
+      unit: e.product.unit,
       orderpieces: 0,
     });
     setModal(true);

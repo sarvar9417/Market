@@ -20,10 +20,10 @@ export const Rows = ({
       <li className='col-span-3 td border-r'>{product.productdata.name}</li>
       <li className='td border-r text-right'>{product.orderpieces}</li>
       <li className='col-span-2 td border-r text-right'>
-        {product.productprice.incomingprice} USD
+        {product.price.incomingprice} USD
       </li>
       <li className='col-span-2 td border-r text-right'>
-        {product.productprice.incomingprice * product.orderpieces} USD
+        {product.price.incomingprice * product.orderpieces} USD
       </li>
       <li className='td-btn border-r'>
         {loading ? (

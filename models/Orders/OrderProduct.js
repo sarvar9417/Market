@@ -7,8 +7,11 @@ const orderproduct = new Schema(
     sendingpieces: { type: Number },
     incomingpieces: { type: Number },
     returnpieces: { type: Number },
+    incomingprice: { type: Number },
     productdata: { type: Schema.Types.ObjectId, ref: 'ProductData' },
     price: { type: Schema.Types.ObjectId, ref: 'ProductPrice' },
+    unit: { type: Schema.Types.ObjectId, ref: 'Unit' },
+    connector: { type: Schema.Types.ObjectId, ref: 'OrderConnector' },
     product: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
     customermarket: {
       type: Schema.Types.ObjectId,

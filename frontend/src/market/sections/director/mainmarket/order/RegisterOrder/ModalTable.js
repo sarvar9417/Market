@@ -39,14 +39,13 @@ export const ModalTable = ({ order, inputHandler, keyPressed }) => {
                 />
               </td>
               <td className='border m-0 px-3 py-2 font-bold  text-center text-black'>
-                {order.productprice &&
-                  order.productprice.incomingprice.toLocaleString('ru-RU')}
+                {order.price &&
+                  order.price.incomingprice.toLocaleString('ru-RU')}
               </td>
               <td className='border m-0 px-3 py-2 font-bold text-center text-black'>
-                {order.productprice &&
+                {order.price &&
                   (
-                    parseFloat(order.orderpieces) *
-                    order.productprice.incomingprice
+                    parseFloat(order.orderpieces) * order.price.incomingprice
                   ).toLocaleString('ru-RU')}{' '}
                 USD
               </td>

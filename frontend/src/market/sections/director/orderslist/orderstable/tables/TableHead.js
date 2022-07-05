@@ -27,16 +27,22 @@ export const TableHead = ({ currentOrders, setCurrentOrders }) => {
         />
       </li>
       <li className='th border-r flex justify-center items-center'>
+        {t('Mavjud')}
+      </li>
+      <li className='th border-r flex justify-center items-center'>
         {t('Buyurtma')}
       </li>
       <li className='th border-r flex justify-center items-center'>
         {t('Yuborilgan')}
       </li>
-      <li className='th border-r flex justify-center items-center col-span-2'>
-        {t('Qabul qilingan')}
+      <li className='th border-r flex justify-center items-center'>
+        {t('Qaytarilgan')}
       </li>
-      <li className='th border-r flex justify-center items-center col-span-2'>
-        {t('Jami')}
+      <li className='th border-r flex justify-center items-center'>
+        {t('Narxi')}
+      </li>
+      <li className='th border-r flex justify-center items-center'>
+        {t('Saqlash')}
       </li>
     </ul>
   );

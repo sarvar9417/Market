@@ -1,13 +1,21 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { Functions } from '../components/Functions';
 import { Requests } from '../components/Requests';
 import { TableHead } from './tables/TableHead';
 import { TableHeader } from './tables/TableHeader';
 import { TableRow } from './tables/TableRow';
 
-export const OrdersTable = ({ orderConnector }) => {
+export const OrdersTable = ({
+  orderConnector,
+  setPosition,
+  position,
+  changeConnectorPosition,
+}) => {
   //====================================================================
   // Pagination
-  const { getOrderProducts } = Requests();
+  const { getOrderProducts, updateOrderProducts } = Requests();
+  const { searchOrdersFunction, changeInput } = Functions();
+
   const [currentPage, setCurrentPage] = useState(0);
   const [countPage, setCountPage] = useState(10);
   const [currentOrders, setCurrentOrders] = useState([]);
@@ -23,19 +31,17 @@ export const OrdersTable = ({ orderConnector }) => {
   //====================================================================
   // SEARCH
   const searchOrders = (e) => {
-    setSearch({ ...search, [e.target.name]: e.target.value });
-    if (e.target.name === 'code') {
-      const searching = orders.filter((item) =>
-        item.productdata.code.includes(e.target.value)
-      );
-      setCurrentOrders(searching);
-    }
-    if (e.target.name === 'name') {
-      const searching = orders.filter((item) =>
-        item.productdata.name.includes(e.target.value)
-      );
-      setCurrentOrders(searching);
-    }
+    searchOrdersFunction({
+      e,
+      orders,
+      setSearch,
+      search,
+      setCurrentOrders,
+    });
+  };
+
+  const changeInputs = (e, i) => {
+    changeInput({ e, currentOrders, setCurrentOrders, i });
   };
 
   const searchKeypress = (e) => {
@@ -43,6 +49,20 @@ export const OrdersTable = ({ orderConnector }) => {
       setCurrentPage(0);
       setSendingSearch({ ...search });
     }
+  };
+
+  const saveHandler = (e) => {
+    updateOrderProducts({
+      setPosition,
+      orderConnector,
+      countPage,
+      currentPage,
+      setCurrentOrders,
+      setOrders,
+      setOrdersCount,
+      sendingsearch,
+      order: e,
+    });
   };
 
   const setPageSize = useCallback(
@@ -57,6 +77,7 @@ export const OrdersTable = ({ orderConnector }) => {
   useEffect(() => {
     orderConnector &&
       getOrderProducts({
+        setPosition,
         orderConnector,
         countPage,
         currentPage,
@@ -65,11 +86,20 @@ export const OrdersTable = ({ orderConnector }) => {
         setOrdersCount,
         sendingsearch,
       });
-  }, [currentPage, countPage, sendingsearch, orderConnector, getOrderProducts]);
+  }, [
+    currentPage,
+    countPage,
+    sendingsearch,
+    orderConnector,
+    getOrderProducts,
+    setPosition,
+  ]);
 
   return (
     <div className='p-3'>
       <TableHeader
+        changeConnectorPosition={changeConnectorPosition}
+        position={position}
         changeHandler={searchOrders}
         keyPress={searchKeypress}
         search={search}
@@ -86,6 +116,9 @@ export const OrdersTable = ({ orderConnector }) => {
       {currentOrders.map((order, index) => {
         return (
           <TableRow
+            saveHandler={saveHandler}
+            position={position}
+            changeInputs={changeInputs}
             key={order._id}
             countPage={currentPage}
             currentPage={currentPage}

@@ -17,6 +17,7 @@ export const Products = ({ market }) => {
     code: '',
     name: '',
   });
+  
   const [sendingsearch, setSendingSearch] = useState({ code: '', name: '' });
   //====================================================================
   //====================================================================

@@ -15,6 +15,7 @@ import { Orders } from './orders/Orders';
 import { Products } from './products/Products';
 import { Modal } from '../components/Modal';
 import { ModalTable } from './order/RegisterOrder/ModalTable';
+import { OrdersTable } from './orderstable/OrdersTable';
 
 export const Mainmarket = () => {
   const auth = useContext(AuthContext);
@@ -37,6 +38,7 @@ export const Mainmarket = () => {
   const { changeProduct, addOrder, inputHandler } = Functions();
 
   const [orders, setOrders] = useState([]);
+  const [orderConnector, setOrderConnector] = useState();
   const [ordersList, setOrdersList] = useState([]);
   const [order, setOrder] = useState({
     orderpieces: 0,
@@ -87,7 +89,6 @@ export const Mainmarket = () => {
   const changeProductOrder = (e) => {
     changeProduct({ e, setOrder, orders, setModal, order });
   };
-
   const editOrder = (product, index) => {
     setOrder(product);
     let i = [...orders];
@@ -123,6 +124,7 @@ export const Mainmarket = () => {
   useEffect(() => {
     getOrdersList({ setOrdersList, beginDay, endDay });
   }, [getOrdersList, beginDay, endDay]);
+
   return (
     <div className='p-3 overflow-x-auto'>
       <RouterBtns changeVisible={changeVisible} />
@@ -133,9 +135,10 @@ export const Mainmarket = () => {
 
       <div className={visibleOrders ? '' : 'hidden'}>
         <Orders
+          setOrderConnector={setOrderConnector}
           ordersList={ordersList}
           setBeginDay={setBeginDay}
-          setEndDay={setEndDate}
+          setEndDay={setEndDay}
         />
       </div>
       <div className={visibleOrder ? '' : 'hidden'}>
@@ -149,6 +152,9 @@ export const Mainmarket = () => {
           products={products}
           orders={orders}
         />
+      </div>
+      <div className={orderConnector ? '' : 'hidden'}>
+        <OrdersTable orderConnector={orderConnector} />
       </div>
 
       <Modal

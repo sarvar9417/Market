@@ -8,16 +8,27 @@ export const TableRow = ({ countPage, p, index, currentPage }) => {
         <span className='w-1/2'>{p.productdata.code}</span>
       </li>
       <li className='col-span-4 td font-bold border-r'>{p.productdata.name}</li>
-      <li className='col-span-2 td no flex justify-end px-1'>
-        <span>{p.total.toLocaleString('ru-RU')}</span>{' '}
+      <li className=' td no flex justify-end px-1'>
+        <span>{p.orderpieces.toLocaleString('ru-RU')}</span>{' '}
         <span className='ml-1'>{p.unit && p.unit.name}</span>
       </li>
-      <li className='col-span-2 td no flex justify-end px-1 border-green-800 border-r-2'>
-        {p.price && p.price.incomingprice.toLocaleString('ru-RU')} USD
+      <li className=' td no flex justify-end px-1'>
+        <span>
+          {(p.sendingpieces && p.sendingpieces.toLocaleString('ru-RU')) || 0}
+        </span>{' '}
+        <span className='ml-1'>{p.unit && p.unit.name}</span>
       </li>
-
-      <li className='col-span-2 td no flex justify-end px-1 border-green-800 border-r-2'>
-        {p.price && p.price.sellingprice.toLocaleString('ru-RU')} USD
+      <li className='col-span-2 td no flex justify-end px-1'>
+        <span>
+          {(p.incomingpieces && p.incomingpieces.toLocaleString('ru-RU')) || 0}
+        </span>{' '}
+        <span className='ml-1'>{p.unit && p.unit.name}</span>
+      </li>
+      <li className='col-span-2 td no flex justify-end px-1'>
+        <span>
+          {(p.price.incomingprice * p.orderpieces).toLocaleString('ru-RU')}
+        </span>
+        <span className='ml-1'>USD</span>
       </li>
     </ul>
   );
