@@ -595,7 +595,6 @@ module.exports.getsaleconnectors = async (req, res) => {
       );
     });
     const count = filter.length;
-    console.log(filter);
     res.status(200).json({
       saleconnectors: filter.splice(countPage * currentPage, countPage),
       count,

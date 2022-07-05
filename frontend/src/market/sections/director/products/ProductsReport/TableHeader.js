@@ -27,8 +27,7 @@ export const TableHeader = ({
         <select
           className='form-control form-control-sm selectpicker'
           placeholder={t("Bo'limni tanlang")}
-          onChange={setPageSize}
-        >
+          onChange={setPageSize}>
           <option value={10}>10</option>
           <option value={25}>25</option>
           <option value={50}>50</option>
@@ -41,7 +40,7 @@ export const TableHeader = ({
           type={'text'}
           placeholder={t('Kodi')}
           name='code'
-          loading={loading}
+          // loading={loading}
           value={search.code}
           keyPressed={keyPress}
           className='text-right'
@@ -53,7 +52,7 @@ export const TableHeader = ({
           type={'text'}
           placeholder={t('Mahsulot nomi')}
           name='name'
-          loading={loading}
+          // loading={loading}
           value={search.name}
           keyPressed={keyPress}
           className={'w-[200px]'}
@@ -68,8 +67,7 @@ export const TableHeader = ({
       <li className='th-h border-r col-span-2 flex justify-center'>
         <button
           className='px-4 bg-green-700 hover:bg-green-800 text-white rounded'
-          onClick={getProductExcel}
-        >
+          onClick={getProductExcel}>
           <FontAwesomeIcon icon={faFileExcel} />
         </button>
         <ExcelDownload filename={t('Mahsulotlar')} />
@@ -88,8 +86,7 @@ export const TableHeader = ({
       <li className='th-h border-r col-span-1 flex justify-center'>
         <button
           onClick={() => getProductsForPrint()}
-          className='px-4 bg-blue-700 text-white rounded-xl hover:bg-blue-800'
-        >
+          className='px-4 bg-blue-700 text-white rounded-xl hover:bg-blue-800'>
           <FontAwesomeIcon icon={faPrint} />
         </button>
       </li>
