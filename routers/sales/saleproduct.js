@@ -232,7 +232,7 @@ module.exports.register = async (req, res) => {
       }
     }
 
-    const id = await SaleConnector.find().count();
+    const id = await SaleConnector.find({ market }).count();
     saleconnector.id = 1000000 + id;
     saleconnector.products = [...products];
     await saleconnector.save();
