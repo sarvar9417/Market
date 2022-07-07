@@ -17,7 +17,7 @@ export const TableHead = ({ currentProducts, setCurrentProducts }) => {
           />
         </div>
       </li>
-      <li className='th border-r flex  items-center justify-center col-span-5'>
+      <li className='th border-r flex  items-center justify-center col-span-7'>
         {t('Mahsulot nomi')}
         <Sort
           property={'name'}
@@ -61,7 +61,7 @@ export const TableHead = ({ currentProducts, setCurrentProducts }) => {
         />
       </li>
       <li className='th border-r flex flex-column items-center col-span-1'>
-        {t("Olish")}
+        {t('Olish')}
         <SortDoubleProperty
           property={'price'}
           innnerProperty='incomingprice'
@@ -70,7 +70,7 @@ export const TableHead = ({ currentProducts, setCurrentProducts }) => {
         />
       </li>
       <li className='th border-r flex flex-column items-center col-span-1'>
-        {t("Sotish")}
+        {t('Sotish')}
         <SortDoubleProperty
           property={'price'}
           innnerProperty='sellingprice'
@@ -78,8 +78,6 @@ export const TableHead = ({ currentProducts, setCurrentProducts }) => {
           setData={setCurrentProducts}
         />
       </li>
-      <li className='th border-r'>{t('Tahrirlash')}</li>
-      <li className='th border-r'>{t("O'chirish")}</li>
     </ul>
   );
 };

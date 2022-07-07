@@ -84,7 +84,8 @@ export const Navbar = ({ baseUrl }) => {
             data-target='#royalHospitalsNavbar'
             aria-controls='royalHospitalsNavbar'
             aria-expanded='false'
-            aria-label='Toggle navigation'>
+            aria-label='Toggle navigation'
+          >
             <span className='navbar-toggler-icon'>
               <i />
               <i />
@@ -93,7 +94,8 @@ export const Navbar = ({ baseUrl }) => {
           </button>
           <div
             className='collapse navbar-collapse justify-content-between p-0'
-            id='royalHospitalsNavbar'>
+            id='royalHospitalsNavbar'
+          >
             <ul className='navbar-nav'>
               <li className='nav-item mr-4 px-2'>
                 <span className='logo' style={{ fontSize: '26pt' }}>
@@ -110,23 +112,59 @@ export const Navbar = ({ baseUrl }) => {
                   onClick={() => {
                     setActivePage('/alo24');
                   }}
-                  to='/'>
+                  to='/'
+                >
                   <i className='icon-devices_other nav-icon' />
                   {t('Mahsulotlar')}
                 </Link>
               </li>
-              <li className='nav-item'>
-                <Link
+              <li className='nav-item dropdown'>
+                <span
                   className={`nav-link ${
                     activePage === '/alo24/sales' ? 'active-page' : ''
                   }`}
-                  onClick={() => {
-                    setActivePage('/alo24/sales');
-                  }}
-                  to='/alo24/sales'>
+                >
                   <i className='icon-devices_other nav-icon' />
                   {t('Sotuv')}
-                </Link>
+                </span>
+                <ul className='dropdown-menu'>
+                  <li>
+                    <Link
+                      className='dropdown-item'
+                      to={'/alo24/sales'}
+                      onClick={() => setActivePage('/alo24/sales')}
+                    >
+                      Sotuv
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className='dropdown-item'
+                      to={'/alo24/debts'}
+                      onClick={() => setActivePage('/alo24/debts')}
+                    >
+                      Qarzdorlar
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className='dropdown-item'
+                      to={'/alo24/packman'}
+                      onClick={() => setActivePage('/alo24/packman')}
+                    >
+                      Santexniklar
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className='dropdown-item'
+                      to={'/alo24/client'}
+                      onClick={() => setActivePage('/alo24/client')}
+                    >
+                      Mijozlar
+                    </Link>
+                  </li>
+                </ul>
               </li>
             </ul>
 
@@ -136,7 +174,8 @@ export const Navbar = ({ baseUrl }) => {
                   id='userSettings'
                   className='user-settings'
                   data-toggle='dropdown'
-                  aria-haspopup='true'>
+                  aria-haspopup='true'
+                >
                   <span className='user-name'>
                     {user.firstname} {user.lastname}
                   </span>
@@ -158,7 +197,8 @@ export const Navbar = ({ baseUrl }) => {
                 </span>
                 <div
                   className='dropdown-menu dropdown-menu-right'
-                  aria-labelledby='userSettings'>
+                  aria-labelledby='userSettings'
+                >
                   <div className='header-profile-actions'>
                     <div className='header-user-profile'>
                       <div className='header-user'>
@@ -183,7 +223,8 @@ export const Navbar = ({ baseUrl }) => {
                       onClick={() => {
                         auth.logout();
                         history.push('/');
-                      }}>
+                      }}
+                    >
                       <i className='icon-log-out1' /> {t('Tizimdan chiqish')}
                     </button>
                   </div>
