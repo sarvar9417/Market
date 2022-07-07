@@ -10,7 +10,7 @@ import { Modal } from '../components/Modal';
 import { PrePaymentCard } from '../sale/PrePaymentCard/PrepaymentCard';
 import { t } from 'i18next';
 
-export const DebtsReport = ({}) => {
+export const DebtsReport = () => {
   // STATES
   const { request } = useHttp();
   const auth = useContext(AuthContext);
