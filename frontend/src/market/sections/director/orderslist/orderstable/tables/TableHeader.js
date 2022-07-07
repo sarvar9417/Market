@@ -72,20 +72,32 @@ export const TableHeader = ({
         />
       </li>
       <li className='th-h border-r  items-center  col-span-3 '>
-        <div className='flex justify-between'>
-          <button
-            onClick={changeConnectorPosition}
-            name={positionButton().position}
-            className='bg-green-700 hover:bg-green-800 text-white px-4 rounded py-1 font-bold'>
-            {positionButton().title}
-          </button>
-          <button
-            onClick={changeConnectorPosition}
-            name='rejection'
-            className='bg-red-600 hover:bg-red-700 text-white px-4 rounded py-1 font-bold'>
-            Rad etish
-          </button>
-        </div>
+        {position === 'rejection' ? (
+          <div className='bg-red-600 text-white rounded py-1'>
+            Buyurtma rad etilgan
+          </div>
+        ) : position === 'accept' ? (
+          <div className='bg-green-700 text-white rounded py-1'>
+            Buyurtma yakunlangan
+          </div>
+        ) : (
+          <div className='flex justify-between'>
+            <button
+              disabled={position === 'accept'}
+              onClick={changeConnectorPosition}
+              name={positionButton().position}
+              className='bg-green-700 hover:bg-green-800 text-white px-4 rounded py-1 font-bold'>
+              {positionButton().title}
+            </button>
+            <button
+              disabled={position === 'accept'}
+              onClick={changeConnectorPosition}
+              name='rejection'
+              className='bg-red-600 hover:bg-red-700 text-white px-4 rounded py-1 font-bold'>
+              Rad etish
+            </button>
+          </div>
+        )}
       </li>
     </ul>
   );

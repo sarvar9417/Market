@@ -7,7 +7,7 @@ export const Orders = ({
   setBeginDay,
   setEndDay,
   ordersList,
-  setOrderConnector,
+  changeOrderConnector,
 }) => {
   return (
     <div className='w-full shadow-lg'>
@@ -36,7 +36,7 @@ export const Orders = ({
         </div>
         <OrderCard
           ordersList={ordersList}
-          setOrderConnector={setOrderConnector}
+          changeOrderConnector={changeOrderConnector}
         />
       </div>
     </div>

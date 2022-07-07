@@ -62,6 +62,11 @@ export const TableRow = ({
       </li>
       <li className='td text-center'>
         <button
+          disabled={
+            position === 'rejection' ||
+            position === 'accept' ||
+            position === 'sending'
+          }
           id={index}
           onClick={() => saveHandler(p)}
           className='bg-green-700 hover:bg-green-800 text-white py-0 px-4 rounded-xl'>

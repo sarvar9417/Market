@@ -25,6 +25,7 @@ export const OrdersList = () => {
   const changeConnectorPosition = (e) => {
     changePosition({ e, setModal, setPosition });
   };
+
   const update = () => {
     updateOrderConnector({
       setOrdersList,

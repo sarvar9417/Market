@@ -52,7 +52,7 @@ export const Requests = () => {
   );
 
   const registerOrderProducts = useCallback(
-    async ({ setProducts, setAllProducts }) => {
+    async ({ setProducts }) => {
       try {
         const data = await request(
           `/api/products/product/getallincoming`,
@@ -85,7 +85,6 @@ export const Requests = () => {
           });
         });
         setProducts(s);
-        setAllProducts(s);
       } catch (error) {
         notify({
           title: error,
@@ -191,11 +190,51 @@ export const Requests = () => {
     [request, auth, notify]
   );
 
+  const updateOrderConnector = useCallback(
+    async ({
+      setOrdersList,
+      beginDay,
+      endDay,
+      orderConnector,
+      position,
+      setPosition,
+      setModal3,
+    }) => {
+      try {
+        const data = await request(
+          `/api/connections/updateorderconnector`,
+          'POST',
+          {
+            market: auth.market._id,
+            startDate: beginDay,
+            endDate: endDay,
+            orderConnector,
+            position,
+          },
+          {
+            Authorization: `Bearer ${auth.token}`,
+          }
+        );
+        setOrdersList(data.orders);
+        setPosition(data.position);
+        setModal3(false);
+      } catch (error) {
+        notify({
+          title: error,
+          description: '',
+          status: 'error',
+        });
+      }
+    },
+    [request, auth, notify]
+  );
+
   return {
     getProducts,
     registerOrderProducts,
     registerOrders,
     getOrdersList,
     getOrderProducts,
+    updateOrderConnector,
   };
 };

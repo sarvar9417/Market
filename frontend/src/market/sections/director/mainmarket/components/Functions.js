@@ -7,6 +7,21 @@ export const Functions = () => {
   const auth = useContext(AuthContext);
 
   const notify = Notify().notify;
+
+  const changePosition = ({ e, setModal3, setPosition }) => {
+    setModal3(true);
+    setPosition(e.target.name);
+  };
+
+  const positions = {
+    view: 'Diqqat! Buyurtmani qabul qilishni tasdiqlaysizmi?',
+    ready: 'Diqqat! Buyurtma tayyorlanganligini tasdiqlaysizmi?',
+    tosend: 'Diqqat! Buyurtma yuborilganligini tasdiqlaysizmi?',
+    accept:
+      'Diqqat! Buyurtma muvaffaqqiyatli yakunlanganligini tasdiqlaysizmi?',
+    rejection: 'Diqqat! Buyurtmani rad etishni tasdiqlaysizmi?',
+  };
+
   const changeProduct = ({ e, setOrder, orders, setModal, order }) => {
     if (e.value === 'all') {
       return setOrder({
@@ -73,5 +88,5 @@ export const Functions = () => {
     }
   };
 
-  return { changeProduct, addOrder, inputHandler };
+  return { changeProduct, addOrder, inputHandler, positions, changePosition };
 };

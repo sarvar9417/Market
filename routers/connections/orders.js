@@ -91,6 +91,37 @@ module.exports.getorders = async (req, res) => {
   }
 };
 
+module.exports.updateorderconnector = async (req, res) => {
+  try {
+    const { market, startDate, endDate, orderConnector, position } = req.body;
+    const marke = await Market.findById(market);
+
+    if (!marke) {
+      return res.status(400).json({
+        message: "Diqqat! Do'kon ma'lumotlari topilmadi.",
+      });
+    }
+
+    await OrderConnector.findByIdAndUpdate(orderConnector, {
+      position,
+    });
+
+    const orderConnectors = await OrderConnector.find({
+      customermarket: market,
+      createdAt: {
+        $gte: startDate,
+        $lt: endDate,
+      },
+    })
+      .sort({ _id: -1 })
+      .select('products totalprice id position createdAt');
+
+    res.status(201).send({ orders: orderConnectors, position });
+  } catch (error) {
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
+  }
+};
+
 module.exports.getordersmarket = async (req, res) => {
   try {
     const { market, startDate, endDate } = req.body;
@@ -151,7 +182,8 @@ module.exports.getorderproducts = async (req, res) => {
         match: { name: productname, code: productcode },
       })
       .populate('price', 'incomingprice')
-      .populate('unit', 'name');
+      .populate('unit', 'name')
+      .populate('product', 'total');
 
     let filter = allproducts.filter((product) => {
       return product.productdata !== null;

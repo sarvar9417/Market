@@ -12,7 +12,10 @@ export const TableHeader = ({
   countPage,
   setCurrentPage,
   productsCount,
+  position,
+  changeConnectorPosition,
 }) => {
+
   return (
     <ul className='tbody border-b border-t-2 border-blue-800'>
       <li className='th-h border-r col-span-1'>
@@ -37,7 +40,7 @@ export const TableHeader = ({
           className='text-right'
         />
       </li>
-      <li className='th-h border-r col-span-10 flex justify-between'>
+      <li className='th-h border-r col-span-7 flex justify-between'>
         <SearchInput
           changeHandler={changeHandler}
           type={'text'}
@@ -53,6 +56,27 @@ export const TableHeader = ({
           countPage={countPage}
           totalDatas={productsCount}
         />
+      </li>
+      <li className='th-h border-r  items-center  col-span-3 '>
+        {position === 'rejected' ? (
+          <div className='bg-red-600 text-white rounded py-1'>
+            Buyurtma rad etilgan
+          </div>
+        ) : position === 'accept' ? (
+          <div className='bg-green-700 text-white rounded py-1'>
+            Buyurtma yakunlangan
+          </div>
+        ) : position === 'tosend' ? (
+          <button
+            disabled={position === 'accept'}
+            onClick={changeConnectorPosition}
+            name='incoming'
+            className='bg-green-700 hover:bg-green-800 text-white px-4 rounded py-1 font-bold'>
+            Qabul qilish
+          </button>
+        ) : (
+          ''
+        )}
       </li>
     </ul>
   );

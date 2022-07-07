@@ -27,15 +27,14 @@ export const Mainmarket = () => {
     new Date(new Date().setHours(23, 59, 59, 0)).toISOString()
   );
 
-  const [startDate, setStartDate] = useState(
-    new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString()
-  );
-  const [endDate, setEndDate] = useState(
-    new Date(new Date().setHours(23, 59, 59, 0)).toISOString()
-  );
+  const {
+    registerOrderProducts,
+    registerOrders,
+    getOrdersList,
+    updateOrderConnector,
+  } = Requests();
 
-  const { registerOrderProducts, registerOrders, getOrdersList } = Requests();
-  const { changeProduct, addOrder, inputHandler } = Functions();
+  const { changeProduct, addOrder, inputHandler, changePosition } = Functions();
 
   const [orders, setOrders] = useState([]);
   const [orderConnector, setOrderConnector] = useState();
@@ -46,7 +45,6 @@ export const Mainmarket = () => {
     receivermarket: auth.market.mainmarket,
   });
   const [products, setProducts] = useState([]);
-  const [allProducts, setAllProducts] = useState([]);
 
   const selectRef = {
     product: useRef(),
@@ -64,23 +62,25 @@ export const Mainmarket = () => {
   // Modal
   const [modal, setModal] = useState();
   const [modal2, setModal2] = useState();
+  const [modal3, setModal3] = useState();
   //====================================================================
   // Visible
   const [visibleOrder, setVisibleOrder] = useState(false);
   const [visibleOrders, setVisibleOrders] = useState(true);
-  const [visibleTemporary, setVisibleTemporary] = useState(false);
   const [visibleProducts, setVisibleProducts] = useState(false);
+  const [position, setPosition] = useState();
 
+  const changeConnectorPosition = (e) => {
+    changePosition({ e, setModal3, setPosition });
+  };
   const changeVisible = (e) => {
+    setOrderConnector();
     e.target.name === 'setVisibleOrders'
       ? setVisibleOrders(true)
       : setVisibleOrders(false);
     e.target.name === 'setVisibleOrder'
       ? setVisibleOrder(true)
       : setVisibleOrder(false);
-    e.target.name === 'setVisibleTemporary'
-      ? setVisibleTemporary(true)
-      : setVisibleTemporary(false);
     e.target.name === 'setVisibleProducts'
       ? setVisibleProducts(true)
       : setVisibleProducts(false);
@@ -89,6 +89,12 @@ export const Mainmarket = () => {
   const changeProductOrder = (e) => {
     changeProduct({ e, setOrder, orders, setModal, order });
   };
+
+  const changeOrderConnector = (order) => {
+    setOrderConnector(order._id);
+    setPosition(order.position);
+  };
+
   const editOrder = (product, index) => {
     setOrder(product);
     let i = [...orders];
@@ -117,14 +123,25 @@ export const Mainmarket = () => {
     setVisibleOrders(true);
   };
 
+  const update = () => {
+    updateOrderConnector({
+      setOrdersList,
+      beginDay,
+      endDay,
+      orderConnector,
+      position,
+      setPosition,
+      setModal3,
+    });
+  };
+
   useEffect(() => {
-    registerOrderProducts({ setProducts, setAllProducts });
+    registerOrderProducts({ setProducts });
   }, [registerOrderProducts]);
 
   useEffect(() => {
     getOrdersList({ setOrdersList, beginDay, endDay });
   }, [getOrdersList, beginDay, endDay]);
-
   return (
     <div className='p-3 overflow-x-auto'>
       <RouterBtns changeVisible={changeVisible} />
@@ -135,7 +152,7 @@ export const Mainmarket = () => {
 
       <div className={visibleOrders ? '' : 'hidden'}>
         <Orders
-          setOrderConnector={setOrderConnector}
+          changeOrderConnector={changeOrderConnector}
           ordersList={ordersList}
           setBeginDay={setBeginDay}
           setEndDay={setEndDay}
@@ -154,7 +171,12 @@ export const Mainmarket = () => {
         />
       </div>
       <div className={orderConnector ? '' : 'hidden'}>
-        <OrdersTable orderConnector={orderConnector} />
+        <OrdersTable
+          changeConnectorPosition={changeConnectorPosition}
+          orderConnector={orderConnector}
+          position={position}
+          setPosition={setPosition}
+        />
       </div>
 
       <Modal
@@ -179,6 +201,13 @@ export const Mainmarket = () => {
         setModal={setModal2}
         basic={'Diqqat! Mahsulotlarga buyurtma berishi tasdiqaysizmi?'}
         handler={sendingOrders}
+      />
+
+      <Modal
+        handler={update}
+        modal={modal3}
+        setModal={setModal3}
+        basic='Diqqat! Buyurtmalarni qabul qilib olganingizni tasdiqlaysizmi?'
       />
     </div>
   );

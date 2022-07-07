@@ -35,4 +35,8 @@ router.post('/updateordersconnector', auth, (req, res) => {
   require('./orders').updateordersconnector(req, res);
 });
 
+router.post('/updateorderconnector', auth, (req, res) => {
+  require('./orders').updateorderconnector(req, res);
+});
+
 module.exports = router;

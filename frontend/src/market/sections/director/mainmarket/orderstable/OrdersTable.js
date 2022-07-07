@@ -4,7 +4,12 @@ import { TableHead } from './tables/TableHead';
 import { TableHeader } from './tables/TableHeader';
 import { TableRow } from './tables/TableRow';
 
-export const OrdersTable = ({ orderConnector }) => {
+export const OrdersTable = ({
+  orderConnector,
+  position,
+  setPosition,
+  changeConnectorPosition,
+}) => {
   //====================================================================
   // Pagination
   const { getOrderProducts } = Requests();
@@ -32,7 +37,9 @@ export const OrdersTable = ({ orderConnector }) => {
     }
     if (e.target.name === 'name') {
       const searching = orders.filter((item) =>
-        item.productdata.name.includes(e.target.value)
+        item.productdata.name
+          .toLowerCase()
+          .includes(e.target.value.toLowerCase())
       );
       setCurrentOrders(searching);
     }
@@ -70,6 +77,8 @@ export const OrdersTable = ({ orderConnector }) => {
   return (
     <div className='p-3'>
       <TableHeader
+        position={position}
+        changeConnectorPosition={changeConnectorPosition}
         changeHandler={searchOrders}
         keyPress={searchKeypress}
         search={search}
