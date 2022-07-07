@@ -9,11 +9,10 @@ import React, {
 import { useToast } from '@chakra-ui/react';
 import { useHttp } from '../../../hooks/http.hook';
 import { AuthContext } from '../../../context/AuthContext';
-import { checkProduct, checkProducts } from './checkData';
+import { checkProducts } from './checkData';
 import { Modal } from './modal/Modal';
 import { TableProduct } from './Product/TableProduct';
 import { ExcelCols } from './Product/excelTable/ExcelCols';
-import { CreateProduct } from './Product/CreateProduct';
 import { t } from 'i18next';
 import { ExcelTable } from './Product/ExcelTable';
 
@@ -179,152 +178,7 @@ export const Product = () => {
   //====================================================================
   //====================================================================
 
-  const [units, setUnits] = useState([]);
-
-  const getUnits = useCallback(async () => {
-    try {
-      const data = await request(
-        '/api/products/unit/getall',
-        'POST',
-        { market: auth && auth.market._id },
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
-      );
-      let s = [
-        {
-          label: "O'lchov birligi",
-          value: 'delete',
-        },
-      ];
-      data.map((unit) => {
-        return s.push({
-          label: unit.name,
-          value: unit._id,
-        });
-      });
-      setUnits(s);
-    } catch (error) {
-      notify({
-        title: error,
-        description: '',
-        status: 'error',
-      });
-    }
-  }, [request, notify, auth]);
-
-  const changeUnit = (e) => {
-    if (e.value === 'delete') {
-      setProduct({ ...product, unit: null });
-    }
-    setProduct({ ...product, unit: e.value });
-  };
-
   //====================================================================
-
-  const createHandler = useCallback(async () => {
-    try {
-      const data = await request(
-        `/api/products/product/register`,
-        'POST',
-        {
-          product: { ...product },
-          currentPage,
-          countPage,
-          market: auth.market._id,
-          search: sendingsearch,
-        },
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
-      );
-      notify({
-        title: `${product.name} ${t('mahsuloti yaratildi!')}`,
-        description: '',
-        status: 'success',
-      });
-      setSearchStorage(data.products);
-      setCurrentProducts(data.products);
-      setProductsCount(data.count);
-      clearInputs();
-    } catch (error) {
-      notify({
-        title: error,
-        description: '',
-        status: 'error',
-      });
-    }
-  }, [
-    auth,
-    request,
-    product,
-    notify,
-    clearInputs,
-    countPage,
-    currentPage,
-    sendingsearch,
-  ]);
-
-  const updateHandler = useCallback(async () => {
-    try {
-      const data = await request(
-        `/api/products/product/update`,
-        'PUT',
-        {
-          product: { ...product },
-          currentPage,
-          countPage,
-          market: auth.market._id,
-          search: sendingsearch,
-        },
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
-      );
-
-      notify({
-        title: `${product.name} ${t('mahsuloti yangilandi!')}`,
-        description: '',
-        status: 'success',
-      });
-      setSearchStorage(data.products);
-      setCurrentProducts(data.products);
-      setProductsCount(data.count);
-      clearInputs();
-    } catch (error) {
-      notify({
-        title: error,
-        description: '',
-        status: 'error',
-      });
-    }
-  }, [
-    auth,
-    request,
-    product,
-    notify,
-    clearInputs,
-    currentPage,
-    countPage,
-    sendingsearch,
-  ]);
-
-  const saveHandler = () => {
-    if (checkProduct(product, t)) {
-      return notify(checkProduct(product, t));
-    }
-    if (product._id) {
-      return updateHandler();
-    } else {
-      return createHandler();
-    }
-  };
-
-  const keyPressed = (e) => {
-    if (e.key === 'Enter') {
-      return saveHandler();
-    }
-  };
 
   const deleteHandler = useCallback(async () => {
     try {
@@ -376,9 +230,6 @@ export const Product = () => {
   //====================================================================
   //====================================================================
 
-  const inputHandler = (e) => {
-    setProduct({ ...product, [e.target.name]: e.target.value });
-  };
   //====================================================================
   //====================================================================
 
@@ -478,27 +329,11 @@ export const Product = () => {
     auth.market && getProducts();
   }, [getProducts, currentPage, countPage, sendingsearch, auth]);
 
-  useEffect(() => {
-    auth.market && getUnits();
-  }, [getUnits, auth]);
-
   return (
     <>
       {/* {loading ? <Loader /> : ''} */}
 
       <div className='overflow-x-auto'>
-        <CreateProduct
-          setProduct={setProduct}
-          product={product}
-          keyPressed={keyPressed}
-          inputHandler={inputHandler}
-          saveHandler={saveHandler}
-          loading={loading}
-          units={units}
-          clearInputs={clearInputs}
-          changeUnit={changeUnit}
-          selectRef={selectRef}
-        />
         <div className='m-3 min-w-[800px]'>
           <TableProduct
             search={search}
