@@ -22,9 +22,12 @@ export const Rows = ({
   return (
     <ul className='tr'>
       <li className='no'>{currentPage * countPage + 1 + index}</li>
-      <li className='no'>{saleconnector.id}</li>
+      <li className='no'>
+        {new Date(saleconnector.createdAt).toLocaleDateString()}
+      </li>
       <li className='td border-r font-bold'>
-        {saleconnector.client && saleconnector.client.name}
+        {(saleconnector.client && saleconnector.client.name) ||
+          saleconnector.id}
       </li>
       <li
         onClick={() => changePrepayment(saleconnector)}

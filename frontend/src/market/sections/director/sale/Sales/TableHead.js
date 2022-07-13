@@ -10,7 +10,7 @@ export const TableHead = ({ sales, setSales }) => {
     <ul className='thead shadow-xl'>
       <li className='th border-r'>№</li>
       <li className='th border-r flex justify-center'>
-        {t('ID')}
+        {t('Sana')}
         <Sort property={'createdAt'} data={sales} setData={setSales} />
       </li>
       <li className='th border-r flex justify-center'>
@@ -169,7 +169,7 @@ export const TableHead = ({ sales, setSales }) => {
           />
         </div>
       </li>
-      <li className='th col-span-2 border-r'>{t("Izoh")}</li>
+      <li className='th col-span-2 border-r'>{t('Izoh')}</li>
       <li className='th  border-r'>{t('Chek')}</li>
       <li className='th  border-r'>{t("Qo'shish")}</li>
       <li className='th  border-r'>{t('Qaytarish')}</li>

@@ -1,6 +1,7 @@
 const { Market } = require('../../models/MarketAndBranch/Market');
 const { Payment } = require('../../models/Sales/Payment');
 const { SaleConnector } = require('../../models/Sales/SaleConnector');
+const { Expense } = require('../../models/Expense/Expense.js');
 
 module.exports.getPayments = async (req, res) => {
   try {
@@ -89,7 +90,29 @@ module.exports.getPayments = async (req, res) => {
       totalsales[`${type}`] += sale.payment;
     });
 
+    const expenses = await Expense.find({
+      market,
+      createdAt: {
+        $gte: startDate,
+        $lt: endDate,
+      },
+    }).select('sum comment type market createdAt');
+
+    let expenseData = [];
+    expenses.map((item) => {
+      if (item.type === type) {
+        expenseData.push(item);
+        return;
+      }
+    });
+
+    const totalExpense = expenseData.reduce((prev, item) => {
+      return prev + item.sum;
+    }, 0);
+
     res.status(201).json({
+      expenseData,
+      totalExpense,
       salesCount: salesConnectors.length,
       salesConnectors: salesConnectors.splice(
         currentPage * countPage,

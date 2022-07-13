@@ -31,6 +31,8 @@ import { DebtsReport } from './DebtsReport';
 import { ChequeConnectors } from '../sale/Sales/ChequeConnectors';
 import { ReturnedProducts } from './ReturnedProducts';
 import { t } from 'i18next';
+import { Expense } from './Expense';
+import { Profit } from './Profit';
 
 export const Report = () => {
   //========================================================
@@ -75,6 +77,9 @@ export const Report = () => {
   //========================================================
   //========================================================
 
+  //========================================================
+  //========================================================
+
   const [checkConnectors, setCheckConnectors] = useState(false);
   const [checkSales, setCheckSales] = useState({
     products: [],
@@ -93,6 +98,9 @@ export const Report = () => {
     totalcard: 0,
     totaltransfer: 0,
     salescount: 0,
+    cashexpense: 0,
+    cardexpense: 0,
+    transferexpense: 0,
   });
 
   const [productsReport, setProductsReport] = useState({});
@@ -268,6 +276,9 @@ export const Report = () => {
   //========================================================
   //========================================================
 
+  //========================================================
+  //========================================================
+
   const changeDate = (e) => {
     e.target.name === 'startDate'
       ? setStartDate(
@@ -354,213 +365,220 @@ export const Report = () => {
         <div className='col-end-13 col-span-3 text-right'>
           <button
             className='bg-blue-700 hover:bg-blue-800 text-white m-auto px-10 py-1 text-lg rounded mr-4'
-            onClick={() => setIsPrint(true)}>
+            onClick={() => setIsPrint(true)}
+          >
             <FontAwesomeIcon icon={faPrint} />
           </button>
         </div>
       </div>
 
       <div className='grid grid-cols-12 w-full mb-8 gap-4'>
-        <div className='col-span-4 flex flex-column justify-between gap-y-3'>
-          <Link
-            to='/alo24/reports/debts'
-            onClick={() => {
-              window.scroll(0, 500);
-              setPaymentType('debts');
-            }}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'>
-            <span className='absolute top-4 left-4'>
-              <FontAwesomeIcon
-                icon={faHandHoldingDollar}
-                color='white'
-                fontSize={'24px'}
-              />
+        <Link
+          to='/alo24/reports/debts'
+          onClick={() => {
+            window.scroll(0, 500);
+            setPaymentType('debts');
+          }}
+          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
+        >
+          <span className='absolute top-4 left-4'>
+            <FontAwesomeIcon
+              icon={faHandHoldingDollar}
+              color='white'
+              fontSize={'24px'}
+            />
+          </span>
+          <p className='text-white font-bold text-lg mb-2 pointer-events-none	'>
+            {t('Qarzlar')}
+          </p>
+          <p className='text-white font-bold text-xl pointer-events-none	'>
+            {debtsReport.debtcount} {'-'}{' '}
+            {debtsReport.debttotal &&
+              debtsReport.debttotal.toLocaleString('ru-RU')}{' '}
+            $
+          </p>
+        </Link>
+        <Link
+          to='/alo24/reports/paymentstypes'
+          onClick={() => {
+            setPaymentType('allpayments');
+            window.scroll(0, 500);
+          }}
+          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
+        >
+          <span className='absolute top-4 left-4'>
+            <FontAwesomeIcon icon={faInfo} color='white' fontSize={'24px'} />
+          </span>
+          <p className='text-lg font-bold text-white mb-2'>
+            {t('Umumiy savdo summasi')}
+          </p>
+          <div className='mb-2'>
+            <span className='text-xl font-bold text-white'>
+              {salesReport.salecount} -{' '}
             </span>
-            <p className='text-white font-bold text-lg mb-2 pointer-events-none	'>
-              {t('Qarzlar')}
-            </p>
-            <p className='text-white font-bold text-xl pointer-events-none	'>
-              {debtsReport.debtcount} {'-'}{' '}
-              {debtsReport.debttotal &&
-                debtsReport.debttotal.toLocaleString('ru-RU')}{' '}
+            <span className='text-xl font-bold text-white'>
+              {(Math.round(salesReport.totalsale * 100) / 100).toLocaleString(
+                'ru-RU'
+              )}{' '}
               $
-            </p>
-          </Link>
-          <Link
-            to='/alo24/reports/discounts'
-            onClick={() => window.scroll(0, 500)}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'>
-            <span className='absolute top-4 left-4'>
-              <FontAwesomeIcon icon={faTags} color='white' fontSize={'24px'} />
             </span>
-            <p className='text-white font-bold text-lg mb-2 pointer-events-none'>
-              {t('Chegirmalar')}
-            </p>
-            <p className='text-white font-bold text-xl pointer-events-none'>
-              {discountsReport.discountcount} {'-'}{' '}
-              {discountsReport.discounttotal &&
-                discountsReport.discounttotal.toLocaleString('ru-RU')}{' '}
-              $
-            </p>
-          </Link>
-          <Link
-            to='/alo24/reports/discounts'
-            onClick={() => window.scroll(0, 500)}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'>
-            <span className='absolute top-4 left-4'>
-              <FontAwesomeIcon
-                icon={faCommentsDollar}
-                color='white'
-                fontSize={'24px'}
-              />
-            </span>
-            <p className='text-white font-bold text-lg mb-2 pointer-events-none'>
-              {t('Xarajatlar')}
-            </p>
-            <p className='text-white font-bold text-xl pointer-events-none'>
-              {discountsReport.discountcount} {'-'}{' '}
-              {discountsReport.discounttotal &&
-                discountsReport.discounttotal.toLocaleString('ru-RU')}{' '}
-              $
-            </p>
-          </Link>
-        </div>
-        <div className='col-start-5 col-span-4 gap-y-3 flex flex-col items-center'>
-          <Link
-            to='/alo24/reports/paymentstypes'
-            onClick={() => {
-              setPaymentType('allpayments');
-              window.scroll(0, 500);
-            }}
-            className='h-1/3 w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'>
-            <span className='absolute top-4 left-4'>
-              <FontAwesomeIcon icon={faInfo} color='white' fontSize={'24px'} />
-            </span>
-            <p className='text-lg font-bold text-white mb-2'>
-              {t('Umumiy savdo summasi')}
-            </p>
-            <div className='mb-2'>
-              <span className='text-xl font-bold text-white'>
-                {salesReport.salecount} -{' '}
-              </span>
-              <span className='text-xl font-bold text-white'>
-                {(Math.round(salesReport.totalsale * 100) / 100).toLocaleString(
-                  'ru-RU'
-                )}{' '}
-                $
-              </span>
-            </div>
-          </Link>
-          <Link
-            to='/alo24/reports/paymentstypes'
-            onClick={() => {
-              setPaymentType('allpayments');
-              window.scroll(0, 500);
-            }}
-            className='h-1/3 w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'>
-            <span className='absolute top-4 left-4'>
-              <FontAwesomeIcon
-                icon={faWallet}
-                color='white'
-                fontSize={'24px'}
-              />
-            </span>
-            <p className='text-white font-bold text-lg mb-2 pointer-events-none'>
-              Soffoyda
-            </p>
-            <p className='text-white font-bold text-xl pointer-events-none	'>
-              {profit.toLocaleString('ru-RU')} $
-            </p>
-          </Link>
-          <Link
-            to={'/alo24/reports/returnproducts'}
-            className='h-1/3 w-full bg-blue-800 text-center py-4 rounded-xl flex justify-center items-center transition ease-in-out hover:bg-blue-700 relative'>
-            <span className='absolute top-4 left-4'>
-              <FontAwesomeIcon
-                icon={faRotate}
-                color='white'
-                fontSize={'24px'}
-              />
-            </span>
-            <p className='text-white font-bold text-center text-lg mb-2 pointer-events-none	'>
-              {t('Qaytarilganlar')}
-            </p>
-          </Link>
-        </div>
-        <div className='col-span-4 flex flex-column justify-between gap-y-3'>
-          <Link
-            to='/alo24/reports/paymentstypes'
-            onClick={() => {
-              setPaymentType('cash');
-              window.scroll(0, 500);
-            }}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'>
-            <span className='absolute top-4 left-4'>
-              <FontAwesomeIcon
-                icon={faMoneyBill}
-                color='white'
-                fontSize={'24px'}
-              />
-            </span>
-            <p className='text-white font-bold text-lg mb-2 pointer-events-none'>
-              {t('Naqd')}
-            </p>
-            <p className='text-white font-bold text-xl pointer-events-none	'>
-              {salesReport.cashcount} {'-'}{' '}
-              {salesReport.totalcash &&
-                salesReport.totalcash.toLocaleString('ru-RU')}{' '}
-              $
-            </p>
-          </Link>
-          <Link
-            to='/alo24/reports/paymentstypes'
-            onClick={() => {
-              setPaymentType('card');
-              window.scroll(0, 500);
-            }}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'>
-            <span className='absolute top-4 left-4'>
-              <FontAwesomeIcon
-                icon={faCreditCard}
-                color='white'
-                fontSize={'24px'}
-              />
-            </span>
-            <p className='text-white font-bold text-lg mb-2 pointer-events-none	'>
-              {t('Plastik')}
-            </p>
-            <p className='text-white font-bold text-xl pointer-events-none	'>
-              {salesReport.cardcount} {'-'}{' '}
-              {salesReport.totalcard &&
-                salesReport.totalcard.toLocaleString('ru-RU')}{' '}
-              $
-            </p>
-          </Link>
-          <Link
-            to='/alo24/reports/paymentstypes'
-            onClick={() => {
-              setPaymentType('transfer');
-              window.scroll(0, 500);
-            }}
-            className='w-full bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'>
-            <span className='absolute top-4 left-4'>
-              <FontAwesomeIcon
-                icon={faMoneyBillTransfer}
-                color='white'
-                fontSize={'24px'}
-              />
-            </span>
-            <p className='text-white font-bold text-lg mb-2 pointer-events-none	'>
-              {t('Otkazmalar')}
-            </p>
-            <p className='text-white font-bold text-xl pointer-events-none	'>
-              {salesReport.transfercount} {'-'}{' '}
-              {salesReport.totaltransfer &&
-                salesReport.totaltransfer.toLocaleString('ru-RU')}{' '}
-              $
-            </p>
-          </Link>
-        </div>
+          </div>
+        </Link>
+        <Link
+          to='/alo24/reports/paymentstypes'
+          onClick={() => {
+            setPaymentType('cash');
+            window.scroll(0, 500);
+          }}
+          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
+        >
+          <span className='absolute top-4 left-4'>
+            <FontAwesomeIcon
+              icon={faMoneyBill}
+              color='white'
+              fontSize={'24px'}
+            />
+          </span>
+          <p className='text-white font-bold text-lg mb-2 pointer-events-none'>
+            {t('Naqd')}
+          </p>
+          <p className='text-white font-bold text-xl pointer-events-none	'>
+            {salesReport.cashcount} {'-'}{' '}
+            {salesReport.totalcash &&
+              salesReport.totalcash.toLocaleString('ru-RU')}{' '}
+            $
+          </p>
+          <p className='font-bold text-base pointer-events-none text-red-700'>
+            -{salesReport.cashexpense.toLocaleString('ru-RU')} $
+          </p>
+        </Link>
+        <Link
+          to='/alo24/reports/discounts'
+          onClick={() => window.scroll(0, 500)}
+          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
+        >
+          <span className='absolute top-4 left-4'>
+            <FontAwesomeIcon icon={faTags} color='white' fontSize={'24px'} />
+          </span>
+          <p className='text-white font-bold text-lg mb-2 pointer-events-none'>
+            {t('Chegirmalar')}
+          </p>
+          <p className='text-white font-bold text-xl pointer-events-none'>
+            {discountsReport.discountcount} {'-'}{' '}
+            {discountsReport.discounttotal &&
+              discountsReport.discounttotal.toLocaleString('ru-RU')}{' '}
+            $
+          </p>
+        </Link>
+        <Link
+          to='/alo24/reports/profit'
+          onClick={() => {
+            setPaymentType('allpayments');
+            window.scroll(0, 500);
+          }}
+          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
+        >
+          <span className='absolute top-4 left-4'>
+            <FontAwesomeIcon icon={faWallet} color='white' fontSize={'24px'} />
+          </span>
+          <p className='text-white font-bold text-lg mb-2 pointer-events-none'>
+            Soffoyda
+          </p>
+          <p className='text-white font-bold text-xl pointer-events-none	'>
+            {profit.toLocaleString('ru-RU')} $
+          </p>
+        </Link>
+        <Link
+          to='/alo24/reports/paymentstypes'
+          onClick={() => {
+            setPaymentType('card');
+            window.scroll(0, 500);
+          }}
+          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
+        >
+          <span className='absolute top-4 left-4'>
+            <FontAwesomeIcon
+              icon={faCreditCard}
+              color='white'
+              fontSize={'24px'}
+            />
+          </span>
+          <p className='text-white font-bold text-lg mb-2 pointer-events-none	'>
+            {t('Plastik')}
+          </p>
+          <p className='text-white font-bold text-xl pointer-events-none	'>
+            {salesReport.cardcount} {'-'}{' '}
+            {salesReport.totalcard &&
+              salesReport.totalcard.toLocaleString('ru-RU')}{' '}
+            $
+          </p>
+          <p className='text-red-700 font-bold text-base pointer-events-none'>
+            -{salesReport.cardexpense.toLocaleString('ru-RU')} $
+          </p>
+        </Link>
+        <Link
+          to='/alo24/reports/expense'
+          onClick={() => window.scroll(0, 500)}
+          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
+        >
+          <span className='absolute top-4 left-4'>
+            <FontAwesomeIcon
+              icon={faCommentsDollar}
+              color='white'
+              fontSize={'24px'}
+            />
+          </span>
+          <p className='text-white font-bold text-lg mb-2 pointer-events-none'>
+            {t('Xarajatlar')}
+          </p>
+          <p className='text-white font-bold text-xl pointer-events-none'>
+            {(
+              salesReport.cashexpense +
+              salesReport.cardexpense +
+              salesReport.transferexpense
+            ).toLocaleString('ru-RU')}{' '}
+            $
+          </p>
+        </Link>
+        <Link
+          to={'/alo24/reports/returnproducts'}
+          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl flex justify-center items-center transition ease-in-out hover:bg-blue-700 relative'
+        >
+          <span className='absolute top-4 left-4'>
+            <FontAwesomeIcon icon={faRotate} color='white' fontSize={'24px'} />
+          </span>
+          <p className='text-white font-bold text-center text-lg mb-2 pointer-events-none	'>
+            {t('Qaytarilganlar')}
+          </p>
+        </Link>
+        <Link
+          to='/alo24/reports/paymentstypes'
+          onClick={() => {
+            setPaymentType('transfer');
+            window.scroll(0, 500);
+          }}
+          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
+        >
+          <span className='absolute top-4 left-4'>
+            <FontAwesomeIcon
+              icon={faMoneyBillTransfer}
+              color='white'
+              fontSize={'24px'}
+            />
+          </span>
+          <p className='text-white font-bold text-lg mb-2 pointer-events-none	'>
+            {t('Otkazmalar')}
+          </p>
+          <p className='text-white font-bold text-xl pointer-events-none	'>
+            {salesReport.transfercount} {'-'}{' '}
+            {salesReport.totaltransfer &&
+              salesReport.totaltransfer.toLocaleString('ru-RU')}{' '}
+            $
+          </p>
+          <p className='text-red-700 font-bold text-base pointer-events-none'>
+            {salesReport.transferexpense.toLocaleString('ru-RU')}
+          </p>
+        </Link>
       </div>
 
       <Switch>
@@ -578,8 +596,14 @@ export const Report = () => {
         <Route path='/alo24/reports/paymentstypes'>
           <PaymentsReport type={paymentType} changeCheck={changeCheck} />
         </Route>
+        <Route path='/alo24/reports/profit'>
+          <Profit />
+        </Route>
         <Route path='/alo24/reports/returnproducts'>
           <ReturnedProducts changeCheck={changeCheck} />
+        </Route>
+        <Route path='/alo24/reports/expense'>
+          <Expense changeAbleDelete={'delete'} />
         </Route>
         <Redirect to='/alo24/reports' />
       </Switch>
@@ -587,7 +611,8 @@ export const Report = () => {
       <div
         className={`${
           isPrint ? 'fixed' : 'hidden'
-        } top-0 left-0 w-full h-full z-10 bg-white overflow-auto pb-4`}>
+        } top-0 left-0 w-full h-full z-10 bg-white overflow-auto pb-4`}
+      >
         <PrintReport
           startDate={startDate}
           endDate={endDate}
