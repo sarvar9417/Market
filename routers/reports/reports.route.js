@@ -37,7 +37,11 @@ router.post('/returnedproductsexcel', auth, (req, res) => {
 });
 
 router.post('/profit', auth, (req, res) => {
-  require('./reports').getProfit(req, res);
+  require('./reports').getNetProfit(req, res);
+});
+
+router.post('/profitdata', auth, (req, res) => {
+  require('./profit').getProfitData(req, res);
 });
 
 module.exports = router;

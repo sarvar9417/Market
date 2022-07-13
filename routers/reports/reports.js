@@ -1,3 +1,4 @@
+const { Expense } = require('../../models/Expense/Expense');
 const { Market } = require('../../models/MarketAndBranch/Market');
 const { Incoming } = require('../../models/Products/Incoming');
 const { Product } = require('../../models/Products/Product');
@@ -41,6 +42,9 @@ module.exports.getSalesReport = async (req, res) => {
       cashcount: 0,
       cardcount: 0,
       transfercount: 0,
+      cashexpense: 0,
+      cardexpense: 0,
+      transferexpense: 0,
     };
 
     sales.map((sale) => {
@@ -58,6 +62,27 @@ module.exports.getSalesReport = async (req, res) => {
         totalSales.totaltransfer += payment.transfer;
       });
     });
+
+    const expense = await Expense.find({
+      market,
+      createdAt: {
+        $gte: startDate,
+        $lt: endDate,
+      },
+    }).select('sum comment type market createdAt');
+
+    expense.map((item) => {
+      if (item.type === 'cash') {
+        totalSales.cashexpense += item.sum;
+      }
+      if (item.type === 'card') {
+        totalSales.cardexpense += item.sum;
+      }
+      if (item.type === 'transfer') {
+        totalSales.transferexpense += item.sum;
+      }
+    });
+
     res.status(201).json(totalSales);
   } catch (error) {
     res.status(400).json({ error: 'Serverda xatolik yuz berdi...' });
@@ -233,7 +258,7 @@ module.exports.getDebtAndDiscountReports = async (req, res) => {
   }
 };
 
-module.exports.getProfit = async (req, res) => {
+module.exports.getNetProfit = async (req, res) => {
   try {
     const { market, startDate, endDate } = req.body;
 
@@ -252,7 +277,7 @@ module.exports.getProfit = async (req, res) => {
       },
     })
       .select('totalprice price pieces market createdAt discount')
-      .populate('price', 'incomingprice')
+      .populate('price', 'incomingprice sellingprice')
       .populate('discount', 'discount discountuzs');
 
     const totalsaleproducts = saleproducts.reduce((summ, sale) => {
@@ -273,7 +298,7 @@ module.exports.getProfit = async (req, res) => {
 
     const profit = totalsaleproducts - totaldiscount;
 
-    res.status(201).json(profit);
+    res.status(200).json(profit);
   } catch (error) {
     res.status(400).json({ error: 'Serverda xatolik yuz berdi...' });
   }

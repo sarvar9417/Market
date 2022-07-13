@@ -5,25 +5,46 @@ import { useHttp } from '../../../hooks/http.hook';
 import { TableHead } from './PaymentsReport/TableHead';
 import { TableHeader } from './PaymentsReport/TableHeader';
 import { Rows } from './PaymentsReport/Rows';
+import { Rows as ExpenseRows } from './Expense/tableExpense/Rows.js';
 import { ExcelTable } from './PaymentsReport/ExcelTable';
 import { t } from 'i18next';
 import { Loader } from '../../../loader/Loader';
+import { TableHead as ExpenseTableHead } from './Expense/tableExpense/TableHead';
 
 export const PaymentsReport = ({ type, changeCheck }) => {
+  //============================================================
+  //============================================================
   // STATES
   const { request, loading } = useHttp();
   const auth = useContext(AuthContext);
 
+  //============================================================
+  //============================================================
+
   const [currentPage, setCurrentPage] = useState(0);
   const [countPage, setCountPage] = useState(10);
+
+  //============================================================
+  //============================================================
 
   const [currentPayments, setCurrentPayments] = useState([]);
   const [paymentsCount, setPaymentsCount] = useState();
   const [tableExcel, setTableExcel] = useState([]);
+
+  //============================================================
+  //============================================================
+
   const [startDate, setStartDate] = useState(
     new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString()
   );
   const [endDate, setEndDate] = useState(new Date().toISOString());
+
+  //============================================================
+  //============================================================
+
+  //============================================================
+  //============================================================
+
   const [totalPayments, setTotalPayments] = useState(0);
   //TOAST
   const toast = useToast();
@@ -42,6 +63,12 @@ export const PaymentsReport = ({ type, changeCheck }) => {
   );
 
   // GETDATA
+  //============================================================
+  //============================================================
+
+  const [expenses, setExpenses] = useState([]);
+  const [totalExpense, setTotalExpense] = useState(0);
+
   const getPayments = useCallback(async () => {
     try {
       if (type) {
@@ -63,6 +90,8 @@ export const PaymentsReport = ({ type, changeCheck }) => {
         setTotalPayments(data.totalsales);
         setPaymentsCount(data.salesCount);
         setCurrentPayments(data.salesConnectors);
+        setExpenses(data.expenseData);
+        setTotalExpense(data.totalExpense);
       }
     } catch (error) {
       notify({
@@ -117,11 +146,6 @@ export const PaymentsReport = ({ type, changeCheck }) => {
 
   useEffect(() => {
     getPayments();
-    return () => {
-      setCurrentPayments([]);
-      setPaymentsCount();
-      setTotalPayments(0);
-    };
   }, [getPayments, currentPage, countPage, startDate, endDate]);
 
   if (loading) {
@@ -190,8 +214,8 @@ export const PaymentsReport = ({ type, changeCheck }) => {
             </li>
           </ul>
         ) : (
-          <ul className='tr font-bold text-base'>
-            <li className='td col-span-8 text-right border-r'>{t("Jami")}</li>
+          <ul className='tr font-bold text-base mb-12'>
+            <li className='td col-span-8 text-right border-r'>{t('Jami')}</li>
             <li className='td text-right col-span-4 border-r-2 border-orange-600'>
               {(
                 Math.round(totalPayments[`${type}`] * 100) / 100
@@ -199,6 +223,46 @@ export const PaymentsReport = ({ type, changeCheck }) => {
               <span className='text-orange-600'>USD</span>
             </li>
           </ul>
+        )}
+        {expenses.length > 0 && (
+          <>
+            <p className='font-bold text-2xl text-black mb-4'>Xarajatlar:</p>
+            <ExpenseTableHead
+              currentPayments={expenses}
+              setCurrentPayments={setCurrentPayments}
+              isAbleDelete={false}
+            />
+            {expenses.map((expense, index) => {
+              return (
+                <>
+                  <ExpenseRows
+                    expense={expense}
+                    index={index}
+                    key={index}
+                    isAbleDelete={false}
+                    currentPage={currentPage}
+                  />
+                </>
+              );
+            })}
+            <ul className='tr font-bold text-base mb-12'>
+              <li className='td col-span-8 text-right border-r'>{t('Jami')}</li>
+              <li className='td text-right col-span-4 border-r-2 border-orange-600'>
+                {(Math.round(totalExpense * 100) / 100).toLocaleString('de-DE')}{' '}
+                <span className='text-orange-600'>USD</span>
+              </li>
+            </ul>
+            <ul className='tr font-bold text-base mb-12'>
+              <li className='td col-span-2 text-right border-r'>{t('Jami')}</li>
+              <li className='td text-center col-span-10 border-r-2 border-orange-600'>
+                {(
+                  Math.round((totalPayments[`${type}`] - totalExpense) * 100) /
+                  100
+                ).toLocaleString('de-DE')}{' '}
+                <span className='text-orange-600'>USD</span>
+              </li>
+            </ul>
+          </>
         )}
       </div>
 
