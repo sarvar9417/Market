@@ -38,7 +38,7 @@ export const Rows = ({
         <span className='text-green-800'>USD</span>
       </li>
       <li className='td border-r text-right'>
-        {!loading ? (
+        {loading ? (
           <SaveBtnLoad />
         ) : (
           <EditBtn editHandler={() => changeEditProduct(product)} />
