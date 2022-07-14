@@ -276,12 +276,28 @@ module.exports.getNetProfit = async (req, res) => {
         $lt: endDate,
       },
     })
-      .select('totalprice price pieces market createdAt discount')
+      .select('totalprice price pieces market createdAt discount product')
       .populate('price', 'incomingprice sellingprice')
       .populate('discount', 'discount discountuzs');
 
+    const getPrice = async (product) => {
+      let data;
+      try {
+        data = await ProductPrice.findOne({ market, product }).select(
+          'incomingprice'
+        );
+      } catch (error) {
+        data = { incomingprice: 0 };
+      }
+      return data;
+    };
+
     const totalsaleproducts = saleproducts.reduce((summ, sale) => {
-      return summ + (sale.totalprice - sale.price.incomingprice * sale.pieces);
+      return (
+        summ +
+        (sale.totalprice -
+          (sale.price ? sale.price.incomingprice : 0) * sale.pieces)
+      );
     }, 0);
 
     const discounts = await Discount.find({
@@ -300,6 +316,7 @@ module.exports.getNetProfit = async (req, res) => {
 
     res.status(200).json(profit);
   } catch (error) {
+    console.log(error);
     res.status(400).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };

@@ -21,7 +21,7 @@ export const PrintReport = ({
       <div className='a4 m-auto w-[27cm] p-4' ref={componentRef}>
         <div className='w-full flex justify-between items-center px-6'>
           <div className=''>
-            <p className='font-bold text-2xl'>{t("Moliyaviy hisobot")}</p>
+            <p className='font-bold text-2xl'>{t('Moliyaviy hisobot')}</p>
           </div>
           <div className='flex justify-center items-center gap-4 mb-4'>
             <img
@@ -31,11 +31,12 @@ export const PrintReport = ({
                   auth && auth.market && auth.market.image
                 }`
               }
+              className='h-[70px]'
               alt='market'
             />
           </div>
           <div className='text-blue-700 text-center'>
-            <div className='font-serif text-4xl font-bold'>{t("HISOBOT")}</div>
+            <div className='font-serif text-4xl font-bold'>{t('HISOBOT')}</div>
             <div className='font-medium text-2xl'>
               {new Date(startDate).toLocaleDateString()} -{' '}
               {new Date(endDate).toLocaleDateString()}
@@ -54,12 +55,14 @@ export const PrintReport = ({
             <span className='text-2xl font-bold text-black'>
               {salesReport.totalsale &&
                 salesReport.totalsale.toLocaleString('ru-RU')}{' '}
-              $
+              USD
             </span>
             <p className='text-xl font-medium'>{t('Umumiy savdo')}</p>
           </div>
           <div className='col-span-4 flex flex-col items-center'>
-            <span className='text-2xl font-bold text-red-400 '>{123456} $</span>
+            <span className='text-2xl font-bold text-red-400 '>
+              {123456} USD
+            </span>
             <p className='text-xl font-medium'>{t('Umumiy xarajatlar')}</p>
           </div>
         </div>
@@ -85,7 +88,7 @@ export const PrintReport = ({
                   <td className='border-2 border-blue-700 py-2 px-2 text-right text-base font-medium'>
                     {salesReport.totalcash &&
                       salesReport.totalcash.toLocaleString('ru-RU')}{' '}
-                    $
+                    USD
                   </td>
                 </tr>
                 <tr>
@@ -95,7 +98,7 @@ export const PrintReport = ({
                   <td className='border-2 border-blue-700 py-2 px-2 text-right text-base font-medium'>
                     {salesReport.totalcard &&
                       salesReport.totalcard.toLocaleString('ru-RU')}{' '}
-                    $
+                    USD
                   </td>
                 </tr>
                 <tr>
@@ -105,7 +108,7 @@ export const PrintReport = ({
                   <td className='border-2 border-blue-700 py-2 px-2 text-right text-base font-medium'>
                     {salesReport.totaltransfer &&
                       salesReport.totaltransfer.toLocaleString('ru-RU')}{' '}
-                    $
+                    USD
                   </td>
                 </tr>
               </tbody>
@@ -121,7 +124,7 @@ export const PrintReport = ({
           </div>
         </div>
         <div className='font-bold text-2xl pl-4 mb-2'>
-          {t("Sotilgan mahsulotlar hisoboti")}
+          {t('Sotilgan mahsulotlar hisoboti')}
         </div>
         <div className='grid grid-cols-12 border-2 border-blue-700 py-4 mb-8'>
           <div className='col-span-4 flex flex-col items-center'>
@@ -152,10 +155,12 @@ export const PrintReport = ({
         </div>
         <div className='px-4 mb-2 flex justify-between items-center'>
           <span className='font-bold text-2xl mr-6'>
-            {t("Keltirilgan mahsulotlar hisoboti")}
+            {t('Keltirilgan mahsulotlar hisoboti')}
           </span>
           <div className='flex items-center'>
-            <p className='text-2xl font-medium mr-4'>{t("Tushumlar miqdori")}</p>
+            <p className='text-2xl font-medium mr-4'>
+              {t('Tushumlar miqdori')}
+            </p>
             <span className='text-2xl font-bold text-black'>
               {incomingsReport.incomingsCount &&
                 incomingsReport.incomingsCount.toLocaleString('ru-RU')}
@@ -169,9 +174,9 @@ export const PrintReport = ({
                 incomingsReport.totalIncomingsPrice.toLocaleString(
                   'ru-RU'
                 )}{' '}
-              $
+              USD
             </span>
-            <p className='text-lg font-medium'>{t("Jami tushumlar")}</p>
+            <p className='text-lg font-medium'>{t('Jami tushumlar')}</p>
           </div>
           <div className='col-span-4 flex flex-col items-center'>
             <span className='text-xl font-bold text-black'>
@@ -191,7 +196,9 @@ export const PrintReport = ({
             </p>
           </div>
         </div>
-        <div className='font-bold text-2xl pl-4 mb-2'>{t("Omborxona hisoboti")}</div>
+        <div className='font-bold text-2xl pl-4 mb-2'>
+          {t('Omborxona hisoboti')}
+        </div>
         <div className='grid grid-cols-12 border-2 border-blue-700 py-4 mb-6 px-2'>
           <div className='col-span-4 flex flex-col items-center'>
             <span className='text-xl font-bold text-black'>
@@ -215,7 +222,7 @@ export const PrintReport = ({
             <span className='text-xl font-bold text-black'>
               {productsReport.productstotalprice &&
                 productsReport.productstotalprice.toLocaleString('ru-RU')}{' '}
-              $
+              USD
             </span>
             <p className='text-lg font-medium'>
               {t('Ombordagi tovarlarning umumiy miqdori')}
@@ -226,14 +233,12 @@ export const PrintReport = ({
       <div className='m-3 flex justify-around'>
         <button
           onClick={() => setIsPrint(false)}
-          className='bg-red-500 hover:bg-red-600 text-white m-auto px-10 py-1 text-lg  rounded ml-4'
-        >
+          className='bg-red-500 hover:bg-red-600 text-white m-auto px-10 py-1 text-lg  rounded ml-4'>
           <FontAwesomeIcon icon={faClose} />
         </button>
         <button
           className='bg-blue-700 hover:bg-blue-800 text-white m-auto px-10 py-1 text-lg rounded mr-4'
-          onClick={print}
-        >
+          onClick={print}>
           <FontAwesomeIcon icon={faPrint} />
         </button>
       </div>

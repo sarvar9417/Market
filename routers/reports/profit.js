@@ -33,7 +33,10 @@ module.exports.getProfitData = async (req, res) => {
         id: item.id,
         createdAt: item.createdAt,
         totalincomingprice: item.products.reduce((prev, product) => {
-          return prev + product.price.incomingprice * product.pieces;
+          return (
+            prev +
+            (product.price ? product.price.incomingprice : 0) * product.pieces
+          );
         }, 0),
         totalsellingprice: item.products.reduce((prev, product) => {
           return prev + product.totalprice;
