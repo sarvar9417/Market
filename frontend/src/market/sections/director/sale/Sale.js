@@ -355,7 +355,6 @@ export const Sale = () => {
       });
     }
   };
-
   const pushSaleProduct = () => {
     let sales = [...saleproducts];
     sales.unshift(saleproduct);

@@ -352,6 +352,7 @@ module.exports.addproducts = async (req, res) => {
       }
 
       const newSaleProduct = new SaleProduct({
+        price: produc.price,
         totalprice,
         totalpriceuzs,
         unitprice,
@@ -728,6 +729,7 @@ module.exports.registeredit = async (req, res) => {
         const produc = await Product.findById(product._id);
 
         const newSaleProduct = new SaleProduct({
+          price: produc.price,
           totalprice: -totalprice,
           totalpriceuzs: -totalpriceuzs,
           unitprice,

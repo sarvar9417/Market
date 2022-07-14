@@ -64,9 +64,12 @@ export const Report = () => {
   //========================================================
 
   const [startDate, setStartDate] = useState(
-    new Date(new Date().setUTCMonth(new Date().getMonth() - 1)).toISOString()
+    new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString()
   );
-  const [endDate, setEndDate] = useState(new Date().toISOString());
+
+  const [endDate, setEndDate] = useState(
+    new Date(new Date().setHours(23, 59, 59, 0)).toISOString()
+  );
 
   //========================================================
   //========================================================
@@ -282,11 +285,13 @@ export const Report = () => {
   const changeDate = (e) => {
     e.target.name === 'startDate'
       ? setStartDate(
-          new Date(
-            new Date(e.target.value).setUTCHours(0, 0, 0, 0)
-          ).toISOString()
+          new Date(new Date(e.target.value).setHours(0, 0, 0, 0)).toISOString()
         )
-      : setEndDate(new Date(e.target.value).toISOString());
+      : setEndDate(
+          new Date(
+            new Date(e.target.value).setHours(23, 59, 59, 0)
+          ).toISOString()
+        );
   };
 
   //========================================================
@@ -365,8 +370,7 @@ export const Report = () => {
         <div className='col-end-13 col-span-3 text-right'>
           <button
             className='bg-blue-700 hover:bg-blue-800 text-white m-auto px-10 py-1 text-lg rounded mr-4'
-            onClick={() => setIsPrint(true)}
-          >
+            onClick={() => setIsPrint(true)}>
             <FontAwesomeIcon icon={faPrint} />
           </button>
         </div>
@@ -379,8 +383,7 @@ export const Report = () => {
             window.scroll(0, 500);
             setPaymentType('debts');
           }}
-          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
-        >
+          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'>
           <span className='absolute top-4 left-4'>
             <FontAwesomeIcon
               icon={faHandHoldingDollar}
@@ -395,7 +398,7 @@ export const Report = () => {
             {debtsReport.debtcount} {'-'}{' '}
             {debtsReport.debttotal &&
               debtsReport.debttotal.toLocaleString('ru-RU')}{' '}
-            $
+            USD
           </p>
         </Link>
         <Link
@@ -404,8 +407,7 @@ export const Report = () => {
             setPaymentType('allpayments');
             window.scroll(0, 500);
           }}
-          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
-        >
+          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'>
           <span className='absolute top-4 left-4'>
             <FontAwesomeIcon icon={faInfo} color='white' fontSize={'24px'} />
           </span>
@@ -420,7 +422,7 @@ export const Report = () => {
               {(Math.round(salesReport.totalsale * 100) / 100).toLocaleString(
                 'ru-RU'
               )}{' '}
-              $
+              USD
             </span>
           </div>
         </Link>
@@ -430,8 +432,7 @@ export const Report = () => {
             setPaymentType('cash');
             window.scroll(0, 500);
           }}
-          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
-        >
+          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'>
           <span className='absolute top-4 left-4'>
             <FontAwesomeIcon
               icon={faMoneyBill}
@@ -446,17 +447,16 @@ export const Report = () => {
             {salesReport.cashcount} {'-'}{' '}
             {salesReport.totalcash &&
               salesReport.totalcash.toLocaleString('ru-RU')}{' '}
-            $
+            USD
           </p>
           <p className='font-bold text-base pointer-events-none text-red-700'>
-            -{salesReport.cashexpense.toLocaleString('ru-RU')} $
+            -{salesReport.cashexpense.toLocaleString('ru-RU')} USD
           </p>
         </Link>
         <Link
           to='/alo24/reports/discounts'
           onClick={() => window.scroll(0, 500)}
-          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
-        >
+          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'>
           <span className='absolute top-4 left-4'>
             <FontAwesomeIcon icon={faTags} color='white' fontSize={'24px'} />
           </span>
@@ -467,7 +467,7 @@ export const Report = () => {
             {discountsReport.discountcount} {'-'}{' '}
             {discountsReport.discounttotal &&
               discountsReport.discounttotal.toLocaleString('ru-RU')}{' '}
-            $
+            USD
           </p>
         </Link>
         <Link
@@ -476,8 +476,7 @@ export const Report = () => {
             setPaymentType('allpayments');
             window.scroll(0, 500);
           }}
-          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
-        >
+          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'>
           <span className='absolute top-4 left-4'>
             <FontAwesomeIcon icon={faWallet} color='white' fontSize={'24px'} />
           </span>
@@ -485,7 +484,7 @@ export const Report = () => {
             Soffoyda
           </p>
           <p className='text-white font-bold text-xl pointer-events-none	'>
-            {profit.toLocaleString('ru-RU')} $
+            {profit.toLocaleString('ru-RU')} USD
           </p>
         </Link>
         <Link
@@ -494,8 +493,7 @@ export const Report = () => {
             setPaymentType('card');
             window.scroll(0, 500);
           }}
-          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
-        >
+          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'>
           <span className='absolute top-4 left-4'>
             <FontAwesomeIcon
               icon={faCreditCard}
@@ -510,17 +508,16 @@ export const Report = () => {
             {salesReport.cardcount} {'-'}{' '}
             {salesReport.totalcard &&
               salesReport.totalcard.toLocaleString('ru-RU')}{' '}
-            $
+            USD
           </p>
           <p className='text-red-700 font-bold text-base pointer-events-none'>
-            -{salesReport.cardexpense.toLocaleString('ru-RU')} $
+            -{salesReport.cardexpense.toLocaleString('ru-RU')} USD
           </p>
         </Link>
         <Link
           to='/alo24/reports/expense'
           onClick={() => window.scroll(0, 500)}
-          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
-        >
+          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'>
           <span className='absolute top-4 left-4'>
             <FontAwesomeIcon
               icon={faCommentsDollar}
@@ -537,13 +534,12 @@ export const Report = () => {
               salesReport.cardexpense +
               salesReport.transferexpense
             ).toLocaleString('ru-RU')}{' '}
-            $
+            USD
           </p>
         </Link>
         <Link
           to={'/alo24/reports/returnproducts'}
-          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl flex justify-center items-center transition ease-in-out hover:bg-blue-700 relative'
-        >
+          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl flex justify-center items-center transition ease-in-out hover:bg-blue-700 relative'>
           <span className='absolute top-4 left-4'>
             <FontAwesomeIcon icon={faRotate} color='white' fontSize={'24px'} />
           </span>
@@ -557,8 +553,7 @@ export const Report = () => {
             setPaymentType('transfer');
             window.scroll(0, 500);
           }}
-          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'
-        >
+          className='col-span-4 bg-blue-800 text-center py-4 rounded-xl transition ease-in-out hover:bg-blue-700 relative'>
           <span className='absolute top-4 left-4'>
             <FontAwesomeIcon
               icon={faMoneyBillTransfer}
@@ -573,7 +568,7 @@ export const Report = () => {
             {salesReport.transfercount} {'-'}{' '}
             {salesReport.totaltransfer &&
               salesReport.totaltransfer.toLocaleString('ru-RU')}{' '}
-            $
+            USD
           </p>
           <p className='text-red-700 font-bold text-base pointer-events-none'>
             {salesReport.transferexpense.toLocaleString('ru-RU')}
@@ -611,8 +606,7 @@ export const Report = () => {
       <div
         className={`${
           isPrint ? 'fixed' : 'hidden'
-        } top-0 left-0 w-full h-full z-10 bg-white overflow-auto pb-4`}
-      >
+        } top-0 left-0 w-full h-full z-10 bg-white overflow-auto pb-4`}>
         <PrintReport
           startDate={startDate}
           endDate={endDate}
