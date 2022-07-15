@@ -48,7 +48,7 @@ module.exports.getProfitData = async (req, res) => {
 
       profitData.push({
         ...obj,
-        profit: obj.totalsellingprice - obj.totalincomingprice,
+        profit: obj.totalsellingprice - obj.totalincomingprice - obj.discount,
       });
     });
 
