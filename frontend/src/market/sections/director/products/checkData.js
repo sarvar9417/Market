@@ -95,8 +95,9 @@ export const checkProduct = (product, t) => {
 
   if (product.code.length > 7)
     return {
-      title:
-        t("Diqqat! Mahsulot kodi ko'pi bilan 7 ta belgidan iborat bo'shi kerak."),
+      title: t(
+        "Diqqat! Mahsulot kodi ko'pi bilan 7 ta belgidan iborat bo'shi kerak."
+      ),
       description: t("Iltimos kodni to'g'ri kiriting."),
       status: 'error',
     };
@@ -252,9 +253,9 @@ export const checkUploadRooms = (market, rooms) => {
     k++;
     if (market.name !== room.market) {
       return {
-        title: `${t(
-          'Diqqat!'
-        )} ${k}-${t("qatorda do'kon nomi noto'g'ri ko'rsatilgan")}.`,
+        title: `${t('Diqqat!')} ${k}-${t(
+          "qatorda do'kon nomi noto'g'ri ko'rsatilgan"
+        )}.`,
         description: t("Iltimos do'kon nomini to'g'ri kiriting."),
         status: 'error',
       };
@@ -397,23 +398,30 @@ export const checkProducts = (products) => {
 
     if (!product.code) {
       return {
-        title: `${t("Diqqat!")} ${k}-${t("qatorda mahsulot kodi kiritilmagan.")}`,
+        title: `${t('Diqqat!')} ${k}-${t(
+          'qatorda mahsulot kodi kiritilmagan.'
+        )}`,
         description: t('Iltimos mahsulot kodini kiriting.'),
         status: 'error',
       };
     }
-    if (product.code.toString().length < 6) {
+    if (product.code.toString().length < 4) {
       return {
-        title: `${t("Diqqat!")} ${k}-${t("qatorda mahsulot kodi noto'g'ri kiritilgan.")}`,
-        description:
-          t("Iltimos mahsulot kodi kamida 6 ta raqamdan iborat bo'lishi kerak."),
+        title: `${t('Diqqat!')} ${k}-${t(
+          "qatorda mahsulot kodi noto'g'ri kiritilgan."
+        )}`,
+        description: t(
+          "Iltimos mahsulot kodi kamida 4 ta raqamdan iborat bo'lishi kerak."
+        ),
         status: 'error',
       };
     }
 
     if (!product.name) {
       return {
-        title: `${t("Diqqat!")} ${k}-${t("qatorda mahsulot nomi kiritilmagan.")}`,
+        title: `${t('Diqqat!')} ${k}-${t(
+          'qatorda mahsulot nomi kiritilmagan.'
+        )}`,
         description: t('Iltimos mahsulot nomini kiriting.'),
         status: 'error',
       };
@@ -429,7 +437,9 @@ export const checkProducts = (products) => {
 
     if (!product.unit) {
       return {
-        title: `${t("Diqqat!")} ${k}-${t("qatorda mahsulot o'lchov birligi kiritilmagan.")}`,
+        title: `${t('Diqqat!')} ${k}-${t(
+          "qatorda mahsulot o'lchov birligi kiritilmagan."
+        )}`,
         description: t("Iltimos mahsulot o'lchov birligini kiriting."),
         status: 'error',
       };
@@ -437,7 +447,9 @@ export const checkProducts = (products) => {
 
     if (product.price && typeof product.price !== 'number') {
       return {
-        title: `${t("Diqqat!")} ${k}-${t("qatorda mahsulot narxi kiritilmagan.")}`,
+        title: `${t('Diqqat!')} ${k}-${t(
+          'qatorda mahsulot narxi kiritilmagan.'
+        )}`,
         description: t('Iltimos mahsulot narxini kiriting.'),
         status: 'error',
       };
@@ -445,7 +457,9 @@ export const checkProducts = (products) => {
 
     if (product.total && typeof product.total !== 'number') {
       return {
-        title: `${t("Diqqat!")} ${k}-${t("qatorda mahsulot soni to'g'ri kiritilmagan.")}`,
+        title: `${t('Diqqat!')} ${k}-${t(
+          "qatorda mahsulot soni to'g'ri kiritilmagan."
+        )}`,
         description: t("Iltimos mahsulot sonini to'g'ri kiriting."),
         status: 'error',
       };
@@ -489,7 +503,7 @@ export const checkUploadProductConnectors = (market, productConnectors) => {
     k++;
     if (productConnector.market) {
       return {
-        title: `${t("Diqqat!")} ${k}-${t("qatorda do'kon nomi kiritilmagan.")}`,
+        title: `${t('Diqqat!')} ${k}-${t("qatorda do'kon nomi kiritilmagan.")}`,
         description: t('Iltimos mahsulot nomini kiriting.'),
         status: 'error',
       };
@@ -497,7 +511,7 @@ export const checkUploadProductConnectors = (market, productConnectors) => {
 
     if (productConnector.market !== market.name) {
       return {
-        title: `${t("Diqqat!")} ${k}-${t("qatorda do'kon nomi kiritilmagan.")}`,
+        title: `${t('Diqqat!')} ${k}-${t("qatorda do'kon nomi kiritilmagan.")}`,
         description: t('Iltimos mahsulot nomini kiriting.'),
         status: 'error',
       };
@@ -505,7 +519,9 @@ export const checkUploadProductConnectors = (market, productConnectors) => {
 
     if (!productConnector.product) {
       return {
-        title: `${t("Diqqat!")} ${k}-${t("qatorda mahsulot nomi kiritilmagan.")}`,
+        title: `${t('Diqqat!')} ${k}-${t(
+          'qatorda mahsulot nomi kiritilmagan.'
+        )}`,
         description: t('Iltimos mahsulot nomini kiriting.'),
         status: 'error',
       };

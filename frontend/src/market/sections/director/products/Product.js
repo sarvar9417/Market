@@ -486,7 +486,6 @@ export const Product = () => {
   return (
     <>
       {/* {loading ? <Loader /> : ''} */}
-
       <div className='overflow-x-auto'>
         <CreateProduct
           setProduct={setProduct}
