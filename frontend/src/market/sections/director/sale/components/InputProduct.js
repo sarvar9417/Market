@@ -5,7 +5,7 @@ export const InputProduct = ({ setCounts, product, changeEnter, loading }) => {
   return (
     <div>
       <p className='font-bold flex justify-between'>
-        <span className='text-black'>{t("Mahsulot")}:</span>
+        <span className='text-black'>{t('Mahsulot')}:</span>
         <span>
           {product && product.product.code + '-' + product.product.name}{' '}
         </span>
@@ -32,9 +32,15 @@ export const InputProduct = ({ setCounts, product, changeEnter, loading }) => {
               />
             </td>
             <td className='border text-base p-0 font-bold px-2 w-1/3'>
-              {product &&
-                product.unitprice &&
-                Math.round(product.unitprice * 100) / 100}
+              <input
+                onKeyUp={changeEnter}
+                type='number'
+                onChange={setCounts}
+                loading={loading}
+                name='unitprice'
+                value={product ? product.unitprice : ''}
+                className='w-full outline-none text-right font-bold'
+              />
             </td>
             <td className='border text-base p-0 font-bold px-2 w-1/3'>
               {product && Math.round(product.totalprice * 100) / 100} USD

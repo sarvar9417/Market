@@ -317,7 +317,7 @@ export const Navbar = ({ baseUrl }) => {
                       : 'unactive-page'
                   }>
                   {t('Sotuv')}{' '}
-                  <FontAwesomeIcon icon={faAngleDown} className='text-[10px]' />
+                  <FontAwesomeIcon icon={faAngleDown} className='text-[10px] pointer-events-none' />
                 </Link>
                 <ul
                   className={
