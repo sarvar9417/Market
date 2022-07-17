@@ -938,7 +938,7 @@ module.exports.getproductsale = async (req, res) => {
           localField: 'price', // qo'shilgan schemaga qanday nom bilan yozulgani
           foreignField: '_id', // qaysi propertysi qo'shilgani
           as: 'price', // qanday nom bilan chiqishi
-          pipeline: [{ $project: { sellingprice: 1 } }],
+          pipeline: [{ $project: { sellingprice: 1, incomingprice: 1 } }],
         },
       },
       {

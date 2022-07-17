@@ -1,7 +1,13 @@
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { t } from 'i18next';
-import React from 'react';
+import React, { useState } from 'react';
 
 export const InputProduct = ({ setCounts, product, changeEnter, loading }) => {
+  const [incomingprice, setIncomingprice] = useState(false);
+  const changeincomingPrice = () => {
+    setIncomingprice(!incomingprice);
+  };
   return (
     <div>
       <p className='font-bold flex justify-between'>
@@ -10,7 +16,7 @@ export const InputProduct = ({ setCounts, product, changeEnter, loading }) => {
           {product && product.product.code + '-' + product.product.name}{' '}
         </span>
       </p>
-      <table className='table'>
+      <table className='table m-0'>
         <thead>
           <tr>
             <th className='border text-base p-0 font-bold'>{t('Soni')}</th>
@@ -47,6 +53,26 @@ export const InputProduct = ({ setCounts, product, changeEnter, loading }) => {
             </td>
           </tr>
         </tbody>
+        <tfoot>
+          <tr>
+            <td className='text-left py-0'>
+              {incomingprice ? (
+                <FontAwesomeIcon icon={faEye} onClick={changeincomingPrice} />
+              ) : (
+                <FontAwesomeIcon
+                  icon={faEyeSlash}
+                  onClick={changeincomingPrice}
+                />
+              )}
+            </td>
+            <td className='text-base font-bold text-right py-0'>
+              {incomingprice &&
+                product.product &&
+                product.product.price &&
+                product.product.price.incomingprice.toLocaleString('ru-RU')}
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </div>
   );
