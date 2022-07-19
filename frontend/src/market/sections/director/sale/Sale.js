@@ -444,11 +444,6 @@ export const Sale = () => {
     setVisible(true);
   };
 
-  //====================================================================
-  //====================================================================
-
-  // ===================================================================
-  // ===================================================================
   // Saleconnectors
   const [saleconnectors, setSaleConnectors] = useState([]);
   const [search, setSearch] = useState({ id: '', client: '' });
@@ -525,11 +520,7 @@ export const Sale = () => {
     setCurrentPage(0);
     setCountPage(e.target.value);
   }, []);
-  //====================================================================
-  //====================================================================
 
-  //====================================================================
-  //====================================================================
   // clients
   const [clients, setClients] = useState([]);
   const [storageClients, setStorageClients] = useState([]);
@@ -656,11 +647,6 @@ export const Sale = () => {
     }
   };
 
-  //====================================================================
-  //====================================================================
-
-  //====================================================================
-  //====================================================================
   // Discount and Payment
   const [currenttemporary, setCurrentTemporary] = useState();
   const deleteTemporarys = useCallback(
@@ -2205,8 +2191,6 @@ export const Sale = () => {
     clearDatas,
     prePaymentSaleConnector,
   ]);
-  //====================================================================
-  //====================================================================
 
   const changeEnter = (e) => {
     if (e.key === 'Enter') {
@@ -2378,9 +2362,59 @@ export const Sale = () => {
     });
   };
 
+  //CURRENCY
+  const [currency, setCurrency] = useState('UZS');
+
+  const changeCurrency = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/exchangerate/currencyupdate`,
+        'PUT',
+        {
+          market: auth.market._id,
+          currency: currency === 'UZS' ? 'USD' : 'UZS',
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      localStorage.setItem('data', data);
+      setCurrency(currency === 'UZS' ? 'USD' : 'UZS');
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [auth, request, notify, currency]);
+
+  const getCurrency = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/exchangerate/currencyget`,
+        'PUT',
+        {
+          market: auth.market._id,
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setCurrency(data.currency);
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [auth, request, notify]);
+
   useEffect(() => {
     getTemporarys();
-  }, [getTemporarys]);
+    getCurrency();
+  }, [getTemporarys, getCurrency]);
   //====================================================================
   //====================================================================
   // UseEffect
@@ -2407,7 +2441,6 @@ export const Sale = () => {
   ]);
   //====================================================================
   //====================================================================
-
   return (
     <div className='m-3'>
       <div className={`${checkTemporary ? '' : 'hidden'}`}>
@@ -2482,6 +2515,8 @@ export const Sale = () => {
       </div>
 
       <RouterBtns
+        currency={currency}
+        changeCurrency={changeCurrency}
         changeVisibleTemporary={changeVisibleTemporary}
         changeSellingCard={changeSellingCard}
         changeSellingEditCard={changeSellingEditCard}
@@ -2518,6 +2553,7 @@ export const Sale = () => {
       </div>
 
       <Sales
+        currency={currency}
         keyPressed={searchKeypress}
         changeSearch={changeSearch}
         getSaleConnectorsExcel={getSaleConnectorsExcel}

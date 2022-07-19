@@ -18,7 +18,6 @@ import { t } from 'i18next';
 import { ExcelTable } from './Product/ExcelTable';
 import { Loader } from '../../../loader/Loader';
 import { Currency } from '../components/Currency';
-import { AutoCurrency } from '../components/AutoCurrency';
 
 export const Product = () => {
   //====================================================================
@@ -604,7 +603,7 @@ export const Product = () => {
       {loading ? <Loader /> : ''}
       <div className='m-3 '>
         <div className='font-bold text-right'>
-          Asosiy valyuta kursi:{' '}
+          Asosiy valyuta turi:{' '}
           <Currency
             value={currency === 'UZS' ? true : false}
             onToggle={changeCurrency}

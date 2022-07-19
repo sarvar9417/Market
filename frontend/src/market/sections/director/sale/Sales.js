@@ -4,6 +4,7 @@ import { TableHead } from './Sales/TableHead';
 import { Rows } from './Sales/Rows';
 
 export const Sales = ({
+  currency,
   keyPressed,
   changeSearch,
   getSaleConnectorsExcel,
@@ -45,6 +46,7 @@ export const Sales = ({
         {currentProducts.map((saleconnector, index) => {
           return (
             <Rows
+              currency={currency}
               countPage={countPage}
               changePrepayment={changePrepayment}
               Clear={Clear}

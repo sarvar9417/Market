@@ -8,6 +8,7 @@ import {
   PrintBtnLoad,
 } from '../../components/TableButtons';
 export const Rows = ({
+  currency,
   countPage,
   changePrepayment,
   Clear,
@@ -31,42 +32,72 @@ export const Rows = ({
       </li>
       <li
         onClick={() => changePrepayment(saleconnector)}
-        className='td font-bold col-span-2 text-right border-r-2 border-r-green-700 hover:bg-blue-200 flex justify-between'
-      >
+        className='td font-bold col-span-2 text-right border-r-2 border-r-green-700 hover:bg-blue-200 flex justify-between'>
         <span className='text-white'>{t("To'lov")}</span>
         <span>
-          {saleconnector.products
-            .reduce((summ, product) => {
-              return summ + product.totalprice;
-            }, 0)
-            .toLocaleString('ru-RU')}
+          {currency === 'UZS'
+            ? (
+                Math.round(
+                  saleconnector.products.reduce((summ, product) => {
+                    return summ + product.totalpriceuzs;
+                  }, 0) * 1
+                ) / 1
+              ).toLocaleString('ru-RU')
+            : saleconnector.products
+                .reduce((summ, product) => {
+                  return summ + product.totalprice;
+                }, 0)
+                .toLocaleString('ru-RU')}
           {'  '}
-          <span className='text-green-900'>USD</span>
+          <span className='text-green-900'>{currency}</span>
         </span>
       </li>
       <li className='td border-r-2 border-orange-500 font-bold text-right'>
         <span>
-          {saleconnector.discounts
-            .reduce((summ, discount) => {
-              return summ + discount.discount;
-            }, 0)
-            .toLocaleString('ru-RU')}
+          {currency === 'UZS'
+            ? (
+                Math.round(
+                  saleconnector.discounts.reduce((summ, discount) => {
+                    return summ + discount.discountuzs;
+                  }, 0) * 1
+                ) / 1
+              ).toLocaleString('ru-RU')
+            : saleconnector.discounts
+                .reduce((summ, discount) => {
+                  return summ + discount.discount;
+                }, 0)
+                .toLocaleString('ru-RU')}
         </span>
         {'  '}
       </li>
       <li className='td border-r-2 border-red-600 font-bold text-right'>
         <span>
-          {(
-            saleconnector.products.reduce((summ, product) => {
-              return summ + product.totalprice;
-            }, 0) -
-            saleconnector.payments.reduce((summ, payment) => {
-              return summ + payment.payment;
-            }, 0) -
-            saleconnector.discounts.reduce((summ, discount) => {
-              return summ + discount.discount;
-            }, 0)
-          ).toLocaleString('ru-RU')}
+          {currency === 'UZS'
+            ? (
+                Math.round(
+                  saleconnector.products.reduce((summ, product) => {
+                    return summ + product.totalpriceuzs;
+                  }, 0) -
+                    saleconnector.payments.reduce((summ, payment) => {
+                      return summ + payment.paymentuzs;
+                    }, 0) -
+                    saleconnector.discounts.reduce((summ, discount) => {
+                      return summ + discount.discountuzs;
+                    }, 0) *
+                      1
+                ) / 1
+              ).toLocaleString('ru-RU')
+            : (
+                saleconnector.products.reduce((summ, product) => {
+                  return summ + product.totalprice;
+                }, 0) -
+                saleconnector.payments.reduce((summ, payment) => {
+                  return summ + payment.payment;
+                }, 0) -
+                saleconnector.discounts.reduce((summ, discount) => {
+                  return summ + discount.discount;
+                }, 0)
+              ).toLocaleString('ru-RU')}
         </span>
         {'  '}
       </li>
@@ -84,8 +115,7 @@ export const Rows = ({
         ) : (
           <button
             onClick={() => changeCheck(saleconnector)}
-            className='px-4 bg-blue-700 text-white rounded-xl hover:bg-blue-800'
-          >
+            className='px-4 bg-blue-700 text-white rounded-xl hover:bg-blue-800'>
             <FontAwesomeIcon icon={faPrint} />
           </button>
         )}
@@ -99,8 +129,7 @@ export const Rows = ({
               addProducts(saleconnector);
               Clear();
             }}
-            className='px-4 bg-green-700 text-white rounded-xl hover:bg-green-800'
-          >
+            className='px-4 bg-green-700 text-white rounded-xl hover:bg-green-800'>
             <FontAwesomeIcon icon={faAdd} />
           </button>
         )}
@@ -111,8 +140,7 @@ export const Rows = ({
         ) : (
           <button
             onClick={() => editHandler(saleconnector)}
-            className='px-4 bg-red-600 text-white rounded-xl hover:bg-red-700'
-          >
+            className='px-4 bg-red-600 text-white rounded-xl hover:bg-red-700'>
             <FontAwesomeIcon icon={faSync} />
           </button>
         )}
