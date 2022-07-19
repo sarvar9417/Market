@@ -9,10 +9,9 @@ import { t } from 'i18next';
 import { CreateBody } from './Exchangerate/CreateBody';
 import { TableHead } from './Exchangerate/TableHead';
 import { Rows } from './Exchangerate/Rows';
+import { Currency } from '../components/Currency';
 
 export const Exchangerate = () => {
-  //====================================================================
-  //====================================================================
   const [modal, setModal] = useState(false);
 
   const clearInputs = useCallback(() => {
@@ -21,11 +20,7 @@ export const Exchangerate = () => {
       input.value = '';
     }
   }, []);
-  //====================================================================
-  //====================================================================
 
-  //====================================================================
-  //====================================================================
   const toast = useToast();
 
   const notify = useCallback(
@@ -41,11 +36,6 @@ export const Exchangerate = () => {
     },
     [toast]
   );
-  //====================================================================
-  //====================================================================
-
-  //====================================================================
-  //====================================================================
   const { request, loading } = useHttp();
   const auth = useContext(AuthContext);
 
@@ -56,11 +46,7 @@ export const Exchangerate = () => {
   const [exchangerate, setExchangerate] = useState({
     market: auth.market && auth.market._id,
   });
-  //====================================================================
-  //====================================================================
 
-  //====================================================================
-  //====================================================================
   const [exchangerates, setExchangerates] = useState([]);
 
   const getExchangerates = useCallback(async () => {
@@ -82,11 +68,6 @@ export const Exchangerate = () => {
       });
     }
   }, [request, auth, notify]);
-  //====================================================================
-  //====================================================================
-
-  //====================================================================
-  //====================================================================
 
   const createHandler = useCallback(async () => {
     try {
@@ -195,36 +176,78 @@ export const Exchangerate = () => {
       });
     }
   }, [auth, request, remove, notify, getExchangerates, clearInputs]);
-  //====================================================================
-  //====================================================================
-
-  //====================================================================
-  //====================================================================
 
   const inputHandler = (e) => {
     setExchangerate({ ...exchangerate, exchangerate: e.target.value });
   };
 
-  //====================================================================
-  //====================================================================
+  const [currency, setCurrency] = useState('UZS');
 
-  //====================================================================
-  //====================================================================
-  const [n, setN] = useState();
-  useEffect(() => {
-    if (!n) {
-      setN(1);
-      getExchangerates();
+  const changeCurrency = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/exchangerate/currencyupdate`,
+        'PUT',
+        {
+          market: auth.market._id,
+          currency: currency === 'UZS' ? 'USD' : 'UZS',
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      localStorage.setItem('data', data);
+      setCurrency(currency === 'UZS' ? 'USD' : 'UZS');
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
     }
-  }, [getExchangerates, n]);
-  //====================================================================
-  //====================================================================
+  }, [auth, request, notify, currency]);
+
+  const getCurrency = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/exchangerate/currencyget`,
+        'PUT',
+        {
+          market: auth.market._id,
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setCurrency(data.currency);
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [auth, request, notify]);
+
+  useEffect(() => {
+    getExchangerates();
+    getCurrency();
+  }, [getExchangerates, getCurrency]);
 
   return (
     <>
       {loading ? <Loader /> : ''}
 
       <div className='overflow-x-auto'>
+        <div className='m-3 '>
+          <p className='font-bold'>
+            Asosiy valyuta kursi:{' '}
+            <Currency
+              value={currency === 'UZS' ? true : false}
+              onToggle={changeCurrency}
+            />
+          </p>
+        </div>
         <div className='m-3 min-w-[700px]'>
           <CreateBody
             exchangerate={exchangerate}

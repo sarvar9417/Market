@@ -24,6 +24,7 @@ module.exports.registerAll = async (req, res) => {
     const all = [];
     for (const newproduct of products) {
       delete newproduct.oldprice;
+      delete newproduct.oldpriceuzs;
       const { error } = validateIncomingAll(newproduct);
       if (error) {
         return res.status(400).json({
@@ -31,8 +32,16 @@ module.exports.registerAll = async (req, res) => {
         });
       }
 
-      const { product, unit, supplier, pieces, unitprice, totalprice } =
-        newproduct;
+      const {
+        product,
+        unit,
+        supplier,
+        pieces,
+        unitprice,
+        totalprice,
+        unitpriceuzs,
+        totalpriceuzs,
+      } = newproduct;
 
       const marke = await Market.findById(market);
 
@@ -65,6 +74,8 @@ module.exports.registerAll = async (req, res) => {
         pieces,
         unitprice: Math.round(unitprice * 10000) / 10000,
         totalprice: Math.round(totalprice * 10000) / 10000,
+        unitpriceuzs: Math.round(unitpriceuzs * 10000) / 10000,
+        totalpriceuzs: Math.round(totalpriceuzs * 10000) / 10000,
         unit: unit._id,
         market,
         user,
@@ -75,6 +86,7 @@ module.exports.registerAll = async (req, res) => {
 
     let p = [];
     let t = 0;
+    let tuzs = 0;
 
     const newIncomingConnector = new IncomingConnector({
       supplier: products[0].supplier._id,
@@ -90,21 +102,16 @@ module.exports.registerAll = async (req, res) => {
       produc.total = produc.total + product.pieces;
       await produc.save();
 
-      const productprice = await ProductPrice.find({
+      const productprice = await ProductPrice.findOne({
         product: produc._id,
       });
-      const price =
-        productprice.length > 0 &&
-        productprice[productprice.length - 1].sellingprice
-          ? Math.round(
-              productprice[productprice.length - 1].sellingprice * 10000
-            ) / 10000
-          : 0;
+
       const newProductPrice = new ProductPrice({
-        // procient: productprice.procient,
         product: product.product,
         incomingprice: Math.round(product.unitprice * 10000) / 10000,
-        sellingprice: price,
+        incomingpriceuzs: Math.round(product.unitpriceuzs * 10000) / 10000,
+        sellingprice: productprice.sellingprice,
+        sellingpriceuzs: productprice.sellingpriceuzs,
         market,
       });
 
@@ -115,9 +122,12 @@ module.exports.registerAll = async (req, res) => {
       await produc.save();
       p.push(product._id);
       t += Math.round(product.totalprice * 10000) / 10000;
+      tuzs += Math.round(product.totalpriceuzs * 10000) / 10000;
     }
 
-    (newIncomingConnector.total = t), (newIncomingConnector.incoming = p);
+    newIncomingConnector.total = Math.round(t * 10000) / 10000;
+    newIncomingConnector.totaluzs = Math.round(tuzs * 10000) / 10000;
+    newIncomingConnector.incoming = p;
 
     await newIncomingConnector.save();
 
@@ -135,6 +145,7 @@ module.exports.registerAll = async (req, res) => {
 
     res.status(201).send(connectors);
   } catch (error) {
+    console.log(error);
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
@@ -476,7 +487,7 @@ module.exports.getConnectors = async (req, res) => {
       },
     })
       .sort({ _id: -1, supplier: -1 })
-      .select('supplier incoming total createdAt')
+      .select('supplier incoming total totaluzs createdAt')
       .populate('supplier', 'name')
       .populate('incoming', 'pieces');
 

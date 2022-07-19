@@ -27,6 +27,8 @@ function validateProduct(product) {
     code: Joi.string(),
     incomingprice: Joi.number(),
     sellingprice: Joi.number(),
+    incomingpriceuzs: Joi.number(),
+    sellingpriceuzs: Joi.number(),
     total: Joi.number(),
     category: Joi.string(),
     producttype: Joi.string(),
@@ -47,6 +49,8 @@ function validateProductExcel(product) {
     brand: Joi.string(),
     incomingprice: Joi.number(),
     sellingprice: Joi.number(),
+    incomingpriceuzs: Joi.number(),
+    sellingpriceuzs: Joi.number(),
     total: Joi.number(),
   });
 

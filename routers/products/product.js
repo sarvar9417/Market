@@ -54,8 +54,16 @@ module.exports.registerAll = async (req, res) => {
           error: error.message,
         });
       }
-      const { name, code, unit, incomingprice, sellingprice, total } = product;
-
+      const {
+        name,
+        code,
+        unit,
+        incomingprice,
+        sellingprice,
+        incomingpriceuzs,
+        sellingpriceuzs,
+        total,
+      } = product;
       let categor = await Category.findOne({
         code: code.slice(0, 3),
         market,
@@ -95,9 +103,14 @@ module.exports.registerAll = async (req, res) => {
         sellingprice: sellingprice
           ? Math.round(sellingprice * 10000) / 10000
           : 0,
+        incomingpriceuzs: incomingpriceuzs
+          ? Math.round(incomingpriceuzs * 10000) / 10000
+          : 0,
+        sellingpriceuzs: sellingpriceuzs
+          ? Math.round(sellingpriceuzs * 10000) / 10000
+          : 0,
         market,
       });
-
       await newPrice.save();
       newProduct.price = newPrice._id;
 
@@ -156,7 +169,10 @@ module.exports.registerAll = async (req, res) => {
     })
       .sort({ code: 1 })
       .select('total market category')
-      .populate('price', 'incomingprice sellingprice')
+      .populate(
+        'price',
+        'incomingprice sellingprice incomingpriceuzs sellingpriceuzs'
+      )
       .populate({
         path: 'productdata',
         select: 'name code',
@@ -190,8 +206,17 @@ module.exports.register = async (req, res) => {
       });
     }
 
-    const { name, code, market, unit, total, incomingprice, sellingprice } =
-      req.body.product;
+    const {
+      name,
+      code,
+      market,
+      unit,
+      total,
+      incomingprice,
+      sellingprice,
+      incomingpriceuzs,
+      sellingpriceuzs,
+    } = req.body.product;
     const marke = await Market.findById(market);
 
     if (!marke) {
@@ -252,6 +277,12 @@ module.exports.register = async (req, res) => {
         ? Math.round(incomingprice * 10000) / 10000
         : 0,
       sellingprice: sellingprice ? Math.round(sellingprice * 10000) / 10000 : 0,
+      incomingpriceuzs: incomingpriceuzs
+        ? Math.round(incomingpriceuzs * 10000) / 10000
+        : 0,
+      sellingpriceuzs: sellingpriceuzs
+        ? Math.round(sellingpriceuzs * 10000) / 10000
+        : 0,
       market,
     });
 
@@ -288,7 +319,10 @@ module.exports.register = async (req, res) => {
     })
       .sort({ code: 1 })
       .select('total market category')
-      .populate('price', 'incomingprice sellingprice')
+      .populate(
+        'price',
+        'incomingprice sellingprice incomingpriceuzs sellingpriceuzs'
+      )
       .populate({
         path: 'productdata',
         select: 'name code',
@@ -307,6 +341,7 @@ module.exports.register = async (req, res) => {
       count,
     });
   } catch (error) {
+    console.log(error);
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
@@ -324,6 +359,8 @@ module.exports.update = async (req, res) => {
       priceid,
       incomingprice,
       sellingprice,
+      incomingpriceuzs,
+      sellingpriceuzs,
       total,
       productdata,
     } = req.body.product;
@@ -350,6 +387,8 @@ module.exports.update = async (req, res) => {
     await ProductPrice.findByIdAndUpdate(priceid, {
       incomingprice: Math.round(incomingprice * 10000) / 10000,
       sellingprice: Math.round(sellingprice * 10000) / 10000,
+      incomingpriceuzs: Math.round(incomingpriceuzs * 10000) / 10000,
+      sellingpriceuzs: Math.round(sellingpriceuzs * 10000) / 10000,
     });
     product.unit = unit;
     product.total = total;
@@ -406,7 +445,10 @@ module.exports.update = async (req, res) => {
     })
       .sort({ code: 1 })
       .select('total market category')
-      .populate('price', 'incomingprice sellingprice')
+      .populate(
+        'price',
+        'incomingprice sellingprice incomingpriceuzs sellingpriceuzs'
+      )
       .populate({
         path: 'productdata',
         select: 'name code',
@@ -554,7 +596,10 @@ module.exports.getAll = async (req, res) => {
       .populate('producttype', 'name')
       .populate('unit', 'name')
       .populate('brand', 'name')
-      .populate('price', 'incomingprice sellingprice');
+      .populate(
+        'price',
+        'incomingprice sellingprice incomingpriceuzs sellingpriceuzs'
+      );
 
     res.send(products);
   } catch (error) {
@@ -579,7 +624,10 @@ module.exports.getProducts = async (req, res) => {
     })
       .sort({ code: 1 })
       .select('total market category')
-      .populate('price', 'incomingprice sellingprice')
+      .populate(
+        'price',
+        'incomingprice sellingprice incomingpriceuzs sellingpriceuzs'
+      )
       .populate({
         path: 'productdata',
         select: 'name code',
@@ -593,6 +641,7 @@ module.exports.getProducts = async (req, res) => {
 
     const count = filter.length;
     filter = filter.splice(currentPage * countPage, countPage);
+
     res.status(201).json({
       products: filter,
       count,
@@ -702,7 +751,10 @@ module.exports.getAllIncoming = async (req, res) => {
     })
       .sort({ code: 1 })
       .select('total market category')
-      .populate('price', 'incomingprice sellingprice')
+      .populate(
+        'price',
+        'incomingprice sellingprice incomingpriceuzs sellingpriceuzs'
+      )
       .populate({
         path: 'productdata',
         select: 'name code',
@@ -715,7 +767,6 @@ module.exports.getAllIncoming = async (req, res) => {
 
     res.send(products);
   } catch (error) {
-    console.log(error);
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };

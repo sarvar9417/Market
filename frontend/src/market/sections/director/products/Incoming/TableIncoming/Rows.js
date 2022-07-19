@@ -7,6 +7,7 @@ import {
 } from '../../../components/TableButtons';
 
 export const Rows = ({
+  currency,
   product,
   currentPage,
   index,
@@ -15,6 +16,7 @@ export const Rows = ({
   changeDeleteProduct,
   loading,
 }) => {
+  console.log(currency);
   return (
     <ul className='tr font-bold'>
       <li className='no'>{currentPage * countPage + 1 + index}</li>
@@ -30,12 +32,15 @@ export const Rows = ({
         <span className='text-orange-700'>{product.unit.name}</span>
       </li>
       <li className='td border-blue-800  border-r-2 text-right'>
-        {product.unitprice.toLocaleString('ru-RU')}{' '}
-        <span className='text-blue-900'>USD</span>
+        {currency === 'UZS'
+          ? product.unitpriceuzs.toLocaleString('ru-RU')
+          : product.unitprice.toLocaleString('ru-RU')}{' '}
       </li>
       <li className='td border-green-700  border-r-2 text-right col-span-2 '>
-        {product.totalprice.toLocaleString('ru-RU')}{' '}
-        <span className='text-green-800'>USD</span>
+        {currency === 'UZS'
+          ? product.totalpriceuzs.toLocaleString('ru-RU')
+          : product.totalprice.toLocaleString('ru-RU')}{' '}
+        <span className='text-green-800'>{currency}</span>
       </li>
       <li className='td border-r text-right'>
         {loading ? (

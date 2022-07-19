@@ -4,6 +4,7 @@ import { CreateInput } from './createProduct/CreateInput';
 // import { CreateSelect } from './createProduct/CreateSelect';
 
 export const CreateProduct = ({
+  currency,
   product,
   inputHandler,
   keyPressed,
@@ -16,8 +17,9 @@ export const CreateProduct = ({
 }) => {
   return (
     <div className='shadow-xl m-3'>
-      <div className='card-header text-lg'>{t("Mahsulot yaratish")}</div>
+      <div className='card-header text-lg'>{t('Mahsulot yaratish')}</div>
       <CreateInput
+        currency={currency}
         units={units}
         loading={loading}
         changeUnit={changeUnit}
