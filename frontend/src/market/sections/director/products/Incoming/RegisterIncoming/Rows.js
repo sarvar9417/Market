@@ -7,6 +7,7 @@ import {
 } from '../../../components/TableButtons';
 
 export const Rows = ({
+  currency,
   loading,
   index,
   product,
@@ -18,12 +19,20 @@ export const Rows = ({
       <li className='no'>{1 + index}</li>
       <li className='no'>{product.product.code}</li>
       <li className='col-span-3 td border-r'>{product.product.name}</li>
-      <li className='td border-r text-right'>{(product.pieces).toLocaleString('ru-RU')}</li>
-      <li className='col-span-2 td border-r text-right'>
-        {(product.unitprice).toLocaleString('ru-RU')} USD
+      <li className='td border-r text-right'>
+        {product.pieces.toLocaleString('ru-RU')}
       </li>
       <li className='col-span-2 td border-r text-right'>
-        {(product.totalprice).toLocaleString('ru-RU')} USD
+        {currency === 'UZS'
+          ? product.unitpriceuzs.toLocaleString('ru-RU')
+          : product.unitprice.toLocaleString('ru-RU')}{' '}
+        {currency}
+      </li>
+      <li className='col-span-2 td border-r text-right'>
+        {currency === 'UZS'
+          ? product.totalpriceuzs.toLocaleString('ru-RU')
+          : product.totalprice.toLocaleString('ru-RU')}{' '}
+        {currency}
       </li>
       <li className='td-btn border-r'>
         {loading ? (

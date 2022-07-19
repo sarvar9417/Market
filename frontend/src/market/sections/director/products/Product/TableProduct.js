@@ -4,6 +4,7 @@ import { TableHeader } from './tableProduct/TableHeader';
 import { TableHead } from './tableProduct/TableHead';
 
 export const TableProduct = ({
+  currency,
   search,
   changeHandler,
   setRemove,
@@ -36,6 +37,8 @@ export const TableProduct = ({
       priceid: p.price._id,
       incomingprice: p.price.incomingprice,
       sellingprice: p.price.sellingprice,
+      incomingpriceuzs: p.price.incomingpriceuzs,
+      sellingpriceuzs: p.price.sellingpriceuzs,
     });
   };
 
@@ -64,6 +67,7 @@ export const TableProduct = ({
       {currentProducts &&
         currentProducts.map((p, index) => (
           <TableRow
+            currency={currency}
             countPage={countPage}
             key={index}
             currentPage={currentPage}

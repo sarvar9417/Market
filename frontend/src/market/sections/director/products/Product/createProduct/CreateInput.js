@@ -6,6 +6,7 @@ import { Input } from '../../../components/Input';
 const animatedComponents = makeAnimated();
 
 export const CreateInput = ({
+  currency,
   product,
   keyPressed,
   inputHandler,
@@ -59,7 +60,11 @@ export const CreateInput = ({
       <div className='flex justify-between font-bold'>
         <p className='font-bold'>{t('Keltirilgan narxi')}:</p>
         <Input
-          data={product.incomingprice}
+          data={
+            currency === 'UZS'
+              ? product.incomingpriceuzs
+              : product.incomingprice
+          }
           keyPressed={keyPressed}
           changeHandler={inputHandler}
           loading={loading}
@@ -73,7 +78,9 @@ export const CreateInput = ({
       <div className='flex justify-between font-bold'>
         <p className='font-bold'>{t('Sotish narxi')}:</p>
         <Input
-          data={product.sellingprice}
+          data={
+            currency === 'UZS' ? product.sellingpriceuzs : product.sellingprice
+          }
           keyPressed={keyPressed}
           changeHandler={inputHandler}
           placeholder={t('Sotish narxini kiriting')}

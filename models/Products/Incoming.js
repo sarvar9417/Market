@@ -5,6 +5,8 @@ const incoming = new Schema(
   {
     totalprice: { type: Number, required: true },
     unitprice: { type: Number, required: true },
+    totalpriceuzs: { type: Number, required: true },
+    unitpriceuzs: { type: Number, required: true },
     pieces: { type: Number, required: true },
     file: { type: String },
     product: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
@@ -33,6 +35,8 @@ function validateIncoming(incoming) {
   const schema = Joi.object({
     totalprice: Joi.number().required(),
     unitprice: Joi.number().required(),
+    totalpriceuzs: Joi.number().required(),
+    unitpriceuzs: Joi.number().required(),
     pieces: Joi.number().required(),
     product: Joi.string().required(),
     category: Joi.string(),
@@ -51,6 +55,8 @@ function validateIncomingAll(incoming) {
   const schema = Joi.object({
     totalprice: Joi.number().required(),
     unitprice: Joi.number().required(),
+    totalpriceuzs: Joi.number().required(),
+    unitpriceuzs: Joi.number().required(),
     product: Joi.object().required(),
     category: Joi.object(),
     producttype: Joi.object(),

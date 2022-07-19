@@ -110,6 +110,29 @@ export const Incoming = () => {
     [toast]
   );
 
+  // Exchangerate
+  const [exchangerate, setExchangerate] = useState({ exchangerate: 0 });
+
+  const getExchangerate = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/exchangerate/get`,
+
+        'POST',
+        { market: auth.market._id },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setExchangerate(data);
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [request, auth, notify]);
   //====================================================================
   //====================================================================
   const [reportSuppliersVisible, setReportSuppliersVisible] = useState(false);
@@ -201,6 +224,8 @@ export const Incoming = () => {
   const [incoming, setIncoming] = useState({
     totalprice: 0,
     unitprice: 0,
+    totalpriceuzs: 0,
+    unitpriceuzs: 0,
     pieces: 0,
     user: auth.userId,
     supplier: '',
@@ -250,6 +275,8 @@ export const Incoming = () => {
       return setIncoming({
         totalprice: 0,
         unitprice: 0,
+        totalpriceuzs: 0,
+        unitpriceuzs: 0,
         pieces: 0,
         user: auth.userId,
         supplier: '',
@@ -274,6 +301,8 @@ export const Incoming = () => {
     setIncoming({
       totalprice: 0,
       unitprice: 0,
+      totalpriceuzs: 0,
+      unitpriceuzs: 0,
       pieces: 0,
       user: auth.userId,
       supplier,
@@ -284,6 +313,7 @@ export const Incoming = () => {
       },
       unit: e.product.unit && e.product.unit,
       oldprice: e.product.price.incomingprice,
+      oldpriceuzs: e.product.price.incomingpriceuzs,
     });
     setModal(true);
   };
@@ -309,6 +339,8 @@ export const Incoming = () => {
     setIncoming({
       totalprice: 0,
       unitprice: 0,
+      totalpriceuzs: 0,
+      unitpriceuzs: 0,
       pieces: 0,
       user: auth.userId,
       supplier: '',
@@ -316,6 +348,7 @@ export const Incoming = () => {
       unit: '',
     });
     setModal(false);
+    clearProducts();
   };
 
   const editIncoming = (product, index) => {
@@ -335,6 +368,7 @@ export const Incoming = () => {
   //====================================================================
   // CONNECTORS
   const [totalprice, setTotalPrice] = useState(0);
+  const [totalpriceuzs, setTotalPriceUzs] = useState(0);
   const [totalproducts, setTotalProducts] = useState(0);
   const [totalproducttypes, setTotalProductTypes] = useState(0);
 
@@ -350,6 +384,7 @@ export const Incoming = () => {
       return;
     }
     let price = 0;
+    let priceuzs = 0;
     let producttype = 0;
     let product = 0;
     let connectorss = [];
@@ -357,6 +392,7 @@ export const Incoming = () => {
     for (const key in connectors) {
       if (key === '0') {
         connector.total = connectors[key].total;
+        connector.totaluzs = connectors[key].totaluzs;
         connector.producttypes = connectors[key].incoming.length;
         connector.products = connectors[key].incoming.reduce((summ, produc) => {
           return summ + produc.pieces;
@@ -369,6 +405,7 @@ export const Incoming = () => {
           new Date(connectors[parseInt(key) - 1].createdAt).toLocaleDateString()
         ) {
           connector.total += connectors[key].total;
+          connector.totaluzs += connectors[key].totaluzs;
           connector.producttypes += connectors[key].incoming.length;
           connector.suppliers += 1;
           connector.products += connectors[key].incoming.reduce(
@@ -381,6 +418,7 @@ export const Incoming = () => {
           connectorss.push(connector);
           connector = {};
           connector.total = connectors[key].total;
+          connector.totaluzs = connectors[key].totaluzs;
           connector.producttypes = connectors[key].incoming.length;
           connector.products = connectors[key].incoming.reduce(
             (summ, produc) => {
@@ -393,6 +431,7 @@ export const Incoming = () => {
         }
       }
       price += connectors[key].total;
+      priceuzs += connectors[key].totaluzs;
       producttype += connectors[key].incoming.length;
       product += connectors[key].incoming.reduce((summ, produc) => {
         return summ + produc.pieces;
@@ -400,6 +439,7 @@ export const Incoming = () => {
     }
     connectorss.push(connector);
     setTotalPrice(price);
+    setTotalPriceUzs(priceuzs);
     setTotalProducts(product);
     setSupplier({});
     setTotalProductTypes(producttype);
@@ -616,18 +656,62 @@ export const Incoming = () => {
         totalprice:
           val === ''
             ? ''
+            : currency === 'UZS'
+            ? Math.round(
+                incoming.unitprice *
+                  (e.target.value / exchangerate.exchangerate) *
+                  10000
+              ) / 10000
             : Math.round(incoming.unitprice * e.target.value * 10000) / 10000,
+        totalpriceuzs:
+          val === ''
+            ? ''
+            : currency === 'UZS'
+            ? Math.round(incoming.unitpriceuzs * e.target.value * 10000) / 10000
+            : Math.round(
+                incoming.unitpriceuzs *
+                  (e.target.value * exchangerate.exchangerate) *
+                  10000
+              ) / 10000,
       });
     }
     if (e.target.name === 'unitprice') {
       let val = e.target.value;
       setIncoming({
         ...incoming,
-        unitprice: val === '' ? '' : Math.round(val * 10000) / 10000,
+        unitprice:
+          val === ''
+            ? ''
+            : currency === 'UZS'
+            ? Math.round((val / exchangerate.exchangerate) * 10000) / 10000
+            : Math.round(val * 10000) / 10000,
+        unitpriceuzs:
+          val === ''
+            ? ''
+            : currency === 'UZS'
+            ? Math.round(val * 10000) / 10000
+            : Math.round(val * exchangerate.exchangerate * 10000) / 10000,
         totalprice:
           val === ''
             ? '0'
+            : currency === 'UZS'
+            ? Math.round(
+                (e.target.value / exchangerate.exchangerate) *
+                  incoming.pieces *
+                  10000
+              ) / 10000
             : Math.round(e.target.value * incoming.pieces * 10000) / 10000,
+        totalpriceuzs:
+          val === ''
+            ? '0'
+            : currency === 'UZS'
+            ? Math.round(e.target.value * incoming.pieces * 10000) / 10000
+            : Math.round(
+                e.target.value *
+                  exchangerate.exchangerate *
+                  incoming.pieces *
+                  10000
+              ) / 10000,
       });
     }
     if (e.target.name === 'totalprice') {
@@ -637,8 +721,31 @@ export const Incoming = () => {
         unitprice:
           val === '' || val === 0
             ? ''
-            : Math.round((e.target.value / incoming.pieces) * 10000) / 10000,
-        totalprice: val === '' ? '' : Math.round(val * 10000) / 10000,
+            : currency === 'UZS'
+            ? Math.round(
+                (val / exchangerate.exchangerate / incoming.pieces) * 10000
+              ) / 10000
+            : Math.round((val / incoming.pieces) * 10000) / 10000,
+        unitpriceuzs:
+          val === '' || val === 0
+            ? ''
+            : currency === 'UZS'
+            ? Math.round((val / incoming.pieces) * 10000) / 10000
+            : Math.round(
+                ((val * exchangerate.exchangerate) / incoming.pieces) * 10000
+              ) / 10000,
+        totalprice:
+          val === ''
+            ? ''
+            : currency === 'UZS'
+            ? Math.round((val / exchangerate.exchangerate) * 10000) / 10000
+            : Math.round(val * 10000) / 10000,
+        totalpriceuzs:
+          val === ''
+            ? ''
+            : currency === 'UZS'
+            ? Math.round(val * 10000) / 10000
+            : Math.round(val * exchangerate.exchangerate * 10000) / 10000,
       });
     }
   };
@@ -663,6 +770,13 @@ export const Incoming = () => {
     });
     setIncomings([]);
   }, [selectRef.supplier, selectRef.product]);
+
+  const clearProducts = useCallback(() => {
+    selectRef.product.current.selectOption({
+      label: t('Barcha mahsulotlar'),
+      value: 'all',
+    });
+  }, [selectRef.product]);
 
   //====================================================================
   //====================================================================
@@ -727,6 +841,8 @@ export const Incoming = () => {
       setIncoming({
         totalprice: 0,
         unitprice: 0,
+        totalpriceuzs: 0,
+        unitpriceuzs: 0,
         pieces: 0,
         user: auth.userId,
         supplier: '',
@@ -807,19 +923,64 @@ export const Incoming = () => {
         totalprice:
           val === ''
             ? ''
+            : currency === 'UZS'
+            ? Math.round(
+                editProduct.unitprice *
+                  (e.target.value / exchangerate.exchangerate) *
+                  10000
+              ) / 10000
             : Math.round(editProduct.unitprice * e.target.value * 10000) /
               10000,
+        totalpriceuzs:
+          val === ''
+            ? ''
+            : currency === 'UZS'
+            ? Math.round(editProduct.unitpriceuzs * e.target.value * 10000) /
+              10000
+            : Math.round(
+                editProduct.unitpriceuzs *
+                  (e.target.value * exchangerate.exchangerate) *
+                  10000
+              ) / 10000,
       });
     }
     if (e.target.name === 'unitprice') {
       let val = e.target.value;
       setEditProduct({
         ...editProduct,
-        unitprice: val === '' ? '' : Math.round(val * 10000) / 10000,
+        unitprice:
+          val === ''
+            ? ''
+            : currency === 'UZS'
+            ? Math.round((val / exchangerate.exchangerate) * 10000) / 10000
+            : Math.round(val * 10000) / 10000,
+        unitpriceuzs:
+          val === ''
+            ? ''
+            : currency === 'UZS'
+            ? Math.round(val * 10000) / 10000
+            : Math.round(val * exchangerate.exchangerate * 10000) / 10000,
         totalprice:
           val === ''
             ? '0'
+            : currency === 'UZS'
+            ? Math.round(
+                (e.target.value / exchangerate.exchangerate) *
+                  editProduct.pieces *
+                  10000
+              ) / 10000
             : Math.round(e.target.value * editProduct.pieces * 10000) / 10000,
+        totalpriceuzs:
+          val === ''
+            ? '0'
+            : currency === 'UZS'
+            ? Math.round(e.target.value * editProduct.pieces * 10000) / 10000
+            : Math.round(
+                e.target.value *
+                  exchangerate.exchangerate *
+                  editProduct.pieces *
+                  10000
+              ) / 10000,
       });
     }
     if (e.target.name === 'totalprice') {
@@ -829,8 +990,31 @@ export const Incoming = () => {
         unitprice:
           val === '' || val === 0
             ? ''
-            : Math.round((e.target.value / editProduct.pieces) * 10000) / 10000,
-        totalprice: val === '' ? '' : Math.round(val * 10000) / 10000,
+            : currency === 'UZS'
+            ? Math.round(
+                (val / exchangerate.exchangerate / editProduct.pieces) * 10000
+              ) / 10000
+            : Math.round((val / editProduct.pieces) * 10000) / 10000,
+        unitpriceuzs:
+          val === '' || val === 0
+            ? ''
+            : currency === 'UZS'
+            ? Math.round((val / editProduct.pieces) * 10000) / 10000
+            : Math.round(
+                ((val * exchangerate.exchangerate) / editProduct.pieces) * 10000
+              ) / 10000,
+        totalprice:
+          val === ''
+            ? ''
+            : currency === 'UZS'
+            ? Math.round((val / exchangerate.exchangerate) * 10000) / 10000
+            : Math.round(val * 10000) / 10000,
+        totalpriceuzs:
+          val === ''
+            ? ''
+            : currency === 'UZS'
+            ? Math.round(val * 10000) / 10000
+            : Math.round(val * exchangerate.exchangerate * 10000) / 10000,
       });
     }
   };
@@ -858,6 +1042,8 @@ export const Incoming = () => {
       setIncoming({
         totalprice: 0,
         unitprice: 0,
+        totalpriceuzs: 0,
+        unitpriceuzs: 0,
         pieces: 0,
         user: auth.userId,
         supplier: '',
@@ -915,6 +1101,8 @@ export const Incoming = () => {
       setIncoming({
         totalprice: 0,
         unitprice: 0,
+        totalpriceuzs: 0,
+        unitpriceuzs: 0,
         pieces: 0,
         user: auth.userId,
         supplier: '',
@@ -1072,9 +1260,58 @@ export const Incoming = () => {
     setCheckTemporary(true);
   };
 
+  const [currency, setCurrency] = useState('UZS');
+
+  const changeCurrency = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/exchangerate/currencyupdate`,
+        'PUT',
+        {
+          market: auth.market._id,
+          currency: currency === 'UZS' ? 'USD' : 'UZS',
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      localStorage.setItem('data', data);
+      setCurrency(currency === 'UZS' ? 'USD' : 'UZS');
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [auth, request, notify, currency]);
+
+  const getCurrency = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/exchangerate/currencyget`,
+        'PUT',
+        {
+          market: auth.market._id,
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setCurrency(data.currency);
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [auth, request, notify]);
+
   useEffect(() => {
     getTemporarys();
-  }, [getTemporarys]);
+    getCurrency();
+  }, [getTemporarys, getCurrency]);
 
   //====================================================================
   //====================================================================
@@ -1097,6 +1334,10 @@ export const Incoming = () => {
   useEffect(() => {
     getIncomingConnectors();
   }, [getIncomingConnectors, beginDay, endDay]);
+
+  useEffect(() => {
+    getExchangerate();
+  }, [getExchangerate]);
   //====================================================================
   //====================================================================
   return (
@@ -1104,7 +1345,10 @@ export const Incoming = () => {
       <div className={`${checkTemporary ? '' : 'hidden'}`}>
         <TemporayCheque temporary={temporary} setCheck={setCheckTemporary} />
       </div>
+
       <RouterBtns
+        currency={currency}
+        changeCurrency={changeCurrency}
         changeVisibleTemporary={changeVisibleTemporary}
         changeVisible={changeVisible}
         changeVisibleTable={changeVisibleTable}
@@ -1122,6 +1366,7 @@ export const Incoming = () => {
       </div>
       <div className={visible ? 'h-screen m-3' : 'd-none'}>
         <RegisterIncoming
+          currency={currency}
           saveTemporary={saveTemporary}
           changeSaveIncoming={changeSaveIncoming}
           removeIncoming={removeIncoming}
@@ -1144,6 +1389,7 @@ export const Incoming = () => {
       <div className='m-3'>
         <div className={visibleReport ? '' : 'hidden'}>
           <ReportIncomings
+            currency={currency}
             changeSupplier={changeSupplier}
             suppliersConnector={suppliersConnector}
             dailyVisible={dailyVisible}
@@ -1155,6 +1401,7 @@ export const Incoming = () => {
             setEndDay={setEndDay}
             totalproducts={totalproducts}
             totalprice={totalprice}
+            totalpriceuzs={totalpriceuzs}
             totalproducttypes={totalproducttypes}
             dailyConnectors={dailyConnectors}
             suppliers={suppliers}
@@ -1163,6 +1410,7 @@ export const Incoming = () => {
         </div>
         <div className={visibleTable ? 'min-w-[990px]' : 'hidden'}>
           <TableIncoming
+            currency={currency}
             changeDeleteProduct={changeDeleteProduct}
             changeEditProduct={changeEditProduct}
             searchKeypress={searchKeypress}
@@ -1195,6 +1443,7 @@ export const Incoming = () => {
         handler={addIncoming}
         text={
           <ModalTable
+            currency={currency}
             incoming={incoming}
             inputHandler={inputHandler}
             keyPressed={addIncoming}
@@ -1207,6 +1456,7 @@ export const Incoming = () => {
         modal={modal2}
         text={
           <ModalTable
+            currency={currency}
             incoming={editProduct}
             inputHandler={editHandler}
             keyPressed={editProductHandler}

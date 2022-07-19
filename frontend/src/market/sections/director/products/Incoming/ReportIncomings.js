@@ -8,12 +8,14 @@ import { ReportSuppliers } from './ReportSuppliers';
 const animatedComponents = makeAnimated();
 
 export const ReportIncomings = ({
+  currency,
   changeIncomingCard,
   setBeginDay,
   setEndDay,
   dailyConnectors,
   suppliers,
   totalprice,
+  totalpriceuzs,
   totalproducttypes,
   sortSuppliers,
   suppliersConnector,
@@ -49,7 +51,14 @@ export const ReportIncomings = ({
         <div className='col-span-12 sm:col-span-6 lg:col-span-3 font-bold flex justify-between text-center px-3 text-base pt-1 mx-3'>
           {t('Jami')}:{' '}
           <span className='text-blue-900'>
-            {Math.round(totalprice * 10000) / 10000} USD
+            {currency === 'UZS'
+              ? (Math.round(totalpriceuzs * 10000) / 10000).toLocaleString(
+                  'ru-RU'
+                )
+              : (Math.round(totalprice * 10000) / 10000).toLocaleString(
+                  'ru-RU'
+                )}{' '}
+            {currency}
           </span>
         </div>
         <div
@@ -57,18 +66,15 @@ export const ReportIncomings = ({
             dailyVisible
               ? 'col-span-12 lg:col-span-9 grid grid-cols-12 row-span-5'
               : 'hidden'
-          }`}
-        >
+          }`}>
           {dailyConnectors.map((connector, index) => {
             return (
               <div
                 key={index}
-                className='col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3 m-2'
-              >
+                className='col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3 m-2'>
                 <button
                   onClick={() => changeIncomingCard(connector.day)}
-                  className='bg-[#216BA5] font-bold rounded text-white text-left py-2 px-3 inline-block w-100'
-                >
+                  className='bg-[#216BA5] font-bold rounded text-white text-left py-2 px-3 inline-block w-100'>
                   <p className='font-bold  text-right  flex justify-between'>
                     <span className='font-bold text-orange-700'>
                       {/* {connector.suppliers && connector.suppliers} */}
@@ -79,9 +85,14 @@ export const ReportIncomings = ({
                   </p>
                   <p className='font-bold  flex justify-around text-2xl py-1'>
                     <span className='text-amber-100'>
-                      {connector.total &&
-                        Math.round(connector.total * 10000) / 10000}{' '}
-                      USD
+                      {connector.total && currency === 'UZS'
+                        ? (
+                            Math.round(connector.totaluzs * 10000) / 10000
+                          ).toLocaleString('ru-RU')
+                        : (
+                            Math.round(connector.total * 10000) / 10000
+                          ).toLocaleString('ru-RU')}{' '}
+                      {currency}
                     </span>
                   </p>
                   <p className='font-bold text-sm flex justify-between'>
@@ -104,8 +115,7 @@ export const ReportIncomings = ({
             reportSuppliersVisible
               ? 'col-span-12 lg:col-span-9 grid grid-cols-12 row-span-5'
               : 'hidden'
-          }`}
-        >
+          }`}>
           <ReportSuppliers
             suppliersConnector={suppliersConnector}
             changeSupplier={changeSupplier}

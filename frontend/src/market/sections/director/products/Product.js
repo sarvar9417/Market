@@ -16,6 +16,9 @@ import { ExcelCols } from './Product/excelTable/ExcelCols';
 import { CreateProduct } from './Product/CreateProduct';
 import { t } from 'i18next';
 import { ExcelTable } from './Product/ExcelTable';
+import { Loader } from '../../../loader/Loader';
+import { Currency } from '../components/Currency';
+import { AutoCurrency } from '../components/AutoCurrency';
 
 export const Product = () => {
   //====================================================================
@@ -60,6 +63,8 @@ export const Product = () => {
     total: 0,
     incomingprice: 0,
     sellingprice: 0,
+    incomingpriceuzs: 0,
+    sellingpriceuzs: 0,
   });
 
   const sections = [
@@ -67,8 +72,10 @@ export const Product = () => {
     { name: t('Mahsulot nomi'), value: 'name' },
     { name: t("O'lchov birligi"), value: 'unit' },
     { name: t('Soni'), value: 'total' },
-    { name: t('Kelish narxi'), value: 'incomingprice' },
-    { name: t('Sotish narxi'), value: 'sellingprice' },
+    { name: t('Kelish narxi USD'), value: 'incomingprice' },
+    { name: t('Kelish narxi UZS'), value: 'incomingpriceuzs' },
+    { name: t('Sotish narxi USD'), value: 'sellingprice' },
+    { name: t('Sotish narxi UZS'), value: 'sellingpriceuzs' },
   ];
 
   //====================================================================
@@ -93,6 +100,8 @@ export const Product = () => {
       name: '',
       incomingprice: 0,
       sellingprice: 0,
+      incomingpriceuzs: 0,
+      sellingpriceuzs: 0,
     });
   }, [auth, selectRef.unit]);
   //====================================================================
@@ -173,6 +182,29 @@ export const Product = () => {
     }
   }, [auth, request, notify, sendingsearch]);
 
+  // Exchangerate
+  const [exchangerate, setExchangerate] = useState({ exchangerate: 0 });
+
+  const getExchangerate = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/exchangerate/get`,
+
+        'POST',
+        { market: auth.market._id },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setExchangerate(data);
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [request, auth, notify]);
   //====================================================================
   //====================================================================
 
@@ -370,17 +402,47 @@ export const Product = () => {
     currentPage,
   ]);
 
-  //====================================================================
-  //====================================================================
-
-  //====================================================================
-  //====================================================================
-
   const inputHandler = (e) => {
-    setProduct({ ...product, [e.target.name]: e.target.value });
+    if (e.target.name === 'incomingprice' || e.target.name === 'sellingprice') {
+      currency === 'UZS' &&
+        autoconvertation &&
+        setProduct({
+          ...product,
+          [e.target.name + 'uzs']:
+            Math.round(parseFloat(e.target.value) * 1000) / 1000,
+          [e.target.name]:
+            Math.round(
+              (parseFloat(e.target.value) / exchangerate.exchangerate) * 1000
+            ) / 1000,
+        });
+
+      currency === 'UZS' &&
+        !autoconvertation &&
+        setProduct({
+          ...product,
+          [e.target.name + 'uzs']:
+            Math.round(parseFloat(e.target.value) * 1000) / 1000,
+        });
+
+      currency === 'USD' &&
+        autoconvertation &&
+        setProduct({
+          ...product,
+          [e.target.name]: Math.round(parseFloat(e.target.value) * 1000) / 1000,
+          [e.target.name + 'uzs']:
+            Math.round(
+              parseFloat(e.target.value) * exchangerate.exchangerate * 1000
+            ) / 1000,
+        });
+
+      currency === 'USD' &&
+        !autoconvertation &&
+        setProduct({
+          ...product,
+          [e.target.name]: Math.round(parseFloat(e.target.value) * 1000) / 1000,
+        });
+    } else setProduct({ ...product, [e.target.name]: e.target.value });
   };
-  //====================================================================
-  //====================================================================
 
   const uploadAllProducts = useCallback(async () => {
     try {
@@ -444,13 +506,13 @@ export const Product = () => {
     setSearch({ ...search, [e.target.name]: e.target.value });
     if (e.target.name === 'code') {
       const searching = searchStorage.filter((item) =>
-        item.productdata.code.includes(e.target.value)
+        item.productdata.code.toLowerCase().includes(e.target.value)
       );
       setCurrentProducts(searching);
     }
     if (e.target.name === 'name') {
       const searching = searchStorage.filter((item) =>
-        item.productdata.name.includes(e.target.value)
+        item.productdata.name.toLowerCase().includes(e.target.value)
       );
       setCurrentProducts(searching);
     }
@@ -462,8 +524,7 @@ export const Product = () => {
       setSendingSearch({ ...search });
     }
   };
-  //====================================================================
-  //====================================================================
+
   const setPageSize = useCallback(
     (e) => {
       setCurrentPage(0);
@@ -473,6 +534,59 @@ export const Product = () => {
     [products]
   );
 
+  const [currency, setCurrency] = useState('UZS');
+  // const [autoconvertation, setAutocConversation] = useState(true);
+  const autoconvertation = true;
+
+  // const changeAutoConvertation = () => {
+  //   setAutocConversation(!autoconvertation);
+  // };
+
+  const changeCurrency = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/exchangerate/currencyupdate`,
+        'PUT',
+        {
+          market: auth.market._id,
+          currency: currency === 'UZS' ? 'USD' : 'UZS',
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      localStorage.setItem('data', data);
+      setCurrency(currency === 'UZS' ? 'USD' : 'UZS');
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [auth, request, notify, currency]);
+
+  const getCurrency = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/exchangerate/currencyget`,
+        'PUT',
+        {
+          market: auth.market._id,
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setCurrency(data.currency);
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [auth, request, notify]);
   //====================================================================
   //UseEffects
   useEffect(() => {
@@ -481,13 +595,32 @@ export const Product = () => {
 
   useEffect(() => {
     getUnits();
-  }, [getUnits]);
+    getCurrency();
+    getExchangerate();
+  }, [getUnits, getCurrency, getExchangerate]);
 
   return (
     <>
-      {/* {loading ? <Loader /> : ''} */}
+      {loading ? <Loader /> : ''}
+      <div className='m-3 '>
+        <div className='font-bold text-right'>
+          Asosiy valyuta kursi:{' '}
+          <Currency
+            value={currency === 'UZS' ? true : false}
+            onToggle={changeCurrency}
+          />
+        </div>
+        {/* <p className='font-bold text-right'>
+          Avtokonvertatsiya:{' '}
+          <AutoCurrency
+            value={autoconvertation}
+            onToggle={changeAutoConvertation}
+          />
+        </p> */}
+      </div>
       <div className='overflow-x-auto'>
         <CreateProduct
+          currency={currency}
           setProduct={setProduct}
           product={product}
           keyPressed={keyPressed}
@@ -501,6 +634,7 @@ export const Product = () => {
         />
         <div className='m-3 min-w-[800px]'>
           <TableProduct
+            currency={currency}
             search={search}
             getProductExcel={getProductExcel}
             keyPress={searchKeypress}

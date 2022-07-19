@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoneyCheckDollar, faSave } from '@fortawesome/free-solid-svg-icons';
 
 export const RegisterIncoming = ({
+  currency,
   saveTemporary,
   changeSaveIncoming,
   removeIncoming,
@@ -53,6 +54,7 @@ export const RegisterIncoming = ({
             incomings.map((product, key) => {
               return (
                 <Rows
+                  currency={currency}
                   product={product}
                   key={key}
                   index={key}
@@ -66,32 +68,28 @@ export const RegisterIncoming = ({
           {loading ? (
             <button
               className='px-3 py-2 bg-orange-800 font-bold text-white rounded mr-3'
-              disabled
-            >
+              disabled>
               <span className='spinner-border spinner-border-sm'></span>
               Loading...
             </button>
           ) : (
             <button
               onClick={saveTemporary}
-              className='px-3 py-1 bg-orange-800 font-bold text-white rounded mr-3 text-2xl'
-            >
+              className='px-3 py-1 bg-orange-800 font-bold text-white rounded mr-3 text-2xl'>
               <FontAwesomeIcon icon={faSave} />
             </button>
           )}
           {loading ? (
             <button
               className='px-3 py-2 bg-blue-800 font-bold text-white rounded'
-              disabled
-            >
+              disabled>
               <span className='spinner-border spinner-border-sm'></span>
               Loading...
             </button>
           ) : (
             <button
               onClick={changeSaveIncoming}
-              className='px-3 py-1 bg-blue-800 font-bold text-white rounded text-2xl'
-            >
+              className='px-3 py-1 bg-blue-800 font-bold text-white rounded text-2xl'>
               <FontAwesomeIcon icon={faMoneyCheckDollar} />
             </button>
           )}

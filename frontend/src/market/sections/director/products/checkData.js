@@ -86,9 +86,11 @@ export const checkProduct = (product, t) => {
       status: 'error',
     };
 
-  if (product.code.length < 6)
+  if (product.code.length < 4)
     return {
-      title: t("Diqqat! Mahsulot kodi 6 ta raqamdan iborat bo'shi kerak."),
+      title: t(
+        "Diqqat! Mahsulot kodi kamida 4 ta belgidan iborat bo'shi kerak."
+      ),
       description: t("Iltimos kodni to'g'ri kiriting."),
       status: 'error',
     };

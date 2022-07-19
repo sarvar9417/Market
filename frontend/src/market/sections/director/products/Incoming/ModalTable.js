@@ -1,7 +1,13 @@
 import { t } from 'i18next';
 import React from 'react';
 
-export const ModalTable = ({ incoming, inputHandler, keyPressed, loading, }) => {
+export const ModalTable = ({
+  currency,
+  incoming,
+  inputHandler,
+  keyPressed,
+  loading,
+}) => {
   const changeHandler = (e) => {
     if (e.key === 'Enter') {
       keyPressed();
@@ -10,7 +16,7 @@ export const ModalTable = ({ incoming, inputHandler, keyPressed, loading, }) => 
   return (
     <>
       <div className='font-bold text-black mb-1'>
-        {t("Mahsulot")}: {incoming.product && incoming.product.name}
+        {t('Mahsulot')}: {incoming.product && incoming.product.name}
       </div>
       <div className='table-responsive'>
         <table className='table'>
@@ -41,7 +47,11 @@ export const ModalTable = ({ incoming, inputHandler, keyPressed, loading, }) => 
                 <input
                   onChange={inputHandler}
                   disabled={loading}
-                  value={incoming.unitprice}
+                  value={
+                    currency === 'UZS'
+                      ? incoming.unitpriceuzs
+                      : incoming.unitprice
+                  }
                   type='number'
                   className='outline-none text-right text-black font-bold'
                   name='unitprice'
@@ -53,7 +63,11 @@ export const ModalTable = ({ incoming, inputHandler, keyPressed, loading, }) => 
                 <input
                   onChange={inputHandler}
                   disabled={loading}
-                  value={incoming.totalprice}
+                  value={
+                    currency === 'UZS'
+                      ? incoming.totalpriceuzs
+                      : incoming.totalprice
+                  }
                   type='number'
                   style={{ maxWidth: '100px' }}
                   className='outline-none text-right w-full font-bold text-black'
@@ -63,8 +77,10 @@ export const ModalTable = ({ incoming, inputHandler, keyPressed, loading, }) => 
               </td>
               <td className='border m-0 px-3 py-2 font-bold text-center text-red-600'>
                 {incoming.oldprice &&
-                  Math.round(incoming.oldprice * 10000) / 10000}{' '}
-                USD
+                  (currency === 'UZS'
+                    ? Math.round(incoming.oldpriceuzs * 10000) / 10000
+                    : Math.round(incoming.oldprice * 10000) / 10000)}{' '}
+                {currency}
               </td>
             </tr>
           </tbody>
