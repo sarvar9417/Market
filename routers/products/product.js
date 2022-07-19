@@ -15,6 +15,10 @@ const {
 } = require('../../models/FilialProducts/FilialProduct');
 const { ProductData } = require('../../models/Products/Productdata');
 const ObjectId = require('mongodb').ObjectId;
+const {
+  Exchangerate,
+  validateExchangerate,
+} = require('../../models/Exchangerate/Exchangerate');
 
 //Product registerall
 module.exports.registerAll = async (req, res) => {
@@ -384,11 +388,25 @@ module.exports.update = async (req, res) => {
       });
     }
 
+    const exchangerate = await Exchangerate.findOne({ market })
+      .select('exchangerate')
+      .sort({ _id: -1 });
+
     await ProductPrice.findByIdAndUpdate(priceid, {
       incomingprice: Math.round(incomingprice * 10000) / 10000,
       sellingprice: Math.round(sellingprice * 10000) / 10000,
-      incomingpriceuzs: Math.round(incomingpriceuzs * 10000) / 10000,
-      sellingpriceuzs: Math.round(sellingpriceuzs * 10000) / 10000,
+      incomingpriceuzs:
+        Math.round(
+          (incomingpriceuzs
+            ? incomingpriceuzs
+            : exchangerate.exchangerate * incomingprice) * 10000
+        ) / 10000,
+      sellingpriceuzs:
+        Math.round(
+          (sellingpriceuzs
+            ? sellingpriceuzs
+            : exchangerate.exchangerate * sellingprice) * 10000
+        ) / 10000,
     });
     product.unit = unit;
     product.total = total;

@@ -21,7 +21,7 @@ export const RouterBtns = ({
     <div className='flex flex-col md:justify-between items-center md:flex-row justify-center'>
       <div className='m-3 '>
         <div className='font-bold text-right'>
-          Asosiy valyuta kursi:{' '}
+          Asosiy valyuta turi:{' '}
           <Currency
             value={currency === 'UZS' ? true : false}
             onToggle={changeCurrency}
