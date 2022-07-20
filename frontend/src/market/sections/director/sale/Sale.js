@@ -290,13 +290,12 @@ export const Sale = () => {
       product: e.value,
       totalprice: Math.round(e.value.price.sellingprice * 10000) / 10000,
       totalpriceuzs:
-        Math.round(
-          e.value.price.sellingprice * exchangerate.exchangerate * 10000
-        ) / 10000,
+        Math.round(e.value.price.sellingprice * exchangerate.exchangerate * 1) /
+        1,
       pieces: 1,
       unitprice: Math.round(e.value.price.sellingprice * 10000) / 10000,
       unitpriceuzs: Math.round(
-        (e.value.price.sellingprice * exchangerate.exchangerate * 10000) / 10000
+        (e.value.price.sellingprice * exchangerate.exchangerate * 1) / 1
       ),
     });
   };
@@ -328,8 +327,7 @@ export const Sale = () => {
         totalpriceuzs:
           e.target.value === ''
             ? 0
-            : Math.round(totalprice * exchangerate.exchangerate * 10000) /
-              10000,
+            : Math.round(totalprice * exchangerate.exchangerate * 1) / 1,
       });
     }
     if (e.target.name === 'unitprice') {
@@ -344,14 +342,13 @@ export const Sale = () => {
           e.target.value === ''
             ? ''
             : Math.round(
-                parseFloat(e.target.value) * exchangerate.exchangerate * 10000
-              ) / 10000,
+                parseFloat(e.target.value) * exchangerate.exchangerate * 1
+              ) / 1,
         totalprice: e.target.value === '' ? 0 : totalprice,
         totalpriceuzs:
           e.target.value === ''
             ? 0
-            : Math.round(totalprice * exchangerate.exchangerate * 10000) /
-              10000,
+            : Math.round(totalprice * exchangerate.exchangerate * 1) / 1,
       });
     }
   };
@@ -379,15 +376,15 @@ export const Sale = () => {
     }, 0);
 
     setTotalPrice(Math.round(total * 10000) / 10000);
-    setTotalPriceUzs(Math.round(totaluzs * 10000) / 10000);
+    setTotalPriceUzs(Math.round(totaluzs * 1) / 1);
 
     setPayment({
       ...payment,
       totalprice: Math.round(total * 10000) / 10000,
-      totalpriceuzs: Math.round(totaluzs * 10000) / 10000,
+      totalpriceuzs: Math.round(totaluzs * 1) / 1,
       type: 'cash',
       cash: Math.round(total * 10000) / 10000,
-      cashuzs: Math.round(totaluzs * 10000) / 10000,
+      cashuzs: Math.round(totaluzs * 1) / 1,
       discount: 0,
       discountuzs: 0,
     });
@@ -412,15 +409,15 @@ export const Sale = () => {
     }, 0);
 
     setTotalPrice(Math.round(total * 10000) / 10000);
-    setTotalPriceUzs(Math.round(totaluzs * 10000) / 10000);
+    setTotalPriceUzs(Math.round(totaluzs * 1) / 1);
 
     setPayment({
       ...payment,
       totalprice: Math.round(total * 10000) / 10000,
-      totalpriceuzs: Math.round(totaluzs * 10000) / 10000,
+      totalpriceuzs: Math.round(totaluzs * 1) / 1,
       type: 'cash',
       cash: Math.round(total * 10000) / 10000,
-      cashuzs: Math.round(totaluzs * 10000) / 10000,
+      cashuzs: Math.round(totaluzs * 1) / 1,
       discount: 0,
       discountuzs: 0,
     });
@@ -799,7 +796,7 @@ export const Sale = () => {
     p.discount =
       e.target.value === '' ? '' : Math.round(e.target.value * 10000) / 10000;
     p.discountuzs =
-      Math.round(e.target.value * exchangerate.exchangerate * 10000) / 10000;
+      Math.round(e.target.value * exchangerate.exchangerate * 1) / 1;
     p.cash = 0;
     p.card = 0;
     p.transfer = 0;
@@ -820,8 +817,8 @@ export const Sale = () => {
               ? (totalprice * e.target.value) / 100
               : e.target.value)) *
             exchangerate.exchangerate *
-            10000
-        ) / 10000,
+            1
+        ) / 1,
     });
 
     discount.isProcient
@@ -834,8 +831,8 @@ export const Sale = () => {
             Math.round(
               ((totalprice * e.target.value * exchangerate.exchangerate) /
                 100) *
-                10000
-            ) / 10000,
+                1
+            ) / 1,
         })
       : setDiscount({
           ...discount,
@@ -843,8 +840,7 @@ export const Sale = () => {
             Math.round(((e.target.value * 100) / totalprice) * 10000) / 10000,
           discount: Math.round(e.target.value * 10000) / 10000,
           discountuzs:
-            Math.round(e.target.value * exchangerate.exchangerate * 10000) /
-            10000,
+            Math.round(e.target.value * exchangerate.exchangerate * 1) / 1,
         });
   };
 
@@ -895,8 +891,8 @@ export const Sale = () => {
                 100
               : e.target.value / exchangerate.exchangerate)) *
             exchangerate.exchangerate *
-            10000
-        ) / 10000,
+            1
+        ) / 1,
     });
     discount.isProcient
       ? setDiscount({
@@ -908,8 +904,8 @@ export const Sale = () => {
             Math.round(
               ((totalprice * e.target.value * exchangerate.exchangerate) /
                 100) *
-                10000
-            ) / 10000,
+                1
+            ) / 1,
         })
       : setDiscount({
           ...discount,
@@ -922,7 +918,7 @@ export const Sale = () => {
           discount:
             Math.round((e.target.value / exchangerate.exchangerate) * 10000) /
             10000,
-          discountuzs: Math.round(e.target.value * 10000) / 10000,
+          discountuzs: Math.round(e.target.value * 1) / 1,
         });
   };
 
@@ -954,7 +950,7 @@ export const Sale = () => {
     p[e.target.dataset.type] =
       e.target.value === '' ? '' : Math.round(e.target.value * 10000) / 10000;
     p[e.target.dataset.type + 'uzs'] =
-      Math.round(e.target.value * 10000 * exchangerate.exchangerate) / 10000;
+      Math.round(e.target.value * 1 * exchangerate.exchangerate) / 1;
     setDebt({
       ...debt,
       debt:
@@ -963,8 +959,8 @@ export const Sale = () => {
         Math.round(
           (totalprice - (total + discount.discount)) *
             exchangerate.exchangerate *
-            10000
-        ) / 10000,
+            1
+        ) / 1,
     });
   };
 
@@ -999,7 +995,7 @@ export const Sale = () => {
     p[e.target.dataset.type] =
       Math.round((e.target.value / exchangerate.exchangerate) * 10000) / 10000;
     p[e.target.dataset.type + 'uzs'] =
-      e.target.value === '' ? '' : Math.round(e.target.value * 10000) / 10000;
+      e.target.value === '' ? '' : Math.round(e.target.value * 1) / 1;
     setDebt({
       ...debt,
       debt:
@@ -1008,8 +1004,8 @@ export const Sale = () => {
         Math.round(
           (totalprice - (total + discount.discount)) *
             exchangerate.exchangerate *
-            10000
-        ) / 10000,
+            1
+        ) / 1,
     });
   };
 
@@ -1043,8 +1039,8 @@ export const Sale = () => {
         debt: Math.round((totalprice - discount.discount) * 10000) / 10000,
         debtuzs:
           Math.round(
-            (totalprice - discount.discount) * exchangerate.exchangerate * 10000
-          ) / 10000,
+            (totalprice - discount.discount) * exchangerate.exchangerate * 1
+          ) / 1,
       });
     }
     types.map((type) => {
@@ -1053,10 +1049,8 @@ export const Sale = () => {
             Math.round((totalprice - discount.discount) * 10000) / 10000),
           (p[type + 'uzs'] =
             Math.round(
-              (totalprice - discount.discount) *
-                exchangerate.exchangerate *
-                10000
-            ) / 10000),
+              (totalprice - discount.discount) * exchangerate.exchangerate * 1
+            ) / 1),
           (p.type = type),
           setDebt({
             ...debt,
@@ -1077,12 +1071,14 @@ export const Sale = () => {
       setPayment({
         ...payment,
         discount: discount.discount,
-        discountuzs: discount.discount * exchangerate.exchangerate,
+        discountuzs:
+          Math.round(discount.discount * exchangerate.exchangerate * 1) / 1,
       });
       setDiscount({
         ...discount,
         discount: discount.discount,
-        discountuzs: discount.discount * exchangerate.exchangerate,
+        discountuzs:
+          Math.round(discount.discount * exchangerate.exchangerate * 1) / 1,
       });
     }
 
@@ -1097,7 +1093,7 @@ export const Sale = () => {
       setDiscount({
         ...discount,
         discount: procient,
-        discountuzs: procient * exchangerate.exchangerate,
+        discountuzs: Math.round(procient * exchangerate.exchangerate * 1) / 1,
       });
     }
 
@@ -1379,8 +1375,8 @@ export const Sale = () => {
               editPayments.reduce((summ, payment) => {
                 return summ + payment.paymentuzs;
               }, 0)) *
-              10000
-          ) / 10000,
+              1
+          ) / 1,
       });
     }
     types.map((type) => {
@@ -1405,8 +1401,8 @@ export const Sale = () => {
                 editPayments.reduce((summ, payment) => {
                   return summ + payment.paymentuzs;
                 }, 0)) *
-                10000
-            ) / 10000),
+                1
+            ) / 1),
           (p.type = type),
           setDebt({
             ...debt,
@@ -1464,7 +1460,7 @@ export const Sale = () => {
     p[e.target.dataset.type] =
       e.target.value === '' ? '' : Math.round(e.target.value * 10000) / 10000;
     p[e.target.dataset.type + 'uzs'] =
-      Math.round(e.target.value * 10000 * editExchanrate.exchangerate) / 10000;
+      Math.round(e.target.value * 1 * editExchanrate.exchangerate) / 1;
     setDebt({
       ...debt,
       debt:
@@ -1493,8 +1489,8 @@ export const Sale = () => {
             p.cashuzs -
             p.carduzs -
             p.transferuzs) *
-            10000
-        ) / 10000,
+            1
+        ) / 1,
     });
   };
 
@@ -1544,7 +1540,7 @@ export const Sale = () => {
       Math.round((e.target.value / editExchanrate.exchangerate) * 10000) /
       10000;
     p[e.target.dataset.type + 'uzs'] =
-      e.target.value === '' ? '' : Math.round(e.target.value * 10000) / 10000;
+      e.target.value === '' ? '' : Math.round(e.target.value * 1) / 1;
     setDebt({
       ...debt,
       debt:
@@ -1573,8 +1569,8 @@ export const Sale = () => {
             p.cashuzs -
             p.carduzs -
             p.transferuzs) *
-            10000
-        ) / 10000,
+            1
+        ) / 1,
     });
   };
 
@@ -1654,8 +1650,8 @@ export const Sale = () => {
           products.reduce((summ, product) => {
             return summ + product.totalpriceuzs;
           }, 0)) *
-          10000
-      ) / 10000;
+          1
+      ) / 1;
 
     let cashuzs =
       Math.round(
@@ -1666,8 +1662,8 @@ export const Sale = () => {
           editPayments.reduce((summ, payment) => {
             return summ + payment.paymentuzs;
           }, 0)) *
-          10000
-      ) / 10000;
+          1
+      ) / 1;
 
     let cash =
       Math.round(
@@ -1686,7 +1682,7 @@ export const Sale = () => {
     setPaymentEdit({
       ...paymentEdit,
       cash: Math.round(cash * 10000) / 10000,
-      cashuzs: Math.round(cashuzs * 10000) / 10000,
+      cashuzs: Math.round(cashuzs * 1) / 1,
       type: 'cash',
     });
     setEditExchanrate({
@@ -1864,8 +1860,8 @@ export const Sale = () => {
       Math.round(
         e.products.reduce((summ, product) => {
           return summ + product.totalpriceuzs;
-        }, 0) * 10000
-      ) / 10000
+        }, 0) * 1
+      ) / 1
     );
     setPrePaymentDebt({
       ...prePaymentDebt,
@@ -1893,8 +1889,8 @@ export const Sale = () => {
             e.payments.reduce((summ, payment) => {
               return summ + payment.paymentuzs;
             }, 0)) *
-            10000
-        ) / 10000,
+            1
+        ) / 1,
     });
   };
 
@@ -1926,8 +1922,8 @@ export const Sale = () => {
               prePaymentSaleConnector.payments.reduce((summ, payment) => {
                 return summ + payment.paymentuzs;
               }, 0)) *
-              10000
-          ) / 10000,
+              1
+          ) / 1,
       });
     }
     types.map((type) => {
@@ -1952,8 +1948,8 @@ export const Sale = () => {
                 prePaymentSaleConnector.payments.reduce((summ, payment) => {
                   return summ + payment.paymentuzs;
                 }, 0)) *
-                10000
-            ) / 10000),
+                1
+            ) / 1),
           (p.type = type),
           setPrePaymentDebt({
             ...prePaymentDebt,
@@ -2012,7 +2008,7 @@ export const Sale = () => {
     p[e.target.dataset.type] =
       e.target.value === '' ? '' : Math.round(e.target.value * 10000) / 10000;
     p[e.target.dataset.type + 'uzs'] =
-      Math.round(e.target.value * 10000 * exchangerate.exchangerate) / 10000;
+      Math.round(e.target.value * 1 * exchangerate.exchangerate) / 1;
     setPrePaymentDebt({
       ...prePaymentDebt,
       debt:
@@ -2041,8 +2037,8 @@ export const Sale = () => {
             p.cashuzs -
             p.carduzs -
             p.transferuzs) *
-            10000
-        ) / 10000,
+            1
+        ) / 1,
     });
   };
 
@@ -2094,7 +2090,7 @@ export const Sale = () => {
     p[e.target.dataset.type] =
       Math.round((e.target.value / exchangerate.exchangerate) * 10000) / 10000;
     p[e.target.dataset.type + 'uzs'] =
-      e.target.value === '' ? '' : Math.round(e.target.value * 10000) / 10000;
+      e.target.value === '' ? '' : Math.round(e.target.value * 1) / 1;
 
     setPrePaymentDebt({
       ...prePaymentDebt,
@@ -2124,8 +2120,8 @@ export const Sale = () => {
             p.cashuzs -
             p.carduzs -
             p.transferuzs) *
-            10000
-        ) / 10000,
+            1
+        ) / 1,
     });
   };
 
@@ -2452,10 +2448,14 @@ export const Sale = () => {
       </div>
 
       <div className={`${check ? '' : 'hidden'}`}>
-        <Cheque sales={sales} setCheck={setCheck} />
+        <Cheque sales={sales} setCheck={setCheck} currency={currency} />
       </div>
       <div className={`${checkConnectors ? '' : 'hidden'}`}>
-        <ChequeConnectors sales={allSales} setCheck={setCheckConnectors} />
+        <ChequeConnectors
+          currency={currency}
+          sales={allSales}
+          setCheck={setCheckConnectors}
+        />
       </div>
       <div className={visible ? '' : 'hidden'}>
         <Card
@@ -2532,6 +2532,7 @@ export const Sale = () => {
       <div className={sellingCard ? ' ' : 'hidden'}>
         <Products changeProduct={changeProduct} products={products} />
         <Selling
+          currency={currency}
           saveTemporary={saveTemporary}
           saleconnectorid={saleconnectorid}
           totalpriceuzs={totalpriceuzs}
@@ -2578,6 +2579,7 @@ export const Sale = () => {
       <ExcelTable saleconnectors={excelTable} />
 
       <EditSelling
+        currency={currency}
         sellingEditCard={sellingEditCard}
         changeBack={changeBack}
         editSaleConnector={editSaleConnector}
@@ -2603,6 +2605,7 @@ export const Sale = () => {
         setModal={setModal}
         basic={
           <InputProduct
+            currency={currency}
             setCounts={setCounts}
             product={saleproduct}
             changeEnter={changeEnter}

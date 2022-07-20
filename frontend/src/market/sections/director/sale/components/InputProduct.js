@@ -3,7 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { t } from 'i18next';
 import React, { useState } from 'react';
 
-export const InputProduct = ({ setCounts, product, changeEnter, loading }) => {
+export const InputProduct = ({
+  setCounts,
+  product,
+  changeEnter,
+  loading,
+  currency,
+}) => {
   const [incomingprice, setIncomingprice] = useState(false);
   const changeincomingPrice = () => {
     setIncomingprice(!incomingprice);
@@ -44,12 +50,22 @@ export const InputProduct = ({ setCounts, product, changeEnter, loading }) => {
                 onChange={setCounts}
                 loading={loading}
                 name='unitprice'
-                value={product ? product.unitprice : ''}
+                value={
+                  product
+                    ? currency === 'UZS'
+                      ? product.unitpriceuzs
+                      : product.unitprice
+                    : ''
+                }
                 className='w-full outline-none text-right font-bold'
               />
             </td>
             <td className='border text-base p-0 font-bold px-2 w-1/3'>
-              {product && Math.round(product.totalprice * 100) / 100} USD
+              {product &&
+                (currency === 'UZS'
+                  ? Math.round(product.totalpriceuzs * 100) / 100
+                  : Math.round(product.totalprice * 10000) / 10000)}{' '}
+              {currency}
             </td>
           </tr>
         </tbody>

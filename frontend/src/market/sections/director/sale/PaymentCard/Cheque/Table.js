@@ -1,7 +1,7 @@
 import React from 'react';
 import { t } from 'i18next';
 
-export const Table = ({ sales }) => {
+export const Table = ({ sales, currency }) => {
   return (
     <table className='relative text-black border-collapse my-3 w-full'>
       <thead>
@@ -49,10 +49,16 @@ export const Table = ({ sales }) => {
                 {product.pieces.toLocaleString('ru-RU')}
               </td>
               <td className='font-bold text-right border border-black py-1 px-2'>
-                {product.unitprice.toLocaleString('ru-RU')} USD
+                {currency === 'UZS'
+                  ? product.unitpriceuzs.toLocaleString('ru-RU')
+                  : product.unitprice.toLocaleString('ru-RU')}{' '}
+                {currency}
               </td>
               <td className='font-bold text-right border border-black py-1 px-2 text-teal-900'>
-                {product.totalprice.toLocaleString('ru-RU')} USD
+                {currency === 'UZS'
+                  ? product.totalpriceuzs.toLocaleString('ru-RU')
+                  : product.totalprice.toLocaleString('ru-RU')}{' '}
+                {currency}
               </td>
             </tr>
           );

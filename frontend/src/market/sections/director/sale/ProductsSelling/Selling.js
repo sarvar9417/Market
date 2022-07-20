@@ -5,6 +5,7 @@ import { Table } from './Selling/Table';
 import { Footer } from './Selling/Footer';
 
 export const Selling = ({
+  currency,
   saveTemporary,
   saleconnectorid,
   totalpriceuzs,
@@ -38,8 +39,13 @@ export const Selling = ({
       />
 
       <div className='px-3 py-2 overflow-x-auto'>
-        <Table saleproducts={saleproducts} editProducts={editProducts} />
+        <Table
+          saleproducts={saleproducts}
+          editProducts={editProducts}
+          currency={currency}
+        />
         <Footer
+          currency={currency}
           saveTemporary={saveTemporary}
           totalpriceuzs={totalpriceuzs}
           totalprice={totalprice}
