@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 
 export const TableRow = ({
+  currency,
   countPage,
   p,
   index,
@@ -22,8 +23,7 @@ export const TableRow = ({
           index === productCheque.index && productCheque.code
             ? 'bg-green-600 text-white'
             : ' '
-        }`}
-      >
+        }`}>
         <span className='w-1/2 pointer-events-none'>{p.productdata.code}</span>
       </li>
 
@@ -34,8 +34,7 @@ export const TableRow = ({
             ? 'bg-green-600 text-white'
             : ' '
         }`}
-        data-property='name'
-      >
+        data-property='name'>
         {p.productdata.name}
       </li>
       <li
@@ -45,34 +44,45 @@ export const TableRow = ({
             ? 'bg-green-600 text-white'
             : ' '
         }`}
-        data-property='unit'
-      >
+        data-property='unit'>
         <span className='pointer-events-none'>{p.total}</span>{' '}
         <span className='ml-1 pointer-events-none'>
           {p.unit && p.unit.name}
         </span>
       </li>
       <li className={`col-span-1 td no flex justify-end px-1`}>
-        {p.price && p.price.incomingprice} USD
+        {p.price &&
+          (currency === 'UZS'
+            ? p.price.incomingpriceuzs
+            : p.price.incomingprice
+          ).toLocaleString('ru-RU')}
       </li>
       <li className='col-span-1 td no flex justify-end px-1'>
-        {((p.price && p.price.incomingprice) * p.total).toLocaleString('ru-RU')}{' '}
-        USD
+        {(
+          (p.price &&
+            (currency === 'UZS'
+              ? p.price.incomingpriceuzs
+              : p.price.incomingprice)) * p.total
+        ).toLocaleString('ru-RU')}{' '}
       </li>
       <li
-        onClick={(e) => chooseProductCheque(e, index, p.price.sellingprice)}
+        onClick={(e) => chooseProductCheque(e, index, p.price)}
         className={`col-span-1 td no flex justify-end px-1 ${
           index === productCheque.index && productCheque.sellingprice
             ? 'bg-green-600 text-white'
             : ' '
         }`}
-        data-property='sellingprice'
-      >
-        {p.price && p.price.sellingprice} USD
+        data-property='sellingprice'>
+        {p.price &&
+          (currency === 'UZS' ? p.price.sellingpriceuzs : p.price.sellingprice)}
       </li>
       <li className='col-span-1 td no flex justify-end px-1'>
-        {p.price && (p.price.sellingprice * p.total).toLocaleString('ru-RU')}{' '}
-        USD
+        {p.price &&
+          (
+            (currency === 'UZS'
+              ? p.price.sellingpriceuzs
+              : p.price.sellingprice) * p.total
+          ).toLocaleString('ru-RU')}{' '}
       </li>
       <li className='col-span-1 td-btn no px-4 '>
         <input
@@ -88,8 +98,7 @@ export const TableRow = ({
       <li className='col-span-1 td-btn no px-1'>
         <button
           onClick={() => addProductCheaques()}
-          className='px-4 bg-blue-700 text-white rounded-xl hover:bg-blue-800'
-        >
+          className='px-4 bg-blue-700 text-white rounded-xl hover:bg-blue-800'>
           <FontAwesomeIcon icon={faPrint} />
         </button>
       </li>

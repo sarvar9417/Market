@@ -99,7 +99,6 @@ module.exports.registerAll = async (req, res) => {
       });
 
       // Create Price
-
       const newPrice = new ProductPrice({
         incomingprice: incomingprice
           ? Math.round(incomingprice * 10000) / 10000
@@ -108,10 +107,10 @@ module.exports.registerAll = async (req, res) => {
           ? Math.round(sellingprice * 10000) / 10000
           : 0,
         incomingpriceuzs: incomingpriceuzs
-          ? Math.round(incomingpriceuzs * 10000) / 10000
+          ? Math.round(incomingpriceuzs * 1) / 1
           : 0,
         sellingpriceuzs: sellingpriceuzs
-          ? Math.round(sellingpriceuzs * 10000) / 10000
+          ? Math.round(sellingpriceuzs * 1) / 1
           : 0,
         market,
       });
@@ -282,10 +281,10 @@ module.exports.register = async (req, res) => {
         : 0,
       sellingprice: sellingprice ? Math.round(sellingprice * 10000) / 10000 : 0,
       incomingpriceuzs: incomingpriceuzs
-        ? Math.round(incomingpriceuzs * 10000) / 10000
+        ? Math.round(incomingpriceuzs * 1) / 1
         : 0,
       sellingpriceuzs: sellingpriceuzs
-        ? Math.round(sellingpriceuzs * 10000) / 10000
+        ? Math.round(sellingpriceuzs * 1) / 1
         : 0,
       market,
     });
@@ -399,14 +398,14 @@ module.exports.update = async (req, res) => {
         Math.round(
           (incomingpriceuzs
             ? incomingpriceuzs
-            : exchangerate.exchangerate * incomingprice) * 10000
-        ) / 10000,
+            : exchangerate.exchangerate * incomingprice) * 1
+        ) / 1,
       sellingpriceuzs:
         Math.round(
           (sellingpriceuzs
             ? sellingpriceuzs
-            : exchangerate.exchangerate * sellingprice) * 10000
-        ) / 10000,
+            : exchangerate.exchangerate * sellingprice) * 1
+        ) / 1,
     });
     product.unit = unit;
     product.total = total;
