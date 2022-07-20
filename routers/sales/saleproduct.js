@@ -57,8 +57,8 @@ module.exports.register = async (req, res) => {
       Math.round(
         saleproducts.reduce((summ, saleproduct) => {
           return summ + saleproduct.totalpriceuzs;
-        }, 0) * 10000
-      ) / 10000;
+        }, 0) * 1
+      ) / 1;
 
     if (checkPayments(totalprice, payment, discount, debt)) {
       return res.status(400).json({
@@ -309,8 +309,8 @@ module.exports.addproducts = async (req, res) => {
       Math.round(
         saleproducts.reduce((summ, saleproduct) => {
           return summ + saleproduct.totalpriceuzs;
-        }, 0) * 10000
-      ) / 10000;
+        }, 0) * 1
+      ) / 1;
 
     if (checkPayments(totalprice, payment, discount, debt)) {
       return res.status(400).json({
@@ -701,8 +701,8 @@ module.exports.registeredit = async (req, res) => {
       Math.round(
         saleproducts.reduce((summ, saleproduct) => {
           return summ + saleproduct.totalpriceuzs;
-        }, 0) * 10000
-      ) / 10000;
+        }, 0) * 1
+      ) / 1;
 
     let all = [];
 
