@@ -15,6 +15,7 @@ import { TableHead } from './ProductsReport/TableHead';
 import { TableRow } from './ProductsReport/TableRow';
 import { ProductCheque } from './ProductsReport/ProductCheque';
 import { useReactToPrint } from 'react-to-print';
+import { Currency } from '../components/Currency';
 
 export const ProductsReport = () => {
   //====================================================================
@@ -196,7 +197,6 @@ export const ProductsReport = () => {
       clearInputs();
     }, 1000);
   };
-
   const chooseProductCheque = (e, ind, val) => {
     let property = e.target.dataset.property;
     if (ind === productCheque.index) {
@@ -235,6 +235,7 @@ export const ProductsReport = () => {
         code: product.productdata.code,
         total: product.total,
         sellingprice: product.price.sellingprice,
+        sellingpriceuzs: product.price.sellingpriceuzs,
         unit: product.unit.name,
       };
       while (count !== productChequesCount) {
@@ -296,9 +297,60 @@ export const ProductsReport = () => {
     },
     [products]
   );
+  const [currency, setCurrency] = useState('UZS');
+
+  const changeCurrency = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/exchangerate/currencyupdate`,
+        'PUT',
+        {
+          market: auth.market._id,
+          currency: currency === 'UZS' ? 'USD' : 'UZS',
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      localStorage.setItem('data', data);
+      setCurrency(currency === 'UZS' ? 'USD' : 'UZS');
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [auth, request, notify, currency]);
+
+  const getCurrency = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/exchangerate/currencyget`,
+        'PUT',
+        {
+          market: auth.market._id,
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setCurrency(data.currency);
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [auth, request, notify]);
 
   //====================================================================
   //UseEffects
+  useEffect(() => {
+    getCurrency();
+  }, [getCurrency]);
+
   useEffect(() => {
     getProducts();
   }, [getProducts, currentPage, countPage, sendingsearch]);
@@ -307,6 +359,15 @@ export const ProductsReport = () => {
     <>
       {/* {loading ? <Loader /> : ''} */}
       <div className='overflow-x-auto'>
+        <div className='m-3 '>
+          <div className='font-bold text-right'>
+            Asosiy valyuta turi:{' '}
+            <Currency
+              value={currency === 'UZS' ? true : false}
+              onToggle={changeCurrency}
+            />
+          </div>
+        </div>
         <div className='m-3 min-w-[800px]'>
           <TableHeader
             search={search}
@@ -332,6 +393,7 @@ export const ProductsReport = () => {
             currentProducts.map((p, index) => {
               return (
                 <TableRow
+                  currency={currency}
                   countPage={countPage}
                   p={p}
                   index={index}
@@ -351,6 +413,7 @@ export const ProductsReport = () => {
       <ExcelTable products={excelDatas} />
       <div className='hidden'>
         <ProductCheque
+          currency={currency}
           productCheques={productCheques}
           componentRef={componentRef}
         />

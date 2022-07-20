@@ -95,14 +95,6 @@ export const checkProduct = (product, t) => {
       status: 'error',
     };
 
-  if (product.code.length > 7)
-    return {
-      title: t(
-        "Diqqat! Mahsulot kodi ko'pi bilan 7 ta belgidan iborat bo'shi kerak."
-      ),
-      description: t("Iltimos kodni to'g'ri kiriting."),
-      status: 'error',
-    };
 
   if (!product.name)
     return {

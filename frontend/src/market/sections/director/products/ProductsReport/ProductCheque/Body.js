@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const Body = ({ product }) => {
+export const Body = ({ product, currency }) => {
   return (
     <div className='w-full p-1 font-sans bg-white'>
       <div className='text-left text-xs mb-1'>Наименование:</div>
@@ -19,7 +19,13 @@ export const Body = ({ product }) => {
         <div>
           <span>{product.sellingprice ? 'Цена:' : ''}</span>{' '}
           <span>
-            {(product.sellingprice && product.sellingprice + ' $') || ''}
+            {(product.sellingprice &&
+              (currency === 'UZS'
+                ? product.sellingpriceuzs
+                : product.sellingprice) +
+                ' ' +
+                currency) ||
+              ''}
           </span>
         </div>
         <div>{new Date().toLocaleDateString()}</div>
