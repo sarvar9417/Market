@@ -354,7 +354,7 @@ export const ProductsReport = () => {
   useEffect(() => {
     getProducts();
   }, [getProducts, currentPage, countPage, sendingsearch]);
-
+  console.log(productCheque);
   return (
     <>
       {/* {loading ? <Loader /> : ''} */}

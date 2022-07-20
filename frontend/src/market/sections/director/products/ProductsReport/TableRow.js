@@ -45,7 +45,9 @@ export const TableRow = ({
             : ' '
         }`}
         data-property='unit'>
-        <span className='pointer-events-none'>{p.total}</span>{' '}
+        <span className='pointer-events-none'>
+          {p.total.toLocaleString('ru-RU')}
+        </span>{' '}
         <span className='ml-1 pointer-events-none'>
           {p.unit && p.unit.name}
         </span>
@@ -66,15 +68,25 @@ export const TableRow = ({
         ).toLocaleString('ru-RU')}{' '}
       </li>
       <li
-        onClick={(e) => chooseProductCheque(e, index, p.price)}
+        onClick={(e) =>
+          chooseProductCheque(
+            e,
+            index,
+            p.price[currency === 'UZS' ? 'sellingpriceuzs' : 'sellingprice']
+          )
+        }
         className={`col-span-1 td no flex justify-end px-1 ${
-          index === productCheque.index && productCheque.sellingprice
+          index === productCheque.index &&
+          (productCheque.sellingprice || productCheque.sellingpriceuzs)
             ? 'bg-green-600 text-white'
             : ' '
         }`}
-        data-property='sellingprice'>
+        data-property={currency === 'UZS' ? 'sellingpriceuzs' : 'sellingprice'}>
         {p.price &&
-          (currency === 'UZS' ? p.price.sellingpriceuzs : p.price.sellingprice)}
+          (currency === 'UZS'
+            ? p.price.sellingpriceuzs
+            : p.price.sellingprice
+          ).toLocaleString('ru-RU')}
       </li>
       <li className='col-span-1 td no flex justify-end px-1'>
         {p.price &&

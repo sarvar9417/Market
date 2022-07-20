@@ -1,6 +1,7 @@
 import React from 'react';
 
 export const Body = ({ product, currency }) => {
+  console.log(currency);
   return (
     <div className='w-full p-1 font-sans bg-white'>
       <div className='text-left text-xs mb-1'>Наименование:</div>
@@ -17,12 +18,14 @@ export const Body = ({ product, currency }) => {
       </div>
       <div className='flex justify-between items-center text-xs text-black font-medium'>
         <div>
-          <span>{product.sellingprice ? 'Цена:' : ''}</span>{' '}
           <span>
-            {(product.sellingprice &&
+            {product.sellingprice || product.sellingpriceuzs ? 'Цена:' : ''}
+          </span>{' '}
+          <span>
+            {((product.sellingprice || product.sellingpriceuzs) &&
               (currency === 'UZS'
-                ? product.sellingpriceuzs
-                : product.sellingprice) +
+                ? product.sellingpriceuzs.toLocaleString('ru-RU')
+                : product.sellingprice.toLocaleString('ru-RU')) +
                 ' ' +
                 currency) ||
               ''}
