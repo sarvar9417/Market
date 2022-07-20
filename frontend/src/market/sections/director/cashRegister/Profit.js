@@ -112,7 +112,7 @@ export const Profit = () => {
 
   return (
     <>
-      <div className='m-3 p-4'>
+      <div className=''>
         <TableHeader
           startDate={startDate}
           endDate={endDate}

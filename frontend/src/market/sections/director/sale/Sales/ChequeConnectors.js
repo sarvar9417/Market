@@ -6,7 +6,7 @@ import { Header } from './ChequeConnectors/Header';
 import { Table } from './ChequeConnectors/Table';
 // import QRCode from "qrcode";
 
-export const ChequeConnectors = ({ sales, setCheck }) => {
+export const ChequeConnectors = ({ sales, setCheck, currency }) => {
   //=================================================
   //=================================================
   //QR code
@@ -52,6 +52,7 @@ export const ChequeConnectors = ({ sales, setCheck }) => {
         <Header auth={auth} sales={sales} />
         <hr />
         <Table
+          currency={currency}
           sales={sales}
           currentSales={currentSales}
           returnSales={returnSales}

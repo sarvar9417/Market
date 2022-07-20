@@ -4,6 +4,7 @@ import { t } from 'i18next';
 import React from 'react';
 
 export const Footer = ({
+  currency,
   saveTemporary,
   totalprice,
   discount,
@@ -20,46 +21,36 @@ export const Footer = ({
         <span className='text-black font-bold'>{t('Qarz')}:</span>
         <span className='text-black font-bold'>{t("To'lanayotgan")}:</span>
       </div>
-      <div className='col-span-2 flex flex-col text-right'>
+      <div className='col-span-4 flex flex-col text-right'>
         <span className=''>
-          {totalpriceuzs.toLocaleString('ru-RU')}{' '}
-          <span className='text-green-800'>UZS</span>
+          {currency === 'UZS'
+            ? totalpriceuzs.toLocaleString('ru-RU')
+            : totalprice.toLocaleString('ru-RU')}{' '}
+          <span className='text-green-800'>{currency}</span>
         </span>
         <span className=''>
-          {discount.discountuzs.toLocaleString('ru-RU')}{' '}
-          <span className='text-green-800'>UZS</span>
+          {currency === 'UZS'
+            ? discount.discountuzs.toLocaleString('ru-RU')
+            : discount.discount.toLocaleString('ru-RU')}{' '}
+          <span className='text-green-800'>{currency}</span>
         </span>
         <span className=''>
-          {parseFloat(debt.debtuzs).toLocaleString('ru-RU')}{' '}
-          <span className='text-green-800'>UZS</span>
+          {currency === 'UZS'
+            ? debt.debtuzs.toLocaleString('ru-RU')
+            : debt.debt.toLocaleString('ru-RU')}{' '}
+          <span className='text-green-800'>{currency}</span>
         </span>
         <span className=''>
-          {(
-            payment.cashuzs +
-            payment.carduzs +
-            payment.transferuzs
-          ).toLocaleString('ru-RU')}{' '}
-          <span className='text-green-800'>UZS</span>
-        </span>
-      </div>
-      <div className='col-span-2 flex flex-col text-right'>
-        <span className=''>
-          {totalprice.toLocaleString('ru-RU')}{' '}
-          <span className='text-green-800'>USD</span>
-        </span>
-        <span className=''>
-          {discount.discount.toLocaleString('ru-RU')}{' '}
-          <span className='text-green-800'>USD</span>
-        </span>
-        <span className=''>
-          {debt.debt.toLocaleString('ru-RU')}{' '}
-          <span className='text-green-800'>USD</span>
-        </span>
-        <span className=''>
-          {(payment.cash + payment.card + payment.transfer).toLocaleString(
-            'ru-RU'
-          )}{' '}
-          <span className='text-green-800'>USD</span>
+          {currency === 'UZS'
+            ? (
+                payment.cashuzs +
+                payment.carduzs +
+                payment.transferuzs
+              ).toLocaleString('ru-RU')
+            : (payment.cash + payment.card + payment.transfer).toLocaleString(
+                'ru-RU'
+              )}{' '}
+          <span className='text-green-800'>{currency}</span>
         </span>
       </div>
       <div className='font-bold  col-span-2 text-center py-2 px-3'>

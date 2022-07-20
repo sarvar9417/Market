@@ -7,7 +7,7 @@ import { Control } from './Cheque/Control';
 import { TableFooter } from './Cheque/TableFooter';
 // import QRCode from "qrcode";
 
-export const Cheque = ({ sales, setCheck }) => {
+export const Cheque = ({ sales, setCheck, currency }) => {
   //=================================================
   //=================================================
   //QR code
@@ -35,8 +35,8 @@ export const Cheque = ({ sales, setCheck }) => {
       <div className='a4 m-auto w-[27cm]' ref={componentRef}>
         <Header auth={auth} sales={sales} />
         <hr />
-        <Table sales={sales} />
-        <TableFooter sales={sales} />
+        <Table sales={sales} currency={currency} />
+        <TableFooter sales={sales} currency={currency} />
       </div>
       <div className='py-4 w-full'>
         <Control setCheck={setCheck} print={print} />

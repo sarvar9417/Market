@@ -2,7 +2,7 @@ import { t } from 'i18next';
 import React from 'react';
 import { TableFooter } from './TableFooter';
 
-export const Table = ({ sales, currentSales, returnSales }) => {
+export const Table = ({ sales, currentSales, returnSales, currency }) => {
   return (
     <>
       <div className='mt-3 mb-2 ml-2 font-bold text-lg'>Sotilganlar:</div>
@@ -52,10 +52,16 @@ export const Table = ({ sales, currentSales, returnSales }) => {
                   {product.pieces.toLocaleString('ru-RU')}
                 </td>
                 <td className='font-bold text-right border border-black py-1 px-2'>
-                  {product.unitprice.toLocaleString('ru-RU')} USD
+                  {currency === 'UZS'
+                    ? product.unitpriceuzs.toLocaleString('ru-RU')
+                    : product.unitprice.toLocaleString('ru-RU')}{' '}
+                  {currency}
                 </td>
                 <td className='font-bold text-right border border-black py-1 px-2 text-teal-900'>
-                  {product.totalprice.toLocaleString('ru-RU')} USD
+                  {currency === 'UZS'
+                    ? product.totalpriceuzs.toLocaleString('ru-RU')
+                    : product.totalprice.toLocaleString('ru-RU')}{' '}
+                  {currency}
                 </td>
               </tr>
             );
@@ -68,13 +74,20 @@ export const Table = ({ sales, currentSales, returnSales }) => {
             <th className='text-right text-teal-900 py-1'>
               <span className='mr-4'>Sotilganlar jami:</span>
               <span>
-                {(
-                  currentSales.reduce(
-                    (prev, sale) => prev + sale.totalprice,
-                    0
-                  ) || 0
-                ).toLocaleString('ru-RU')}{' '}
-                USD
+                {currency === 'UZS'
+                  ? (
+                      currentSales.reduce(
+                        (prev, sale) => prev + sale.totalpriceuzs,
+                        0
+                      ) || 0
+                    ).toLocaleString('ru-RU')
+                  : (
+                      currentSales.reduce(
+                        (prev, sale) => prev + sale.totalprice,
+                        0
+                      ) || 0
+                    ).toLocaleString('ru-RU')}{' '}
+                {currency}
               </span>
             </th>
           </tr>
@@ -132,10 +145,16 @@ export const Table = ({ sales, currentSales, returnSales }) => {
                       {product.pieces.toLocaleString('ru-RU')}
                     </td>
                     <td className='font-bold text-right border border-black py-1 px-2'>
-                      {product.unitprice.toLocaleString('ru-RU')} USD
+                      {currency === 'UZS'
+                        ? product.unitpriceuzs.toLocaleString('ru-RU')
+                        : product.unitprice.toLocaleString('ru-RU')}{' '}
+                      {currency}
                     </td>
                     <td className='font-bold text-right border border-black py-1 px-2 text-teal-900'>
-                      {product.totalprice.toLocaleString('ru-RU')} USD
+                      {currency === 'UZS'
+                        ? product.totalpriceuzs.toLocaleString('ru-RU')
+                        : product.totalprice.toLocaleString('ru-RU')}{' '}
+                      {currency}
                     </td>
                   </tr>
                 );
@@ -148,13 +167,20 @@ export const Table = ({ sales, currentSales, returnSales }) => {
                 <th className='text-right text-teal-900 py-1'>
                   <span className='mr-4'>Qaytarilganlar jami:</span>
                   <span>
-                    {(
-                      returnSales.reduce(
-                        (prev, sale) => prev + sale.totalprice,
-                        0
-                      ) || 0
-                    ).toLocaleString('ru-RU')}{' '}
-                    USD
+                    {currency === 'UZS'
+                      ? (
+                          returnSales.reduce(
+                            (prev, sale) => prev + sale.totalpriceuzs,
+                            0
+                          ) || 0
+                        ).toLocaleString('ru-RU')
+                      : (
+                          returnSales.reduce(
+                            (prev, sale) => prev + sale.totalprice,
+                            0
+                          ) || 0
+                        ).toLocaleString('ru-RU')}{' '}
+                    {currency}
                   </span>
                 </th>
               </tr>
@@ -162,7 +188,7 @@ export const Table = ({ sales, currentSales, returnSales }) => {
           </table>
         </>
       )}
-      <TableFooter sales={sales} />
+      <TableFooter sales={sales} currency={currency} />
     </>
   );
 };
