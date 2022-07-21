@@ -32,7 +32,7 @@ export const Body = ({ product, currency }) => {
         {/* <svg ref={inputRef} className='h-[23mm] w-[80mm]'  /> */}
       </div>
       <div className='flex justify-between text-xl'>
-        <div>Kod: {product.code && product.code}</div>
+        <div>Код: {product.code && product.code}</div>
         <div>{new Date().toLocaleDateString()}</div>
       </div>
     </div>
