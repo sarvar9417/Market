@@ -797,7 +797,7 @@ export const Sale = () => {
     });
   }, []);
 
-  let types = ['cash', 'card', 'transfer'];
+  let types = ['cash', 'card', 'transfer', 'mixed'];
 
   const changeDiscount = (e, p) => {
     if (discount.isProcient && e.target.value > 5) {
@@ -1060,6 +1060,7 @@ export const Sale = () => {
       e.target.dataset.type === 'mixed' ||
       e.target.dataset.type === 'discount'
     ) {
+      if (e.target.dataset.type === 'mixed') p.type = 'mixed';
       setDebt({
         ...debt,
         debt: Math.round((totalprice - discount.discount) * 10000) / 10000,
@@ -1379,6 +1380,7 @@ export const Sale = () => {
     let p = { ...paymentEdit };
     p.type = e.target.dataset.type;
     if (e.target.dataset.type === 'mixed') {
+      if (e.target.dataset.type === 'mixed') p.type = 'mixed';
       setDebt({
         ...debt,
         debt:
@@ -1926,6 +1928,7 @@ export const Sale = () => {
     let p = { ...prePayment };
     p.type = e.target.dataset.type;
     if (e.target.dataset.type === 'mixed') {
+      if (e.target.dataset.type === 'mixed') p.type = 'mixed';
       setPrePaymentDebt({
         ...prePayment,
         debt:
@@ -2437,6 +2440,7 @@ export const Sale = () => {
     getTemporarys();
     getCurrency();
   }, [getTemporarys, getCurrency]);
+
   //====================================================================
   //====================================================================
   // UseEffect

@@ -24,11 +24,14 @@ module.exports.getPayments = async (req, res) => {
     })
       .select('-isArchive -updatedAt -dailyconnectors -__v ')
       .sort({ _id: -1 })
-      .populate('payments', 'totalprice payment cash card transfer')
+      .populate(
+        'payments',
+        'totalprice payment cash card transferuzs totalpriceuzs paymentuzs cashuzs carduzs transferuzs'
+      )
       .populate({
         path: 'products',
         select:
-          'totalprice unitprice totalpriceuzs unitpriceuzs pieces createdAt discount',
+          'totalprice unitprice totalpriceuzs unitpriceuzs pieces createdAt',
         options: { sort: { createdAt: -1 } },
         populate: {
           path: 'product',

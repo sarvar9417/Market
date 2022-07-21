@@ -33,6 +33,7 @@ import { ReturnedProducts } from './ReturnedProducts';
 import { t } from 'i18next';
 import { Expense } from './Expense';
 import { Profit } from './Profit';
+import { Currency } from '../components/Currency';
 
 export const Report = () => {
   //========================================================
@@ -190,11 +191,13 @@ export const Report = () => {
   const [debtsReport, setDebtsReport] = useState({
     debtcount: 0,
     debttotal: 0,
+    debttotaluzs: 0,
   });
 
   const [discountsReport, setDiscountsReport] = useState({
     discountcount: 0,
     discounttotal: 0,
+    discounttotaluzs: 0,
   });
 
   const getDebtAndDiscountReports = useCallback(async () => {
@@ -214,10 +217,12 @@ export const Report = () => {
       setDiscountsReport({
         discountcount: data.discountcount,
         discounttotal: data.discounttotal,
+        discounttotaluzs: data.discounttotaluzs,
       });
       setDebtsReport({
         debtcount: data.debtcount,
         debttotal: data.debttotal,
+        debttotaluzs: data.debttotaluzs,
       });
     } catch (error) {
       notify({
@@ -249,7 +254,7 @@ export const Report = () => {
   //========================================================
   //========================================================
 
-  const [profit, setProfit] = useState(0);
+  const [profit, setProfit] = useState({ income: 0, incomeuzs: 0 });
 
   const getNetProfit = useCallback(async () => {
     try {
@@ -265,7 +270,6 @@ export const Report = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-
       setProfit(data);
     } catch (error) {
       notify({
@@ -294,14 +298,59 @@ export const Report = () => {
         );
   };
 
-  //========================================================
-  //========================================================
-
   const changeCheck = (e) => {
     setCheckSales(e);
     setCheckConnectors(true);
     window.scroll({ top: 0 });
   };
+
+  const [currency, setCurrency] = useState('UZS');
+
+  const changeCurrency = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/exchangerate/currencyupdate`,
+        'PUT',
+        {
+          market: auth.market._id,
+          currency: currency === 'UZS' ? 'USD' : 'UZS',
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      localStorage.setItem('data', data);
+      setCurrency(currency === 'UZS' ? 'USD' : 'UZS');
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [auth, request, notify, currency]);
+
+  const getCurrency = useCallback(async () => {
+    try {
+      const data = await request(
+        `/api/exchangerate/currencyget`,
+        'PUT',
+        {
+          market: auth.market._id,
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      setCurrency(data.currency);
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [auth, request, notify]);
 
   //========================================================
   //========================================================
@@ -324,13 +373,8 @@ export const Report = () => {
 
   useEffect(() => {
     getBaseUrl();
-  }, [getBaseUrl]);
-
-  //========================================================
-  //========================================================
-
-  //========================================================
-  //========================================================
+    getCurrency();
+  }, [getBaseUrl, getCurrency]);
 
   const componentRef = useRef();
 
@@ -342,16 +386,22 @@ export const Report = () => {
     content: () => componentRef.current,
   });
 
-  //========================================================
-  //========================================================
-
   if (loading) {
     return <Loader />;
   }
   return (
     <div className='m-3 p-4'>
-      <div className='grid grid-cols-12 px-20 mb-10'>
-        <div className='col-span-3 flex justify-between'>
+      <div className='grid grid-cols-12 px-5 mb-5'>
+        <div className='col-span-4 flex items-center'>
+          <div className='font-bold'>
+            Asosiy valyuta turi:{' '}
+            <Currency
+              value={currency === 'UZS' ? true : false}
+              onToggle={changeCurrency}
+            />
+          </div>
+        </div>
+        <div className='col-span-4 flex justify-between'>
           <input
             onChange={changeDate}
             defaultValue={new Date(startDate).toISOString().slice(0, 10)}
@@ -367,7 +417,7 @@ export const Report = () => {
             className='border rounded p-1 focus:outline-green-800 ml-2'
           />
         </div>
-        <div className='col-end-13 col-span-3 text-right'>
+        <div className=' col-span-4 text-right'>
           <button
             className='bg-blue-700 hover:bg-blue-800 text-white m-auto px-10 py-1 text-lg rounded mr-4'
             onClick={() => setIsPrint(true)}>
@@ -397,8 +447,10 @@ export const Report = () => {
           <p className='text-white font-bold text-xl pointer-events-none	'>
             {debtsReport.debtcount} {'-'}{' '}
             {debtsReport.debttotal &&
-              debtsReport.debttotal.toLocaleString('ru-RU')}{' '}
-            USD
+              (currency === 'UZS'
+                ? debtsReport.debttotaluzs.toLocaleString('ru-RU')
+                : debtsReport.debttotal.toLocaleString('ru-RU'))}{' '}
+            {currency}
           </p>
         </Link>
         <Link
@@ -419,10 +471,14 @@ export const Report = () => {
               {salesReport.salecount} -{' '}
             </span>
             <span className='text-xl font-bold text-white'>
-              {(Math.round(salesReport.totalsale * 100) / 100).toLocaleString(
-                'ru-RU'
-              )}{' '}
-              USD
+              {currency === 'UZS'
+                ? (Math.round(salesReport.totalsaleuzs * 1) / 1).toLocaleString(
+                    'ru-RU'
+                  )
+                : (
+                    Math.round(salesReport.totalsale * 1000) / 1000
+                  ).toLocaleString('ru-RU')}{' '}
+              {currency}
             </span>
           </div>
         </Link>
@@ -446,12 +502,14 @@ export const Report = () => {
           <p className='text-white font-bold text-xl pointer-events-none	'>
             {salesReport.cashcount} {'-'}{' '}
             {salesReport.totalcash &&
-              salesReport.totalcash.toLocaleString('ru-RU')}{' '}
-            USD
+              (currency === 'UZS'
+                ? salesReport.totalcashuzs.toLocaleString('ru-RU')
+                : salesReport.totalcash.toLocaleString('ru-RU'))}{' '}
+            {currency}
           </p>
-          <p className='font-bold text-base pointer-events-none text-red-700'>
-            -{salesReport.cashexpense.toLocaleString('ru-RU')} USD
-          </p>
+          {/* <p className='font-bold text-base pointer-events-none text-red-700'>
+            -{salesReport.cashexpense.toLocaleString('ru-RU')} {currency}
+          </p> */}
         </Link>
         <Link
           to='/alo24/reports/discounts'
@@ -466,8 +524,10 @@ export const Report = () => {
           <p className='text-white font-bold text-xl pointer-events-none'>
             {discountsReport.discountcount} {'-'}{' '}
             {discountsReport.discounttotal &&
-              discountsReport.discounttotal.toLocaleString('ru-RU')}{' '}
-            USD
+              (currency === 'UZS'
+                ? discountsReport.discounttotaluzs.toLocaleString('ru-RU')
+                : discountsReport.discounttotal.toLocaleString('ru-RU'))}{' '}
+            {currency}
           </p>
         </Link>
         <Link
@@ -484,7 +544,10 @@ export const Report = () => {
             Soffoyda
           </p>
           <p className='text-white font-bold text-xl pointer-events-none	'>
-            {profit.toLocaleString('ru-RU')} USD
+            {currency === 'UZS'
+              ? profit.incomeuzs.toLocaleString('ru-RU')
+              : profit.income.toLocaleString('ru-RU')}{' '}
+            {currency}
           </p>
         </Link>
         <Link
@@ -507,12 +570,14 @@ export const Report = () => {
           <p className='text-white font-bold text-xl pointer-events-none	'>
             {salesReport.cardcount} {'-'}{' '}
             {salesReport.totalcard &&
-              salesReport.totalcard.toLocaleString('ru-RU')}{' '}
-            USD
+              (currency === 'UZS'
+                ? salesReport.totalcarduzs.toLocaleString('ru-RU')
+                : salesReport.totalcard.toLocaleString('ru-RU'))}{' '}
+            {currency}
           </p>
-          <p className='text-red-700 font-bold text-base pointer-events-none'>
-            -{salesReport.cardexpense.toLocaleString('ru-RU')} USD
-          </p>
+          {/* <p className='text-red-700 font-bold text-base pointer-events-none'>
+            -{salesReport.cardexpense.toLocaleString('ru-RU')} {currency}
+          </p> */}
         </Link>
         <Link
           to='/alo24/reports/expense'
@@ -534,7 +599,7 @@ export const Report = () => {
               salesReport.cardexpense +
               salesReport.transferexpense
             ).toLocaleString('ru-RU')}{' '}
-            USD
+            {currency}
           </p>
         </Link>
         <Link
@@ -567,12 +632,14 @@ export const Report = () => {
           <p className='text-white font-bold text-xl pointer-events-none	'>
             {salesReport.transfercount} {'-'}{' '}
             {salesReport.totaltransfer &&
-              salesReport.totaltransfer.toLocaleString('ru-RU')}{' '}
-            USD
+              (currency === 'UZS'
+                ? salesReport.totaltransferuzs.toLocaleString('ru-RU')
+                : salesReport.totaltransfer.toLocaleString('ru-RU'))}{' '}
+            {currency}
           </p>
-          <p className='text-red-700 font-bold text-base pointer-events-none'>
+          {/* <p className='text-red-700 font-bold text-base pointer-events-none'>
             {salesReport.transferexpense.toLocaleString('ru-RU')}
-          </p>
+          </p> */}
         </Link>
       </div>
 
@@ -589,7 +656,12 @@ export const Report = () => {
           <Discounts />
         </Route>
         <Route path='/alo24/reports/paymentstypes'>
-          <PaymentsReport type={paymentType} changeCheck={changeCheck} />
+          <PaymentsReport
+            type={paymentType}
+            changeCheck={changeCheck}
+            beginDay={startDate}
+            endDay={endDate}
+          />
         </Route>
         <Route path='/alo24/reports/profit'>
           <Profit />
@@ -618,7 +690,7 @@ export const Report = () => {
           auth={auth}
           print={print}
           setIsPrint={setIsPrint}
-          profit={profit}
+          // profit={profit}
         />
       </div>
 

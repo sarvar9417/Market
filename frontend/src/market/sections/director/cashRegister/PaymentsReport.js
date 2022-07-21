@@ -11,7 +11,7 @@ import { t } from 'i18next';
 import { Loader } from '../../../loader/Loader';
 import { TableHead as ExpenseTableHead } from './Expense/tableExpense/TableHead';
 
-export const PaymentsReport = ({ type, changeCheck }) => {
+export const PaymentsReport = ({ type, changeCheck, beginDay, endDay }) => {
   //============================================================
   //============================================================
   // STATES
@@ -34,10 +34,8 @@ export const PaymentsReport = ({ type, changeCheck }) => {
   //============================================================
   //============================================================
 
-  const [startDate, setStartDate] = useState(
-    new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString()
-  );
-  const [endDate, setEndDate] = useState(new Date().toISOString());
+  const [startDate, setStartDate] = useState(beginDay);
+  const [endDate, setEndDate] = useState(endDay);
 
   //============================================================
   //============================================================

@@ -13,7 +13,6 @@ const { SaleProduct } = require('../../models/Sales/SaleProduct');
 module.exports.getSalesReport = async (req, res) => {
   try {
     const { market, startDate, endDate } = req.body;
-
     const marke = await Market.findById(market);
     if (!marke) {
       return res
@@ -25,43 +24,105 @@ module.exports.getSalesReport = async (req, res) => {
       market,
       createdAt: {
         $gte: startDate,
-        $lte: endDate,
+        $lt: endDate,
       },
     })
       .select(
         '-isArchive -updatedAt -user -market -__v -debts -dailyconnectors'
       )
-      .populate('payments');
+      .populate(
+        'payments',
+        'cash cashuzs card carduzs transfer transferuzs payment paymentuzs'
+      )
+      .populate('products', 'totalprice totalpriceuzs');
+
+    const cashcount = sales.reduce(
+      (summ, sale) =>
+        summ + sale.payments.filter((payment) => payment.cash > 0).length,
+      0
+    );
+
+    const cardcount = sales.reduce(
+      (summ, sale) =>
+        summ + sale.payments.filter((payment) => payment.card > 0).length,
+      0
+    );
+
+    const transfercount = sales.reduce(
+      (summ, sale) =>
+        summ + sale.payments.filter((payment) => payment.transfer > 0).length,
+      0
+    );
+
+    const totalsale = sales.reduce(
+      (summ, sale) =>
+        summ +
+        sale.products.reduce((summ, product) => summ + product.totalprice, 0),
+      0
+    );
+
+    const totalsaleuzs = sales.reduce(
+      (summ, sale) =>
+        summ +
+        sale.products.reduce(
+          (summ, product) => summ + product.totalpriceuzs,
+          0
+        ),
+      0
+    );
+
+    const totalcash = sales.reduce(
+      (summ, sale) =>
+        summ + sale.payments.reduce((summ, payment) => summ + payment.cash, 0),
+      0
+    );
+    const totalcashuzs = sales.reduce(
+      (summ, sale) =>
+        summ +
+        sale.payments.reduce((summ, payment) => summ + payment.cashuzs, 0),
+      0
+    );
+    const totalcard = sales.reduce(
+      (summ, sale) =>
+        summ + sale.payments.reduce((summ, payment) => summ + payment.card, 0),
+      0
+    );
+    const totalcarduzs = sales.reduce(
+      (summ, sale) =>
+        summ +
+        sale.payments.reduce((summ, payment) => summ + payment.carduzs, 0),
+      0
+    );
+    const totaltransfer = sales.reduce(
+      (summ, sale) =>
+        summ +
+        sale.payments.reduce((summ, payment) => summ + payment.transfer, 0),
+      0
+    );
+    const totaltransferuzs = sales.reduce(
+      (summ, sale) =>
+        summ +
+        sale.payments.reduce((summ, payment) => summ + payment.transferuzs, 0),
+      0
+    );
 
     let totalSales = {
-      totalsale: 0,
-      totalcash: 0,
-      totalcard: 0,
-      totaltransfer: 0,
-      salecount: 0,
-      cashcount: 0,
-      cardcount: 0,
-      transfercount: 0,
+      totalsale,
+      totalcash,
+      totalcard,
+      totalsaleuzs,
+      totalcashuzs,
+      totalcarduzs,
+      totaltransfer,
+      totaltransferuzs,
+      salecount: sales.length,
+      cashcount,
+      cardcount,
+      transfercount,
       cashexpense: 0,
       cardexpense: 0,
       transferexpense: 0,
     };
-
-    sales.map((sale) => {
-      totalSales.salecount++;
-
-      sale.payments.some((item) => item.cash > 0) > 0 && totalSales.cashcount++;
-      sale.payments.some((item) => item.card > 0) > 0 && totalSales.cardcount++;
-      sale.payments.some((item) => item.transfer > 0) > 0 &&
-        totalSales.transfercount++;
-
-      sale.payments.map((payment) => {
-        totalSales.totalsale += payment.payment;
-        totalSales.totalcash += payment.cash;
-        totalSales.totalcard += payment.card;
-        totalSales.totaltransfer += payment.transfer;
-      });
-    });
 
     const expense = await Expense.find({
       market,
@@ -196,7 +257,7 @@ module.exports.getDebtAndDiscountReports = async (req, res) => {
         .json({ message: `Diqqat! Do'kon haqida malumotlar topilmadi!` });
     }
 
-    const debts = await SaleConnector.find({
+    const connectors = await SaleConnector.find({
       market,
       createdAt: {
         $gte: startDate,
@@ -204,53 +265,63 @@ module.exports.getDebtAndDiscountReports = async (req, res) => {
       },
     })
       .select('-isArchive -updatedAt -user -__v -dailyconnectors')
-      .populate('products', 'totalprice')
+      .populate('products', 'totalprice totalpriceuzs')
       .populate('payments', 'payment paymentuzs')
-      .populate('discounts', 'discount discountuzs')
-      .populate('client', 'name');
-
-    const discounts = await Discount.find({
-      market,
-      createdAt: {
-        $gte: startDate,
-        $lt: endDate,
-      },
-    }).select('-isArchive -updatedAt -user -market -__v -products');
+      .populate('discounts', 'discount discountuzs');
 
     const reports = {
       debtcount: 0,
       debttotal: 0,
+      debttotaluzs: 0,
       discountcount: 0,
       discounttotal: 0,
+      discounttotaluzs: 0,
     };
 
-    debts.map((debt) => {
-      const totalprice = debt.products.reduce((summ, product) => {
+    connectors.map((connector) => {
+      const totalprice = connector.products.reduce((summ, product) => {
         return summ + product.totalprice;
       }, 0);
 
-      const discounts = debt.discounts.reduce((summ, product) => {
+      const totalpriceuzs = connector.products.reduce((summ, product) => {
+        return summ + product.totalpriceuzs;
+      }, 0);
+
+      const discounts = connector.discounts.reduce((summ, product) => {
         return summ + product.discount;
       }, 0);
 
-      const payments = debt.payments.reduce((summ, product) => {
+      reports.discounttotal += discounts;
+
+      const discountsuzs = connector.discounts.reduce((summ, product) => {
+        return summ + product.discountuzs;
+      }, 0);
+      reports.discounttotaluzs += Math.round(discountsuzs * 1) / 1;
+      reports.discountcount += connector.discounts.length;
+
+      const payments = connector.payments.reduce((summ, product) => {
         return summ + product.payment;
       }, 0);
 
+      const paymentsuzs = connector.payments.reduce((summ, product) => {
+        return summ + product.paymentuzs;
+      }, 0);
+
       const d =
-        Math.round(totalprice * 10000) / 10000 -
-        Math.round(payments * 10000) / 10000 -
-        Math.round(discounts * 10000) / 10000;
+        Math.round(totalprice * 1000) / 1000 -
+        Math.round(payments * 1000) / 1000 -
+        Math.round(discounts * 1000) / 1000;
+
+      const duzs =
+        Math.round(totalpriceuzs * 1) / 1 -
+        Math.round(paymentsuzs * 1) / 1 -
+        Math.round(discountsuzs * 1) / 1;
 
       if (d > 0.01 || d < -0.01) {
         reports.debtcount += 1;
         reports.debttotal += d;
+        reports.debttotaluzs += duzs;
       }
-    });
-
-    discounts.map((discount) => {
-      reports.discounttotal += discount.discount;
-      reports.discountcount += 1;
     });
     res.status(201).json(reports);
   } catch (error) {
@@ -269,54 +340,94 @@ module.exports.getNetProfit = async (req, res) => {
         .json({ message: `Diqqat! Do'kon haqida malumotlar topilmadi!` });
     }
 
-    const saleproducts = await SaleProduct.find({
+    const connectors = await SaleConnector.find({
       market,
       createdAt: {
         $gte: startDate,
         $lt: endDate,
       },
     })
-      .select('totalprice price pieces market createdAt discount product')
-      .populate('price', 'incomingprice sellingprice')
-      .populate('discount', 'discount discountuzs');
+      .select('products discounts')
+      .populate({
+        path: 'products',
+        select: 'totalprice totalpriceuzs price pieces',
+        populate: {
+          path: 'price',
+          select: 'incomingprice incomingpriceuzs',
+        },
+      })
+      .populate('discounts', 'discount discountuzs');
 
-    const getPrice = async (product) => {
-      let data;
-      try {
-        data = await ProductPrice.findOne({ market, product }).select(
-          'incomingprice'
-        );
-      } catch (error) {
-        data = { incomingprice: 0 };
-      }
-      return data;
-    };
-
-    const totalsaleproducts = saleproducts.reduce((summ, sale) => {
-      return (
+    const totalprice = connectors.reduce(
+      (summ, connector) =>
         summ +
-        (sale.totalprice -
-          (sale.price ? sale.price.incomingprice : 0) * sale.pieces)
-      );
-    }, 0);
+        connector.products.reduce(
+          (summ, product) => summ + product.totalprice,
+          0
+        ),
+      0
+    );
 
-    const discounts = await Discount.find({
-      market,
-      createdAt: {
-        $gte: startDate,
-        $lt: endDate,
-      },
-    }).select('discount market discountuzs');
+    const totalpriceuzs = connectors.reduce(
+      (summ, connector) =>
+        summ +
+        connector.products.reduce(
+          (summ, product) => summ + product.totalpriceuzs,
+          0
+        ),
+      0
+    );
 
-    const totaldiscount = discounts.reduce((summ, discount) => {
-      return summ + discount.discount;
-    }, 0);
+    const totalincoming = connectors.reduce(
+      (summ, connector) =>
+        summ +
+        connector.products.reduce(
+          (summ, product) =>
+            summ + product.price.incomingprice * product.pieces,
+          0
+        ),
+      0
+    );
 
-    const profit = totalsaleproducts - totaldiscount;
+    const totalincominguzs = connectors.reduce(
+      (summ, connector) =>
+        summ +
+        connector.products.reduce(
+          (summ, product) =>
+            summ + product.price.incomingpriceuzs * product.pieces,
+          0
+        ),
+      0
+    );
 
-    res.status(200).json(profit);
+    const discounts = connectors.reduce(
+      (summ, connector) =>
+        summ +
+        connector.discounts.reduce(
+          (summ, discount) => summ + discount.discount,
+          0
+        ),
+      0
+    );
+
+    const discountsuzs = connectors.reduce(
+      (summ, connector) =>
+        summ +
+        connector.discounts.reduce(
+          (summ, discount) => summ + discount.discountuzs,
+          0
+        ),
+      0
+    );
+
+    const income = {
+      income:
+        Math.round((totalprice - discounts - totalincoming) * 1000) / 1000,
+      incomeuzs:
+        Math.round((totalpriceuzs - discountsuzs - totalincominguzs) * 1) / 1,
+    };
+    res.status(200).send(income);
   } catch (error) {
-    console.log(error);
     res.status(400).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
