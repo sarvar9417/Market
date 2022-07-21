@@ -303,7 +303,9 @@ export const Sale = () => {
   const setCounts = (e) => {
     let pieces = saleproduct.pieces;
     let unitprice = saleproduct.unitprice;
+    let unitpriceuzs = saleproduct.unitpriceuzs;
     let totalprice = saleproduct.totalprice;
+    let totalpriceuzs = saleproduct.totalpriceuzs;
     if (e.target.name === 'pieces') {
       if (parseFloat(e.target.value) > saleproduct.total) {
         return notify({
@@ -320,27 +322,49 @@ export const Sale = () => {
         Math.round(
           (!unitprice ? 0 : unitprice) * parseFloat(e.target.value) * 10000
         ) / 10000;
+      totalpriceuzs =
+        Math.round(
+          (!unitprice ? 0 : unitpriceuzs) * parseFloat(e.target.value) * 1
+        ) / 1;
       setSaleProduct({
         ...saleproduct,
         pieces: e.target.value === '' ? '' : parseFloat(e.target.value),
         totalprice: e.target.value === '' ? 0 : totalprice,
-        totalpriceuzs:
-          e.target.value === ''
-            ? 0
-            : Math.round(totalprice * exchangerate.exchangerate * 1) / 1,
+        totalpriceuzs: e.target.value === '' ? 0 : totalpriceuzs,
       });
     }
     if (e.target.name === 'unitprice') {
       totalprice =
         Math.round(
-          (!pieces ? 0 : pieces) * parseFloat(e.target.value) * 10000
+          (!pieces ? 0 : pieces) *
+            (currency === 'UZS'
+              ? parseFloat(e.target.value / exchangerate.exchangerate)
+              : parseFloat(e.target.value)) *
+            10000
         ) / 10000;
+      totalpriceuzs =
+        Math.round(
+          (!pieces ? 0 : pieces) *
+            (currency === 'UZS'
+              ? parseFloat(e.target.value)
+              : parseFloat(e.target.value * exchangerate.exchangerate)) *
+            1
+        ) / 1;
       setSaleProduct({
         ...saleproduct,
-        unitprice: e.target.value === '' ? '' : parseFloat(e.target.value),
+        unitprice:
+          e.target.value === ''
+            ? ''
+            : currency === 'UZS'
+            ? Math.round(
+                parseFloat(e.target.value / exchangerate.exchangerate) * 1000
+              ) / 1000
+            : parseFloat(e.target.value),
         unitpriceuzs:
           e.target.value === ''
             ? ''
+            : currency === 'UZS'
+            ? parseFloat(e.target.value)
             : Math.round(
                 parseFloat(e.target.value) * exchangerate.exchangerate * 1
               ) / 1,
@@ -348,6 +372,8 @@ export const Sale = () => {
         totalpriceuzs:
           e.target.value === ''
             ? 0
+            : currency === 'UZS'
+            ? pieces * e.target.value
             : Math.round(totalprice * exchangerate.exchangerate * 1) / 1,
       });
     }
