@@ -63,8 +63,11 @@ export const InputProduct = ({
             <td className='border text-base p-0 font-bold px-2 w-1/3'>
               {product &&
                 (currency === 'UZS'
-                  ? Math.round(product.totalpriceuzs * 100) / 100
-                  : Math.round(product.totalprice * 10000) / 10000)}{' '}
+                  ? (Math.round(product.totalpriceuzs * 1) / 1).toLocaleString(
+                      'ru-RU'
+                    )
+                  : Math.round(product.totalprice * 1000) / 1000
+                ).toLocaleString('ru-RU')}{' '}
               {currency}
             </td>
           </tr>
