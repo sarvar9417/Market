@@ -297,7 +297,7 @@ export const ProductsReport = () => {
     },
     [products]
   );
-  const [currency, setCurrency] = useState('UZS');
+  const [currency, setCurrency] = useState('USD');
 
   const changeCurrency = useCallback(async () => {
     try {

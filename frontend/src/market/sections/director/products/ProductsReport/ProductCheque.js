@@ -8,14 +8,14 @@ export const ProductCheque = ({ productCheques, componentRef, currency }) => {
   return (
     <div className=''>
       <div className='' ref={componentRef}>
-        <div className='w-[40mm] m-0'>
+        <div className=''>
           {productCheques &&
             productCheques.map((product, pos) => {
-              setTimeout(()=>{}, 10)
+              setTimeout(()=>{}, 30)
               return (
-                <div key={pos} className='w-[40mm] break-after-page'>
-                  <div className='w-[75mm] rotate-90 mt-14 -ml-7'>
-                    <div className='text-center font-bold text-lg'>
+                <div key={pos} className='w-[40mm] break-after-page font-sans h-[65mm]'>
+                  <div className='w-[65mm] rotate-90 mt-20 -ml-0 text-xl'>
+                    <div className='text-center font-bold text-2xl'>
                       <span className=''>OOO "{auth.market.name}"</span>
                       <hr className='' />
                     </div>
