@@ -327,7 +327,7 @@ export const ProductsReport = () => {
     try {
       const data = await request(
         `/api/exchangerate/currencyget`,
-        'PUT',
+        'POST',
         {
           market: auth.market._id,
         },

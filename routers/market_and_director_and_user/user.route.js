@@ -209,7 +209,7 @@ module.exports.login = async (req, res) => {
     );
 
     const userr = await User.findById(user._id)
-      .select('firstname lastname type')
+      .select('firstname lastname type image')
       .populate('market', 'name phone1 phone2 phone3 image permission');
 
     res.send({

@@ -989,57 +989,21 @@ module.exports.getproductsale = async (req, res) => {
         .json({ message: "Diqqat! Do'kon malumotlari topilmadi" });
     }
 
-    const products = await Product.aggregate([
-      { $match: { market: ObjectId(market) } },
-      {
-        $lookup: {
-          from: 'productdatas', // DB dagi collecyion nomi
-          localField: 'productdata', // qo'shilgan schemaga qanday nom bilan yozulgani
-          foreignField: '_id', // qaysi propertysi qo'shilgani
-          as: 'productdata', // qanday nom bilan chiqishi
-          pipeline: [{ $project: { code: 1, name: 1 } }],
-        },
-      },
-      {
-        $lookup: {
-          from: 'productprices', // DB dagi collection nomi
-          localField: 'price', // qo'shilgan schemaga qanday nom bilan yozulgani
-          foreignField: '_id', // qaysi propertysi qo'shilgani
-          as: 'price', // qanday nom bilan chiqishi
-          pipeline: [{ $project: { sellingprice: 1, incomingprice: 1 } }],
-        },
-      },
-      {
-        $lookup: {
-          from: 'units', // DB dagi collecyion nomi
-          localField: 'unit', // qo'shilgan schemaga qanday nom bilan yozulgani
-          foreignField: '_id', // qaysi propertysi qo'shilgani
-          as: 'unit', // qanday nom bilan chiqishi
-          pipeline: [{ $project: { name: 1 } }],
-        },
-      },
-      { $unwind: '$price' },
-      { $unwind: '$productdata' },
-      { $unwind: '$unit' },
-      {
-        $group: {
-          _id: '$_id',
-          productdata: { $first: '$productdata._id' },
-          name: { $first: '$productdata.name' },
-          code: { $first: '$productdata.code' },
-          unit: { $first: '$unit' },
-          total: { $first: '$total' },
-          market: { $first: '$market' },
-          price: { $first: '$price' },
-        },
-      },
-      {
-        $sort: { code: 1 },
-      },
-    ]);
+    const products = await Product.find({
+      market,
+    })
+      .select('market total')
+      .populate('productdata', 'name code')
+      .populate(
+        'price',
+        'sellingprice incomingprice sellingpriceuzs incomingpriceuzs'
+      )
+      .populate('unit', 'name')
+      .populate('unit', 'name');
 
     res.status(201).json(products);
   } catch (error) {
+    console.log(error);
     res.status(401).json({ message: 'Serverda xatolik yuz berdi...' });
   }
 };

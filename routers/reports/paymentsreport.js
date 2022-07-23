@@ -51,77 +51,82 @@ module.exports.getPayments = async (req, res) => {
           id: sale.id,
           market: sale.market,
           client: sale.client && sale.client.name,
+          totalprice: sale.products.reduce(
+            (prev, product) => prev + product.totalprice,
+            0
+          ),
+          totalpriceuzs: sale.products.reduce(
+            (prev, product) => prev + product.totalpriceuzs,
+            0
+          ),
           cash: sale.payments.reduce((prev, payment) => prev + payment.cash, 0),
+          cashuzs: sale.payments.reduce(
+            (prev, payment) => prev + payment.cashuzs,
+            0
+          ),
           card: sale.payments.reduce((prev, payment) => prev + payment.card, 0),
+          carduzs: sale.payments.reduce(
+            (prev, payment) => prev + payment.carduzs,
+            0
+          ),
           transfer: sale.payments.reduce(
             (prev, payment) => prev + payment.transfer,
+            0
+          ),
+          transferuzs: sale.payments.reduce(
+            (prev, payment) => prev + payment.transferuzs,
             0
           ),
           saleconnector: sale,
         });
         return;
       }
-      if (sale.payments.some((payment) => payment[`${type}`] > 0)) {
-        let obj = {
-          _id: sale._id,
-          createdAt: sale.createdAt,
-          id: sale.id,
-          market: sale.market,
-          client: sale.client && sale.client.name,
-          payment: sale.payments.reduce(
-            (prev, payment) => prev + payment[`${type}`],
-            0
-          ),
-          saleconnector: sale,
-        };
-        salesConnectors.push(obj);
-      }
     });
 
-    const totalsales = {
-      cash: 0,
-      card: 0,
-      transfer: 0,
-    };
+    // const totalsales = {
+    //   cash: 0,
+    //   card: 0,
+    //   transfer: 0,
+    // };
 
-    salesConnectors.map((sale) => {
-      if (type === 'allpayments') {
-        totalsales.cash += sale.cash;
-        totalsales.card += sale.card;
-        totalsales.transfer += sale.transfer;
-      }
-      totalsales[`${type}`] += sale.payment;
-    });
+    // salesConnectors.map((sale) => {
+    //   if (type === 'allpayments') {
+    //     totalsales.cash += sale.cash;
+    //     totalsales.card += sale.card;
+    //     totalsales.transfer += sale.transfer;
+    //   }
+    //   totalsales[`${type}`] += sale.payment;
+    // });
 
-    const expenses = await Expense.find({
-      market,
-      createdAt: {
-        $gte: startDate,
-        $lt: endDate,
-      },
-    }).select('sum comment type market createdAt');
+    // const expenses = await Expense.find({
+    //   market,
+    //   createdAt: {
+    //     $gte: startDate,
+    //     $lt: endDate,
+    //   },
+    // }).select('sum comment type market createdAt');
 
-    let expenseData = [];
-    expenses.map((item) => {
-      if (item.type === type) {
-        expenseData.push(item);
-        return;
-      }
-    });
+    // let expenseData = [];
+    // expenses.map((item) => {
+    //   if (item.type === type) {
+    //     expenseData.push(item);
+    //     return;
+    //   }
+    // });
 
-    const totalExpense = expenseData.reduce((prev, item) => {
-      return prev + item.sum;
-    }, 0);
+    // const totalExpense = expenseData.reduce((prev, item) => {
+    //   return prev + item.sum;
+    // }, 0);
 
     res.status(201).json({
-      expenseData,
-      totalExpense,
+      // expenseData,
+      // totalExpense,
       salesCount: salesConnectors.length,
       salesConnectors: salesConnectors.splice(
         currentPage * countPage,
         countPage
       ),
-      totalsales,
+      // totalsales,
     });
   } catch (error) {
     res.status(400).json({ error: 'Serverda xatolik yuz berdi...' });

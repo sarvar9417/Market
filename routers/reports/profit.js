@@ -6,7 +6,6 @@ const { SaleProduct } = require('../../models/Sales/SaleProduct');
 module.exports.getProfitData = async (req, res) => {
   try {
     const { market, startDate, endDate } = req.body;
-
     const saleconnectors = await SaleConnector.find({
       market,
       createdAt: {
@@ -51,7 +50,6 @@ module.exports.getProfitData = async (req, res) => {
         profit: obj.totalsellingprice - obj.totalincomingprice - obj.discount,
       });
     });
-
     res.status(201).json({
       count: profitData.length,
       profitData,
