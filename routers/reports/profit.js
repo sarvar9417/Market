@@ -21,7 +21,7 @@ module.exports.getProfitData = async (req, res) => {
           'totalprice unitprice totalpriceuzs unitpriceuzs pieces createdAt discount price',
         populate: {
           path: 'price',
-          select: 'incomingprice',
+          select: 'incomingprice incomingpriceuzs',
         },
       });
 
@@ -31,23 +31,63 @@ module.exports.getProfitData = async (req, res) => {
       let obj = {
         id: item.id,
         createdAt: item.createdAt,
-        totalincomingprice: item.products.reduce((prev, product) => {
-          return (
-            prev +
-            (product.price ? product.price.incomingprice : 0) * product.pieces
-          );
-        }, 0),
-        totalsellingprice: item.products.reduce((prev, product) => {
-          return prev + product.totalprice;
-        }, 0),
-        discount: item.discounts.reduce((prev, discount) => {
-          return prev + discount.discount;
-        }, 0),
+        totalincomingprice:
+          Math.round(
+            item.products.reduce(
+              (prev, product) =>
+                prev +
+                (product.price ? product.price.incomingprice : 0) *
+                  product.pieces,
+              0
+            ) * 1000
+          ) / 1000,
+        totalincomingpriceuzs:
+          Math.round(
+            item.products.reduce(
+              (prev, product) =>
+                prev +
+                (product.price ? product.price.incomingpriceuzs : 0) *
+                  product.pieces,
+              0
+            ) * 1
+          ) / 1,
+        totalsellingprice:
+          Math.round(
+            item.products.reduce(
+              (prev, product) => prev + product.totalprice,
+              0
+            ) * 1000
+          ) / 1000,
+        totalsellingpriceuzs:
+          Math.round(
+            item.products.reduce(
+              (prev, product) => prev + product.totalpriceuzs,
+              0
+            ) * 1
+          ) / 1,
+        discount:
+          Math.round(
+            item.discounts.reduce(
+              (prev, discount) => prev + discount.discount,
+              0
+            ) * 1000
+          ) / 1000,
+        discountuzs:
+          Math.round(
+            item.discounts.reduce(
+              (prev, discount) => prev + discount.discountuzs,
+              0
+            ) * 1
+          ) / 1,
       };
 
       profitData.push({
         ...obj,
         profit: obj.totalsellingprice - obj.totalincomingprice - obj.discount,
+        profituzs:
+          obj.totalsellingpriceuzs -
+          obj.totalincomingpriceuzs -
+          obj.discountuzs,
       });
     });
     res.status(201).json({

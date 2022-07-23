@@ -1,4 +1,5 @@
 import { useToast } from '@chakra-ui/react';
+import { t } from 'i18next';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../../context/AuthContext';
 import { useHttp } from '../../../hooks/http.hook';
@@ -6,7 +7,7 @@ import { TableHead } from './ProfitTable/TableHead';
 import { TableHeader } from './ProfitTable/TableHeader';
 import { TableRow } from './ProfitTable/TableRow';
 
-export const Profit = ({ beginDay, endDay }) => {
+export const Profit = ({ beginDay, endDay, currency }) => {
   const toast = useToast();
 
   const notify = useCallback(
@@ -76,7 +77,7 @@ export const Profit = ({ beginDay, endDay }) => {
         )
       : setEndDate(new Date(e.target.value).toISOString());
   };
-
+  console.log(profitData);
   useEffect(() => {
     getProfit();
   }, [getProfit, currentPage, countPage, startDate, endDate]);
@@ -103,6 +104,7 @@ export const Profit = ({ beginDay, endDay }) => {
           profitData.map((profit, index) => {
             return (
               <TableRow
+                currency={currency}
                 profit={profit}
                 currentPage={currentPage}
                 index={index}
@@ -110,6 +112,89 @@ export const Profit = ({ beginDay, endDay }) => {
               />
             );
           })}
+        <ul className='tr font-bold text-base'>
+          <li className='td col-span-4 text-right border-r'>{t('Jami')}</li>
+          <li className='td text-right col-span-2 border-r-2 border-orange-800'>
+            {currency === 'UZS'
+              ? (
+                  Math.round(
+                    profitData.reduce(
+                      (summ, profit) => summ + profit.totalincomingpriceuzs,
+                      0
+                    ) * 1
+                  ) / 1
+                ).toLocaleString('ru-RU')
+              : (
+                  Math.round(
+                    profitData.reduce(
+                      (summ, profit) => summ + profit.totalincomingprice,
+                      0
+                    ) * 1000
+                  ) / 1000
+                ).toLocaleString('ru-RU')}{' '}
+            <span className='text-blue-800'>{currency}</span>
+          </li>
+          <li className='td text-right col-span-2 border-r-2 border-orange-800'>
+            {currency === 'UZS'
+              ? (
+                  Math.round(
+                    profitData.reduce(
+                      (summ, profit) => summ + profit.totalsellingpriceuzs,
+                      0
+                    ) * 1
+                  ) / 1
+                ).toLocaleString('ru-RU')
+              : (
+                  Math.round(
+                    profitData.reduce(
+                      (summ, profit) => summ + profit.totalsellingprice,
+                      0
+                    ) * 1000
+                  ) / 1000
+                ).toLocaleString('ru-RU')}{' '}
+            <span className='text-blue-800'>{currency}</span>
+          </li>
+          <li className='td text-right col-span-2 border-r-2 border-red-600'>
+            {currency === 'UZS'
+              ? (
+                  Math.round(
+                    profitData.reduce(
+                      (summ, profit) => summ + profit.discountuzs,
+                      0
+                    ) * 1
+                  ) / 1
+                ).toLocaleString('ru-RU')
+              : (
+                  Math.round(
+                    profitData.reduce(
+                      (summ, profit) => summ + profit.discount,
+                      0
+                    ) * 1000
+                  ) / 1000
+                ).toLocaleString('ru-RU')}{' '}
+            <span className='text-blue-800'>{currency}</span>
+          </li>
+          <li className='td text-right col-span-2 border-r-2 border-green-800'>
+            {currency === 'UZS'
+              ? (
+                  Math.round(
+                    profitData.reduce(
+                      (summ, profit) => summ + profit.profituzs,
+                      0
+                    ) * 1
+                  ) / 1
+                ).toLocaleString('ru-RU')
+              : (
+                  Math.round(
+                    profitData.reduce(
+                      (summ, profit) => summ + profit.profit,
+                      0
+                    ) * 1000
+                  ) / 1000
+                ).toLocaleString('ru-RU')}{' '}
+            <span className='text-blue-800'>{currency}</span>
+          </li>
+        </ul>
       </div>
     </>
   );
