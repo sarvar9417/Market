@@ -546,7 +546,7 @@ export const Report = () => {
             <FontAwesomeIcon icon={faWallet} color='white' fontSize={'24px'} />
           </span>
           <p className='text-white font-bold text-lg mb-2 pointer-events-none'>
-            Soffoyda
+            {t('Sof foyda')}
           </p>
           <p className='text-white font-bold text-xl pointer-events-none	'>
             {currency === 'UZS'
@@ -651,6 +651,9 @@ export const Report = () => {
       <Switch>
         <Route path='/alo24/reports/debts'>
           <DebtsReport
+            currency={currency}
+            beginDay={startDate}
+            endDay={endDate}
             getSalesReport={getSalesReport}
             getProductReport={getProductReport}
             getIncomingsReport={getIncomingsReport}
@@ -658,7 +661,11 @@ export const Report = () => {
           />
         </Route>
         <Route path='/alo24/reports/discounts'>
-          <Discounts />
+          <Discounts
+            currency={currency}
+            beginDay={startDate}
+            endDay={endDate}
+          />
         </Route>
         <Route path='/alo24/reports/sales'>
           <Sales beginDay={startDate} endDay={endDate} currency={currency} />
@@ -673,7 +680,7 @@ export const Report = () => {
           />
         </Route>
         <Route path='/alo24/reports/profit'>
-          <Profit beginDay={startDate} endDay={endDate} />
+          <Profit beginDay={startDate} endDay={endDate} currency={currency} />
         </Route>
         <Route path='/alo24/reports/returnproducts'>
           <ReturnedProducts changeCheck={changeCheck} />

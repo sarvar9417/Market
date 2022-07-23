@@ -46,24 +46,42 @@ module.exports.get = async (req, res) => {
     const alldebts = [];
 
     let total = 0;
+    let totaluzs = 0;
 
     debts.map((debt) => {
       const totalprice = debt.products.reduce((summ, product) => {
         return summ + product.totalprice;
       }, 0);
 
+      const totalpriceuzs = debt.products.reduce((summ, product) => {
+        return summ + product.totalpriceuzs;
+      }, 0);
+
       const discounts = debt.discounts.reduce((summ, product) => {
         return summ + product.discount;
+      }, 0);
+
+      const discountsuzs = debt.discounts.reduce((summ, product) => {
+        return summ + product.discountuzs;
       }, 0);
 
       const payments = debt.payments.reduce((summ, product) => {
         return summ + product.payment;
       }, 0);
 
+      const paymentsuzs = debt.payments.reduce((summ, product) => {
+        return summ + product.paymentuzs;
+      }, 0);
+
       const d =
-        Math.round(totalprice * 10000) / 10000 -
-        Math.round(payments * 10000) / 10000 -
-        Math.round(discounts * 10000) / 10000;
+        Math.round(totalprice * 1000) / 1000 -
+        Math.round(payments * 1000) / 1000 -
+        Math.round(discounts * 1000) / 1000;
+
+      const duzs =
+        Math.round(totalpriceuzs * 1) / 1 -
+        Math.round(paymentsuzs * 1) / 1 -
+        Math.round(discountsuzs * 1) / 1;
 
       if (d > 0.01 || d < -0.01) {
         debt.debt = Math.round(d * 10000) / 10000;
@@ -72,20 +90,22 @@ module.exports.get = async (req, res) => {
           id: debt.id,
           client: debt.client,
           createdAt: debt.createdAt,
-          debt: Math.round(d * 10000) / 10000,
+          debt: Math.round(d * 1000) / 1000,
+          debtuzs: Math.round(duzs * 1) / 1,
           saleconnector: debt,
         });
       }
 
-      total += Math.round(d * 10000) / 10000;
+      total += Math.round(d * 1000) / 1000;
+      totaluzs += Math.round(duzs * 1) / 1;
     });
 
     const count = alldebts.length;
-
     res.status(200).send({
       debts: alldebts.splice(countPage * currentPage, countPage),
       count,
       total,
+      totaluzs,
     });
   } catch (error) {
     res.status(400).json({ error: 'Serverda xatolik yuz berdi...' });

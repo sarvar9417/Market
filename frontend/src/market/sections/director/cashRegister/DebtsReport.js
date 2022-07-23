@@ -11,6 +11,9 @@ import { PrePaymentCard } from '../sale/PrePaymentCard/PrepaymentCard';
 import { t } from 'i18next';
 
 export const DebtsReport = ({
+  beginDay,
+  endDay,
+  currency,
   getSalesReport,
   getProductReport,
   getIncomingsReport,
@@ -29,11 +32,10 @@ export const DebtsReport = ({
   const [debtsCount, setDebtsCount] = useState([]);
   const [searchStorage, setSearchStorage] = useState([]);
   const [tableExcel, setTableExcel] = useState([]);
-  const [startDate, setStartDate] = useState(
-    new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString()
-  );
-  const [endDate, setEndDate] = useState(new Date().toISOString());
+  const [startDate, setStartDate] = useState(beginDay);
+  const [endDate, setEndDate] = useState(endDay);
   const [totalDebts, setTotalDebts] = useState(0);
+  const [totalDebtsUzs, setTotalDebtsUzs] = useState(0);
   //TOAST
   const toast = useToast();
   const notify = useCallback(
@@ -69,6 +71,7 @@ export const DebtsReport = ({
         }
       );
       setTotalDebts(data.total);
+      setTotalDebtsUzs(data.totaluzs);
       setCurrentDebts(data.debts);
       setSearchStorage(data.debts);
       setDebtsCount(data.count);
@@ -141,6 +144,7 @@ export const DebtsReport = ({
     setCurrentPage(0);
     setCountPage(e.target.value);
   };
+
   const changeDate = (e) => {
     e.target.name === 'startDate'
       ? setStartDate(
@@ -152,12 +156,6 @@ export const DebtsReport = ({
           ).toISOString()
         );
   };
-
-  //=====================================================
-  //=====================================================
-
-  //=====================================================
-  //=====================================================
 
   const [modal6, setModal6] = useState(false);
 
@@ -594,11 +592,6 @@ export const DebtsReport = ({
     getDebtAndDiscountReports,
   ]);
 
-  //=====================================================
-  //=====================================================
-
-  //=====================================================
-  //=====================================================
   useEffect(() => {
     getDebts();
   }, [getDebts, currentPage, countPage, sendingsearch, startDate, endDate]);
@@ -607,15 +600,6 @@ export const DebtsReport = ({
     getExchangerate();
     return () => setExchangerate({ exchangerate: 0 });
   }, [getExchangerate]);
-
-  //=====================================================
-  //=====================================================
-
-  //=====================================================
-  //=====================================================
-
-  //=====================================================
-  //=====================================================
 
   return (
     <div className='overflow-x-auto'>
@@ -640,6 +624,7 @@ export const DebtsReport = ({
         {currentDebts.map((debt, index) => {
           return (
             <Rows
+              currency={currency}
               key={index}
               index={index}
               debt={debt}
@@ -649,10 +634,14 @@ export const DebtsReport = ({
           );
         })}
         <ul className='tr font-bold text-base'>
-          <li className='td col-span-9 text-right border-r'>{t("Jami")}</li>
+          <li className='td col-span-9 text-right border-r'>{t('Jami')}</li>
           <li className='td text-right col-span-3 border-r-2 border-orange-600'>
-            {(Math.round(totalDebts * 10000) / 10000).toLocaleString('ru-RU')}{' '}
-            <span className='text-orange-600'>USD</span>
+            {currency === 'UZS'
+              ? (Math.round(totalDebtsUzs * 1) / 1).toLocaleString('ru-RU')
+              : (Math.round(totalDebts * 1000) / 1000).toLocaleString(
+                  'ru-RU'
+                )}{' '}
+            <span className='text-orange-600'>{currency}</span>
           </li>
         </ul>
       </div>

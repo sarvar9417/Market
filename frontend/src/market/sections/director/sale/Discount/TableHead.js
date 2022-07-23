@@ -23,7 +23,7 @@ export const TableHead = ({ currentDiscounts, setCurrentDiscounts }) => {
           setData={setCurrentDiscounts}
         />
       </li>
-      <li className='th col-span-2 border-r flex justify-center'>
+      <li className='th col-span-3 border-r flex justify-center'>
         {t('Jami')} USD
         <Sort
           property={'totalprice'}
@@ -31,18 +31,10 @@ export const TableHead = ({ currentDiscounts, setCurrentDiscounts }) => {
           setData={setCurrentDiscounts}
         />
       </li>
-      <li className='th col-span-2 border-r flex justify-center'>
+      <li className='th col-span-3 border-r flex justify-center'>
         {t('Chegirma')} USD{' '}
         <Sort
           property={'discount'}
-          data={currentDiscounts}
-          setData={setCurrentDiscounts}
-        />
-      </li>
-      <li className='th col-span-2 border-r flex justify-center'>
-        {t('Chegirma')} %{' '}
-        <Sort
-          property={'procient'}
           data={currentDiscounts}
           setData={setCurrentDiscounts}
         />

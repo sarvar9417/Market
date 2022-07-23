@@ -8,7 +8,7 @@ import { ExcelTable } from './Discount/ExcelTable';
 import { useToast } from '@chakra-ui/react';
 import { t } from 'i18next';
 
-export const Discounts = () => {
+export const Discounts = ({ beginDay, endDay, currency }) => {
   // STATES
   const { request } = useHttp();
   const auth = useContext(AuthContext);
@@ -22,16 +22,12 @@ export const Discounts = () => {
   const [discountsCount, setDiscountsCount] = useState([]);
   const [searchStorage, setSearchStorage] = useState([]);
   const [tableExcel, setTableExcel] = useState([]);
-  const [startDate, setStartDate] = useState(
-    new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString()
-  );
-  const [endDate, setEndDate] = useState(new Date().toISOString());
-  const [totalDiscounts, setTotalDiscounts] = useState({
-    discount: 0,
-    discountuzs: 0,
-    totalprice: 0,
-    totalpriceuzs: 0,
-  });
+  const [startDate, setStartDate] = useState(beginDay);
+  const [endDate, setEndDate] = useState(endDay);
+  const [totalDiscounts, setTotalDiscounts] = useState();
+  const [totalDiscountsUzs, setTotalDiscountsUzs] = useState();
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalPriceUzs, setTotalPriceUzs] = useState(0);
   //TOAST
   const toast = useToast();
   const notify = useCallback(
@@ -66,7 +62,10 @@ export const Discounts = () => {
           Authorization: `Bearer ${auth.token}`,
         }
       );
-      setTotalDiscounts(data.total);
+      setTotalDiscounts(data.totaldiscounts);
+      setTotalDiscountsUzs(data.totaldiscountsuzs);
+      setTotalPrice(data.total);
+      setTotalPriceUzs(data.totaluzs);
       setCurrentDiscounts(data.discounts);
       setSearchStorage(data.discounts);
       setDiscountsCount(data.count);
@@ -177,6 +176,7 @@ export const Discounts = () => {
         {currentDiscounts.map((discount, index) => {
           return (
             <Rows
+              currency={currency}
               key={index}
               index={index}
               discount={discount}
@@ -185,20 +185,23 @@ export const Discounts = () => {
           );
         })}
         <ul className='tr font-bold text-base'>
-          <li className='td col-span-6 text-right border-r'>{t("Jami")}</li>
-          <li className='td text-right col-span-2 border-r-2 border-green-800'>
-            {(
-              Math.round(totalDiscounts.totalprice * 10000) / 10000
-            ).toLocaleString('ru-RU')}{' '}
-            <span className='text-green-800'>USD</span>
+          <li className='td col-span-6 text-right border-r'>{t('Jami')}</li>
+          <li className='td text-right col-span-3 border-r-2 border-green-800'>
+            {currency === 'UZS'
+              ? (Math.round(totalPriceUzs * 1) / 1).toLocaleString('ru-RU')
+              : (Math.round(totalPrice * 10000) / 10000).toLocaleString(
+                  'ru-RU'
+                )}{' '}
+            <span className='text-green-800'>{currency}</span>
           </li>
-          <li className='td text-right col-span-2 border-r-2 border-orange-600'>
-            {(
-              Math.round(totalDiscounts.discount * 10000) / 10000
-            ).toLocaleString('ru-RU')}{' '}
-            <span className='text-orange-600'>USD</span>
+          <li className='td text-right col-span-3 border-r-2 border-orange-600'>
+            {currency === 'UZS'
+              ? (Math.round(totalDiscountsUzs * 1) / 1).toLocaleString('ru-RU')
+              : (Math.round(totalDiscounts * 1000) / 1000).toLocaleString(
+                  'ru-RU'
+                )}{' '}
+            <span className='text-orange-600'>{currency}</span>
           </li>
-          <li className='td text-right col-span-2 border-r-2 border-red-600'></li>
         </ul>
       </div>
 
