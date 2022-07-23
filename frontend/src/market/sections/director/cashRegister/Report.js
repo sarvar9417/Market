@@ -25,7 +25,6 @@ import {
 import { PrintReport } from './PrintReport';
 import { Link, Redirect, Route, Switch } from 'react-router-dom';
 import { Discounts } from '../sale/Discounts';
-import { PaymentsReport } from './PaymentsReport';
 import { Loader } from '../../../loader/Loader';
 import { DebtsReport } from './DebtsReport';
 import { ChequeConnectors } from '../sale/Sales/ChequeConnectors';
@@ -34,6 +33,8 @@ import { t } from 'i18next';
 import { Expense } from './Expense';
 import { Profit } from './Profit';
 import { Currency } from '../components/Currency';
+import { Sales } from './Sales';
+import { Payments } from './Payments';
 
 export const Report = () => {
   //========================================================
@@ -65,7 +66,11 @@ export const Report = () => {
   //========================================================
 
   const [startDate, setStartDate] = useState(
-    new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString()
+    new Date(
+      new Date().getFullYear(),
+      new Date().getMonth(),
+      new Date().getDate()
+    ).toISOString()
   );
 
   const [endDate, setEndDate] = useState(
@@ -334,7 +339,7 @@ export const Report = () => {
     try {
       const data = await request(
         `/api/exchangerate/currencyget`,
-        'PUT',
+        'POST',
         {
           market: auth.market._id,
         },
@@ -454,7 +459,7 @@ export const Report = () => {
           </p>
         </Link>
         <Link
-          to='/alo24/reports/paymentstypes'
+          to='/alo24/reports/sales'
           onClick={() => {
             setPaymentType('allpayments');
             window.scroll(0, 500);
@@ -655,16 +660,20 @@ export const Report = () => {
         <Route path='/alo24/reports/discounts'>
           <Discounts />
         </Route>
+        <Route path='/alo24/reports/sales'>
+          <Sales beginDay={startDate} endDay={endDate} currency={currency} />
+        </Route>
+
         <Route path='/alo24/reports/paymentstypes'>
-          <PaymentsReport
-            type={paymentType}
-            changeCheck={changeCheck}
+          <Payments
             beginDay={startDate}
             endDay={endDate}
+            currency={currency}
+            type={paymentType}
           />
         </Route>
         <Route path='/alo24/reports/profit'>
-          <Profit />
+          <Profit beginDay={startDate} endDay={endDate} />
         </Route>
         <Route path='/alo24/reports/returnproducts'>
           <ReturnedProducts changeCheck={changeCheck} />

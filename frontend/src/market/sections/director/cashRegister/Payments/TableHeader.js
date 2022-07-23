@@ -10,15 +10,13 @@ export const TableHeader = ({
   startDate,
   endDate,
   changeDate,
-  getPaymentsExcel,
+  getSalesExcel,
   currentPage,
   setPageSize,
-  // searchPayment,
   setCurrentPage,
-  paymentsCount,
   countPage,
   loading,
-  // keyPressed,
+  salesCount,
 }) => {
   return (
     <ul className='tbody border-b border-t-2 border-blue-800'>
@@ -38,7 +36,7 @@ export const TableHeader = ({
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
           countPage={countPage}
-          totalDatas={paymentsCount}
+          totalDatas={salesCount}
         />
         <input
           onChange={changeDate}
@@ -59,7 +57,7 @@ export const TableHeader = ({
       <li className='text-center flex justify-center items-center font-bold border-r py-2 col-span-2 bg-white'>
         <button
           className='px-4 bg-green-700 hover:bg-green-800 text-white rounded'
-          onClick={getPaymentsExcel}>
+          onClick={getSalesExcel}>
           <FontAwesomeIcon icon={faFileExcel} />
         </button>
         <ExcelDownload filename={t("To'lovlar")} />

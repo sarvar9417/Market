@@ -10,6 +10,7 @@ export const InputProduct = ({
   loading,
   currency,
 }) => {
+  console.log(product);
   const [incomingprice, setIncomingprice] = useState(false);
   const changeincomingPrice = () => {
     setIncomingprice(!incomingprice);
@@ -88,7 +89,13 @@ export const InputProduct = ({
               {incomingprice &&
                 product.product &&
                 product.product.price &&
-                product.product.price.incomingprice.toLocaleString('ru-RU')}
+                (currency === 'UZS'
+                  ? product.product.price.incomingpriceuzs.toLocaleString(
+                      'ru-RU'
+                    )
+                  : product.product.price.incomingprice.toLocaleString(
+                      'ru-RU'
+                    ))}
             </td>
           </tr>
         </tfoot>

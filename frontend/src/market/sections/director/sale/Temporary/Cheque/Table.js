@@ -1,5 +1,5 @@
 import React from 'react';
-import { t } from 'i18next'
+import { t } from 'i18next';
 
 export const Table = ({ sales }) => {
   return (
@@ -10,19 +10,19 @@ export const Table = ({ sales }) => {
             №
           </th>
           <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
-           {t("Kodi")}
+            {t('Kodi')}
           </th>
           <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
-            {t("Mahsulot")}
+            {t('Mahsulot')}
           </th>
           <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
-            {t("Soni")}
+            {t('Soni')}
           </th>
           <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
-            {t("Narxi (dona)")}
+            {t('Narxi (dona)')}
           </th>
           <th className='border sticky py-1 bg-slate-200 text-black text-center top-0 px-2 bg-white'>
-            {t("Jami")}
+            {t('Jami')}
           </th>
         </tr>
       </thead>
@@ -34,10 +34,10 @@ export const Table = ({ sales }) => {
                 {index + 1}
               </td>
               <td className='font-bold text-right border border-black py-1 px-2'>
-                {product.product.code}
+                {product.product.productdata.code}
               </td>
               <td className='font-bold border border-black py-1 px-2'>
-                {product.product.name}
+                {product.product.productdata.name}
               </td>
               <td className='font-bold text-right border border-black py-1 px-2'>
                 {product.pieces.toLocaleString('ru-RU')}

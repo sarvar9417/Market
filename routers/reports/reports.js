@@ -431,3 +431,57 @@ module.exports.getNetProfit = async (req, res) => {
     res.status(400).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
+
+module.exports.getSales = async (req, res) => {
+  try {
+    const { market, startDate, endDate, currentPage, countPage } = req.body;
+    const marke = await Market.findById(market);
+    if (!marke) {
+      res
+        .status(401)
+        .json({ message: `Diqqat! Do'kon haqida malumotlar topilmadi!` });
+    }
+
+    const connectors = await SaleConnector.find({
+      market,
+      createdAt: {
+        $gte: startDate,
+        $lt: endDate,
+      },
+    })
+      .sort({ _id: -1 })
+      .select('createdAt id')
+      .populate({
+        path: 'products',
+        select: 'totalprice totalpriceuzs productdata pieces',
+        populate: {
+          path: 'product',
+          select: 'productdata',
+          populate: {
+            path: 'productdata',
+            select: 'name code',
+          },
+        },
+      })
+      .populate(
+        'payments',
+        'totalprice totalpriceuzs payment paymentuzs card carduzs cash cashuzs transfer transferuzs'
+      )
+      .populate('discounts', 'discount discountuzs')
+      .populate('client', 'name')
+      .limit(countPage)
+      .skip(currentPage * countPage);
+
+    const count = await SaleConnector.find({
+      market,
+      createdAt: {
+        $gte: startDate,
+        $lt: endDate,
+      },
+    }).count();
+
+    res.status(200).send({ sales: connectors, salesCount: count });
+  } catch (error) {
+    res.status(400).json({ error: 'Serverda xatolik yuz berdi...' });
+  }
+};

@@ -5,6 +5,10 @@ const auth = require('../../middleware/auth.middleware');
 router.post('/sales', auth, (req, res) => {
   require('./reports').getSalesReport(req, res);
 });
+router.post('/getsales', auth, (req, res) => {
+  require('./reports').getSales(req, res);
+});
+
 router.post('/products', auth, (req, res) => {
   require('./reports').getProductsReport(req, res);
 });

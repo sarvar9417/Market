@@ -236,15 +236,15 @@ export const Sale = () => {
       let c = [];
       data.map((product) => {
         return c.push({
-          label: '(' + product.total + ') ' + product.code + ' ' + product.name,
+          label:
+            '(' +
+            product.total +
+            ') ' +
+            product.productdata.code +
+            ' ' +
+            product.productdata.name,
           type: 'product',
           value: product,
-          // (
-          // <span className='flex justify-between'>
-          //   <span>{type.code + ' ' + type.name}</span>{' '}
-          //   <span className='font-bold'>{type.total}</span>
-          // </span>
-          // )
         });
       });
       setProducts(c);
@@ -2248,7 +2248,7 @@ export const Sale = () => {
       });
     }
     saleproducts.sort((a, b) => {
-      return a.product.code > b.product.code ? 1 : -1;
+      return a.product.productdata.code > b.product.productdata.code ? 1 : -1;
     });
     // if (!client.name) {
     //   return notify({
@@ -2418,7 +2418,7 @@ export const Sale = () => {
     try {
       const data = await request(
         `/api/exchangerate/currencyget`,
-        'PUT',
+        'POST',
         {
           market: auth.market._id,
         },

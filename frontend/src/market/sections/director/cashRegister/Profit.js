@@ -6,10 +6,7 @@ import { TableHead } from './ProfitTable/TableHead';
 import { TableHeader } from './ProfitTable/TableHeader';
 import { TableRow } from './ProfitTable/TableRow';
 
-export const Profit = () => {
-  //========================================================
-  //========================================================
-
+export const Profit = ({ beginDay, endDay }) => {
   const toast = useToast();
 
   const notify = useCallback(
@@ -29,25 +26,11 @@ export const Profit = () => {
   const auth = useContext(AuthContext);
   const { request, loading } = useHttp();
 
-  //========================================================
-  //========================================================
-
-  //========================================================
-  //========================================================
-
-  const [startDate, setStartDate] = useState(
-    new Date(new Date().setUTCMonth(new Date().getMonth() - 1)).toISOString()
-  );
-  const [endDate, setEndDate] = useState(new Date().toISOString());
+  const [startDate, setStartDate] = useState(beginDay);
+  const [endDate, setEndDate] = useState(endDay);
 
   const [currentPage, setCurrentPage] = useState(0);
   const [countPage, setCountPage] = useState(10);
-
-  //========================================================
-  //========================================================
-
-  //========================================================
-  //========================================================
 
   const [profitData, setProfitData] = useState([]);
   const [profitCount, setProfitCount] = useState(0);
@@ -79,12 +62,6 @@ export const Profit = () => {
     }
   }, [notify, auth, request, currentPage, countPage, startDate, endDate]);
 
-  //========================================================
-  //========================================================
-
-  //========================================================
-  //========================================================
-
   const setPageSize = (e) => {
     setCurrentPage(0);
     setCountPage(e.target.value);
@@ -99,12 +76,6 @@ export const Profit = () => {
         )
       : setEndDate(new Date(e.target.value).toISOString());
   };
-
-  //========================================================
-  //========================================================
-
-  //========================================================
-  //========================================================
 
   useEffect(() => {
     getProfit();
