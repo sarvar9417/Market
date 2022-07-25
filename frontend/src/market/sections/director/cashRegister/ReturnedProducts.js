@@ -1,4 +1,5 @@
 import { useToast } from '@chakra-ui/react';
+import { t } from 'i18next';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../../context/AuthContext';
 import { useHttp } from '../../../hooks/http.hook';
@@ -7,15 +8,14 @@ import { Rows } from './ReturnedProducts/Rows';
 import { TableHead } from './ReturnedProducts/TableHead';
 import { TableHeader } from './ReturnedProducts/TableHeader';
 
-export const ReturnedProducts = ({ changeCheck }) => {
-  //========================================================
-  //========================================================
-
+export const ReturnedProducts = ({
+  changeCheck,
+  beginDay,
+  endDay,
+  currency,
+}) => {
   const { request } = useHttp();
   const auth = useContext(AuthContext);
-
-  //========================================================
-  //========================================================
 
   const [currentPage, setCurrentPage] = useState(0);
   const [countPage, setCountPage] = useState(10);
@@ -23,18 +23,8 @@ export const ReturnedProducts = ({ changeCheck }) => {
   const [sendingsearch, setSendingSearch] = useState({ id: '', client: '' });
   const [search, setSearch] = useState({ id: '', client: '' });
 
-  //========================================================
-  //========================================================
-
-  const [startDate, setStartDate] = useState(
-    new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString()
-  );
-  const [endDate, setEndDate] = useState(
-    new Date(new Date().setHours(23, 59, 59, 0)).toISOString()
-  );
-
-  //========================================================
-  //========================================================
+  const [startDate, setStartDate] = useState(beginDay);
+  const [endDate, setEndDate] = useState(endDay);
 
   const toast = useToast();
   const notify = useCallback(
@@ -51,10 +41,7 @@ export const ReturnedProducts = ({ changeCheck }) => {
     [toast]
   );
 
-  //========================================================
-  //========================================================
-
-  const [salesConnectors, setSalesConnectors] = useState();
+  const [salesConnectors, setSalesConnectors] = useState([]);
   const [searhStorage, setSearchStorage] = useState([]);
   const [returnedCount, setReturnedCount] = useState(0);
   const [excelTable, setExcelTable] = useState([]);
@@ -123,9 +110,6 @@ export const ReturnedProducts = ({ changeCheck }) => {
     }
   }, [request, auth, notify, startDate, endDate, sendingsearch]);
 
-  //========================================================
-  //========================================================
-
   // Search
   const changeDate = (e) => {
     e.target.name === 'startDate'
@@ -168,16 +152,10 @@ export const ReturnedProducts = ({ changeCheck }) => {
     setCountPage(e.target.value);
   }, []);
 
-  //========================================================
-  //========================================================
-
   useEffect(() => {
     getSaleConnectors();
   }, [currentPage, getSaleConnectors, countPage, sendingsearch]);
-
-  //========================================================
-  //========================================================
-
+  console.log(salesConnectors);
   return (
     <>
       <TableHeader
@@ -198,6 +176,7 @@ export const ReturnedProducts = ({ changeCheck }) => {
         salesConnectors.map((saleconnector, index) => {
           return (
             <Rows
+              currency={currency}
               countPage={countPage}
               index={index}
               saleconnector={saleconnector}
@@ -206,6 +185,54 @@ export const ReturnedProducts = ({ changeCheck }) => {
             />
           );
         })}
+      <ul className='tr font-bold text-base'>
+        <li className='td col-span-6 text-right border-r'>{t('Jami')}</li>
+        <li className='td text-right col-span-2 border-r-2 border-green-800'>
+          {Math.round(
+            salesConnectors.reduce((summ, sale) => summ + sale.pieces, 0) * 1000
+          ) / 1000}{' '}
+        </li>
+        <li className='td text-right col-span-2 border-r-2 border-orange-600'>
+          {currency === 'UZS'
+            ? (
+                Math.round(
+                  salesConnectors.reduce(
+                    (summ, sale) => summ + sale.unitpriceuzs,
+                    0
+                  ) * 1
+                ) / 1
+              ).toLocaleString('ru-RU')
+            : (
+                Math.round(
+                  salesConnectors.reduce(
+                    (summ, sale) => summ + sale.unitprice,
+                    0
+                  ) * 1000
+                ) / 1000
+              ).toLocaleString('ru-RU')}{' '}
+          <span className='text-orange-700'>{currency}</span>
+        </li>
+        <li className='td text-right col-span-2 border-r-2 border-orange-600'>
+          {currency === 'UZS'
+            ? (
+                Math.round(
+                  salesConnectors.reduce(
+                    (summ, sale) => summ + sale.totalpriceuzs,
+                    0
+                  ) * 1
+                ) / 1
+              ).toLocaleString('ru-RU')
+            : (
+                Math.round(
+                  salesConnectors.reduce(
+                    (summ, sale) => summ + sale.totalprice,
+                    0
+                  ) * 1000
+                ) / 1000
+              ).toLocaleString('ru-RU')}{' '}
+          <span className='text-orange-700'>{currency}</span>
+        </li>
+      </ul>
 
       <div className='hidden'>
         <ExcelTable saleconnectors={excelTable} />
