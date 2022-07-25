@@ -14,62 +14,72 @@ module.exports.get = async (req, res) => {
         message: `Diqqat! Do'kon haqida malumotlar topilmadi!`,
       });
     }
-
-    const client = new RegExp(
-      '.*' + search ? search.clientname : '' + '.*',
-      'i'
-    );
-
-    const count = await Discount.find({
-      market,
-      createdAt: {
-        $gte: startDate,
-        $lt: endDate,
-      },
-    }).count();
-
-    const discounts = await Discount.find({
+    const discounts = await SaleConnector.find({
       market,
       createdAt: {
         $gte: startDate,
         $lt: endDate,
       },
     })
-      .select('-isArchive -updatedAt -user -market -__v -products')
+      .select('id discounts client createdAt')
       .sort({ _id: -1 })
-      .populate({
-        path: 'saleconnector',
-        select: 'client',
-        populate: {
-          path: 'client',
-          select: 'name',
-          match: { name: client },
-        },
-      });
+      .populate('discounts', 'discount discountuzs')
+      .populate('products', 'totalprice totalpriceuzs')
+      .populate('client', 'name');
 
-    const discount = discounts.reduce((summ, discount) => {
-      return summ + discount.discount;
-    }, 0);
+    const alldiscounts = [];
 
-    const discountuzs = discounts.reduce((summ, discount) => {
-      return summ + discount.discountuzs;
-    }, 0);
+    let totaldiscounts = 0;
+    let totaldiscountsuzs = 0;
+    let total = 0;
+    let totaluzs = 0;
 
-    const totalprice = discounts.reduce((summ, discount) => {
-      return summ + discount.totalprice;
-    }, 0);
+    discounts.map((connector) => {
+      const totalprice = connector.products.reduce((summ, product) => {
+        return summ + product.totalprice;
+      }, 0);
 
-    const totalpriceuzs = discounts.reduce((summ, discount) => {
-      return summ + discount.totalpriceuzs;
-    }, 0);
+      const totalpriceuzs = connector.products.reduce((summ, product) => {
+        return summ + product.totalpriceuzs;
+      }, 0);
 
-    res
-      .status(200)
-      .send({
-        discounts,
-        count,
-        total: { discount, discountuzs, totalprice, totalpriceuzs },
-      });
+      const discount = connector.discounts.reduce((summ, discount) => {
+        return summ + discount.discount;
+      }, 0);
+
+      const discountuzs = connector.discounts.reduce((summ, discount) => {
+        return summ + discount.discountuzs;
+      }, 0);
+
+      if (discount > 0.01) {
+        alldiscounts.push({
+          _id: connector._id,
+          id: connector.id,
+          client: connector.client,
+          createdAt: connector.createdAt,
+          discount: Math.round(discount * 1000) / 1000,
+          discountuzs: Math.round(discountuzs * 1) / 1,
+          total: Math.round(totalprice * 1000) / 1000,
+          totaluzs: Math.round(totalpriceuzs * 1000) / 1000,
+        });
+        totaldiscounts += Math.round(discount * 1000) / 1000;
+        totaldiscountsuzs += Math.round(discountuzs * 1) / 1;
+        total += Math.round(totalprice * 1000) / 1000;
+        totaluzs += Math.round(totalpriceuzs * 1) / 1;
+      }
+    });
+
+    const count = alldiscounts.length;
+
+    const data = {
+      discounts: alldiscounts.splice(countPage * currentPage, countPage),
+      count,
+      total,
+      totaluzs,
+      totaldiscounts,
+      totaldiscountsuzs,
+    };
+    res.status(200).send(data);
   } catch (error) {
     res.status(400).json({ error: 'Serverda xatolik yuz berdi...' });
   }

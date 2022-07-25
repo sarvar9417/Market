@@ -1,7 +1,13 @@
 import { t } from 'i18next';
 import React from 'react';
 
-export const Rows = ({ currentPage, index, debt, changePrepayment }) => {
+export const Rows = ({
+  currentPage,
+  index,
+  debt,
+  changePrepayment,
+  currency,
+}) => {
   return (
     <ul className='tr font-bold'>
       <li className='no'>{currentPage * 10 + 1 + index}</li>
@@ -14,12 +20,15 @@ export const Rows = ({ currentPage, index, debt, changePrepayment }) => {
       <li className='td  col-span-2  text-right border-r'>{debt.id}</li>
       <li
         onClick={() => changePrepayment(debt.saleconnector)}
-        className='td  col-span-3  text-right border-r-2 border-r-orange-600 hover:bg-blue-200 flex justify-between'
-      >
+        className='td  col-span-3  text-right border-r-2 border-r-orange-600 hover:bg-blue-200 flex justify-between'>
         <span className='text-white'>{t("To'lov")}</span>
         <span>
-          {(Math.round(debt.debt * 10000) / 10000).toLocaleString('ru-RU')}{' '}
-          <span className='text-orange-600'>USD</span>
+          {currency === 'UZS'
+            ? (Math.round(debt.debtuzs * 1) / 1).toLocaleString('ru-RU')
+            : (Math.round(debt.debt * 1000) / 1000).toLocaleString(
+                'ru-RU'
+              )}{' '}
+          <span className='text-orange-600'>{currency}</span>
         </span>
       </li>
     </ul>
