@@ -5,6 +5,7 @@ export const Rows = ({
   saleconnector,
   currentPage,
   changeCheck,
+  currency,
 }) => {
   return (
     <ul className='tr'>
@@ -20,14 +21,22 @@ export const Rows = ({
         <span>{saleconnector.pieces.toLocaleString('ru-RU')}</span>
       </li>
       <li className='td border-r-2 col-span-2 border-orange-500 font-bold text-right'>
-        <span>{saleconnector.unitprice.toLocaleString('ru-RU')}</span>
+        <span>
+          {currency === 'UZS'
+            ? saleconnector.unitpriceuzs.toLocaleString('ru-RU')
+            : saleconnector.unitprice.toLocaleString('ru-RU')}
+        </span>
         {'  '}
-        <span className='text-orange-500'>USD</span>
+        <span className='text-orange-500'>{currency}</span>
       </li>
       <li className='td border-r-2 col-span-2 border-red-600 font-bold text-right'>
-        <span>{saleconnector.totalprice.toLocaleString('ru-RU')}</span>
+        <span>
+          {currency === 'UZS'
+            ? saleconnector.totalpriceuzs.toLocaleString('ru-RU')
+            : saleconnector.totalprice.toLocaleString('ru-RU')}
+        </span>
         {'  '}
-        <span className='text-red-600'>USD</span>
+        <span className='text-red-600'>{currency}</span>
       </li>
     </ul>
   );

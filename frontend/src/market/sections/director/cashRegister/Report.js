@@ -683,7 +683,12 @@ export const Report = () => {
           <Profit beginDay={startDate} endDay={endDate} currency={currency} />
         </Route>
         <Route path='/alo24/reports/returnproducts'>
-          <ReturnedProducts changeCheck={changeCheck} />
+          <ReturnedProducts
+            changeCheck={changeCheck}
+            beginDay={startDate}
+            endDay={endDate}
+            currency={currency}
+          />
         </Route>
         <Route path='/alo24/reports/expense'>
           <Expense changeAbleDelete={'delete'} />
