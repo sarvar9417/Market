@@ -317,7 +317,10 @@ export const Navbar = ({ baseUrl }) => {
                       : 'unactive-page'
                   }>
                   {t('Sotuv')}{' '}
-                  <FontAwesomeIcon icon={faAngleDown} className='text-[10px] pointer-events-none' />
+                  <FontAwesomeIcon
+                    icon={faAngleDown}
+                    className='text-[10px] pointer-events-none'
+                  />
                 </Link>
                 <ul
                   className={
@@ -414,58 +417,66 @@ export const Navbar = ({ baseUrl }) => {
                   </>
                 )}
               </li>
-              <li className='inline-block'>
-                {permission.branches && (
-                  <Link
-                    onClick={changeHeadMenu}
-                    id='reports'
-                    to='/alo24/branches'
-                    className={
-                      currentPage === '/alo24/branches'
-                        ? 'active-page'
-                        : 'unactive-page'
-                    }>
-                    {t('Filiallar')}
-                  </Link>
+              <li className='inline-block relative'>
+                {permission.calculations && (
+                  <>
+                    <Link
+                      to='#'
+                      id='markets'
+                      onClick={changeHeadMenu}
+                      className={
+                        currentPage === '/alo24/placinganorder' ||
+                        currentPage === '/alo24/orders' ||
+                        currentPage === '/alo24/branches'
+                          ? 'active-page'
+                          : 'unactive-page'
+                      }>
+                      {t("Do'konlar")}
+                      <FontAwesomeIcon
+                        icon={faAngleDown}
+                        className='text-[10px] ml-1'
+                      />
+                    </Link>
+                    <ul
+                      className={
+                        menu !== 'markets'
+                          ? 'hidden'
+                          : 'absolute z-50 top-9 bg-white w-[200px] animate-fadeInUp shadow-2xl'
+                      }>
+                      <div className='p-2 bg-white absolute -top-1 rotate-45 left-2 -z-10'></div>
+                      <li>
+                        {permission.sales && (
+                          <Link
+                            onClick={changeHeadMenu}
+                            id='placinganorder'
+                            to='/alo24/placinganorder'
+                            className={`inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b`}>
+                            {t('Buyurtma berish')}
+                          </Link>
+                        )}
+                      </li>
+                      <li>
+                        <Link
+                          onClick={changeHeadMenu}
+                          id='order'
+                          to='/alo24/orders'
+                          className={`inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b`}>
+                          {t('Buyurtmalar')}
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          onClick={changeHeadMenu}
+                          id='reports'
+                          to='/alo24/branches'
+                          className={`inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b`}>
+                          {t('Filiallar')}
+                        </Link>
+                      </li>
+                    </ul>
+                  </>
                 )}
               </li>
-              {/* <li className='inline-block relative'>
-                {permission.branches && (
-                  <Link
-                    to='#'
-                    id='Branch'
-                    onClick={changeHeadMenu}
-                    className={
-                      currentPage === '/alo24/branches' ||
-                      currentPage === '/alo24/branchregister' ||
-                      menu === 'Branch'
-                        ? 'active-page'
-                        : 'unactive-page'
-                    }>
-                    {t('Filial')}{' '}
-                    <FontAwesomeIcon
-                      icon={faAngleDown}
-                      className='text-[10px]'
-                    />
-                  </Link>
-                )}
-                <ul
-                  className={
-                    menu !== 'Branch'
-                      ? 'hidden'
-                      : 'absolute z-50 top-9 bg-white w-[200px] animate-fadeInUp shadow-2xl'
-                  }>
-                  <div className='p-2 bg-white absolute -top-1 rotate-45 left-2 -z-10'></div>
-                  <li>
-                    <Link
-                      onClick={changeLink}
-                      to='/alo24/branches'
-                      className='inline-block w-full px-3 py-2 text-blue-900 hover:text-blue-900 hover:bg-[#caf4f1bc] border-b'>
-                      {t('Filiallar')}
-                    </Link>
-                  </li>
-                </ul>
-              </li> */}
               <li className='inline-block'>
                 <Link
                   onClick={changeHeadMenu}
