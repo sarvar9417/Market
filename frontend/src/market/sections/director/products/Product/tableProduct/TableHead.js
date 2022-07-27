@@ -8,6 +8,16 @@ export const TableHead = ({ currentProducts, setCurrentProducts }) => {
     <ul className='thead shadow-xl'>
       <li className='th border-r'>№</li>
       <li className='th border-r flex justify-center items-center col-span-1 px-1'>
+        {t('Kategoriya')}
+        <div className='btn-group-vertical ml-2'>
+          <Sort
+            property={'code'}
+            data={currentProducts}
+            setData={setCurrentProducts}
+          />
+        </div>
+      </li>
+      <li className='th border-r flex justify-center items-center col-span-1 px-1'>
         {t('Kodi')}
         <div className='btn-group-vertical ml-2'>
           <Sort
@@ -17,7 +27,7 @@ export const TableHead = ({ currentProducts, setCurrentProducts }) => {
           />
         </div>
       </li>
-      <li className='th border-r flex  items-center justify-center col-span-5'>
+      <li className='th border-r flex  items-center justify-center col-span-4'>
         {t('Mahsulot nomi')}
         <Sort
           property={'name'}
@@ -61,7 +71,7 @@ export const TableHead = ({ currentProducts, setCurrentProducts }) => {
         />
       </li>
       <li className='th border-r flex flex-column items-center col-span-1'>
-        {t("Olish")}
+        {t('Olish')}
         <SortDoubleProperty
           property={'price'}
           innnerProperty='incomingprice'
@@ -70,7 +80,7 @@ export const TableHead = ({ currentProducts, setCurrentProducts }) => {
         />
       </li>
       <li className='th border-r flex flex-column items-center col-span-1'>
-        {t("Sotish")}
+        {t('Sotish')}
         <SortDoubleProperty
           property={'price'}
           innnerProperty='sellingprice'

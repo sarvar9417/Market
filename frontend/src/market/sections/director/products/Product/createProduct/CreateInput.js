@@ -3,9 +3,12 @@ import React from 'react';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { Input } from '../../../components/Input';
+
 const animatedComponents = makeAnimated();
 
 export const CreateInput = ({
+  getNextProductCode,
+  categorys,
   currency,
   product,
   keyPressed,
@@ -16,7 +19,24 @@ export const CreateInput = ({
   loading,
 }) => {
   return (
-    <div className='grid md:grid-cols-3 sm:grid-cols-2 gap-4 grid-cols-1 p-2'>
+    <div className='grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4 grid-cols-1 p-2 '>
+      <div className='flex justify-between font-bold'>
+        <p className='font-bold'>{t('Kategoriyasi ')}:</p>
+        <Select
+          theme={(theme) => ({
+            ...theme,
+            color: 'black',
+            borderRadius: 0,
+            padding: 0,
+            height: 0,
+          })}
+          ref={selectRef.category}
+          placeholder='Kategoriyalar'
+          options={categorys}
+          className='ml-5 z-40'
+          onChange={getNextProductCode}
+        />
+      </div>
       <div className='flex justify-between font-bold'>
         <p className='font-bold'>{t('Kodi')}:</p>
         <Input
@@ -26,7 +46,7 @@ export const CreateInput = ({
           placeholder={t('Mahsulot kodini kiriting')}
           loading={loading}
           name={'code'}
-          type={'text'}
+          type={'number'}
           classes={'text-right'}
         />
       </div>
@@ -93,7 +113,7 @@ export const CreateInput = ({
       <div className='flex justify-between font-bold'>
         <p className='font-bold w-50'>{t("O'lchov birligi")}:</p>
         <Select
-          className='w-full z-50'
+          className='z-20'
           id='select'
           isClearable={true}
           ref={selectRef.unit}

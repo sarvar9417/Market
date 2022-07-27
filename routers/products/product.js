@@ -95,17 +95,15 @@ module.exports.registerAll = async (req, res) => {
         category: categor._id,
         market,
         unit,
-        total: Math.round(total * 10000) / 10000,
+        total: Math.round(total * 1000) / 1000,
       });
 
       // Create Price
       const newPrice = new ProductPrice({
         incomingprice: incomingprice
-          ? Math.round(incomingprice * 10000) / 10000
+          ? Math.round(incomingprice * 1000) / 1000
           : 0,
-        sellingprice: sellingprice
-          ? Math.round(sellingprice * 10000) / 10000
-          : 0,
+        sellingprice: sellingprice ? Math.round(sellingprice * 1000) / 1000 : 0,
         incomingpriceuzs: incomingpriceuzs
           ? Math.round(incomingpriceuzs * 1) / 1
           : 0,
@@ -208,8 +206,8 @@ module.exports.register = async (req, res) => {
         error: error.message,
       });
     }
-
     const {
+      category,
       name,
       code,
       market,
@@ -231,6 +229,7 @@ module.exports.register = async (req, res) => {
     const product = await ProductData.findOne({
       market,
       code,
+      category,
     });
 
     if (product) {
@@ -238,16 +237,13 @@ module.exports.register = async (req, res) => {
         message: `Diqqat! ${code} kodli mahsulot avval yaratilgan.`,
       });
     }
-    const category = code.slice(0, 3);
 
-    let categor = await Category.findOne({ code: category, market });
+    let categor = await Category.findById(category);
 
     if (!categor) {
-      categor = new Category({
-        code: category,
-        market,
+      return res.status(400).json({
+        message: `Diqqat! Kategoriya ma'lumotlari topilmadi.`,
       });
-      await categor.save();
     }
 
     const unitt = await Unit.findById(unit);
@@ -261,7 +257,7 @@ module.exports.register = async (req, res) => {
     const newProductData = new ProductData({
       code,
       name,
-      category: categor._id,
+      category,
       unit,
       market,
     });
@@ -269,7 +265,7 @@ module.exports.register = async (req, res) => {
 
     const newProduct = new Product({
       productdata: newProductData._id,
-      category: categor._id,
+      category,
       market,
       unit,
       total: Math.round(total * 100) / 100,
@@ -277,9 +273,9 @@ module.exports.register = async (req, res) => {
 
     const newPrice = new ProductPrice({
       incomingprice: incomingprice
-        ? Math.round(incomingprice * 10000) / 10000
+        ? Math.round(incomingprice * 1000) / 1000
         : 0,
-      sellingprice: sellingprice ? Math.round(sellingprice * 10000) / 10000 : 0,
+      sellingprice: sellingprice ? Math.round(sellingprice * 1000) / 1000 : 0,
       incomingpriceuzs: incomingpriceuzs
         ? Math.round(incomingpriceuzs * 1) / 1
         : 0,
@@ -302,7 +298,7 @@ module.exports.register = async (req, res) => {
       },
     });
 
-    await Category.findByIdAndUpdate(categor._id, {
+    await Category.findByIdAndUpdate(category, {
       $push: {
         products: newProductData._id,
       },
@@ -312,6 +308,12 @@ module.exports.register = async (req, res) => {
       '.*' + search ? search.code : '' + '.*',
       'i'
     );
+
+    const productcategory = new RegExp(
+      '.*' + search ? search.category : '' + '.*',
+      'i'
+    );
+
     const productname = new RegExp(
       '.*' + search ? search.name : '' + '.*',
       'i'
@@ -320,7 +322,7 @@ module.exports.register = async (req, res) => {
     const products = await Product.find({
       market,
     })
-      .sort({ code: 1 })
+      .sort({ code: -1 })
       .select('total market category')
       .populate(
         'price',
@@ -331,11 +333,16 @@ module.exports.register = async (req, res) => {
         select: 'name code',
         match: { name: productname, code: productcode },
       })
+      .populate({
+        path: 'category',
+        select: 'name code',
+        match: { code: productcategory },
+      })
       .populate('unit', 'name');
 
-    let filter = products.filter((product) => {
-      return product.productdata !== null;
-    });
+    let filter = products.filter(
+      (product) => product.productdata !== null && product.category !== null
+    );
 
     const count = filter.length;
     filter = filter.splice(currentPage * countPage, countPage);
@@ -344,7 +351,6 @@ module.exports.register = async (req, res) => {
       count,
     });
   } catch (error) {
-    console.log(error);
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
@@ -367,7 +373,6 @@ module.exports.update = async (req, res) => {
       total,
       productdata,
     } = req.body.product;
-
     const { currentPage, countPage, search } = req.body;
     const marke = await Market.findById(market);
 
@@ -377,14 +382,43 @@ module.exports.update = async (req, res) => {
       });
     }
 
-    const categor = await Category.findById(category);
-
-    const product = await Product.findById(_id);
+    const product = await Product.findById(_id)
+      .populate({
+        path: 'productdata',
+        select: 'code',
+      })
+      .populate({
+        path: 'category',
+        select: 'code',
+      });
 
     if (!product) {
       return res.status(400).json({
         message: `Diqqat! ${code} kodli mahsulot avval yaratilmagan.`,
       });
+    }
+    if (
+      product.category._id.toString() === category._id &&
+      code !== product.productdata.code
+    ) {
+      const check = await ProductData.findOne({ category: category._id, code });
+      if (check) {
+        return res.status(400).json({
+          message: `Diqqat! ${code} kodli mahsulot avval yaratilgan.`,
+        });
+      }
+    }
+
+    if (
+      product.category._id.toString() !== category._id &&
+      code !== product.productdata.code
+    ) {
+      const check = await ProductData.findOne({ category: category._id, code });
+      if (check) {
+        return res.status(400).json({
+          message: `Diqqat! ${code} kodli mahsulot avval yaratilgan.`,
+        });
+      }
     }
 
     const exchangerate = await Exchangerate.findOne({ market })
@@ -392,8 +426,8 @@ module.exports.update = async (req, res) => {
       .sort({ _id: -1 });
 
     await ProductPrice.findByIdAndUpdate(priceid, {
-      incomingprice: Math.round(incomingprice * 10000) / 10000,
-      sellingprice: Math.round(sellingprice * 10000) / 10000,
+      incomingprice: Math.round(incomingprice * 1000) / 1000,
+      sellingprice: Math.round(sellingprice * 1000) / 1000,
       incomingpriceuzs:
         Math.round(
           (incomingpriceuzs
@@ -412,37 +446,22 @@ module.exports.update = async (req, res) => {
 
     const productData = await ProductData.findById(productdata);
 
-    if (productData.market.toString() === market) {
-      productData.name = name;
-      productData.code = code;
-      if (code.slice(0, 3) !== categor.code) {
-        await Category.findByIdAndUpdate(productData.category, {
-          $pull: {
-            products: new ObjectId(productData._id),
-          },
-        });
+    productData.name = name;
+    productData.code = code;
+    if (category !== productData.category) {
+      await Category.findByIdAndUpdate(productData.category, {
+        $pull: {
+          products: new ObjectId(productData._id),
+        },
+      });
 
-        let updateCategory = await Category.findOne({
-          market,
-          code: code.slice(0, 3),
-        });
-
-        if (!updateCategory) {
-          updateCategory = new Category({
-            market,
-            code: code.slice(0, 3),
-          });
-
-          await updateCategory.save();
-        }
-        updateCategory = await Category.findByIdAndUpdate(updateCategory._id, {
-          $push: {
-            products: productData._id,
-          },
-        });
-        product.category = updateCategory._id;
-        productData.category = updateCategory._id;
-      }
+      updateCategory = await Category.findByIdAndUpdate(category, {
+        $push: {
+          products: productData._id,
+        },
+      });
+      product.category = updateCategory._id;
+      productData.category = updateCategory._id;
     }
 
     await product.save();
@@ -454,6 +473,10 @@ module.exports.update = async (req, res) => {
     );
     const productname = new RegExp(
       '.*' + search ? search.name : '' + '.*',
+      'i'
+    );
+    const productcategory = new RegExp(
+      '.*' + search ? search.category : '' + '.*',
       'i'
     );
 
@@ -471,10 +494,15 @@ module.exports.update = async (req, res) => {
         select: 'name code',
         match: { name: productname, code: productcode },
       })
+      .populate({
+        path: 'category',
+        select: 'code',
+        match: { code: productcategory },
+      })
       .populate('unit', 'name');
 
     let filter = products.filter((product) => {
-      return product.productdata !== null;
+      return product.productdata !== null && product.category !== null;
     });
 
     const count = filter.length;
@@ -484,6 +512,7 @@ module.exports.update = async (req, res) => {
       count,
     });
   } catch (error) {
+    console.log(error);
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
@@ -636,6 +665,11 @@ module.exports.getProducts = async (req, res) => {
 
     const code = new RegExp('.*' + search ? search.code : '' + '.*', 'i');
     const name = new RegExp('.*' + search ? search.name : '' + '.*', 'i');
+    const category = new RegExp(
+      '.*' + search ? search.category : '' + '.*',
+      'i'
+    );
+
     const products = await Product.find({
       market,
     })
@@ -650,10 +684,15 @@ module.exports.getProducts = async (req, res) => {
         select: 'name code',
         match: { name: name, code: code },
       })
+      .populate({
+        path: 'category',
+        select: 'name code',
+        match: { code: category },
+      })
       .populate('unit', 'name');
 
     let filter = products.filter((product) => {
-      return product.productdata !== null;
+      return product.productdata !== null && product.category !== null;
     });
 
     const count = filter.length;
@@ -1003,7 +1042,6 @@ module.exports.getproductsale = async (req, res) => {
 
     res.status(201).json(products);
   } catch (error) {
-    console.log(error);
     res.status(401).json({ message: 'Serverda xatolik yuz berdi...' });
   }
 };
@@ -1052,6 +1090,20 @@ module.exports.updateAllProducts = async (req, res) => {
     res.status(201).json({
       message: 'tayyor',
     });
+  } catch (error) {
+    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
+  }
+};
+
+module.exports.productcode = async (req, res) => {
+  try {
+    const { market, categoryId } = req.body;
+    const code = await ProductData.find({
+      market,
+      category: categoryId,
+    }).count();
+
+    res.status(201).send({ code: 1001 + code });
   } catch (error) {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }

@@ -1,9 +1,11 @@
-import { t } from 'i18next';
-import { CreateBtn } from './createProduct/CreateBtn';
-import { CreateInput } from './createProduct/CreateInput';
+import { t } from "i18next";
+import { CreateBtn } from "./createProduct/CreateBtn";
+import { CreateInput } from "./createProduct/CreateInput";
 // import { CreateSelect } from './createProduct/CreateSelect';
 
 export const CreateProduct = ({
+  getNextProductCode,
+  categorys,
   currency,
   product,
   inputHandler,
@@ -16,9 +18,11 @@ export const CreateProduct = ({
   selectRef,
 }) => {
   return (
-    <div className='shadow-xl m-3'>
-      <div className='card-header text-lg'>{t('Mahsulot yaratish')}</div>
+    <div className="shadow-xl m-3">
+      <div className="card-header text-lg">{t("Mahsulot yaratish")}</div>
       <CreateInput
+        getNextProductCode={getNextProductCode}
+        categorys={categorys}
         currency={currency}
         units={units}
         loading={loading}

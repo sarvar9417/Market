@@ -32,6 +32,7 @@ export const Product = () => {
 
   const selectRef = {
     unit: useRef(),
+    category: useRef(),
   };
 
   //====================================================================
@@ -60,6 +61,7 @@ export const Product = () => {
     code: '',
     name: '',
     total: 0,
+    category: '',
     incomingprice: 0,
     sellingprice: 0,
     incomingpriceuzs: 0,
@@ -77,19 +79,19 @@ export const Product = () => {
     { name: t('Sotish narxi UZS'), value: 'sellingpriceuzs' },
   ];
 
-  //====================================================================
-  //====================================================================
-
-  //====================================================================
-  //====================================================================
   const clearInputs = useCallback(() => {
     const inputs = document.getElementsByTagName('input');
     for (const input of inputs) {
-      input.value = '';
+      if (input.datatype === 'input') {
+        input.value = '12';
+      }
     }
-
     selectRef.unit.current.selectOption({
       label: t("O'lchov birligi"),
+      value: 'delete',
+    });
+    selectRef.category.current.selectOption({
+      label: t('Kategoriya'),
       value: 'delete',
     });
     setProduct({
@@ -97,27 +99,58 @@ export const Product = () => {
       total: 0,
       code: '',
       name: '',
+      category: '',
       incomingprice: 0,
       sellingprice: 0,
       incomingpriceuzs: 0,
       sellingpriceuzs: 0,
     });
-  }, [auth, selectRef.unit]);
-  //====================================================================
-  //====================================================================
+  }, [auth, selectRef.unit, selectRef.category]);
+
   const [productsCount, setProductsCount] = useState(0);
   const [search, setSearch] = useState({
     code: '',
     name: '',
+    category: '',
   });
   const [sendingsearch, setSendingSearch] = useState({ code: '', name: '' });
-  //====================================================================
-  //====================================================================
 
   const [products, setProducts] = useState([]);
+  const [categorys, setCategorys] = useState([
+    { label: 'Kategoriyalar', value: 'delete' },
+  ]);
   const [searchStorage, setSearchStorage] = useState([]);
   const [changeImports, setChangeImports] = useState([]);
   const [imports, setImports] = useState([]);
+
+  const getCategory = useCallback(async () => {
+    try {
+      const data = await request(
+        '/api/products/category/getall',
+        'POST',
+        {
+          market: auth.market && auth.market._id,
+        },
+        {
+          Authorization: `Bearer ${auth.token}`,
+        }
+      );
+      let s = [{ label: 'Kategoriyalar', value: 'delete' }];
+      data.map((d) => {
+        return s.push({
+          label: d.code + (d.name ? '-' + d.name : ''),
+          value: d,
+        });
+      });
+      setCategorys(s);
+    } catch (error) {
+      notify({
+        title: error,
+        description: '',
+        status: 'error',
+      });
+    }
+  }, [auth, request, notify]);
 
   const getProducts = useCallback(async () => {
     try {
@@ -203,11 +236,6 @@ export const Product = () => {
       });
     }
   }, [request, auth, notify]);
-  //====================================================================
-  //====================================================================
-
-  //====================================================================
-  //====================================================================
 
   const [units, setUnits] = useState([]);
 
@@ -249,8 +277,6 @@ export const Product = () => {
     }
     setProduct({ ...product, unit: e.value });
   };
-
-  //====================================================================
 
   const createHandler = useCallback(async () => {
     try {
@@ -497,8 +523,6 @@ export const Product = () => {
     uploadAllProducts();
   };
 
-  //====================================================================
-  //====================================================================
   // SEARCH
   const searchProducts = (e) => {
     setSearch({ ...search, [e.target.name]: e.target.value });
@@ -511,6 +535,13 @@ export const Product = () => {
     if (e.target.name === 'name') {
       const searching = searchStorage.filter((item) =>
         item.productdata.name.toLowerCase().includes(e.target.value)
+      );
+      setCurrentProducts(searching);
+    }
+
+    if (e.target.name === 'category') {
+      const searching = searchStorage.filter((item) =>
+        item.category.code.toLowerCase().includes(e.target.value)
       );
       setCurrentProducts(searching);
     }
@@ -535,10 +566,6 @@ export const Product = () => {
   const [currency, setCurrency] = useState('UZS');
   // const [autoconvertation, setAutocConversation] = useState(true);
   const autoconvertation = true;
-
-  // const changeAutoConvertation = () => {
-  //   setAutocConversation(!autoconvertation);
-  // };
 
   const changeCurrency = useCallback(async () => {
     try {
@@ -585,6 +612,33 @@ export const Product = () => {
       });
     }
   }, [auth, request, notify]);
+
+  const getNextProductCode = useCallback(
+    async (e) => {
+      try {
+        const data = await request(
+          `/api/products/product/productcode`,
+          'POST',
+          {
+            market: auth.market._id,
+            categoryId: e.value._id,
+          },
+          {
+            Authorization: `Bearer ${auth.token}`,
+          }
+        );
+        setProduct({ ...product, code: data.code, category: e.value._id });
+      } catch (error) {
+        notify({
+          title: error,
+          description: '',
+          status: 'error',
+        });
+      }
+    },
+    [auth, request, notify, product]
+  );
+
   //====================================================================
   //UseEffects
   useEffect(() => {
@@ -595,12 +649,13 @@ export const Product = () => {
     getUnits();
     getCurrency();
     getExchangerate();
-  }, [getUnits, getCurrency, getExchangerate]);
+    getCategory();
+  }, [getUnits, getCurrency, getExchangerate, getCategory]);
 
   return (
     <>
       {loading ? <Loader /> : ''}
-      <div className='m-3 '>
+      <div className='m-3'>
         <div className='font-bold text-right'>
           Asosiy valyuta turi:{' '}
           <Currency
@@ -608,18 +663,12 @@ export const Product = () => {
             onToggle={changeCurrency}
           />
         </div>
-        {/* <p className='font-bold text-right'>
-          Avtokonvertatsiya:{' '}
-          <AutoCurrency
-            value={autoconvertation}
-            onToggle={changeAutoConvertation}
-          />
-        </p> */}
       </div>
       <div className='overflow-x-auto'>
         <CreateProduct
+          getNextProductCode={getNextProductCode}
+          categorys={categorys}
           currency={currency}
-          setProduct={setProduct}
           product={product}
           keyPressed={keyPressed}
           inputHandler={inputHandler}

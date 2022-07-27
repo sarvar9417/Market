@@ -21,9 +21,12 @@ export const TableRow = ({
     <ul className='tr'>
       <li className='no'>{currentPage * countPage + 1 + index}</li>
       <li className='no text-right px-2'>
+        <span className='w-1/2'>{p.category.code}</span>
+      </li>
+      <li className='no text-right px-2'>
         <span className='w-1/2'>{p.productdata.code}</span>
       </li>
-      <li className='col-span-5 td font-bold border-r'>{p.productdata.name}</li>
+      <li className='col-span-4 td font-bold border-r'>{p.productdata.name}</li>
       <li className='col-span-1 td no flex justify-end px-1'>
         <span>{p.total.toLocaleString('ru-RU')}</span>{' '}
         <span className='ml-1'>{p.unit && p.unit.name}</span>

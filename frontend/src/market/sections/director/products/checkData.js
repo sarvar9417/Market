@@ -1,4 +1,4 @@
-import t from 'i18next';
+import { t } from 'i18next';
 
 // CatecheckCategory
 export const checkCategory = (category) => {
@@ -8,16 +8,24 @@ export const checkCategory = (category) => {
       description: t("Iltimos bo'limdan chiqib qayta kiriting."),
       status: 'error',
     };
-  if (!category.name)
+  if (category.name.length === 0)
     return {
       title: t('Diqqat! Kategoriya nomi kiritilmagan.'),
       description: t('Iltimos kategoriya nomini kiriting.'),
       status: 'error',
     };
-  if (!category.code) {
+  if (category.code.length === 0) {
     return {
       title: t('Diqqat! Kategoriya kodi kiritilmagan.'),
       description: t('Iltimos kategoriya kodini kiriting.'),
+      status: 'error',
+    };
+  }
+
+  if (category.code.length !== 3) {
+    return {
+      title: t("Diqqat! Kategoriya kodi 3 ta raqamdan iborat bo'lishi kerak."),
+      description: t("Iltimos kategoriya kodini to'g'ri kiriting."),
       status: 'error',
     };
   }
@@ -94,7 +102,6 @@ export const checkProduct = (product, t) => {
       description: t("Iltimos kodni to'g'ri kiriting."),
       status: 'error',
     };
-
 
   if (!product.name)
     return {
