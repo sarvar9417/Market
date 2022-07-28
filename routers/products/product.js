@@ -39,9 +39,14 @@ module.exports.registerAll = async (req, res) => {
     }
 
     for (const product of products) {
+      const category = await Category.findOne({
+        market: product.market,
+        code: product.category,
+      });
       const productData = await ProductData.findOne({
         market: market._id,
         code: product.code,
+        category: category && category._id,
       });
 
       if (productData) {
@@ -59,6 +64,7 @@ module.exports.registerAll = async (req, res) => {
         });
       }
       const {
+        category,
         name,
         code,
         unit,
@@ -68,14 +74,15 @@ module.exports.registerAll = async (req, res) => {
         sellingpriceuzs,
         total,
       } = product;
+
       let categor = await Category.findOne({
-        code: code.slice(0, 3),
+        code: category,
         market,
       });
 
       if (!categor) {
         const newcategory = new Category({
-          code: code.slice(0, 3),
+          code: category,
           market,
         });
         await newcategory.save();
@@ -164,6 +171,10 @@ module.exports.registerAll = async (req, res) => {
       '.*' + search ? search.name : '' + '.*',
       'i'
     );
+    const productcategory = new RegExp(
+      '.*' + search ? search.category : '' + '.*',
+      'i'
+    );
 
     const allproducts = await Product.find({
       market,
@@ -179,10 +190,15 @@ module.exports.registerAll = async (req, res) => {
         select: 'name code',
         match: { name: productname, code: productcode },
       })
+      .populate({
+        path: 'category',
+        select: 'name code',
+        match: { code: productcategory },
+      })
       .populate('unit', 'name');
 
     let filter = allproducts.filter((product) => {
-      return product.productdata !== null;
+      return product.productdata !== null && product.category !== null;
     });
 
     const count = filter.length;
@@ -192,6 +208,7 @@ module.exports.registerAll = async (req, res) => {
       count,
     });
   } catch (error) {
+    console.log(error);
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
@@ -590,6 +607,10 @@ module.exports.delete = async (req, res) => {
       '.*' + search ? search.name : '' + '.*',
       'i'
     );
+    const productcategory = new RegExp(
+      '.*' + search ? search.category : '' + '.*',
+      'i'
+    );
 
     const products = await Product.find({
       market,
@@ -601,6 +622,11 @@ module.exports.delete = async (req, res) => {
         path: 'productdata',
         select: 'name code',
         match: { name: productname, code: productcode },
+      })
+      .populate({
+        path: 'category',
+        select: 'name code',
+        match: { code: productcategory },
       })
       .populate('unit', 'name');
 

@@ -69,6 +69,7 @@ export const Product = () => {
   });
 
   const sections = [
+    { name: t('Mahsulot kategoriyasi'), value: 'category' },
     { name: t('Mahsulot kodi'), value: 'code' },
     { name: t('Mahsulot nomi'), value: 'name' },
     { name: t("O'lchov birligi"), value: 'unit' },

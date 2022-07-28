@@ -389,13 +389,21 @@ export const checkProducts = (products) => {
   let k = 0;
   for (const product of products) {
     k++;
-    // if (!product.category) {
-    //   return {
-    //     title: `${'Diqqat!'} ${k}-${'qatorda kategoriya kodi kiritilmagan.'}`,
-    //     description: 'Iltimos kategoriya kodini kiriting.',
-    //     status: 'error',
-    //   };
-    // }
+    if (!product.category) {
+      return {
+        title: `${'Diqqat!'} ${k}-${'qatorda kategoriya kodi kiritilmagan.'}`,
+        description: 'Iltimos kategoriya kodini kiriting.',
+        status: 'error',
+      };
+    }
+    console.log(product.category.length);
+    if (product.category >= 1000 || product.category < 100) {
+      return {
+        title: `Diqqat! Kategoriya kodi 3 ta belgidan iborat bo'lishi kerak`,
+        description: `Iltimos ${k}-qatorda kategoriya kodini to'g'ri kiriting.`,
+        status: 'error',
+      };
+    }
 
     if (!product.code) {
       return {
