@@ -1324,7 +1324,6 @@ export const Sale = () => {
     discountuzs: 0,
   });
 
-  console.log(paymentEdit);
   const [paymentTypeEdit, setPaymentTypeEdit] = useState({
     type: 'cash',
     name: t('Naqt'),
@@ -1672,8 +1671,6 @@ export const Sale = () => {
           }, 0)) *
           1
       ) / 1;
-
-    console.log(totaluzs);
 
     let cashuzs =
       Math.round(
