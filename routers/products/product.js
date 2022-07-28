@@ -889,9 +889,9 @@ module.exports.getAllBrand = async (req, res) => {
 //Product getall by category
 module.exports.getAllCategory = async (req, res) => {
   try {
-    const { market, typeid } = req.body;
+    const { market, categoryId } = req.body;
     const marke = await Market.findById(market);
-    const categor = await Category.findById(typeid);
+    const categor = await Category.findById(categoryId);
 
     if (!categor || !marke) {
       return res.status(400).json({
@@ -901,14 +901,19 @@ module.exports.getAllCategory = async (req, res) => {
 
     const products = await Product.find({
       market,
-      category: typeid,
+      category: categoryId,
     })
-      .sort({ _id: -1 })
-      .select('name code unit category price total')
+      .sort({ code: -1 })
+      .select('unit category price total')
+      .populate('productdata', 'name code')
       .populate('category', 'name code')
       .populate('unit', 'name')
-      .populate('price', 'sellingprice');
-    res.send(products);
+      .populate(
+        'price',
+        'sellingprice sellingpriceuzs incomingprice incomingpriceuzs'
+      );
+
+    res.status(201).send(products);
   } catch (error) {
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }

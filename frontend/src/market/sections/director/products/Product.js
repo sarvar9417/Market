@@ -615,26 +615,27 @@ export const Product = () => {
 
   const getNextProductCode = useCallback(
     async (e) => {
-      try {
-        const data = await request(
-          `/api/products/product/productcode`,
-          'POST',
-          {
-            market: auth.market._id,
-            categoryId: e.value._id,
-          },
-          {
-            Authorization: `Bearer ${auth.token}`,
-          }
-        );
-        setProduct({ ...product, code: data.code, category: e.value._id });
-      } catch (error) {
-        notify({
-          title: error,
-          description: '',
-          status: 'error',
-        });
-      }
+      if (e.value !== 'delete')
+        try {
+          const data = await request(
+            `/api/products/product/productcode`,
+            'POST',
+            {
+              market: auth.market._id,
+              categoryId: e.value._id,
+            },
+            {
+              Authorization: `Bearer ${auth.token}`,
+            }
+          );
+          setProduct({ ...product, code: data.code, category: e.value._id });
+        } catch (error) {
+          notify({
+            title: error,
+            description: '',
+            status: 'error',
+          });
+        }
     },
     [auth, request, notify, product]
   );
