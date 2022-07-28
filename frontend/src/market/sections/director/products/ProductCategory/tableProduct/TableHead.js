@@ -88,8 +88,8 @@ export const TableHead = ({ currentProducts, setCurrentProducts }) => {
           setData={setCurrentProducts}
         />
       </li>
-      <li className='th border-r'>{t('Tahrirlash')}</li>
-      <li className='th border-r'>{t("O'chirish")}</li>
+      <li className='th border-r'>{t('Olish jami')}</li>
+      <li className='th border-r'>{t('Sotish jami')}</li>
     </ul>
   );
 };

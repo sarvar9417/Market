@@ -14,6 +14,7 @@ export const Input = ({
   return (
     <div>
       <input
+        datatype='input'
         value={data ? data : ''}
         onKeyUp={keyPressed}
         disabled={loading}
@@ -40,6 +41,7 @@ export const SearchInput = ({
   return (
     <div>
       <input
+        datatype='input'
         onKeyUp={keyPressed}
         onChange={changeHandler}
         disabled={loading}

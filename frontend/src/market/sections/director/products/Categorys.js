@@ -61,8 +61,8 @@ export const Category = () => {
   //====================================================================
   const [category, setCategory] = useState({
     market: auth.market && auth.market._id,
-    name: null,
-    code: null,
+    name: '',
+    code: '',
   });
 
   const changeHandler = (e) => {
@@ -224,7 +224,7 @@ export const Category = () => {
         }
       );
       notify({
-        title: `${data.name} ${t("kategoriyasi yangilandi!")}`,
+        title: `${data.name} ${t('kategoriyasi yangilandi!')}`,
         description: '',
         status: 'success',
       });
@@ -326,7 +326,7 @@ export const Category = () => {
           currentCategories.map((c, key) => {
             return (
               <Rows
-              loading={loading}
+                loading={loading}
                 index={key}
                 currentPage={currentPage}
                 key={key}

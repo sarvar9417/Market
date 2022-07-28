@@ -46,7 +46,7 @@ router.delete('/product/delete', auth, (req, res) => {
   require('./product').delete(req, res);
 });
 
-router.post('/product/getallcategory', auth, (req, res) => {
+router.post('/product/productcategory', auth, (req, res) => {
   require('./product').getAllCategory(req, res);
 });
 
@@ -80,6 +80,10 @@ router.delete('/product/deleteallcategory', auth, (req, res) => {
 
 router.post('/product/getallincoming', auth, (req, res) => {
   require('./product').getAllIncoming(req, res);
+});
+
+router.post('/product/productcode', auth, (req, res) => {
+  require('./product').productcode(req, res);
 });
 
 //========================================================

@@ -24,6 +24,7 @@ import { useHttp } from '../../hooks/http.hook';
 import { AuthContext } from '../../context/AuthContext';
 import { ProductsReport } from './products/ProductsReport';
 import { Expense } from './cashRegister/Expense';
+import { ProductCategory } from './products/ProductCategory';
 
 export const DirectorRouter = () => {
   const { request } = useHttp();
@@ -167,6 +168,9 @@ export const DirectorRouter = () => {
             <Sellers />
           </Route>
         )}
+        <Route path='/alo24/productcategory/:categoryId'>
+          <ProductCategory />
+        </Route>
 
         {/* <Redirect to='/alo24' /> */}
       </Switch>

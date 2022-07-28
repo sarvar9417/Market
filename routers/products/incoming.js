@@ -2,21 +2,21 @@ const {
   Incoming,
   validateIncoming,
   validateIncomingAll,
-} = require('../../models/Products/Incoming');
-const { Market } = require('../../models/MarketAndBranch/Market');
-const { ProductType } = require('../../models/Products/ProductType');
-const { Category } = require('../../models/Products/Category');
-const { Unit } = require('../../models/Products/Unit');
-const { Product } = require('../../models/Products//Product');
-const { Brand } = require('../../models/Products/Brand');
+} = require("../../models/Products/Incoming");
+const { Market } = require("../../models/MarketAndBranch/Market");
+const { ProductType } = require("../../models/Products/ProductType");
+const { Category } = require("../../models/Products/Category");
+const { Unit } = require("../../models/Products/Unit");
+const { Product } = require("../../models/Products//Product");
+const { Brand } = require("../../models/Products/Brand");
 const {
   IncomingConnector,
-} = require('../../models/Products/IncomingConnector');
-const { ProductPrice } = require('../../models/Products/ProductPrice');
-const { Supplier } = require('../../models/Supplier/Supplier');
-const router = require('./category_products');
-const { ProductData } = require('../../models/Products/Productdata');
-const ObjectId = require('mongodb').ObjectId;
+} = require("../../models/Products/IncomingConnector");
+const { ProductPrice } = require("../../models/Products/ProductPrice");
+const { Supplier } = require("../../models/Supplier/Supplier");
+const router = require("./category_products");
+const { ProductData } = require("../../models/Products/Productdata");
+const ObjectId = require("mongodb").ObjectId;
 //Incoming registerall
 module.exports.registerAll = async (req, res) => {
   try {
@@ -139,14 +139,14 @@ module.exports.registerAll = async (req, res) => {
       },
     })
       .sort({ _id: -1 })
-      .select('supplier incoming total createdAt')
-      .populate('supplier', 'name')
-      .populate('incoming', 'pieces');
+      .select("supplier incoming total createdAt")
+      .populate("supplier", "name")
+      .populate("incoming", "pieces");
 
     res.status(201).send(connectors);
   } catch (error) {
     console.log(error);
-    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
+    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
   }
 };
 
@@ -202,7 +202,7 @@ module.exports.register = async (req, res) => {
 
     res.send(newIncoming);
   } catch (error) {
-    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
+    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
   }
 };
 
@@ -236,9 +236,9 @@ module.exports.update = async (req, res) => {
       await incomingconnector.save();
     } else {
       const incomingconnectors = await IncomingConnector.find().populate({
-        path: 'incoming',
+        path: "incoming",
         match: { _id: product._id },
-        select: '_id',
+        select: "_id",
       });
       incomingconnectors.forEach(async (connector) => {
         if (connector.incoming.length > 0) {
@@ -276,13 +276,13 @@ module.exports.update = async (req, res) => {
       },
     })
       .sort({ _id: -1 })
-      .select('supplier incoming total createdAt')
-      .populate('supplier', 'name')
-      .populate('incoming', 'pieces');
+      .select("supplier incoming total createdAt")
+      .populate("supplier", "name")
+      .populate("incoming", "pieces");
 
     res.status(201).send(connectors);
   } catch (error) {
-    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
+    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
   }
 };
 
@@ -320,9 +320,9 @@ module.exports.delete = async (req, res) => {
       });
     } else {
       const incomingconnectors = await IncomingConnector.find().populate({
-        path: 'incoming',
+        path: "incoming",
         match: { _id: product._id },
-        select: '_id',
+        select: "_id",
       });
       incomingconnectors.forEach(async (connector) => {
         if (connector.incoming.length > 0) {
@@ -358,13 +358,13 @@ module.exports.delete = async (req, res) => {
       },
     })
       .sort({ _id: -1 })
-      .select('supplier incoming total createdAt')
-      .populate('supplier', 'name')
-      .populate('incoming', 'pieces');
+      .select("supplier incoming total createdAt")
+      .populate("supplier", "name")
+      .populate("incoming", "pieces");
 
     res.status(201).send(connectors);
   } catch (error) {
-    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
+    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
   }
 };
 
@@ -381,17 +381,17 @@ module.exports.get = async (req, res) => {
     }
 
     const productcode = new RegExp(
-      '.*' + search ? search.code : '' + '.*',
-      'i'
+      ".*" + search ? search.code : "" + ".*",
+      "i"
     );
     const productname = new RegExp(
-      '.*' + search ? search.name : '' + '.*',
-      'i'
+      ".*" + search ? search.name : "" + ".*",
+      "i"
     );
 
     const suppliername = new RegExp(
-      '.*' + search ? search.supplier : '' + '.*',
-      'i'
+      ".*" + search ? search.supplier : "" + ".*",
+      "i"
     );
 
     const incomings = await Incoming.find({
@@ -402,22 +402,22 @@ module.exports.get = async (req, res) => {
       },
     })
       .sort({ _id: -1 })
-      .select('-isArchive -updatedAt -market -user -__v')
+      .select("-isArchive -updatedAt -market -user -__v")
       .populate({
-        path: 'supplier',
+        path: "supplier",
         match: { name: suppliername },
-        select: 'name',
+        select: "name",
       })
       .populate({
-        path: 'product',
-        select: 'productdata',
+        path: "product",
+        select: "productdata",
         populate: {
-          path: 'productdata',
+          path: "productdata",
           match: { code: productcode, name: productname },
-          select: 'name code',
+          select: "name code",
         },
       })
-      .populate('unit', 'name');
+      .populate("unit", "name");
 
     let filter = incomings.filter((incoming) => {
       return (
@@ -434,8 +434,7 @@ module.exports.get = async (req, res) => {
       count: count,
     });
   } catch (error) {
-    console.log(error);
-    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
+    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
   }
 };
 
@@ -458,20 +457,20 @@ module.exports.getexcel = async (req, res) => {
       },
     })
       .sort({ _id: -1 })
-      .select('-isArchive -updatedAt -market -user -__v')
-      .populate('supplier', 'name')
+      .select("-isArchive -updatedAt -market -user -__v")
+      .populate("supplier", "name")
       .populate({
-        path: 'product',
-        select: 'productdata',
+        path: "product",
+        select: "productdata",
         populate: {
-          path: 'productdata',
-          select: 'name code',
+          path: "productdata",
+          select: "name code",
         },
       })
-      .populate('unit', 'name');
+      .populate("unit", "name");
     res.status(201).send(incomings);
   } catch (error) {
-    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
+    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
   }
 };
 
@@ -487,13 +486,13 @@ module.exports.getConnectors = async (req, res) => {
       },
     })
       .sort({ _id: -1, supplier: -1 })
-      .select('supplier incoming total totaluzs createdAt')
-      .populate('supplier', 'name')
-      .populate('incoming', 'pieces');
+      .select("supplier incoming total totaluzs createdAt")
+      .populate("supplier", "name")
+      .populate("incoming", "pieces");
 
     res.send(connectors);
   } catch (error) {
-    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
+    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
   }
 };
 
@@ -512,6 +511,6 @@ module.exports.getCount = async (req, res) => {
     const count = await Incoming.find({ market }).count();
     res.status(201).send({ count });
   } catch (error) {
-    res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
+    res.status(501).json({ error: "Serverda xatolik yuz berdi..." });
   }
 };

@@ -1,22 +1,5 @@
 import React from 'react';
-import {
-  ClearBtnLoad,
-  DeleteBtn,
-  EditBtn,
-  SaveBtnLoad,
-} from '../../../components/TableButtons';
-
-export const TableRow = ({
-  currency,
-  countPage,
-  p,
-  index,
-  edit,
-  setModal,
-  setRemove,
-  loading,
-  currentPage,
-}) => {
+export const TableRow = ({ currency, countPage, p, index, currentPage }) => {
   return (
     <ul className='tr'>
       <li className='no'>{currentPage * countPage + 1 + index}</li>
@@ -47,20 +30,17 @@ export const TableRow = ({
             : p.price.sellingprice.toLocaleString('ru-RU'))}{' '}
         {currency}
       </li>
-      <li className='td-btn col-span-1 border-r'>
-        {loading ? <SaveBtnLoad /> : <EditBtn editHandler={() => edit(p)} />}
+      <li className='col-span-1 td no flex justify-end px-1'>
+        {currency === 'UZS'
+          ? (p.total * p.price.incomingpriceuzs).toLocaleString('ru-RU')
+          : (p.total * p.price.incomingprice).toLocaleString('ru-RU')}{' '}
+        {currency}
       </li>
-      <li className='td-btn col-span-1'>
-        {loading ? (
-          <ClearBtnLoad />
-        ) : (
-          <DeleteBtn
-            deleteHandler={() => {
-              setRemove(p);
-              setModal(true);
-            }}
-          />
-        )}
+      <li className='col-span-1 td no flex justify-end px-1'>
+        {currency === 'UZS'
+          ? (p.total * p.price.sellingpriceuzs).toLocaleString('ru-RU')
+          : (p.total * p.price.sellingprice).toLocaleString('ru-RU')}{' '}
+        {currency}
       </li>
     </ul>
   );
