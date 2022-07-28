@@ -191,7 +191,6 @@ module.exports.update = async (req, res) => {
 
     res.send(updatedproduct);
   } catch (error) {
-    console.log(error);
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };

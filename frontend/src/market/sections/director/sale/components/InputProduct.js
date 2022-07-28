@@ -10,7 +10,6 @@ export const InputProduct = ({
   loading,
   currency,
 }) => {
-  console.log(product);
   const [incomingprice, setIncomingprice] = useState(false);
   const changeincomingPrice = () => {
     setIncomingprice(!incomingprice);

@@ -208,7 +208,6 @@ module.exports.registerAll = async (req, res) => {
       count,
     });
   } catch (error) {
-    console.log(error);
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };
@@ -529,7 +528,6 @@ module.exports.update = async (req, res) => {
       count,
     });
   } catch (error) {
-    console.log(error);
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };

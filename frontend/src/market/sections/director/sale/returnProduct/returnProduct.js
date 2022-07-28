@@ -14,8 +14,8 @@ export const returnProduct = (products, e) => {
       : Math.round(
           products[parseInt(e.target.id)].unitpriceuzs *
             parseFloat(e.target.value) *
-            10000
-        ) / 10000;
+            1
+        ) / 1;
   return products;
 };
 
@@ -32,7 +32,6 @@ export const discountProcient = (EditDiscount, product, count) => {
     Math.round(
       (EditDiscount.discountuzs -
         (product.unitpriceuzs * difference * EditDiscount.procient) / 100) *
-        100
-    ) / 100;
-  console.log(EditDiscount);
+        1
+    ) / 1;
 };

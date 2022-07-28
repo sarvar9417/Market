@@ -192,7 +192,6 @@ module.exports.getCategories = async (req, res) => {
 
     res.status(201).json({ categories: categorys, count: categoryCount });
   } catch (error) {
-    console.log(error);
     res.status(501).json({ error: 'Serverda xatolik yuz berdi...' });
   }
 };

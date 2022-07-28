@@ -221,7 +221,6 @@ export const ProductCategory = () => {
   useEffect(() => {
     getCurrency();
   }, [getCurrency]);
-  console.log(currentProducts);
   return (
     <>
       {loading ? <Loader /> : ''}
