@@ -12,7 +12,8 @@ export const Body = ({ product, currency }) => {
   return (
     <div className=''>
       <div className='text-center text-lg'>
-        Наименование:<br/> <span className='font-bold'>{product.name && product.name}</span> 
+        Наименование:
+        <br /> <span className='font-bold'>{product.name && product.name}</span>
       </div>
       <div className='text-2xl font-bold text-center'>
         <span>

@@ -17,13 +17,20 @@ export const TableRow = ({
     <ul className='tr'>
       <li className='no'>{currentPage * countPage + 1 + index}</li>
       <li
-        onClick={(e) => chooseProductCheque(e, index, p.productdata.code)}
+        onClick={(e) =>
+          chooseProductCheque(
+            e,
+            index,
+            p.category.code + ' ' + p.productdata.code
+          )
+        }
         data-property='code'
         className={`no text-right px-2 ${
           index === productCheque.index && productCheque.code
             ? 'bg-green-600 text-white'
             : ' '
-        }`}>
+        }`}
+      >
         <span className='w-1/2 pointer-events-none'>{p.productdata.code}</span>
       </li>
 
@@ -34,7 +41,8 @@ export const TableRow = ({
             ? 'bg-green-600 text-white'
             : ' '
         }`}
-        data-property='name'>
+        data-property='name'
+      >
         {p.productdata.name}
       </li>
       <li
@@ -44,7 +52,8 @@ export const TableRow = ({
             ? 'bg-green-600 text-white'
             : ' '
         }`}
-        data-property='unit'>
+        data-property='unit'
+      >
         <span className='pointer-events-none'>
           {p.total.toLocaleString('ru-RU')}
         </span>{' '}
@@ -81,7 +90,8 @@ export const TableRow = ({
             ? 'bg-green-600 text-white'
             : ' '
         }`}
-        data-property={currency === 'UZS' ? 'sellingpriceuzs' : 'sellingprice'}>
+        data-property={currency === 'UZS' ? 'sellingpriceuzs' : 'sellingprice'}
+      >
         {p.price &&
           (currency === 'UZS'
             ? p.price.sellingpriceuzs
@@ -110,7 +120,8 @@ export const TableRow = ({
       <li className='col-span-1 td-btn no px-1'>
         <button
           onClick={() => addProductCheaques()}
-          className='px-4 bg-blue-700 text-white rounded-xl hover:bg-blue-800'>
+          className='px-4 bg-blue-700 text-white rounded-xl hover:bg-blue-800'
+        >
           <FontAwesomeIcon icon={faPrint} />
         </button>
       </li>

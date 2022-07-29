@@ -232,7 +232,7 @@ export const ProductsReport = () => {
       let obj = {
         index: pos,
         name: product.productdata.name,
-        code: product.productdata.code,
+        code: product.category.code + ' ' + product.productdata.code,
         total: product.total,
         sellingprice: product.price.sellingprice,
         sellingpriceuzs: product.price.sellingpriceuzs,
@@ -350,7 +350,6 @@ export const ProductsReport = () => {
   useEffect(() => {
     getCurrency();
   }, [getCurrency]);
-
   useEffect(() => {
     getProducts();
   }, [getProducts, currentPage, countPage, sendingsearch]);
