@@ -280,14 +280,10 @@ export const Sale = () => {
       total: e.value.total,
       product: e.value,
       totalprice: Math.round(e.value.price.sellingprice * 1000) / 1000,
-      totalpriceuzs:
-        Math.round(e.value.price.sellingprice * exchangerate.exchangerate * 1) /
-        1,
+      totalpriceuzs: Math.round(e.value.price.sellingpriceuzs * 1) / 1,
       pieces: 1,
       unitprice: Math.round(e.value.price.sellingprice * 1000) / 1000,
-      unitpriceuzs: Math.round(
-        (e.value.price.sellingprice * exchangerate.exchangerate * 1) / 1
-      ),
+      unitpriceuzs: Math.round((e.value.price.sellingpriceuzs * 1) / 1),
     });
   };
 
@@ -365,7 +361,7 @@ export const Sale = () => {
             ? 0
             : currency === 'UZS'
             ? pieces * e.target.value
-            : Math.round(totalprice * exchangerate.exchangerate * 1) / 1,
+            : Math.round(totalpriceuzs * 1) / 1,
       });
     }
   };

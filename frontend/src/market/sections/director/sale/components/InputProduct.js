@@ -14,12 +14,17 @@ export const InputProduct = ({
   const changeincomingPrice = () => {
     setIncomingprice(!incomingprice);
   };
+  console.log(product);
   return (
     <div>
       <p className='font-bold flex justify-between'>
         <span className='text-black'>{t('Mahsulot')}:</span>
         <span>
-          {product && product.product.code + '-' + product.product.name}{' '}
+          {product &&
+            product.product.productdata &&
+            product.product.productdata.code +
+              '-' +
+              product.product.productdata.name}{' '}
         </span>
       </p>
       <table className='table m-0'>
