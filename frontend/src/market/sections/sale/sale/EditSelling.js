@@ -4,6 +4,7 @@ import { Footer } from './EditSelling/Footer';
 import { Table } from './EditSelling/Table';
 
 export const EditSelling = ({
+  currency,
   sellingEditCard,
   changeBack,
   editSaleConnector,
@@ -17,19 +18,20 @@ export const EditSelling = ({
 }) => {
   return (
     <div
-      className={`bg-white mb-3 shadow-2xl ${sellingEditCard ? '' : 'hidden'}`}
-    >
+      className={`bg-white mb-3 shadow-2xl ${sellingEditCard ? '' : 'hidden'}`}>
       <p className='bg-blue-800 text-center text-2xl text-white py-2 font-bold'>
         {t('Mahsulotlarni tahrirlash')}
       </p>
       <div className='px-3 py-2'>
         <div className='min-w-[991px]'>
           <Table
+            currency={currency}
             editSaleConnector={editSaleConnector}
             changeBack={changeBack}
             saleproducts={saleproducts}
           />
           <Footer
+            currency={currency}
             totalprice={totalprice}
             totalpriceuzs={totalpriceuzs}
             payment={payment}

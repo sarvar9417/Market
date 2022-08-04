@@ -15,7 +15,6 @@ export const LeftCardEdit = ({
   payment,
   paymentType,
   changeHandler,
-  loading,
 }) => {
   const number = [
     7,
@@ -33,9 +32,9 @@ export const LeftCardEdit = ({
   ];
 
   const types = [
-    { type: "cash", name: t("Naqt") },
-    { type: "card", name: t("Plastik") },
-    { type: "transfer", name: t("O`tkazma") },
+    { type: 'cash', name: t('Naqt') },
+    { type: 'card', name: t('Plastik') },
+    { type: 'transfer', name: t('O`tkazma') },
   ];
   const borderRadiusStyle = { borderRadius: 2 };
   return (
@@ -100,7 +99,6 @@ export const LeftCardEdit = ({
         className='w-full mb-2 bg-[#54B1EC] text-white outline-none rounded px-3 py-1 text-base placeholder:text-[#AFD5EF] font-semibold'
         placeholder={t("To'lov uchun izoh")}
         onChange={editPaymentComment}
-        loading={loading}
       />
       <button
         onClick={checkHandler}

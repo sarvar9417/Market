@@ -32,6 +32,7 @@ export const TemporayCheque = ({ sales, setCheck, client }) => {
 
   const auth = useContext(AuthContext);
   return (
+    
     <div className='absolute top-0 right-0 z-50 w-full min-h-screen bg-white overflow-auto font-mono'>
       <div className='a4 m-auto w-[27cm]' ref={componentRef}>
         <Header auth={auth} sales={sales} client={client} />

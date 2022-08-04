@@ -41,9 +41,9 @@ export const TableHeader = ({
         <SearchInput
           changeHandler={changeSearch}
           name='client'
-          loading={loading}
           placeholder={t('Mijoz')}
           keyPressed={keyPressed}
+          loading={loading}
         />
       </li>
       {/* <li className='th-h border-r'>
@@ -59,17 +59,17 @@ export const TableHeader = ({
           onChange={changeDate}
           defaultValue={new Date(startDate).toISOString().slice(0, 10)}
           type='date'
-          loading={loading}
           name='startDate'
+          loading={loading}
           className='border rounded p-1 focus:outline-green-800'
         />
         <input
           onChange={changeDate}
           defaultValue={new Date(endDate).toISOString().slice(0, 10)}
           type='date'
-          loading={loading}
           name='endDate'
           className='border rounded p-1 focus:outline-green-800 ml-2'
+          loading={loading}
         />
         <Pagination
           currentPage={currentPage}
@@ -81,8 +81,7 @@ export const TableHeader = ({
       <li className='text-center flex justify-center items-center font-bold py-2 bg-white'>
         <button
           className='px-4 bg-green-700 hover:bg-green-800 text-white rounded'
-          onClick={getSaleConnectorsExcel}
-        >
+          onClick={getSaleConnectorsExcel}>
           <FontAwesomeIcon icon={faFileExcel} />
         </button>
         <ExcelDownload filename={t('Sotuvlar')} />

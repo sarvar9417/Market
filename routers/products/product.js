@@ -1066,7 +1066,7 @@ module.exports.getproductsale = async (req, res) => {
         'price',
         'sellingprice incomingprice sellingpriceuzs incomingpriceuzs'
       )
-      .populate('unit', 'name')
+      .populate('category', 'name code')
       .populate('unit', 'name');
 
     res.status(201).json(products);

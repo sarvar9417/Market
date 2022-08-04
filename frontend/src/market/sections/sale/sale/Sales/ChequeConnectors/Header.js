@@ -14,6 +14,14 @@ export const Header = ({ auth, sales }) => {
           <span>+998 {auth.market.phone1}</span>
         </p>
         <p className='flex justify-between'>
+          <span className='font-bold'></span>{' '}
+          <span>{auth.market.phone2 && '+998 ' + auth.market.phone2} </span>
+        </p>
+        <p className='flex justify-between'>
+          <span className='font-bold'></span>{' '}
+          <span>{auth.market.phone3 && '+998 ' + auth.market.phone3} </span>
+        </p>
+        <p className='flex justify-between'>
           <span className='font-bold'>{t('Manzil')}:</span>{' '}
           <span>{auth.market.address}</span>
         </p>
@@ -22,7 +30,7 @@ export const Header = ({ auth, sales }) => {
           <span>{new Date(sales.createdAt).toLocaleDateString()}</span>
         </p>
         <p className='flex justify-between'>
-          <span className='font-bold'>Mijoz:</span>
+          <span className='font-bold'>{t("Mijoz")}:</span>
           <span>{sales.client && sales.client && sales.client.name}</span>
         </p>
       </div>
@@ -37,7 +45,7 @@ export const Header = ({ auth, sales }) => {
         </div>
         <div className='flex justify-end'>
           <div>
-            <span className='font-bold'>Sotuvchi:</span>{' '}
+            <span className='font-bold'>{t("Sotuvchi")}:</span>{' '}
             {sales.user && sales.user.firstname}{' '}
             {sales.user && sales.user.lastname}
           </div>

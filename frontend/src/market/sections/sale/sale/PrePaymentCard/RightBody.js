@@ -3,10 +3,10 @@ import {
   faMoneyBill1,
   faMoneyBillTransfer,
   faWallet,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { t } from 'i18next';
-import React from 'react';
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { t } from "i18next";
+import React from "react";
 
 export const RightBody = ({ payment, typeHandler, debt }) => {
   return (
@@ -17,9 +17,8 @@ export const RightBody = ({ payment, typeHandler, debt }) => {
             <button
               onClick={typeHandler}
               className='bg-blue-700 hover:bg-blue-800 text-white w-full rounded font-bold flex justify-between items-center px-3 py-2'
-              name={t('Naqt')}
-              data-type='cash'
-            >
+              name={t("Naqt")}
+              data-type='cash'>
               <span className='text-4xl pointer-events-none'>
                 <FontAwesomeIcon icon={faMoneyBill1} />
               </span>
@@ -35,9 +34,8 @@ export const RightBody = ({ payment, typeHandler, debt }) => {
             <button
               onClick={typeHandler}
               className='bg-blue-700 hover:bg-blue-800 text-white w-full rounded font-bold flex justify-between items-center px-3 py-3'
-              name='Plastik'
-              data-type='card'
-            >
+              name={t('Plastik')}
+              data-type='card'>
               <span className='text-4xl pointer-events-none'>
                 <FontAwesomeIcon icon={faCreditCard} />
               </span>
@@ -54,8 +52,7 @@ export const RightBody = ({ payment, typeHandler, debt }) => {
               onClick={typeHandler}
               className='bg-blue-700 hover:bg-blue-800 text-white w-full rounded font-bold flex justify-between items-center px-3 py-3'
               name={t("O'tkazma")}
-              data-type='transfer'
-            >
+              data-type='transfer'>
               <span className='text-4xl pointer-events-none'>
                 <FontAwesomeIcon icon={faMoneyBillTransfer} />
               </span>

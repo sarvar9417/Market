@@ -1,4 +1,5 @@
 import React from "react";
+import { t } from "i18next"
 
 export const TableFooter = ({ sales }) => {
   return (
@@ -6,7 +7,7 @@ export const TableFooter = ({ sales }) => {
       <tfoot className='text-base'>
         <tr>
           <th colSpan={6} className='py-1'>
-            Jami:
+            {t("Jami")}:
           </th>
           <th className='text-right text-teal-900 py-1'>
             {sales.products

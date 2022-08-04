@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { t } from 'i18next';
 import React from 'react';
 
-export const Table = ({ saleproducts, editProducts }) => {
+export const Table = ({ saleproducts, editProducts, currency }) => {
   return (
     <div className=''>
       <table className='bg-white w-full text-base relative min-w-[700px]'>
@@ -34,17 +34,19 @@ export const Table = ({ saleproducts, editProducts }) => {
                   {index + 1}
                 </td>
                 <td className='border font-bold text-black text-center w-1/6'>
-                  {product.product.code}
+                  {product.product.productdata.code}
                 </td>
                 <td className='border font-bold text-black px-1'>
-                  {product.product.name}
+                  {product.product.productdata.name}
                 </td>
                 <td className='border font-bold text-black text-right px-2 w-14'>
                   {product.pieces.toLocaleString('ru-RU')}
                 </td>
                 <td className='border font-bold text-black text-right px-2 w-1/6'>
-                  {product.totalprice.toLocaleString('ru-RU')}{' '}
-                  <span className='text-green-800'>USD</span>
+                  {currency === 'UZS'
+                    ? product.totalpriceuzs.toLocaleString('ru-RU')
+                    : product.totalprice.toLocaleString('ru-RU')}{' '}
+                  <span className='text-green-800'>{currency}</span>
                 </td>
                 <td className='font-bold text-black  px-2 text-center border'>
                   <button

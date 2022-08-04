@@ -231,6 +231,8 @@ export const Sale = () => {
             '(' +
             product.total +
             ') ' +
+            product.category.code +
+            ' ' +
             product.productdata.code +
             ' ' +
             product.productdata.name,
@@ -366,6 +368,14 @@ export const Sale = () => {
     }
   };
   const pushSaleProduct = () => {
+    if (saleproduct.product.price.incomingprice > saleproduct.unitprice)
+      return notify({
+        title: t(
+          "Diqqat! Mahsulotlarning sotilish narxi kelish narxidan kam bo'lmasligi kerak"
+        ),
+        description: '',
+        status: 'warning',
+      });
     let sales = [...saleproducts];
     sales.unshift(saleproduct);
     setSaleProduct({
@@ -444,13 +454,6 @@ export const Sale = () => {
         status: 'warning',
       });
     }
-    // if (!client.name || client.name.length < 1) {
-    //   return notify({
-    //     title: t('Diqqat! Mijoz ismi kiritilmagan.'),
-    //     description: 'Iltimos! Mijoz ismini kiriting.',
-    //     status: 'warning',
-    //   });
-    // }
     setVisible(true);
   };
 

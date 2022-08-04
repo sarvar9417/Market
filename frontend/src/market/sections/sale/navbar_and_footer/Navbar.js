@@ -97,11 +97,7 @@ export const Navbar = ({ baseUrl }) => {
             id='royalHospitalsNavbar'
           >
             <ul className='navbar-nav'>
-              <li className='nav-item mr-4 px-2'>
-                <span className='logo' style={{ fontSize: '26pt' }}>
-                  Alo24
-                </span>
-              </li>
+              <li className='nav-item mr-4 px-2'></li>
               <li className='nav-item'>
                 <Link
                   className={`nav-link ${

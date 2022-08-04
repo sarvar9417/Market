@@ -1,20 +1,20 @@
-import React from "react";
-import { t } from "i18next"
+import React from 'react';
+import { t } from 'i18next';
 
-export const TableFooter = ({ sales }) => {
+export const TableFooter = ({ sales, currency }) => {
   return (
     <table className='table'>
       <tfoot className='text-base'>
         <tr>
           <th colSpan={6} className='py-1'>
-            {t("Jami")}:
+            {t('Jami')}:
           </th>
           <th className='text-right text-teal-900 py-1'>
             {sales.products
               .reduce((summ, product) => {
                 return summ + product.totalprice;
               }, 0)
-              .toLocaleString("ru-RU")}{" "}
+              .toLocaleString('ru-RU')}{' '}
             USD
           </th>
         </tr>
@@ -24,29 +24,29 @@ export const TableFooter = ({ sales }) => {
           </th>
           <th className='text-right text-teal-900 py-1'>
             {sales.payment.payment &&
-              sales.payment.payment.toLocaleString("ru-RU")}{" "}
+              sales.payment.payment.toLocaleString('ru-RU')}{' '}
             USD
           </th>
         </tr>
         <tr>
           <th colSpan={6} className='py-1'>
-            {t("Chegirma")}:
+            {t('Chegirma')}:
           </th>
           <th className='text-right text-teal-900 py-1'>
             {sales.discount &&
               sales.discount.discount &&
-              sales.discount.discount.toLocaleString("ru-RU")}{" "}
+              sales.discount.discount.toLocaleString('ru-RU')}{' '}
             USD
           </th>
         </tr>
         <tr>
           <th colSpan={6} className='py-1'>
-            {t("Qarz")}:
+            {t('Qarz')}:
           </th>
           <th className='text-right text-teal-900 py-1'>
             {sales.debt &&
               sales.debt.debt &&
-              sales.debt.debt.toLocaleString("ru-RU")}{" "}
+              sales.debt.debt.toLocaleString('ru-RU')}{' '}
             USD
           </th>
         </tr>

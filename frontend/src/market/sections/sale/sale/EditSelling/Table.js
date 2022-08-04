@@ -1,7 +1,12 @@
 import React from 'react';
 import { t } from 'i18next';
 
-export const Table = ({ editSaleConnector, saleproducts, changeBack, loading }) => {
+export const Table = ({
+  editSaleConnector,
+  saleproducts,
+  changeBack,
+  currency,
+}) => {
   return (
     <table className='bg-white w-full relative text-base'>
       <thead className='border text-center text-base text-white py-4'>
@@ -36,22 +41,25 @@ export const Table = ({ editSaleConnector, saleproducts, changeBack, loading }) 
                   {product.pieces}
                 </td>
                 <td className='border font-bold text-black text-right px-2 w-36'>
-                  {product.totalprice.toLocaleString('ru-RU')}{' '}
-                  <span className='text-teal-600'>USD</span>
+                  {currency === 'UZS'
+                    ? product.totalpriceuzs.toLocaleString('ru-RU')
+                    : product.totalprice.toLocaleString('ru-RU')}{' '}
+                  <span className='text-teal-600'>{currency}</span>
                 </td>
                 <td className='border font-bold text-black text-right px-2 w-20'>
                   <input
                     value={saleproducts[index].pieces}
                     id={index}
                     type='number'
-                    loading={loading}
                     onChange={changeBack}
                     className='w-full border outline-none rounded font-bold text-right px-2'
                   />
                 </td>
                 <td className='border font-bold text-black text-right px-2 w-36'>
-                  {saleproducts[index].totalprice.toLocaleString('ru-RU')}{' '}
-                  <span className='text-teal-600'>USD</span>
+                  {currency === 'UZS'
+                    ? saleproducts[index].totalpriceuzs.toLocaleString('ru-RU')
+                    : saleproducts[index].totalprice.toLocaleString('ru-RU')}
+                  <span className='text-teal-600'> {currency}</span>
                 </td>
               </tr>
             );

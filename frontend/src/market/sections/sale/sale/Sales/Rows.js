@@ -1,12 +1,11 @@
 import { faAdd, faPrint, faSync } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  SaveBtnLoad,
-  PrintBtnLoad,
-} from '../../../director/components/TableButtons';
 import { t } from 'i18next';
 import React from 'react';
+import { ClearBtnLoad, SaveBtnLoad } from '../../components/TableButtons';
+
 export const Rows = ({
+  currency,
   countPage,
   changePrepayment,
   Clear,
@@ -21,9 +20,12 @@ export const Rows = ({
   return (
     <ul className='tr'>
       <li className='no'>{currentPage * countPage + 1 + index}</li>
-      <li className='no'>{saleconnector.id}</li>
+      <li className='no'>
+        {new Date(saleconnector.createdAt).toLocaleDateString()}
+      </li>
       <li className='td border-r font-bold'>
-        {saleconnector.client && saleconnector.client.name}
+        {(saleconnector.client && saleconnector.client.name) ||
+          saleconnector.id}
       </li>
       <li
         onClick={() => changePrepayment(saleconnector)}
@@ -31,38 +33,69 @@ export const Rows = ({
       >
         <span className='text-white'>{t("To'lov")}</span>
         <span>
-          {saleconnector.products
-            .reduce((summ, product) => {
-              return summ + product.totalprice;
-            }, 0)
-            .toLocaleString('ru-RU')}
+          {currency === 'UZS'
+            ? (
+                Math.round(
+                  saleconnector.products.reduce((summ, product) => {
+                    return summ + product.totalpriceuzs;
+                  }, 0) * 1
+                ) / 1
+              ).toLocaleString('ru-RU')
+            : saleconnector.products
+                .reduce((summ, product) => {
+                  return summ + product.totalprice;
+                }, 0)
+                .toLocaleString('ru-RU')}
           {'  '}
-          <span className='text-green-900'>USD</span>
+          <span className='text-green-900'>{currency}</span>
         </span>
       </li>
       <li className='td border-r-2 border-orange-500 font-bold text-right'>
         <span>
-          {saleconnector.discounts
-            .reduce((summ, discount) => {
-              return summ + discount.discount;
-            }, 0)
-            .toLocaleString('ru-RU')}
+          {currency === 'UZS'
+            ? (
+                Math.round(
+                  saleconnector.discounts.reduce((summ, discount) => {
+                    return summ + discount.discountuzs;
+                  }, 0) * 1
+                ) / 1
+              ).toLocaleString('ru-RU')
+            : saleconnector.discounts
+                .reduce((summ, discount) => {
+                  return summ + discount.discount;
+                }, 0)
+                .toLocaleString('ru-RU')}
         </span>
         {'  '}
       </li>
       <li className='td border-r-2 border-red-600 font-bold text-right'>
         <span>
-          {(
-            saleconnector.products.reduce((summ, product) => {
-              return summ + product.totalprice;
-            }, 0) -
-            saleconnector.payments.reduce((summ, payment) => {
-              return summ + payment.payment;
-            }, 0) -
-            saleconnector.discounts.reduce((summ, discount) => {
-              return summ + discount.discount;
-            }, 0)
-          ).toLocaleString('ru-RU')}
+          {currency === 'UZS'
+            ? (
+                Math.round(
+                  saleconnector.products.reduce((summ, product) => {
+                    return summ + product.totalpriceuzs;
+                  }, 0) -
+                    saleconnector.payments.reduce((summ, payment) => {
+                      return summ + payment.paymentuzs;
+                    }, 0) -
+                    saleconnector.discounts.reduce((summ, discount) => {
+                      return summ + discount.discountuzs;
+                    }, 0) *
+                      1
+                ) / 1
+              ).toLocaleString('ru-RU')
+            : (
+                saleconnector.products.reduce((summ, product) => {
+                  return summ + product.totalprice;
+                }, 0) -
+                saleconnector.payments.reduce((summ, payment) => {
+                  return summ + payment.payment;
+                }, 0) -
+                saleconnector.discounts.reduce((summ, discount) => {
+                  return summ + discount.discount;
+                }, 0)
+              ).toLocaleString('ru-RU')}
         </span>
         {'  '}
       </li>
@@ -75,16 +108,12 @@ export const Rows = ({
         })}
       </li>
       <li className='td-btn border-right'>
-        {loading ? (
-          <PrintBtnLoad />
-        ) : (
-          <button
-            onClick={() => changeCheck(saleconnector)}
-            className='px-4 bg-blue-700 text-white rounded-xl hover:bg-blue-800'
-          >
-            <FontAwesomeIcon icon={faPrint} />
-          </button>
-        )}
+        <button
+          onClick={() => changeCheck(saleconnector)}
+          className='px-4 bg-blue-700 text-white rounded-xl hover:bg-blue-800'
+        >
+          <FontAwesomeIcon icon={faPrint} />
+        </button>
       </li>
       <li className='td-btn border-right'>
         {loading ? (
@@ -102,12 +131,16 @@ export const Rows = ({
         )}
       </li>
       <li className='td-btn'>
-        <button
-          onClick={() => editHandler(saleconnector)}
-          className='px-4 bg-red-600 text-white rounded-xl hover:bg-red-700'
-        >
-          <FontAwesomeIcon icon={faSync} />
-        </button>
+        {loading ? (
+          <ClearBtnLoad />
+        ) : (
+          <button
+            onClick={() => editHandler(saleconnector)}
+            className='px-4 bg-red-600 text-white rounded-xl hover:bg-red-700'
+          >
+            <FontAwesomeIcon icon={faSync} />
+          </button>
+        )}
       </li>
     </ul>
   );

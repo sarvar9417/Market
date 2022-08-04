@@ -14,7 +14,6 @@ export const InputProduct = ({
   const changeincomingPrice = () => {
     setIncomingprice(!incomingprice);
   };
-  console.log(product);
   return (
     <div>
       <p className='font-bold flex justify-between'>
