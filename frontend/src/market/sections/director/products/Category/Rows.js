@@ -18,31 +18,31 @@ export const Rows = ({
   setModal,
 }) => {
   return (
-    <Link to={`/alo24/productcategory/${c._id}`}>
-      <ul className='tr'>
-        <li className='no'>{currentPage * 10 + 1 + index}</li>
-        <li className='no'>{c.code}</li>
-        <li className='col-span-6 td border-r font-bold'>{c.name}</li>
-        <li className='td-btn col-span-2 border-r'>
-          {loading ? (
-            <SaveBtnLoad />
-          ) : (
-            <EditBtn editHandler={() => setCategory({ ...category, ...c })} />
-          )}
-        </li>
-        <li className='td-btn col-span-2'>
-          {loading ? (
-            <ClearBtnLoad />
-          ) : (
-            <DeleteBtn
-              deleteHandler={() => {
-                setRemove(c);
-                setModal(true);
-              }}
-            />
-          )}
-        </li>
-      </ul>
-    </Link>
+    <ul className='tr'>
+      <li className='no'>{currentPage * 10 + 1 + index}</li>
+      <li className='no'>
+        <Link to={`/alo24/productcategory/${c._id}`}>{c.code}</Link>{' '}
+      </li>
+      <li className='col-span-6 td border-r font-bold'>{c.name}</li>
+      <li className='td-btn col-span-2 border-r'>
+        {loading ? (
+          <SaveBtnLoad />
+        ) : (
+          <EditBtn editHandler={() => setCategory({ ...category, ...c })} />
+        )}
+      </li>
+      <li className='td-btn col-span-2'>
+        {loading ? (
+          <ClearBtnLoad />
+        ) : (
+          <DeleteBtn
+            deleteHandler={() => {
+              setRemove(c);
+              setModal(true);
+            }}
+          />
+        )}
+      </li>
+    </ul>
   );
 };

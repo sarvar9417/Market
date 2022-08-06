@@ -799,7 +799,10 @@ module.exports.getProductExcel = async (req, res) => {
     })
       .sort({ _id: -1 })
       .select('total unit price productdata')
-      .populate('price', 'incomingprice sellingprice')
+      .populate(
+        'price',
+        'incomingprice sellingprice incomingpriceuzs sellingpriceuzs'
+      )
       .populate('unit', 'name')
       .populate({
         path: 'productdata',

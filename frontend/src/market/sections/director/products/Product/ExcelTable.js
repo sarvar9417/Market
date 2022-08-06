@@ -11,8 +11,10 @@ export const ExcelTable = ({ products }) => {
             <th className='border'>{t('Kodi')}</th>
             <th className='border'>{t('Nomi')}</th>
             <th className='border'>{t("Soni o'lchov birligi")}</th>
-            <th className='border'>{t('Kelish narxi')}</th>
-            <th className='border'>{t('Sotish narxi')}</th>
+            <th className='border'>{t('Kelish narxi USD')}</th>
+            <th className='border'>{t('Kelish narxi UZS')}</th>
+            <th className='border'>{t('Sotish narxi USD')}</th>
+            <th className='border'>{t('Sotish narxi UZS')}</th>
           </tr>
         </thead>
         <tbody>
@@ -26,7 +28,9 @@ export const ExcelTable = ({ products }) => {
                   {product.total} {product.unit.name}
                 </td>
                 <td>{product.price.incomingprice}</td>
+                <td>{product.price.incomingpriceuzs}</td>
                 <td>{product.price.sellingprice}</td>
+                <td>{product.price.sellingpriceuzs}</td>
               </tr>
             ))}
         </tbody>

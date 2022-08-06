@@ -5,7 +5,7 @@ import { AuthContext } from '../../../context/AuthContext';
 import { useHttp } from '../../../hooks/http.hook';
 import { TableHead } from './Invertories/TableHead';
 import { TableHeader } from './Invertories/TableHeader';
-import { Rows } from './Invertories//Rows';
+import { Rows } from './Invertories/Rows';
 import { Print } from './Print';
 import { ExcelTable } from './ExcelTable';
 
