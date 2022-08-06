@@ -254,7 +254,11 @@ export const Incoming = () => {
       ];
       data.map((product) => {
         return s.push({
-          label: product.productdata.code + ' ' + product.productdata.name,
+          label:
+            product.category.code +
+            product.productdata.code +
+            ' ' +
+            product.productdata.name,
           value: product._id,
           product: { ...product },
         });

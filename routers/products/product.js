@@ -842,6 +842,10 @@ module.exports.getAllIncoming = async (req, res) => {
         path: 'productdata',
         select: 'name code',
       })
+      .populate({
+        path: 'category',
+        select: 'name code',
+      })
       .populate('unit', 'name');
 
     const products = allproducts.filter((product) => {

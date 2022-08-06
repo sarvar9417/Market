@@ -232,7 +232,6 @@ export const Sale = () => {
             product.total +
             ') ' +
             product.category.code +
-            ' ' +
             product.productdata.code +
             ' ' +
             product.productdata.name,
