@@ -7,18 +7,6 @@ import { Table } from './ChequeConnectors/Table';
 // import QRCode from "qrcode";
 
 export const ChequeConnectors = ({ sales, setCheck, currency }) => {
-  //=================================================
-  //=================================================
-  //QR code
-  // const [qr, setQr] = useState();
-  // const changeQr = () => {
-  //   QRCode.toDataURL().then((data) => {
-  //     setQr("Salom");
-  //   });
-  // };
-
-  //=================================================
-  //=================================================
   const componentRef = useRef();
   const print = () => {
     setCheck(false);

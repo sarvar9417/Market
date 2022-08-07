@@ -1053,20 +1053,16 @@ export const Sale = () => {
       setDebt({
         ...debt,
         debt: Math.round((totalprice - discount.discount) * 1000) / 1000,
-        debtuzs:
-          Math.round(
-            (totalprice - discount.discount) * exchangerate.exchangerate * 1
-          ) / 1,
+        debtuzs: Math.round((totalprice - discount.discountuzs) * 1) / 1,
       });
     }
+
     types.map((type) => {
       return type === e.target.dataset.type
         ? ((p[type] =
             Math.round((totalprice - discount.discount) * 1000) / 1000),
           (p[type + 'uzs'] =
-            Math.round(
-              (totalprice - discount.discount) * exchangerate.exchangerate * 1
-            ) / 1),
+            Math.round((totalpriceuzs - discount.discountuzs) * 1) / 1),
           (p.type = type),
           setDebt({
             ...debt,
@@ -1087,29 +1083,29 @@ export const Sale = () => {
       setPayment({
         ...payment,
         discount: discount.discount,
-        discountuzs:
-          Math.round(discount.discount * exchangerate.exchangerate * 1) / 1,
+        discountuzs: Math.round(discount.discountuzs * 1) / 1,
       });
       setDiscount({
         ...discount,
         discount: discount.discount,
-        discountuzs:
-          Math.round(discount.discount * exchangerate.exchangerate * 1) / 1,
+        discountuzs: Math.round(discount.discountuzs * 1) / 1,
       });
     }
 
     if (!discount.isProcient) {
       let procient =
         Math.round(((discount.discount * 100) / totalprice) * 1000) / 1000;
+      let procientuzs =
+        Math.round(((discount.discountuzs * 100) / totalpriceuzs) * 1) / 1;
       setPayment({
         ...payment,
         discount: procient,
-        discountuzs: procient,
+        discountuzs: procientuzs,
       });
       setDiscount({
         ...discount,
         discount: procient,
-        discountuzs: Math.round(procient * exchangerate.exchangerate * 1) / 1,
+        discountuzs: procientuzs,
       });
     }
 
