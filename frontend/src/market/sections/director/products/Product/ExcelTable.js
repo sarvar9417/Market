@@ -8,9 +8,11 @@ export const ExcelTable = ({ products }) => {
         <thead>
           <tr className='bg-blue-700'>
             <th className='border border-black'>№</th>
+            <th className='border'>{t('Kategoriyasi')}</th>
             <th className='border'>{t('Kodi')}</th>
             <th className='border'>{t('Nomi')}</th>
-            <th className='border'>{t("Soni o'lchov birligi")}</th>
+            <th className='border'>{t('Soni ')}</th>
+            <th className='border'>{t("O'lchov birligi")}</th>
             <th className='border'>{t('Kelish narxi USD')}</th>
             <th className='border'>{t('Kelish narxi UZS')}</th>
             <th className='border'>{t('Sotish narxi USD')}</th>
@@ -22,11 +24,11 @@ export const ExcelTable = ({ products }) => {
             products.map((product, index) => (
               <tr key={index}>
                 <td className='font-bold border'>{index + 1}</td>
+                <td>{product.category.code}</td>
                 <td>{product.productdata.code}</td>
                 <td>{product.productdata.name}</td>
-                <td>
-                  {product.total} {product.unit.name}
-                </td>
+                <td>{product.total}</td>
+                <td>{product.unit.name}</td>
                 <td>{product.price.incomingprice}</td>
                 <td>{product.price.incomingpriceuzs}</td>
                 <td>{product.price.sellingprice}</td>

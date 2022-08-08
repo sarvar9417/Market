@@ -27,7 +27,10 @@ export const Header = ({ auth, sales }) => {
         </p>
         <p className='flex justify-between'>
           <span className='font-bold'>{t('Sana')}:</span>
-          <span>{new Date(sales.createdAt).toLocaleDateString()}</span>
+          <span>
+            {new Date(sales.createdAt).toLocaleDateString()}{' '}
+            {new Date(sales.createdAt).toLocaleTimeString()}
+          </span>
         </p>
         <p className='flex justify-between'>
           <span className='font-bold'>{t('Mijoz')}:</span>

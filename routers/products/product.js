@@ -808,6 +808,10 @@ module.exports.getProductExcel = async (req, res) => {
         path: 'productdata',
         select: 'name code',
         match: { name: name, code: code },
+      })
+      .populate({
+        path: 'category',
+        select: 'code',
       });
 
     res.status(201).json(products);

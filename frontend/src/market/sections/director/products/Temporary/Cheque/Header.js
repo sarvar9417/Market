@@ -1,5 +1,5 @@
 import React from 'react';
-import { t } from 'i18next'
+import { t } from 'i18next';
 
 export const Header = ({ auth, supplier }) => {
   return (
@@ -10,7 +10,7 @@ export const Header = ({ auth, supplier }) => {
           <span>{auth.market.name}</span>
         </p>
         <p className='flex justify-between'>
-          <span className='font-bold'>{t("Telefon")}:</span>{' '}
+          <span className='font-bold'>{t('Telefon')}:</span>{' '}
           <span>+998 {auth.market.phone1}</span>
         </p>
         <p className='flex justify-between'></p>
@@ -18,12 +18,14 @@ export const Header = ({ auth, supplier }) => {
       </div>
       <div className='px-5'>
         <p className='flex justify-between'>
-          <span className='font-bold'>{t("Yetkazib beruvchi")}:</span>{' '}
+          <span className='font-bold'>{t('Yetkazib beruvchi')}:</span>{' '}
           <span>{supplier && supplier.name}</span>
         </p>
         <p className='flex justify-between'>
-          <span className='font-bold'>{t("Sana")}:</span>
-          <span>{new Date().toLocaleDateString()}</span>
+          <span className='font-bold'>{t('Sana')}:</span>
+          <span>
+            {new Date().toLocaleDateString()} {new Date().toLocaleTimeString()}
+          </span>
         </p>
       </div>
       <div className='text-right text-2xl font-bold '>

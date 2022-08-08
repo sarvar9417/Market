@@ -1053,7 +1053,7 @@ export const Sale = () => {
       setDebt({
         ...debt,
         debt: Math.round((totalprice - discount.discount) * 1000) / 1000,
-        debtuzs: Math.round((totalprice - discount.discountuzs) * 1) / 1,
+        debtuzs: Math.round((totalpriceuzs - discount.discountuzs) * 1) / 1,
       });
     }
 
